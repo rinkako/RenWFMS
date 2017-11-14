@@ -1,6 +1,4 @@
 package org.sysu.renResourcing.entity;
-import org.hibernate.loader.custom.Return;
-
 import java.io.Serializable;
 
 /**
@@ -10,16 +8,25 @@ import java.io.Serializable;
  *         identifier and can be stored to steady memory.
  */
 public abstract class RIdentifier implements Serializable {
-
+    /**
+     * Unique id
+     */
     public String Id = null;
 
+    /**
+     * Get the description string of this instance
+     * @return a string in format `ClassName?Id`
+     */
     public String GetIdWithType() {
         return String.format("%s?%s", this.getClass().getName(), this.Id);
     }
 
+    /**
+     * Get the XML string of this instance
+     * @return a string in XML format
+     */
     public String ToXML() {
-        return String.format("<RIdentifier>%s</RIdentifier>", this.GetIdWithType());
+        String instanceName = this.getClass().getSimpleName();
+        return String.format("<%s id='%s'></%s>", instanceName, this.Id, instanceName);
     }
-
-    public static final String IndentPaddingUnitSpace = "  ";
 }
