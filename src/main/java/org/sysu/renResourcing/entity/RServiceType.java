@@ -13,5 +13,7 @@ public enum RServiceType implements Serializable {
     // Start the resource service
     EngineStart,
     // Stop the resource service
-    EngineStop
+    EngineStop,
+    // Event: Exception raised
+    EngineException
 }

@@ -1,4 +1,6 @@
 package org.sysu.renResourcing.entity;
+import sun.reflect.generics.reflectiveObjects.NotImplementedException;
+
 import java.io.Serializable;
 
 /**
@@ -14,7 +16,7 @@ public abstract class RIdentifier implements Serializable {
     public String Id = null;
 
     /**
-     * Get the description string of this instance
+     * Get the description string of this instance.
      * @return a string in format `ClassName?Id`
      */
     public String GetIdWithType() {
@@ -22,11 +24,20 @@ public abstract class RIdentifier implements Serializable {
     }
 
     /**
-     * Get the XML string of this instance
+     * Get the XML string of this instance.
      * @return a string in XML format
      */
     public String ToXML() {
         String instanceName = this.getClass().getSimpleName();
         return String.format("<%s id='%s'></%s>", instanceName, this.Id, instanceName);
+    }
+
+    /**
+     * Generate instance from XML string.
+     * @param xml XML data in string
+     * @return a RIdentifier object
+     */
+    public RIdentifier FromXML(String xml) {
+        throw new NotImplementedException();
     }
 }
