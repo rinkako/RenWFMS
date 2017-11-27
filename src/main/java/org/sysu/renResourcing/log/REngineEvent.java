@@ -1,5 +1,6 @@
 package org.sysu.renResourcing.log;
 
+import org.sysu.renResourcing.entity.RIdentifier;
 import org.sysu.renResourcing.entity.RServiceType;
 import org.sysu.renResourcing.entity.RSession;
 
@@ -32,6 +33,16 @@ public class REngineEvent extends REvent {
      * @return XML string of this event
      */
     public String ToXML() {
+        return null;
+    }
+
+    /**
+     * Generate instance from event XML string.
+     *
+     * @param xml XML data in string
+     * @return a RIdentifier object
+     */
+    public RIdentifier FromXML(String xml) {
         return null;
     }
 }
