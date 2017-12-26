@@ -1,0 +1,155 @@
+<?xml version="1.0"?>
+<!--
+ * Licensed to the Apache Software Foundation (ASF) under one or more
+ * contributor license agreements.  See the NOTICE file distributed with
+ * this work for additional information regarding copyright ownership.
+ * The ASF licenses this file to You under the Apache License, Version 2.0
+ * (the "License"); you may not use this file except in compliance with
+ * the License.  You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+-->
+<!--
+   This document is an example of using history in parallel
+-->
+<scxml xmlns="http://www.w3.org/2005/07/scxml" version="1.0" datamodel="jexl" initial="one">
+
+    <state id="one">
+        <transition event="go_two" target="two"/>
+        <transition event="go_two_three_two" target="two_three_two"/>
+        <transition event="go_two_two_one_two_two" target="two_two_one_two_two"></transition>
+    </state>
+
+    <parallel id="two">
+
+        <state id="two_one">
+            <initial>
+                <transition target="two_one_one"></transition>
+            </initial>
+            <state id="two_one_one">
+                <transition event="guyi" target="two_one_two"/>
+                <transition event="guyi" target="four"/>
+
+            </state>
+            <state id="two_one_two">
+                <transition event="go_two_one_final" target="two_one_final"/>
+            </state>
+            <final id="two_one_final">
+
+            </final>
+            <transition event="hehe" target="four"></transition>
+        </state>
+
+        <state id="two_two">
+            <initial>
+                <transition target="two_two_one"></transition>
+            </initial>
+            <parallel id="two_two_one">
+                <state id="two_two_one_one">
+                    <initial>
+                        <transition target="two_two_one_one_one"></transition>
+                    </initial>
+                    <state id="two_two_one_one_one">
+                        <transition event="go_two_two_one_one_two" target="two_two_one_one_two"></transition>
+                        <transition event="go_two_two_final" target="two_two_final"></transition>
+                    </state>
+                    <state id="two_two_one_one_two">
+                        <transition event="go_two_two_one_one_final" target="two_two_one_one_final"></transition>
+                    </state>
+                    <final id="two_two_one_one_final">
+
+                    </final>
+                </state>
+                <state id="two_two_one_two">
+                    <state id="two_two_one_two_one">
+                        <transition event="go_two_two_one_two_two" target="two_two_one_two_two"></transition>
+                        <transition event="go_two_three_two" target="two_three_two"></transition>
+                    </state>
+                    <state id="two_two_one_two_two">
+                        <transition event="go_two_two_one_two_three" target="two_two_one_two_three"></transition>
+                        <transition event="go_three" target="three"></transition>
+                    </state>
+                    <state id="two_two_one_two_three">
+                        <transition event="go_three_one_two" target="three_one_two"></transition>
+
+                        <transition event="go_self"></transition>
+                    </state>
+                </state>
+                <transition event="go_parallel_self" target="two_two_one"></transition>
+
+            </parallel>
+
+            <final id="two_two_final">
+
+            </final>
+        </state>
+        <state id="two_three">
+            <state id="two_three_one">
+                <transition event="go_two_three_two" target="two_three_two"></transition>
+            </state>
+            <state id="two_three_two">
+
+            </state>
+        </state>
+
+        <history id="two_history" type="deep">
+            <transition target="two_one two_two two_three"></transition>
+        </history>
+        <transition event="go_four" target="four"></transition>
+
+
+    </parallel>
+
+    <parallel id="three">
+        <state id="three_one">
+            <initial>
+                <transition target="three_one_one"></transition>
+            </initial>
+            <state id="three_one_one">
+                <transition event="go_three_one_two" target="three_one_two"></transition>
+            </state>
+            <state id="three_one_two">
+                <transition event="go_three_one_three" target="three_one_three"></transition>
+            </state>
+            <state id="three_one_three">
+                <transition event="go_three_one_final" target="three_one_final"></transition>
+            </state>
+            <final id="three_one_final">
+
+            </final>
+        </state>
+
+        <state id="three_two">
+            <initial>
+                <transition target="three_two_one"></transition>
+            </initial>
+            <state id="three_two_one">
+                <transition event="go_three_two_one" target="three_two_two"></transition>
+            </state>
+            <state id="three_two_two">
+
+                <transition event="go_three_two_final" target="three_two_final"></transition>
+            </state>
+            <final id="three_two_final">
+
+            </final>
+        </state>
+        <history id="three_history">
+            <transition target="three_one three_two"></transition>
+        </history>
+        <transition event="go_four" target="four"></transition>
+    </parallel>
+    <state id="four">
+        <transition event="go_three_two_two" target="three_two_two"></transition>
+        <transition event="go_final" target="final"></transition>
+    </state>
+    <final id="final">
+
+    </final>
+</scxml>

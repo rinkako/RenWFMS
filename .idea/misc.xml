@@ -4,6 +4,8 @@
     <option name="originalFiles">
       <list>
         <option value="$PROJECT_DIR$/RenResourceService/pom.xml" />
+        <option value="$PROJECT_DIR$/BOEngine/pom.xml" />
+        <option value="$PROJECT_DIR$/ModelChecker/pom.xml" />
       </list>
     </option>
   </component>

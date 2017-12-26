@@ -1,0 +1,49 @@
+<businessclass initial="Initial" name="GuestCheck" version="1.0" xmlns="http://www.w3.org/2005/07/scxml">
+ <tasks>
+    <task id="calculate" role="agent" name="calculateTask" event="calculated">
+    </task>
+    <task id="Payment" role="agent" name="paymentTask" event="paid">
+    </task>
+    <task id="archive" role="agent" name="archiveTask" event="archived">
+    </task>
+ </tasks>
+ <state id="Initial">
+  <transition target="Preparing"></transition>
+ </state>
+ <state id="Preparing">
+  <onentry>
+   <call name="calculateTask"></call>
+  </onentry>
+  <transition event="calculated" target="Paying"></transition>
+ </state>
+ <state id="Paying">
+  <onentry>
+   <call name="paymentTask"></call>
+  </onentry>
+  <transition event="paid" target="Archiving"></transition>
+ </state>
+ <state id="Archiving">
+  <onentry>
+   <call name="archiveTask"></call>
+  </onentry>
+  <transition event="archived" target="GCFinal">
+  	<send event="finish" type="scxml" messageMode="TO_PARENT"></send>
+  </transition>
+ </state>
+ <final id="GCFinal"></final>
+ <layout h="640" w="570" x="0" y="0">
+  <workflowNode h="75" id="Initial" w="75" x="20" y="220">
+   <workflowEdge event="" source="Initial" target="Preparing"></workflowEdge>
+  </workflowNode>
+  <workflowNode h="75" id="Preparing" w="75" x="140" y="220">
+   <workflowEdge event="calculated" source="Preparing" target="Paying"></workflowEdge>
+  </workflowNode>
+  <workflowNode h="75" id="Paying" w="75" x="310" y="220">
+   <workflowEdge event="paid" source="Paying" target="Archiving"></workflowEdge>
+  </workflowNode>
+  <workflowNode h="75" id="Archiving" w="75" x="310" y="340">
+   <workflowEdge event="archived" source="Archiving" target="Final"></workflowEdge>
+  </workflowNode>
+  <workflowNode h="75" id="Final" w="75" x="140" y="340"></workflowNode>
+ </layout>
+</businessclass>

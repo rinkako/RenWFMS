@@ -1,0 +1,75 @@
+<?xml version="1.0"?>
+<!--
+ * Licensed to the Apache Software Foundation (ASF) under one or more
+ * contributor license agreements.  See the NOTICE file distributed with
+ * this work for additional information regarding copyright ownership.
+ * The ASF licenses this file to You under the Apache License, Version 2.0
+ * (the "License"); you may not use this file except in compliance with
+ * the License.  You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+-->
+<!--
+   This document is an example of using history in parallel
+-->
+<scxml xmlns="http://www.w3.org/2005/07/scxml" version="1.0" datamodel="jexl" initial="2">
+
+    <state id="2">
+        <transition event="go_3" target="3"/>
+        <transition event="go_14" target="14"/>
+    </state>
+
+    <parallel id="3">
+
+        <state id="4">
+            <initial>
+                <transition target="6"></transition>
+            </initial>
+            <state id="6">
+                <transition event="go_7" target="7"/>
+                <transition event="go_12" target="12"/>
+            </state>
+            <final id="7">
+
+            </final>
+        </state>
+
+        <state id="8">
+            <initial>
+                <transition target="10"></transition>
+            </initial>
+            <state id="10">
+                <transition event="go_11" target="11"></transition>
+                <transition event="go_15" target="15"></transition>
+            </state>
+            <final id="11">
+
+            </final>
+        </state>
+        <transition event="go_12" target="12"></transition>
+    </parallel>
+
+    <state id="12">
+        <initial>
+            <transition target="14"></transition>
+        </initial>
+        <state id="14">
+            <transition event="go_15" target="15"></transition>
+        </state>
+        <state id="15">
+            <transition event="go_16" target="16"></transition>
+        </state>
+        <final id="16"></final>
+        <transition event="go_17" target="17"></transition>
+    </state>
+
+    <final id="17">
+
+    </final>
+</scxml>

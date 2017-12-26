@@ -1,0 +1,217 @@
+<businessclass 
+	xmlns="http://www.w3.org/2005/07/scxml"
+	version="1.0"
+	id = "crowdSourcing" 
+	name="crowdSourcingTask"
+    initial="init">
+
+	<datamodel>
+		<data id="taskID" expr=""></data>
+		<data id="taskName" expr=""></data>
+		<data id="taskDescription" expr=""></data>
+		<data id="dueDate"></data>
+		<data id="judgeCount" expr=""></data>
+		<data id="decomposeCount" expr=""></data>
+		<data id="decomposeVoteCount" expr=""></data>
+		<data id="solveCount" expr=""></data>
+		<data id="solveVoteCount" expr=""></data>
+		<data id="steps" expr="0"></data>
+		<data id="mergeResult" expr="false"></data>
+	</datamodel>
+	
+	<tasks>
+		<task id="judge" name="judgeTask" candidateGroups="Judger" candadateUsers="kimi, kitty" assignee="kimi" instancesExpr="judgeCount">
+            <form name="juding" src="form/judge.jsp"></form>
+        </task>
+		<task id="solve" name="solveTask" candidateGroups="Solver" instancesExpr="solveCount">
+            <form name="solving" src="form/solve.jsp"></form>
+         </task>
+        <task id="decompose" name="decomposeTask" candidateGroups="Decomposer" instancesExpr="decomposeCount">
+            <form name="decomposing" src="form/decompose.jsp"></form>
+        </task>
+		<task id="decomposeVoting" name="decomposeVoteTask" candidateGroups="DecomposeVoter“ instancesExpr="decomposeVoteCount" >
+            <form name="decomposingVoting" src="form/decomposeVote.jsp"></form>
+        </task>
+		<task id="solveVoting" name="SolveVoteTask" candidateGroups="SolveVoter" instancesExpr="solveVoteCount" >
+            <form src="form/solveVote.jsp"></form>
+        </task>
+		<task id="merging" name="merge" agent="agent-task-dispatcher"
+						class="com.servicetask.ClassName"
+						type="javaClass">
+			<param name="input" expr="_call.input"></param>
+        </task>
+		<task id="servicetask1"  name="ServiceTask1"  agent=""
+						wsdl=”http://localhost:9090/mpc?wsdl”
+						operation=”createMpc”
+						type="webservice">
+			<param name=”name” expr=”_call.name”></param>
+		</task>
+		<task id="servicetask1"  name="ServiceTask1"  agent=""
+						http=””
+						request=”get/post”
+						type="httpClient">
+			<param name=”name” expr=”_call.name”></param>
+		</task>
+		<task id="systemTask 1" name="NewCrowdsourcingTask" agent="agent-instance-creator"
+					src="crowdsourcingTask.scxml"
+					instanceNum="3">
+			<param name="crowdSourcingTask" expr="_call.tempcrowdSourcingTask"></param>
+		</task>
+	</tasks>
+    
+    <state id="init">
+        <onentry>
+            <log label="init" expr="'init state entry ,begin to initialization'"/>
+            <script>
+				taskID=crowdSourcingTask.getTaskID();
+                taskName=crowdSourcingTask.getTaskName();
+                taskDescription=crowdSourcingTask.getTaskDescription();
+                judgeCount = crowdSourcingTask.getTaskJudgeCount();
+                decomposeCount= crowdSourcingTask.getTaskDecomposeCount();
+                decomposeVoteCount= crowdSourcingTask.getTaskDecomposeVoteCount();
+                solveCount= crowdSourcingTask.getTaskSolveCount();
+                solveVoteCount= crowdSourcingTask.getTaskSolveVoteCount();
+            </script>
+            <log label="init" expr="'initialization complete'"></log>
+        </onentry>
+        <transition target="judging">
+            <log label="init" expr="'init state transition to judging'"/>
+			<call name="judgeTask"></call>
+        </transition>
+        <onexit>
+            <log label="init" expr="'init state exit'"/>
+        </onexit>
+    </state>
+
+    <state id="judging">
+        <datamodel>
+            <data id="complexCount" expr="0"></data>
+            <data id="simpleCount" expr="0"></data>
+        </datamodel>
+
+        <transition event="judgeComplete">
+            <if cond="_event.data.simple eq 0">
+                <assign location="simpleCount" expr="simpleCount + 1"></assign>
+				<elseif cond="_event.data.simple eq 1"/>
+				<assign location="complexCount" expr="complexCount + 1"></assign>
+            </if>
+			
+            <if cond="simpleCount + complexCount eq judgeCount">
+                <send event="judgeCompleted"></send>
+            </if>
+        </transition>
+
+        <transition event="judgeCompleted" cond="simpleCount gt complexCount" target="solving">
+            <call name="solveTask"></call>
+        </transition>
+
+        <transition event="judgeCompleted" cond="simpleCount lt complexCount" target="decomposing">
+			<call name="decomposeTask"></call>
+        </transition>
+    </state>
+
+    <state id="decomposing">
+	
+        <datamodel>
+            <data id="counted" expr="0"></data>
+            <data id="step" expr="0"></data>
+        </datamodel>      
+
+        <transition event="decomposeComplete">
+            <assign location="counted" expr="counted + 1"></assign>
+        </transition>
+		
+        <transition cond="counted eq decomposeCount" target="decomposeVoting">
+			<call name="decomposeVoteTask"></call>
+		</transition>
+    </state>
+	
+    <state id="decomposeVoting">
+        <datamodel>
+            <data id="counted" expr="0"></data>
+        </datamodel>
+
+        <transition event="decomposeVoteComplete">
+            <assign location="counted" expr="counted + 1"></assign>
+        </transition>
+		
+		<transition cond="counted eq decomposeVoteCount" target="waitResulting">
+			<foreach array="crowdSourcingTaskArrayList" item="tempCrowdSourcingTask">
+				<call name="NewCrowdsourcingTask(tempCrowdSourcingTask)"></call>			
+                <assign location="steps" expr="steps + 1"></assign>
+            </foreach>
+		</transition>
+    </state>
+
+    <state id="waitResulting">
+        <datamodel>
+            <data id="count" expr="0"></data>
+        </datamodel>
+		
+        <onentry>
+            <log label="waitResulting" expr="'entry waitResulting state '"/>
+        </onentry>
+		
+        <transition event="to_waitResult">
+            <assign location="count" expr="count + 1"></assign>
+            <log label="waitResulting" expr="' inner transition ,subStateMachine_to_end'"/>
+        </transition>
+		
+        <transition cond="count eq steps" target="merging">
+            <log label="waitResulting" expr="' transition from waitResulting to merging '"/>
+        </transition>
+    </state>
+
+    <!-- assign merging task -->
+    <state id="merging">
+		<onentry>
+            <call name="mergeResult=merge()"></call>           
+		</onentry>
+		
+        <transition cond="mergeResult" target="end">
+            <send event="to_waitResult" type="scxml" messageMode="TO_PARENT"></send>
+            <log label="merging" expr="'transition from merging state to end '"/>
+        </transition>
+
+    </state>
+
+    <!-- 解决 -->
+    <state id="solving">
+        <datamodel>
+            <data id="counted" expr="0"></data>
+        </datamodel>
+
+        <transition event="solveComplete">
+            <assign location="counted" expr="counted + 1"></assign>
+            <log label="solving" expr="'solveComplete ,inner transition '"/>
+        </transition>
+		
+        <transition cond="counted eq solveCount" target="solveVoting">
+            <log label="solving" expr="' transition from solving to solveVoting'"/>
+			<call name="SolveVoteTask"></call>
+        </transition>
+    </state>
+
+    <!-- 解决投票 -->
+    <state id="solveVoting">
+        <datamodel>
+            <data id="counted" expr="0"></data>
+        </datamodel>
+        
+        <transition event="solveVoteComplete">
+            <assign location="counted" expr="counted + 1"></assign>
+            <log label="solveVoting" expr="'solveVoteComplete ,inner transition '"/>
+        </transition>
+        
+        <transition cond="counted eq solveVoteCount" target="end">
+            <send event="to_waitResult" type="scxml" messageMode="TO_PARENT"></send>
+            <log label="solveVoting" expr="'transition from solveVoting to end '"/>
+        </transition>
+    </state>
+
+    <final id="end">
+        <onentry>
+            <log label="end" expr="' crowdsourcingTask end '"/>
+        </onentry>
+    </final>
+</businessclass>

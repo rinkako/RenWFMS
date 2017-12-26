@@ -37,6 +37,23 @@ public class AccessController {
         return null;
     }
 
+    @RequestMapping(value = "/", produces = {"application/json", "application/xml"},
+            method = {RequestMethod.GET, RequestMethod.POST})
+    @ResponseBody
+    public ReturnModel Index() {
+        ReturnModel rnModel = new ReturnModel();
+        try {
+            rnModel.setCode(StatusCode.OK);
+            rnModel.setRs(TimestampUtil.GetTimeStamp() + " 0");
+            ReturnElement returnElement = new ReturnElement();
+            returnElement.setData("Index");
+            rnModel.setReturnElement(returnElement);
+        } catch (Exception e) {
+            rnModel = ExceptionHandlerFunction(e.getClass().getName());
+        }
+        return rnModel;
+    }
+
     /**
      * Connect to RS to request a token.
      * @param username

@@ -1,0 +1,48 @@
+<?xml version="1.0"?>
+<scxml xmlns="http://www.w3.org/2005/07/scxml"
+       version="1.0"
+       datamodel="jexl"
+       initial="init">
+    <state id="init">
+        <onentry>
+            <log label="init" expr="'init'"></log>
+        </onentry>
+        <transition event="start" >
+
+        </transition>
+        <transition event="start2" target="decomposeVoting">
+
+        </transition>
+    </state>
+
+    <state id="decomposeVoting">
+        <datamodel>
+            <data id="counted" expr="0"></data>
+        </datamodel>
+        <onentry>
+
+        </onentry>
+        <transition event="decomposeVoteComplete">
+            <assign location="counted" expr="4"></assign>
+        </transition>
+        <transition cond="counted eq 4" target="temp">
+            <log label="start substatemachine" expr="starting"></log>
+            <subStateMachine src="subStateMachine.xml" instances="1">
+
+            </subStateMachine>
+        </transition>
+    </state>
+
+    <state id="temp">
+        <datamodel>
+            <data id="counted" expr="0"></data>
+        </datamodel>
+        <onentry>
+            <log label="send message" expr="'starting'"></log>
+            <send event="start" type="scxml" messageMode="TO_PARENT"></send>
+        </onentry>
+    </state>
+
+    <final id="end">
+    </final>
+</scxml>
