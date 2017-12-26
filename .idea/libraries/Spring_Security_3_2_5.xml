@@ -1,0 +1,20 @@
+<component name="libraryTable">
+  <library name="Spring Security-3.2.5" type="spring-security">
+    <properties version="3.2.5" />
+    <CLASSES>
+      <root url="jar://$PROJECT_DIR$/RenResourceService/lib/spring-security-openid-3.2.5.RELEASE.jar!/" />
+      <root url="jar://$PROJECT_DIR$/RenResourceService/lib/spring-security-aspects-3.2.5.RELEASE.jar!/" />
+      <root url="jar://$PROJECT_DIR$/RenResourceService/lib/spring-security-cas-3.2.5.RELEASE.jar!/" />
+      <root url="jar://$PROJECT_DIR$/RenResourceService/lib/spring-security-ldap-3.2.5.RELEASE.jar!/" />
+      <root url="jar://$PROJECT_DIR$/RenResourceService/lib/spring-security-crypto-3.2.5.RELEASE.jar!/" />
+      <root url="jar://$PROJECT_DIR$/RenResourceService/lib/spring-security-acl-3.2.5.RELEASE.jar!/" />
+      <root url="jar://$PROJECT_DIR$/RenResourceService/lib/spring-security-config-3.2.5.RELEASE.jar!/" />
+      <root url="jar://$PROJECT_DIR$/RenResourceService/lib/spring-security-core-3.2.5.RELEASE.jar!/" />
+      <root url="jar://$PROJECT_DIR$/RenResourceService/lib/spring-security-remoting-3.2.5.RELEASE.jar!/" />
+      <root url="jar://$PROJECT_DIR$/RenResourceService/lib/spring-security-taglibs-3.2.5.RELEASE.jar!/" />
+      <root url="jar://$PROJECT_DIR$/RenResourceService/lib/spring-security-web-3.2.5.RELEASE.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES />
+  </library>
+</component>
