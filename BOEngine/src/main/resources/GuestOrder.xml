@@ -1,0 +1,73 @@
+<businessclass initial="Initial" name="GuestOrder" version="1.0" xmlns="http://www.w3.org/2005/07/scxml">
+ <datamodel>
+  <data expr="0" id="startKOCount"></data>
+  <data expr="0" id="finishKOCount"></data>
+ </datamodel>
+ <tasks>
+    <task id="addItem" brole="agent" name="addItemTask" event="submit">
+    </task>
+    <task id="updateDeliTime" brole="agent" name="updateDeliTimeTask" event="updateDeliTimeComplete">
+    </task>
+ </tasks>
+ <state id="Initial">
+  <transition target="Dining"></transition>
+ </state>
+ <state id="Dining" initial="in">
+  <state id="in">
+   <transition target="Ordering"></transition>
+  </state>
+  <state id="Ordering">
+   <onentry>
+    <call name="addItemTask"></call>
+   </onentry>
+   <transition event="submit" target="Active">
+     <newbo src="KitchenOrder.xml" instances="1"></newbo>
+     <assign location="startKOCount" expr="startKOCount + 1"></assign>
+   </transition>
+  </state>
+  <state id="Active">
+   <transition event="addItem" target="Ordering"></transition>
+   
+   <transition event="KitchenOrder.delivered">
+     <call name="updateDeliTimeTask"></call>
+   </transition>
+   <transition event="KitchenOrder.finish">
+     <assign location="finishKOCount" expr="finishKOCount + 1"></assign>
+   </transition>
+   <transition event="requestCheck" cond="finishKOCount eq startKOCount" target="Paying">
+     <newbo src="GuestCheck.xml" instances="1"></newbo>
+   </transition>
+  </state>
+  <final id="fin"></final>
+ </state>
+ <state id="Paying">
+  <transition event="GuestCheck.finish" target="GOFinal"></transition>
+ </state>
+ <final id="GOFinal"></final>
+ <layout h="816" w="1186" x="0" y="0">
+  <workflowNode h="75" id="Initial" w="75" x="70" y="300">
+   <workflowEdge event="" source="Initial" target="Dining"></workflowEdge>
+  </workflowNode>
+  <workflowNode h="385" id="Dining" w="655" x="170" y="240">
+   <workflowEdge event="requestCheck" source="Dining" target="Paying"></workflowEdge>
+   <workflowNode h="75" id="in" w="75" x="20" y="70">
+    <workflowEdge event="" source="in" target="Ordering"></workflowEdge>
+   </workflowNode>
+   <workflowNode h="75" id="Ordering" w="75" x="150" y="90">
+    <workflowEdge event="submit" source="Ordering" target="Active"></workflowEdge>
+   </workflowNode>
+   <workflowNode h="75" id="Active" w="75" x="310" y="80">
+    <workflowEdge event="addItem" source="Active" target="Ordering">null
+     <edgePoint x="270" y="40"></edgePoint>
+    </workflowEdge>
+    <workflowEdge event="" source="Active" target="fin"></workflowEdge>
+    <workflowEdge event="KO.delivered" source="Active" target="Active"></workflowEdge>
+   </workflowNode>
+   <workflowNode h="75" id="fin" w="75" x="290" y="240"></workflowNode>
+  </workflowNode>
+  <workflowNode h="75" id="Paying" w="75" x="1013" y="427">
+   <workflowEdge event="CG.finish" source="Paying" target="Final"></workflowEdge>
+  </workflowNode>
+  <workflowNode h="75" id="Final" w="75" x="1000" y="550"></workflowNode>
+ </layout>
+</businessclass>

@@ -4,11 +4,15 @@
   <data expr="0" id="finishKOCount"></data>
  </datamodel>
  <tasks>
-    <task id="addItem" role="agent" name="addItemTask" event="submit">
+    <task id="addItem" brole="agent" name="addItemTask" event="submit">
     </task>
-    <task id="updateDeliTime" role="agent" name="updateDeliTimeTask" event="updateDeliTimeComplete">
+    <task id="updateDeliTime" brole="agent" name="updateDeliTimeTask" event="updateDeliTimeComplete">
     </task>
  </tasks>
+ <resources>
+    <resource name="cook" type="human" expr="5"></resource>
+    <resource name="casher" type="nonhuman"></resource>
+ </resources>
  <state id="Initial">
   <transition target="Dining"></transition>
  </state>

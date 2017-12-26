@@ -20,13 +20,13 @@
 
 
 
-        <mapping class="com.sysu.workflow.entity.GroupEntity"/>
-        <mapping class="com.sysu.workflow.entity.UserEntity"/>
-        <mapping class="com.sysu.workflow.entity.UserWorkItemEntity"/>
-        <mapping class="com.sysu.workflow.entity.GroupWorkItemEntity"/>
-        <mapping class="com.sysu.workflow.entity.ProcessInstanceEntity"/>
-        <mapping class="com.sysu.workflow.entity.FormEntity"/>
-        <mapping class="com.sysu.workflow.entity.FormItemEntity"/>
+        <mapping class="org.sysu.workflow.entity.GroupEntity"/>
+        <mapping class="org.sysu.workflow.entity.UserEntity"/>
+        <mapping class="org.sysu.workflow.entity.UserWorkItemEntity"/>
+        <mapping class="org.sysu.workflow.entity.GroupWorkItemEntity"/>
+        <mapping class="org.sysu.workflow.entity.ProcessInstanceEntity"/>
+        <mapping class="org.sysu.workflow.entity.FormEntity"/>
+        <mapping class="org.sysu.workflow.entity.FormItemEntity"/>
 
     </session-factory>
 
