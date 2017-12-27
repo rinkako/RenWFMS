@@ -3,6 +3,7 @@
   <component name="ProjectModuleManager">
     <modules>
       <module fileurl="file://$PROJECT_DIR$/BOEngine/BOEngine.iml" filepath="$PROJECT_DIR$/BOEngine/BOEngine.iml" />
+      <module fileurl="file://$PROJECT_DIR$/COrgan/COrgan.iml" filepath="$PROJECT_DIR$/COrgan/COrgan.iml" />
       <module fileurl="file://$PROJECT_DIR$/ModelChecker/ModelChecker.iml" filepath="$PROJECT_DIR$/ModelChecker/ModelChecker.iml" />
       <module fileurl="file://$PROJECT_DIR$/RenResourceService/RenResourceService.iml" filepath="$PROJECT_DIR$/RenResourceService/RenResourceService.iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/RenWFMS.iml" filepath="$PROJECT_DIR$/.idea/RenWFMS.iml" />
