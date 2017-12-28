@@ -115,3 +115,31 @@ class Worker:
             return False
         self.privilegeList.remove(privilege)
         return True
+
+    def GetPositionString(self):
+        """
+        Get the string description of position.
+        :return: string descriptor
+        """
+        return ",".join(self.positionList)
+
+    def GetDepartmentString(self):
+        """
+        Get the string description of department.
+        :return: string descriptor
+        """
+        return ",".join(self.departmentList)
+
+    def GetCapabilityString(self):
+        """
+        Get the string description of capability.
+        :return: string descriptor
+        """
+        return ",".join(self.capabilityList)
+
+    def GetPrivilegeString(self):
+        """
+        Get the string description of privilege.
+        :return: string descriptor
+        """
+        return ",".join(self.privilegeList)

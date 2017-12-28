@@ -28,7 +28,6 @@ class MySQLDAO(AbstractDAO):
     def _initialize(self):
         """
         Initialize the connection to MySQL server
-        :param ds: data source object
         """
         self.Config = {'host': GCC.RDBHOST,
                        'user': GCC.RDBUSER,

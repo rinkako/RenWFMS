@@ -17,10 +17,10 @@ class AbstractDAO:
     __metaclass__ = ABCMeta
 
     def __init__(self):
-        # connection object
         """
         Create a new DAO.
         """
+        # connection object
         self.Connection = None
         # binding data source object
         self.DataSource = None
