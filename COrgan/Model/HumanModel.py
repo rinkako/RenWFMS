@@ -48,11 +48,8 @@ class HumanModel:
     def AddByPackage(hp):
         assert isinstance(hp, Human)
         uid = "Human_%s_%s" % (hp.Id, uuid.uuid1())
-        sql = "INSERT INTO ren_human(id, person_id, firstname, lastname, " \
-              "note, positions, departments, capabilities, privileges) VALUES " \
-              "('%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s')" % \
-              (uid, hp.Id, hp.FirstName, hp.LastName, hp.Note,
-               hp.GetPositionString(), hp.GetDepartmentString(), hp.GetCapabilityString(), hp.GetPrivilegeString())
+        sql = "INSERT INTO ren_human(id, person_id, firstname, lastname, note) VALUES " \
+              "('%s', '%s', '%s', '%s', '%s')" % (uid, hp.Id, hp.FirstName, hp.LastName, hp.Note)
         return HumanModel._persistDAO.ExecuteSQL(sql, needRet=True)
 
     @staticmethod
@@ -93,6 +90,20 @@ class HumanModel:
         HumanModel._persistDAO.ExecuteSQL(sqlBuilder, needRet=False)
 
     @staticmethod
+    def RetrieveAll():
+        """
+        Retrieve all human.
+        :return: Human instance in list
+        """
+        sql = "SELECT * FROM ren_human"
+        ret = HumanModel._persistDAO.ExecuteSQL(sql, needRet=True)
+        retList = []
+        for r in ret:
+            hm = HumanModel._dispatchRetObj(r)
+            retList.append(hm)
+        return retList
+
+    @staticmethod
     def Retrieve(personId):
         """
         Retrieve a human by its person id.
@@ -119,15 +130,6 @@ class HumanModel:
             return HumanModel._dispatchRetObj(ret[0])
         else:
             return None
-
-    @staticmethod
-    def RetrieveListByPosition(positionId):
-        """
-        Retrieve a list of human who have the same position.
-        :param positionId: position id
-        :return: a list of Human instance
-        """
-        sql = "SELECT * FROM ren_human WHERE positions"
 
     @staticmethod
     def _dispatchRetObj(retObj):
