@@ -10,7 +10,7 @@ import time
 
 class RuntimeLogModel:
     """
-    Model Class: Data model operation for runtime logging of LuminousEngine platform
+    Model Class: Data model operation for runtime logging of COrgan
     """
 
     def __init__(self):

@@ -13,7 +13,7 @@ class Agent(Worker):
     Entity class for `agent` data package.
     """
 
-    def __init__(self, agentId, name, location, note, reentrantType = AgentType.Reentrant):
+    def __init__(self, agentId, name, location, note, reentrantType=AgentType.Reentrant):
         """
         Create new agent instance.
         :param agentId: unique agent id

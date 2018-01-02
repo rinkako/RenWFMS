@@ -8,6 +8,9 @@
 
 
 class ConnectModel:
+    """
+    Model Class: Data model operation for connection constrain
+    """
     def __init__(self):
         pass
 

@@ -10,6 +10,9 @@ from Entity.Human import Human
 
 
 class HumanModel:
+    """
+    Model Class: Data model operation for human resources
+    """
     def __init__(self):
         pass
 
@@ -46,6 +49,11 @@ class HumanModel:
 
     @staticmethod
     def AddByPackage(hp):
+        """
+        Add a human by Human package data.
+        :param hp: Human instance
+        :return: execution result
+        """
         assert isinstance(hp, Human)
         uid = "Human_%s_%s" % (hp.Id, uuid.uuid1())
         sql = "INSERT INTO ren_human(id, person_id, firstname, lastname, note) VALUES " \
@@ -65,8 +73,7 @@ class HumanModel:
     def Remove(personId):
         """
         Remove
-        :param personId:
-        :return:
+        :param personId: human unique id
         """
         sql = "DELETE FROM ren_human WHERE person_id = '%s'" % personId
         HumanModel._persistDAO.ExecuteSQL(sql, needRet=False)
@@ -86,7 +93,7 @@ class HumanModel:
             kBuilder += "%s = %s, " % (k, kwargs[k])
         kBuilder = kBuilder[0:len(kBuilder) - 2]
         sqlBuilder += kBuilder
-        sqlBuilder += " WHERE wid = '%s'" % personId
+        sqlBuilder += " WHERE person_id = '%s'" % personId
         HumanModel._persistDAO.ExecuteSQL(sqlBuilder, needRet=False)
 
     @staticmethod
@@ -140,18 +147,18 @@ class HumanModel:
         """
         assert retObj is not None
         retHuman = Human(retObj["person_id"], retObj["firstname"], retObj["lastname"], retObj["note"])
-        x = retObj["positions"].split(',')
-        for t in x:
-            retHuman.AddPosition(t)
-        x = retObj["departments"].split(',')
-        for t in x:
-            retHuman.AddDepartment(t)
-        x = retObj["capabilities"].split(',')
-        for t in x:
-            retHuman.AddCapability(t)
-        x = retObj["privileges"].split(',')
-        for t in x:
-            retHuman.AddPrivilege(t)
+        # x = retObj["positions"].split(',')
+        # for t in x:
+        #     retHuman.AddPosition(t)
+        # x = retObj["departments"].split(',')
+        # for t in x:
+        #     retHuman.AddDepartment(t)
+        # x = retObj["capabilities"].split(',')
+        # for t in x:
+        #     retHuman.AddCapability(t)
+        # x = retObj["privileges"].split(',')
+        # for t in x:
+        #     retHuman.AddPrivilege(t)
         return retHuman
 
     _persistDAO = None
