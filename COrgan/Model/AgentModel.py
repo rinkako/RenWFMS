@@ -5,10 +5,8 @@
 @author : Rinkako
 @time   : 2018/1/2
 """
-
-
 import uuid
-from Entity.Agent import Agent, AgentType
+from Entity.Agent import Agent
 
 
 class AgentModel:
@@ -24,17 +22,17 @@ class AgentModel:
         Initialize the model.
         """
         from DAO import MySQLDAO
-        Agent._persistDAO = MySQLDAO.MySQLDAO()
-        Agent._persistDAO.Initialize()
+        AgentModel._persistDAO = MySQLDAO.MySQLDAO()
+        AgentModel._persistDAO.Initialize()
 
     @staticmethod
     def Dispose():
         """
         Dispose the model.
         """
-        if Agent._persistDAO is not None:
-            Agent._persistDAO.Dispose()
-        Agent._persistDAO = None
+        if AgentModel._persistDAO is not None:
+            AgentModel._persistDAO.Dispose()
+        AgentModel._persistDAO = None
 
     @staticmethod
     def Add(name, location, note, rType):

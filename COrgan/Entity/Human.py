@@ -21,6 +21,7 @@ class Human(Worker):
         :param lName: last name
         :param note: description of this human
         """
-        Worker.__init__(self, humanId, note)
+        Worker.__init__(self, "", note)
+        self.PersonId = humanId
         self.FirstName = fName
         self.LastName = lName

@@ -57,7 +57,7 @@ class HumanModel:
         assert isinstance(hp, Human)
         uid = "Human_%s_%s" % (hp.Id, uuid.uuid1())
         sql = "INSERT INTO ren_human(id, person_id, firstname, lastname, note) VALUES " \
-              "('%s', '%s', '%s', '%s', '%s')" % (uid, hp.Id, hp.FirstName, hp.LastName, hp.Note)
+              "('%s', '%s', '%s', '%s', '%s')" % (uid, hp.PersonId, hp.FirstName, hp.LastName, hp.Note)
         return HumanModel._persistDAO.ExecuteSQL(sql, needRet=True)
 
     @staticmethod

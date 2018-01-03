@@ -85,4 +85,32 @@ class ConnectModel:
         sql = "SELECT workerId, belongToGroupId FROM ren_connect"
         return ConnectModel._persistDAO.ExecuteSQL(sql, needRet=True)
 
+    @staticmethod
+    def UpdateConnectForWorker(workerId, kvp):
+        """
+        Update connections of a worker by a list of key-value pair.
+        :param workerId: worker unique id name
+        :param kvp: list of dict
+        """
+        sql = "DELETE * FROM ren_connect WHERE workerId = '%s'" % workerId
+        ConnectModel._persistDAO.ExecuteSQL(sql, needRet=False)
+        for p in kvp:
+            sql = "INSERT INTO ren_connect(workerId, belongToGroupId) VALUES ('%s', '%s')" % \
+                  (p["workerId"], p["belongToGroupId"])
+            ConnectModel._persistDAO.ExecuteSQL(sql, needRet=True)
+
+    @staticmethod
+    def UpdateConnectForGroup(groupId, kvp):
+        """
+        Update connections of a group by a list of key-value pair.
+        :param groupId: worker unique id name
+        :param kvp: list of dict
+        """
+        sql = "DELETE * FROM ren_connect WHERE belongToGroupId = '%s'" % groupId
+        ConnectModel._persistDAO.ExecuteSQL(sql, needRet=False)
+        for p in kvp:
+            sql = "INSERT INTO ren_connect(workerId, belongToGroupId) VALUES ('%s', '%s')" % \
+                  (p["workerId"], p["belongToGroupId"])
+            ConnectModel._persistDAO.ExecuteSQL(sql, needRet=True)
+
     _persistDAO = None
