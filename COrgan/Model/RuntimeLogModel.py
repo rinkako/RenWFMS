@@ -88,6 +88,6 @@ class RuntimeLogModel:
         RuntimeLogModel.LogToSteady(label, "Unauthorized", message, timestamp)
 
     """
-    Persistence DAO reference
+    Persist DAO
     """
     _persistDAO = None

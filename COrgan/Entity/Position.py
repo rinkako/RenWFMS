@@ -14,14 +14,13 @@ class Position(Organizable):
     Position means a worker in what place of a department.
     """
 
-    def __init__(self, positionId, name, description, note, belongTo):
+    def __init__(self, name, description, note, belongTo):
         """
         Create a new position.
-        :param positionId:
-        :param name:
+        :param name: position unique name
         :param description:
         :param note:
         :param belongTo:
         """
-        Organizable.__init__(self, positionId, name, description, note)
-        self.BelongToDepartmentId = belongTo
+        Organizable.__init__(self, "", name, description, note)
+        self.BelongToDepartment = belongTo

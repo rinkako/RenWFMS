@@ -14,14 +14,13 @@ class Department(Organizable):
     Department is a work place of long-term grouped workers.
     """
 
-    def __init__(self, departmentId, name, description, note, belongTo):
+    def __init__(self, name, description, note, belongTo):
         """
         Create a new department.
-        :param departmentId:
-        :param name:
-        :param description:
-        :param note:
-        :param belongTo:
+        :param name: unique id name
+        :param description: description of this department
+        :param note: note of this department
+        :param belongTo: belong to which department
         """
-        Organizable.__init__(self, departmentId, name, description, note)
-        self.BelongToDepartmentId = belongTo
+        Organizable.__init__(self, "", name, description, note)
+        self.BelongToDepartment = belongTo

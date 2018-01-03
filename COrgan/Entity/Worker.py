@@ -21,7 +21,7 @@ class Worker:
         :param Id: unique id
         :param note: description of this worker
         """
-        self.Id = Id
+        self.GlobalId = Id
         self.Note = note
         self.positionList = []
         self.departmentList = []

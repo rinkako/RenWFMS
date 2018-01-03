@@ -16,7 +16,7 @@ class Organizable:
     __metaclass__ = ABCMeta
 
     def __init__(self, Id, name, description, note):
-        self.OrganId = Id
+        self.GlobalId = Id
         self.Name = name
         self.Description = description
         self.Note = note

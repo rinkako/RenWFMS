@@ -113,4 +113,7 @@ class ConnectModel:
                   (p["workerId"], p["belongToGroupId"])
             ConnectModel._persistDAO.ExecuteSQL(sql, needRet=True)
 
+    """
+    Persist DAO
+    """
     _persistDAO = None

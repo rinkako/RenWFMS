@@ -55,7 +55,7 @@ class HumanModel:
         :return: execution result
         """
         assert isinstance(hp, Human)
-        uid = "Human_%s_%s" % (hp.Id, uuid.uuid1())
+        uid = "Human_%s_%s" % (hp.GlobalId, uuid.uuid1())
         sql = "INSERT INTO ren_human(id, person_id, firstname, lastname, note) VALUES " \
               "('%s', '%s', '%s', '%s', '%s')" % (uid, hp.PersonId, hp.FirstName, hp.LastName, hp.Note)
         return HumanModel._persistDAO.ExecuteSQL(sql, needRet=True)
@@ -72,11 +72,17 @@ class HumanModel:
     @staticmethod
     def Remove(personId):
         """
-        Remove
+        Remove a human and its connection.
         :param personId: human unique id
         """
+        rObj = HumanModel.Retrieve(personId)
+        if rObj is None:
+            return False
         sql = "DELETE FROM ren_human WHERE person_id = '%s'" % personId
         HumanModel._persistDAO.ExecuteSQL(sql, needRet=False)
+        sql = "DELETE FROM ren_connect WHERE workerId = '%s'" % rObj.GlobalId
+        HumanModel._persistDAO.ExecuteSQL(sql, needRet=False)
+        return True
 
     @staticmethod
     def Update(personId, **kwargs):
@@ -147,18 +153,9 @@ class HumanModel:
         """
         assert retObj is not None
         retHuman = Human(retObj["person_id"], retObj["firstname"], retObj["lastname"], retObj["note"])
-        # x = retObj["positions"].split(',')
-        # for t in x:
-        #     retHuman.AddPosition(t)
-        # x = retObj["departments"].split(',')
-        # for t in x:
-        #     retHuman.AddDepartment(t)
-        # x = retObj["capabilities"].split(',')
-        # for t in x:
-        #     retHuman.AddCapability(t)
-        # x = retObj["privileges"].split(',')
-        # for t in x:
-        #     retHuman.AddPrivilege(t)
         return retHuman
 
+    """
+    Persist DAO
+    """
     _persistDAO = None
