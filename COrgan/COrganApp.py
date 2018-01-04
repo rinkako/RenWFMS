@@ -9,7 +9,8 @@ Ren COrgan App Point
 This module is the entry point of the COrgan program, which will initialize
 the environment and set up essential connection for other part of sub system.
 Actually, it launches as a Flask application, for web service request handing.
-All RESTful APIs are defined here.
+Here defines the routing of web UI, and all RESTful APIs are defined at another
+Restful blueprint package.
 """
 from flask import Flask
 

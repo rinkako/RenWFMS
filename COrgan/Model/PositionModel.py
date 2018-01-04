@@ -43,7 +43,7 @@ class PositionModel:
     def AddPackage(dp):
         assert isinstance(dp, Position)
         uid = "Pos_%s_%s" % (dp.Name, uuid.uuid1())
-        sql = "INSERT INTO ren_position(id, name, description, note, belongTo) " \
+        sql = "INSERT INTO ren_position(id, name, description, note, belongToId) " \
               "VALUES ('%s', '%s', '%s', '%s', '%s')" % \
               (uid, dp.Name, dp.Description, dp.Note, dp.BelongToDepartment)
         return PositionModel._persistDAO.ExecuteSQL(sql, needRet=True)
@@ -55,7 +55,7 @@ class PositionModel:
             return False
         sql = "DELETE FROM ren_position WHERE name = '%s'" % name
         PositionModel._persistDAO.ExecuteSQL(sql, needRet=False)
-        sql = "DELETE FROM ren_connect WHERE belongToGroupId = '%s'" % rObj["id"]
+        sql = "DELETE FROM ren_connect WHERE belongToGroupId = '%s'" % rObj.GlobalId
         PositionModel._persistDAO.ExecuteSQL(sql, needRet=False)
 
     @staticmethod

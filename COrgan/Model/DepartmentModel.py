@@ -43,7 +43,7 @@ class DepartmentModel:
     def AddPackage(dp):
         assert isinstance(dp, Department)
         uid = "Dept_%s_%s" % (dp.Name, uuid.uuid1())
-        sql = "INSERT INTO ren_department(id, name, description, note, belongTo) " \
+        sql = "INSERT INTO ren_department(id, name, description, note, belongToId) " \
               "VALUES ('%s', '%s', '%s', '%s', '%s')" % \
               (uid, dp.Name, dp.Description, dp.Note, dp.BelongToDepartment)
         return DepartmentModel._persistDAO.ExecuteSQL(sql, needRet=True)
@@ -55,7 +55,7 @@ class DepartmentModel:
             return False
         sql = "DELETE FROM ren_department WHERE name = '%s'" % name
         DepartmentModel._persistDAO.ExecuteSQL(sql, needRet=False)
-        sql = "DELETE FROM ren_connect WHERE belongToGroupId = '%s'" % rObj["id"]
+        sql = "DELETE FROM ren_connect WHERE belongToGroupId = '%s'" % rObj.GlobalId
         DepartmentModel._persistDAO.ExecuteSQL(sql, needRet=False)
 
     @staticmethod
