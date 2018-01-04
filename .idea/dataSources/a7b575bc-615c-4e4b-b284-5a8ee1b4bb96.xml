@@ -915,7 +915,7 @@
     <table id="230" parent="5" name="ren_connect">
       <Engine>InnoDB</Engine>
     </table>
-    <table id="231" parent="5" name="ren_department">
+    <table id="231" parent="5" name="ren_group">
       <Engine>InnoDB</Engine>
     </table>
     <table id="232" parent="5" name="ren_human">
@@ -1103,38 +1103,43 @@
       <DataType>varchar(64)|0</DataType>
       <ColumnKind>normal</ColumnKind>
     </column>
-    <key id="269" parent="234" name="PRIMARY">
+    <column id="269" parent="234" name="reportToId">
+      <Position>6</Position>
+      <DataType>varchar(64)|0</DataType>
+      <ColumnKind>normal</ColumnKind>
+    </column>
+    <key id="270" parent="234" name="PRIMARY">
       <NameSurrogate>1</NameSurrogate>
       <ColNames>id</ColNames>
       <Primary>1</Primary>
     </key>
-    <column id="270" parent="235" name="username">
+    <column id="271" parent="235" name="username">
       <Position>1</Position>
       <DataType>varchar(64)|0</DataType>
       <NotNull>1</NotNull>
       <ColumnKind>normal</ColumnKind>
     </column>
-    <column id="271" parent="235" name="password">
+    <column id="272" parent="235" name="password">
       <Position>2</Position>
       <DataType>varchar(128)|0</DataType>
       <ColumnKind>normal</ColumnKind>
     </column>
-    <column id="272" parent="235" name="level">
+    <column id="273" parent="235" name="level">
       <Position>3</Position>
       <DataType>int(11)|0</DataType>
       <ColumnKind>normal</ColumnKind>
     </column>
-    <column id="273" parent="235" name="state">
+    <column id="274" parent="235" name="state">
       <Position>4</Position>
       <DataType>int(11)|0</DataType>
       <ColumnKind>normal</ColumnKind>
     </column>
-    <column id="274" parent="235" name="createtimestamp">
+    <column id="275" parent="235" name="createtimestamp">
       <Position>5</Position>
       <DataType>datetime|0</DataType>
       <ColumnKind>normal</ColumnKind>
     </column>
-    <key id="275" parent="235" name="PRIMARY">
+    <key id="276" parent="235" name="PRIMARY">
       <NameSurrogate>1</NameSurrogate>
       <ColNames>username</ColNames>
       <Primary>1</Primary>

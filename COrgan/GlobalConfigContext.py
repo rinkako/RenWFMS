@@ -15,3 +15,4 @@ RDBUSER = 'root'
 RDBPASSWORD = '43420024'
 RDBPORT = '3306'
 RDBPATH = 'rencorgan'
+UNAUTHORIZED = "__COrgan_Unauthorized__"

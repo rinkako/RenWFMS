@@ -12,7 +12,7 @@ from Entity.CSession import CSession
 
 class SessionManager:
     """
-    LuminousEngine Platform Session Manager
+    COrgan Platform Session Manager
 
     This class is used to maintain the session between engine and outside
     part of the project. User login/logout action was perform here and its
