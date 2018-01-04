@@ -218,23 +218,23 @@ class CController:
     Organization Methods
     """
     @staticmethod
-    def AddDepartment(name, description, note, belongToName):
+    def AddGroup(name, description, note, belongToName, groupType):
         pass
 
     @staticmethod
-    def RemoveDepartment(name):
+    def RemoveGroup(name):
         pass
 
     @staticmethod
-    def UpdateDepartment(name, **kwargs):
+    def UpdateGroup(name, **kwargs):
         pass
 
     @staticmethod
-    def RetrieveDepartment(name):
+    def RetrieveGroup(name):
         pass
 
     @staticmethod
-    def RetrieveAllDepartment():
+    def RetrieveAllGroup():
         pass
 
     @staticmethod
@@ -261,11 +261,11 @@ class CController:
     Connection Constrain Methods
     """
     @staticmethod
-    def RetrieveHumanInDepartment(deptName):
+    def RetrieveHumanInGroup(groupName):
         pass
 
     @staticmethod
-    def RetrieveAgentInDepartment(deptName):
+    def RetrieveAgentInGroup(groupName):
         pass
 
     @staticmethod
@@ -277,7 +277,7 @@ class CController:
         pass
 
     @staticmethod
-    def RetrieveHumanInWhatDepartment(personId):
+    def RetrieveHumanInWhatGroup(personId):
         pass
 
     @staticmethod
@@ -285,7 +285,7 @@ class CController:
         pass
 
     @staticmethod
-    def SpanTreeOfDepartment(deptName):
+    def SpanTreeOfGroup(groupName):
         pass
 
     @staticmethod
@@ -293,7 +293,7 @@ class CController:
         pass
 
     @staticmethod
-    def SpanTreeOfOrganizationInDept():
+    def SpanTreeOfOrganizationInGroup():
         pass
 
     @staticmethod
@@ -301,22 +301,20 @@ class CController:
         pass
 
     @staticmethod
-    def AddHumanToDepartment(personId, deptName):
+    def AddHumanToGroup(personId, groupName):
         pass
 
     @staticmethod
-    def RemoveHumanFromDepartment(personId, deptName):
+    def RemoveHumanFromGroup(personId, groupName):
         pass
 
     @staticmethod
-    def AddHumanPosition(personId, deptName):
+    def AddHumanPosition(personId, posName):
         pass
 
     @staticmethod
-    def RemoveHumanPosition(personId, deptName):
+    def RemoveHumanPosition(personId, posName):
         pass
-
-
 
     """
     Support Methods

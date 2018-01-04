@@ -14,7 +14,7 @@ class Group(Organizable):
     Group is a set of workers in some types.
     """
 
-    def __init__(self, name, description, note, belongTo):
+    def __init__(self, name, description, note, belongTo, groupType):
         """
         Create a new group.
         :param name: unique id name
@@ -24,7 +24,7 @@ class Group(Organizable):
         """
         Organizable.__init__(self, "", name, description, note)
         self.BelongToGroupId = belongTo
-        self.GroupType = 0
+        self.GroupType = groupType
 
 
 class GroupType:

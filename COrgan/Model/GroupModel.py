@@ -35,17 +35,17 @@ class GroupModel:
         GroupModel._persistDAO = None
 
     @staticmethod
-    def Add(name, description, note, belongToGroupName):
-        tpd = Group(name, description, note, belongToGroupName)
+    def Add(name, description, note, belongToGroupName, groupType):
+        tpd = Group(name, description, note, belongToGroupName, groupType)
         return GroupModel.AddPackage(tpd)
 
     @staticmethod
     def AddPackage(dp):
         assert isinstance(dp, Group)
         uid = "Dept_%s_%s" % (dp.Name, uuid.uuid1())
-        sql = "INSERT INTO ren_group(id, name, description, note, belongToId) " \
-              "VALUES ('%s', '%s', '%s', '%s', '%s')" % \
-              (uid, dp.Name, dp.Description, dp.Note, dp.BelongToGroupId)
+        sql = "INSERT INTO ren_group(id, name, description, note, belongToId, groupType) " \
+              "VALUES ('%s', '%s', '%s', '%s', '%s', %s)" % \
+              (uid, dp.Name, dp.Description, dp.Note, dp.BelongToGroupId, dp.GroupType)
         return GroupModel._persistDAO.ExecuteSQL(sql, needRet=True)
 
     @staticmethod
@@ -125,7 +125,7 @@ class GroupModel:
         :return: Group instance
         """
         assert retObj is not None
-        return Group(retObj["name"], retObj["description"], retObj["note"], retObj["belongToId"])
+        return Group(retObj["name"], retObj["description"], retObj["note"], retObj["belongToId"], retObj["groupType"])
 
     """
     Persist DAO
