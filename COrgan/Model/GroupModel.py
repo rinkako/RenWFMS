@@ -36,11 +36,25 @@ class GroupModel:
 
     @staticmethod
     def Add(name, description, note, belongToGroupName, groupType):
+        """
+        Add a group.
+        :param name: group unique name
+        :param description: description text
+        :param note: note text
+        :param belongToGroupName: belong to which group id name
+        :param groupType: group type enum
+        :return: if execution success
+        """
         tpd = Group(name, description, note, belongToGroupName, groupType)
         return GroupModel.AddPackage(tpd)
 
     @staticmethod
     def AddPackage(dp):
+        """
+        Add a group by its data package.
+        :param dp: Group instance
+        :return: if execution success
+        """
         assert isinstance(dp, Group)
         uid = "Dept_%s_%s" % (dp.Name, uuid.uuid1())
         sql = "INSERT INTO ren_group(id, name, description, note, belongToId, groupType) " \
@@ -50,6 +64,10 @@ class GroupModel:
 
     @staticmethod
     def Remove(name):
+        """
+        Remove a group.
+        :param name: group id name
+        """
         rObj = GroupModel.Retrieve(name)
         if rObj is None:
             return False

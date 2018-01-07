@@ -35,17 +35,17 @@ class PositionModel:
         PositionModel._persistDAO = None
 
     @staticmethod
-    def Add(name, description, note, belongToDepartmentName):
-        tpd = Position(name, description, note, belongToDepartmentName)
+    def Add(name, description, note, belongToDepartmentName, reportToPositon):
+        tpd = Position(name, description, note, belongToDepartmentName, reportToPositon)
         return PositionModel.AddPackage(tpd)
 
     @staticmethod
     def AddPackage(dp):
         assert isinstance(dp, Position)
         uid = "Pos_%s_%s" % (dp.Name, uuid.uuid1())
-        sql = "INSERT INTO ren_position(id, name, description, note, belongToId) " \
-              "VALUES ('%s', '%s', '%s', '%s', '%s')" % \
-              (uid, dp.Name, dp.Description, dp.Note, dp.BelongToPosition)
+        sql = "INSERT INTO ren_position(id, name, description, note, belongToId, reportToId) " \
+              "VALUES ('%s', '%s', '%s', '%s', '%s', '%s')" % \
+              (uid, dp.Name, dp.Description, dp.Note, dp.BelongToDepartment, dp.ReportToPosition)
         return PositionModel._persistDAO.ExecuteSQL(sql, needRet=True)
 
     @staticmethod

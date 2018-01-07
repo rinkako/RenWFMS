@@ -334,7 +334,7 @@ class CController:
             return GCC.UNAUTHORIZED
 
     @authorizeRequireWarp
-    def Contest(self, session, pr):
+    def EchoTest(self, session, pr):
         print pr
 
 """
@@ -344,5 +344,5 @@ CControllerCore = CController()
 
 
 if __name__ == '__main__':
-    CControllerCore.Contest('testadmin2', 'testprint')
+    CControllerCore.EchoTest('testadmin2', 'testprint')
     pass
