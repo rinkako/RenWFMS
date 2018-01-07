@@ -448,8 +448,14 @@ class CController:
     """
     Connection Constrain Methods
     """
+    @authorizeRequireWarp
     def RetrieveHumanInGroup(self, session, groupName):
         pass
+        pass
+        gid = CController._groupModel.GetGlobalId(groupName)
+        if gid is None:
+            return True, None
+        return True, None
 
     def RetrieveAgentInGroup(self, session, groupName):
         pass

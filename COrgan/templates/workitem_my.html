@@ -1,0 +1,150 @@
+﻿{% extends "luminouslayout.html" %}
+
+{% block LHeader %}
+    <!-- DATA TABLES -->
+    <link rel="stylesheet" type="text/css" href="{{ url_for('LDashboard.static', filename='js/datatables/media/css/jquery.dataTables.min.css') }}" />
+    <link rel="stylesheet" type="text/css" href="{{ url_for('LDashboard.static', filename='js/datatables/media/assets/css/datatables.min.css') }}" />
+    <link rel="stylesheet" type="text/css" href="{{ url_for('LDashboard.static', filename='js/datatables/extras/TableTools/media/css/TableTools.min.css') }}" />
+{% endblock %}
+
+{% block LBody %}
+    <div class="container">
+        <div class="row">
+            <div id="content" class="col-lg-12">
+                <!-- PAGE HEADER-->
+                <div class="row">
+                    <div class="col-sm-12">
+                        <div class="page-header">
+                            <!-- BREADCRUMBS -->
+                            <ul class="breadcrumb">
+                                <li>
+                                    <i class="fa fa-home"></i>
+                                    <a href="{{ url_for('LDashboard.home') }}">Home</a>
+                                </li>
+                                <li>{{ L_PageTitle }}</li>
+                            </ul>
+                            <!-- /BREADCRUMBS -->
+                            <div class="clearfix">
+                                <h3 class="content-title pull-left">{{ L_PageTitle }}</h3>
+                            </div>
+                            <div class="description">{{ L_PageDescription }}</div>
+                        </div>
+                    </div>
+                </div>
+                <!-- /PAGE HEADER -->
+                <!-- DATA TABLES -->
+                <div class="row">
+                    <div class="col-md-12">
+                        <!-- BOX -->
+                        <div class="box border blue">
+                            <div class="box-title">
+                                <h4><i class="fa fa-bars"></i>我建立的任务项</h4>
+                            </div>
+                            <div class="box-body">
+                                <table id="datatable1" cellpadding="0" cellspacing="0" border="0" class="datatable table table-striped table-bordered table-hover">
+                                    <thead>
+                                    <tr>
+                                        <th>Name</th>
+                                        <th>Type</th>
+                                        <th>Creator</th>
+                                        <th>Create Timestamp</th>
+                                        <th>Last Launch Time</th>
+                                        <th>Launch</th>
+                                        <th>Finish</th>
+                                        <th>Rate</th>
+                                        <th>Avg Finish Time</th>
+                                        <th>OP.</th>
+                                        <th>WID</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    {% for wd in myWorkitemList %}
+                                        <tr class="gradeX">
+                                            <td> {{ wd["name"] }} </td>
+                                            <td> {{ MapTypeNameFunc(wd["type"])[1] }} </td>
+                                            <td> {{ wd["creator"] }} </td>
+                                            <td> {{ wd["createtimestamp"] }} </td>
+                                            <td> {{ wd["lastlaunchtimestamp"] }} </td>
+                                            <td> {{ wd["launchcount"] }} </td>
+                                            <td> {{ wd["finishcount"] }} </td>
+                                            <td>
+                                                {% if wd["launchcount"] != 0 %}
+                                                    {{ "%.2f" % (wd["finishcount"] / wd["launchcount"] * 100) }}%
+                                                {% else %}
+                                                    -
+                                                {% endif %}
+                                            </td>
+                                            <td> {{ avgList[wd["name"]] }} </td>
+                                            <td class="center">
+                                                <a href="#">
+                                                    <button onClick="onLaunchWorkitem('{{ wd["wid"] }}')" class="btn btn-xs btn-success">启动</button>
+                                                    &nbsp;
+                                                    {% if wd["type"] == 0 %}
+                                                        <button onClick="onEditWorkitemTemp('{{ wd["wid"] }}')" class="btn btn-xs btn-info">编辑</button>&nbsp;
+                                                    {% elif wd["type"] == 6 %}
+                                                        <button onClick="onEditWorkitemMulti('{{ wd["wid"] }}')" class="btn btn-xs btn-info">编辑</button>&nbsp;
+                                                    {% elif wd["type"] == 7 %}
+                                                        <button onClick="onEditWorkitemProcedure('{{ wd["wid"] }}')" class="btn btn-xs btn-info">编辑</button>&nbsp;
+                                                    {% endif %}
+                                                    <button onClick="delcfm('{{ url_for('LDashboard.performDeleteWorkitem', wid=wd["wid"]) }}')" class="btn btn-xs btn-danger">删除</button>
+                                                </a>
+                                            </td>
+                                            <td> {{ wd["wid"] }} </td>
+                                        </tr>
+                                    {% endfor %}
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                        <!-- /BOX -->
+                    </div>
+                </div>
+                <!-- /DATA TABLES -->
+
+                <div class="footer-tools">
+                    <span class="go-top">
+                        <i class="fa fa-chevron-up"></i> Top
+                    </span>
+                </div>
+            </div><!-- /CONTENT-->
+        </div>
+    </div>
+{% endblock %}
+
+{% block LScript %}
+    <!-- DATA TABLES -->
+    <script type="text/javascript" src="{{ url_for('LDashboard.static', filename='js/datatables/media/js/jquery.dataTables.min.js') }}"></script>
+    <script type="text/javascript" src="{{ url_for('LDashboard.static', filename='js/datatables/media/assets/js/datatables.min.js') }}"></script>
+    <script type="text/javascript" src="{{ url_for('LDashboard.static', filename='js/datatables/extras/TableTools/media/js/TableTools.min.js') }}"></script>
+    <script type="text/javascript" src="{{ url_for('LDashboard.static', filename='js/datatables/extras/TableTools/media/js/ZeroClipboard.min.js') }}"></script>
+    <script type="text/javascript" src="{{ url_for('LDashboard.static', filename='js/jquery-easing/jquery.easing.min.js') }}"></script>
+    <script>
+        jQuery(document).ready(function() {
+            jQuery("#active-dashQuery").addClass("active");
+            jQuery("#selected-dashQuery").addClass("selected");
+            jQuery("#current-dashQuery-my").addClass("current");
+
+            App.setPage("dynamic_table");  //Set current page
+            App.init(); //Initialise plugins and elements
+        });
+        function delcfm(et) {
+            if (confirm("确认要删除？")) {
+                window.location.href = et;
+            }
+        }
+        function onEditWorkitemTemp(ewid) {
+            window.location.href = "{{ url_for('LDashboard.home') }}" + "workitem/edit/" + ewid;
+        }
+        function onEditWorkitemMulti(ewid) {
+            window.location.href = "{{ url_for('LDashboard.home') }}" + "workitem/editMulti/" + ewid;
+        }
+        function onEditWorkitemProcedure(ewid) {
+            window.location.href = "{{ url_for('LDashboard.home') }}" + "workitem/editProcedure/" + ewid;
+        }
+        function onLaunchWorkitem(ewid) {
+            window.location.href = "{{ url_for('LDashboard.home') }}" + "workitem/launch/" + ewid;
+        }
+    </script>
+{% endblock %}
+
+

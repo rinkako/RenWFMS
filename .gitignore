@@ -182,7 +182,6 @@ venv.bak/
 .idea/workspace.xml
 COrgan/GlobalConfigContext.pyc
 COrgan/static/
-COrgan/templates/
 ModelChecker/target/classes/org/
 ModelChecker/target/generated-sources/
 RenResourceService/.DS_Store
