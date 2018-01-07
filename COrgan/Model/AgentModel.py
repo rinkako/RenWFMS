@@ -139,6 +139,20 @@ class AgentModel:
             return None
 
     @staticmethod
+    def GetGlobalId(name):
+        """
+        Get global id of a agent.
+        :param name: agent name
+        :return: agent global id
+        """
+        sql = "SELECT id, name FROM ren_agent WHERE name = '%s'" % name
+        ret = AgentModel._persistDAO.ExecuteSQL(sql, needRet=True)
+        if len(ret) > 0:
+            return ret[0]["id"]
+        else:
+            return None
+
+    @staticmethod
     def _dispatchRetObj(retObj):
         """
         Dispatch retObj dictionary to Agent instance.
@@ -147,18 +161,6 @@ class AgentModel:
         """
         assert retObj is not None
         retAgent = Agent(retObj["id"], retObj["name"], retObj["location"], retObj["note"], retObj["type"])
-        # x = retObj["positions"].split(',')
-        # for t in x:
-        #     retAgent.AddPosition(t)
-        # x = retObj["departments"].split(',')
-        # for t in x:
-        #     retAgent.AddDepartment(t)
-        # x = retObj["capabilities"].split(',')
-        # for t in x:
-        #     retAgent.AddCapability(t)
-        # x = retObj["privileges"].split(',')
-        # for t in x:
-        #     retAgent.AddPrivilege(t)
         return retAgent
 
     _persistDAO = None

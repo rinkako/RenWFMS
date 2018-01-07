@@ -136,6 +136,21 @@ class GroupModel:
         GroupModel._persistDAO.ExecuteSQL(sqlBuilder, needRet=False)
 
     @staticmethod
+    def GetGlobalId(name):
+        """
+        Get global id of a group.
+        :param name: group name
+        :return: group global id
+        """
+        sql = "SELECT id, name FROM ren_group WHERE name = '%s'" % name
+        ret = GroupModel._persistDAO.ExecuteSQL(sql, needRet=True)
+        if len(ret) > 0:
+            return ret[0]["id"]
+        else:
+            return None
+
+
+    @staticmethod
     def _dispatchRetObj(retObj):
         """
         Dispatch retObj dictionary to Group instance.

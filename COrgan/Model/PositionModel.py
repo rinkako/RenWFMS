@@ -35,12 +35,26 @@ class PositionModel:
         PositionModel._persistDAO = None
 
     @staticmethod
-    def Add(name, description, note, belongToDepartmentName, reportToPositon):
-        tpd = Position(name, description, note, belongToDepartmentName, reportToPositon)
+    def Add(name, description, note, belongToDepartmentId, reportToPositionId):
+        """
+        Add a position.
+        :param name: position unique name
+        :param description: description text
+        :param note: note text
+        :param belongToDepartmentId: belong to department global id
+        :param reportToPositionId: report to position global id
+        :return: if execution success
+        """
+        tpd = Position(name, description, note, belongToDepartmentId, reportToPositionId)
         return PositionModel.AddPackage(tpd)
 
     @staticmethod
     def AddPackage(dp):
+        """
+        Add a position by data package.
+        :param dp: Position instance
+        :return: if execution success
+        """
         assert isinstance(dp, Position)
         uid = "Pos_%s_%s" % (dp.Name, uuid.uuid1())
         sql = "INSERT INTO ren_position(id, name, description, note, belongToId, reportToId) " \
@@ -50,6 +64,10 @@ class PositionModel:
 
     @staticmethod
     def Remove(name):
+        """
+        Remove a position.
+        :param name: position id name
+        """
         rObj = PositionModel.Retrieve(name)
         if rObj is None:
             return False
@@ -118,6 +136,20 @@ class PositionModel:
         PositionModel._persistDAO.ExecuteSQL(sqlBuilder, needRet=False)
 
     @staticmethod
+    def GetGlobalId(name):
+        """
+        Get global id of a position.
+        :param name: position name
+        :return: position global id
+        """
+        sql = "SELECT id, name FROM ren_position WHERE name = '%s'" % name
+        ret = PositionModel._persistDAO.ExecuteSQL(sql, needRet=True)
+        if len(ret) > 0:
+            return ret[0]["id"]
+        else:
+            return None
+
+    @staticmethod
     def _dispatchRetObj(retObj):
         """
         Dispatch retObj dictionary to Position instance.
@@ -125,7 +157,7 @@ class PositionModel:
         :return: Position instance
         """
         assert retObj is not None
-        return Position(retObj["name"], retObj["description"], retObj["note"], retObj["belongToId"])
+        return Position(retObj["name"], retObj["description"], retObj["note"], retObj["belongToId"], retObj["reportToId"])
 
     """
     Persist DAO

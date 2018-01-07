@@ -145,6 +145,20 @@ class HumanModel:
             return None
 
     @staticmethod
+    def GetGlobalId(personId):
+        """
+        Get global id of a human.
+        :param personId: human person id
+        :return: human global id
+        """
+        sql = "SELECT id, person_id FROM ren_human WHERE person_id = '%s'" % personId
+        ret = HumanModel._persistDAO.ExecuteSQL(sql, needRet=True)
+        if len(ret) > 0:
+            return ret[0]["id"]
+        else:
+            return None
+
+    @staticmethod
     def _dispatchRetObj(retObj):
         """
         Dispatch retObj dictionary to Human instance.
