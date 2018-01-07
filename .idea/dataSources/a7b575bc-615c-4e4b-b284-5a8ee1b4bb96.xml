@@ -912,239 +912,264 @@
     <table id="229" parent="5" name="ren_agent">
       <Engine>InnoDB</Engine>
     </table>
-    <table id="230" parent="5" name="ren_connect">
+    <table id="230" parent="5" name="ren_cconfig">
       <Engine>InnoDB</Engine>
     </table>
-    <table id="231" parent="5" name="ren_group">
+    <table id="231" parent="5" name="ren_connect">
       <Engine>InnoDB</Engine>
     </table>
-    <table id="232" parent="5" name="ren_human">
+    <table id="232" parent="5" name="ren_group">
       <Engine>InnoDB</Engine>
     </table>
-    <table id="233" parent="5" name="ren_log">
+    <table id="233" parent="5" name="ren_human">
       <Engine>InnoDB</Engine>
     </table>
-    <table id="234" parent="5" name="ren_position">
+    <table id="234" parent="5" name="ren_log">
       <Engine>InnoDB</Engine>
     </table>
-    <table id="235" parent="5" name="ren_user">
+    <table id="235" parent="5" name="ren_position">
       <Engine>InnoDB</Engine>
     </table>
-    <column id="236" parent="229" name="id">
+    <table id="236" parent="5" name="ren_user">
+      <Engine>InnoDB</Engine>
+    </table>
+    <column id="237" parent="229" name="id">
       <Position>1</Position>
       <DataType>varchar(60)|0</DataType>
       <NotNull>1</NotNull>
       <ColumnKind>normal</ColumnKind>
     </column>
-    <column id="237" parent="229" name="name">
+    <column id="238" parent="229" name="name">
       <Position>2</Position>
       <DataType>text|0</DataType>
       <ColumnKind>normal</ColumnKind>
     </column>
-    <column id="238" parent="229" name="location">
+    <column id="239" parent="229" name="location">
       <Position>3</Position>
       <DataType>text|0</DataType>
       <ColumnKind>normal</ColumnKind>
     </column>
-    <column id="239" parent="229" name="type">
+    <column id="240" parent="229" name="type">
       <Position>4</Position>
       <DataType>int(11)|0</DataType>
       <ColumnKind>normal</ColumnKind>
     </column>
-    <column id="240" parent="229" name="note">
+    <column id="241" parent="229" name="note">
       <Position>5</Position>
       <DataType>text|0</DataType>
       <ColumnKind>normal</ColumnKind>
     </column>
-    <key id="241" parent="229" name="PRIMARY">
+    <key id="242" parent="229" name="PRIMARY">
       <NameSurrogate>1</NameSurrogate>
       <ColNames>id</ColNames>
       <Primary>1</Primary>
     </key>
-    <column id="242" parent="230" name="conId">
+    <column id="243" parent="230" name="rkvpid">
       <Position>1</Position>
       <DataType>int(11)|0</DataType>
       <NotNull>1</NotNull>
       <SequenceIdentity>1</SequenceIdentity>
       <ColumnKind>normal</ColumnKind>
     </column>
-    <column id="243" parent="230" name="workerId">
+    <column id="244" parent="230" name="rkey">
       <Position>2</Position>
       <DataType>varchar(64)|0</DataType>
       <ColumnKind>normal</ColumnKind>
     </column>
-    <column id="244" parent="230" name="belongToGroupId">
+    <column id="245" parent="230" name="rvalue">
+      <Position>3</Position>
+      <DataType>varchar(128)|0</DataType>
+      <ColumnKind>normal</ColumnKind>
+    </column>
+    <key id="246" parent="230" name="PRIMARY">
+      <NameSurrogate>1</NameSurrogate>
+      <ColNames>rkvpid</ColNames>
+      <Primary>1</Primary>
+    </key>
+    <column id="247" parent="231" name="conId">
+      <Position>1</Position>
+      <DataType>int(11)|0</DataType>
+      <NotNull>1</NotNull>
+      <SequenceIdentity>1</SequenceIdentity>
+      <ColumnKind>normal</ColumnKind>
+    </column>
+    <column id="248" parent="231" name="workerId">
+      <Position>2</Position>
+      <DataType>varchar(64)|0</DataType>
+      <ColumnKind>normal</ColumnKind>
+    </column>
+    <column id="249" parent="231" name="belongToGroupId">
       <Position>3</Position>
       <DataType>varchar(64)|0</DataType>
       <ColumnKind>normal</ColumnKind>
     </column>
-    <key id="245" parent="230" name="PRIMARY">
+    <key id="250" parent="231" name="PRIMARY">
       <NameSurrogate>1</NameSurrogate>
       <ColNames>conId</ColNames>
       <Primary>1</Primary>
     </key>
-    <column id="246" parent="231" name="id">
+    <column id="251" parent="232" name="id">
       <Position>1</Position>
       <DataType>varchar(64)|0</DataType>
       <NotNull>1</NotNull>
       <ColumnKind>normal</ColumnKind>
     </column>
-    <column id="247" parent="231" name="name">
+    <column id="252" parent="232" name="name">
       <Position>2</Position>
       <DataType>text|0</DataType>
       <ColumnKind>normal</ColumnKind>
     </column>
-    <column id="248" parent="231" name="description">
+    <column id="253" parent="232" name="description">
       <Position>3</Position>
       <DataType>text|0</DataType>
       <ColumnKind>normal</ColumnKind>
     </column>
-    <column id="249" parent="231" name="note">
+    <column id="254" parent="232" name="note">
       <Position>4</Position>
       <DataType>text|0</DataType>
       <ColumnKind>normal</ColumnKind>
     </column>
-    <column id="250" parent="231" name="belongToId">
+    <column id="255" parent="232" name="belongToId">
       <Position>5</Position>
       <DataType>varchar(64)|0</DataType>
       <ColumnKind>normal</ColumnKind>
     </column>
-    <column id="251" parent="231" name="groupType">
+    <column id="256" parent="232" name="groupType">
       <Position>6</Position>
       <DataType>int(11)|0</DataType>
       <ColumnKind>normal</ColumnKind>
     </column>
-    <key id="252" parent="231" name="PRIMARY">
+    <key id="257" parent="232" name="PRIMARY">
       <NameSurrogate>1</NameSurrogate>
       <ColNames>id</ColNames>
       <Primary>1</Primary>
     </key>
-    <column id="253" parent="232" name="id">
+    <column id="258" parent="233" name="id">
       <Position>1</Position>
       <DataType>varchar(64)|0</DataType>
       <NotNull>1</NotNull>
       <ColumnKind>normal</ColumnKind>
     </column>
-    <column id="254" parent="232" name="person_id">
+    <column id="259" parent="233" name="person_id">
       <Position>2</Position>
       <DataType>text|0</DataType>
       <ColumnKind>normal</ColumnKind>
     </column>
-    <column id="255" parent="232" name="firstname">
+    <column id="260" parent="233" name="firstname">
       <Position>3</Position>
       <DataType>text|0</DataType>
       <ColumnKind>normal</ColumnKind>
     </column>
-    <column id="256" parent="232" name="lastname">
+    <column id="261" parent="233" name="lastname">
       <Position>4</Position>
       <DataType>text|0</DataType>
       <ColumnKind>normal</ColumnKind>
     </column>
-    <column id="257" parent="232" name="note">
+    <column id="262" parent="233" name="note">
       <Position>5</Position>
       <DataType>text|0</DataType>
       <ColumnKind>normal</ColumnKind>
     </column>
-    <key id="258" parent="232" name="PRIMARY">
+    <key id="263" parent="233" name="PRIMARY">
       <NameSurrogate>1</NameSurrogate>
       <ColNames>id</ColNames>
       <Primary>1</Primary>
     </key>
-    <column id="259" parent="233" name="id">
+    <column id="264" parent="234" name="id">
       <Position>1</Position>
       <DataType>int(11)|0</DataType>
       <NotNull>1</NotNull>
       <SequenceIdentity>1</SequenceIdentity>
       <ColumnKind>normal</ColumnKind>
     </column>
-    <column id="260" parent="233" name="label">
+    <column id="265" parent="234" name="label">
       <Position>2</Position>
       <DataType>varchar(64)|0</DataType>
       <ColumnKind>normal</ColumnKind>
     </column>
-    <column id="261" parent="233" name="level">
+    <column id="266" parent="234" name="level">
       <Position>3</Position>
       <DataType>int(11)|0</DataType>
       <ColumnKind>normal</ColumnKind>
     </column>
-    <column id="262" parent="233" name="message">
+    <column id="267" parent="234" name="message">
       <Position>4</Position>
       <DataType>text|0</DataType>
       <ColumnKind>normal</ColumnKind>
     </column>
-    <column id="263" parent="233" name="timestamp">
+    <column id="268" parent="234" name="timestamp">
       <Position>5</Position>
       <DataType>datetime|0</DataType>
       <ColumnKind>normal</ColumnKind>
     </column>
-    <key id="264" parent="233" name="PRIMARY">
+    <key id="269" parent="234" name="PRIMARY">
       <NameSurrogate>1</NameSurrogate>
       <ColNames>id</ColNames>
       <Primary>1</Primary>
     </key>
-    <column id="265" parent="234" name="id">
+    <column id="270" parent="235" name="id">
       <Position>1</Position>
       <DataType>varchar(64)|0</DataType>
       <NotNull>1</NotNull>
       <ColumnKind>normal</ColumnKind>
     </column>
-    <column id="266" parent="234" name="name">
+    <column id="271" parent="235" name="name">
       <Position>2</Position>
       <DataType>text|0</DataType>
       <ColumnKind>normal</ColumnKind>
     </column>
-    <column id="267" parent="234" name="description">
+    <column id="272" parent="235" name="description">
       <Position>3</Position>
       <DataType>text|0</DataType>
       <ColumnKind>normal</ColumnKind>
     </column>
-    <column id="268" parent="234" name="note">
+    <column id="273" parent="235" name="note">
       <Position>4</Position>
       <DataType>text|0</DataType>
       <ColumnKind>normal</ColumnKind>
     </column>
-    <column id="269" parent="234" name="belongToId">
+    <column id="274" parent="235" name="belongToId">
       <Position>5</Position>
       <DataType>varchar(64)|0</DataType>
       <ColumnKind>normal</ColumnKind>
     </column>
-    <column id="270" parent="234" name="reportToId">
+    <column id="275" parent="235" name="reportToId">
       <Position>6</Position>
       <DataType>varchar(64)|0</DataType>
       <ColumnKind>normal</ColumnKind>
     </column>
-    <key id="271" parent="234" name="PRIMARY">
+    <key id="276" parent="235" name="PRIMARY">
       <NameSurrogate>1</NameSurrogate>
       <ColNames>id</ColNames>
       <Primary>1</Primary>
     </key>
-    <column id="272" parent="235" name="username">
+    <column id="277" parent="236" name="username">
       <Position>1</Position>
       <DataType>varchar(64)|0</DataType>
       <NotNull>1</NotNull>
       <ColumnKind>normal</ColumnKind>
     </column>
-    <column id="273" parent="235" name="password">
+    <column id="278" parent="236" name="password">
       <Position>2</Position>
       <DataType>varchar(128)|0</DataType>
       <ColumnKind>normal</ColumnKind>
     </column>
-    <column id="274" parent="235" name="level">
+    <column id="279" parent="236" name="level">
       <Position>3</Position>
       <DataType>int(11)|0</DataType>
       <ColumnKind>normal</ColumnKind>
     </column>
-    <column id="275" parent="235" name="state">
+    <column id="280" parent="236" name="state">
       <Position>4</Position>
       <DataType>int(11)|0</DataType>
       <ColumnKind>normal</ColumnKind>
     </column>
-    <column id="276" parent="235" name="createtimestamp">
+    <column id="281" parent="236" name="createtimestamp">
       <Position>5</Position>
       <DataType>datetime|0</DataType>
       <ColumnKind>normal</ColumnKind>
     </column>
-    <key id="277" parent="235" name="PRIMARY">
+    <key id="282" parent="236" name="PRIMARY">
       <NameSurrogate>1</NameSurrogate>
       <ColNames>username</ColNames>
       <Primary>1</Primary>

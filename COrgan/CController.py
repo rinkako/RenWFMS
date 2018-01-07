@@ -6,9 +6,65 @@
 @time   : 2018/1/4
 """
 import GlobalConfigContext as GCC
+from functools import wraps
 from Model.UserModel import UserModel
 from SessionManager import SessionManager
 from Utility.LogUtil import LogUtil
+
+
+"""
+Warppers
+"""
+
+
+def authorizeRequireWarp(fn):
+    """
+    Decorator for session valid required.
+    """
+    @wraps(fn)
+    def wrapper(*args, **kwargs):
+        try:
+            session = args[1]
+            if SessionManager.Check(session) is True:
+                return fn(*args, **kwargs)
+            else:
+                return False, CController._Unauthorized(session)
+        except Exception as e:
+            print "Exception in COrgan: %s" % str(e)
+            return False, e
+    return wrapper
+
+
+def adminRequireWarp(fn):
+    """
+    Decorator for session admin valid required.
+    """
+    @wraps(fn)
+    def wrapper(*args, **kwargs):
+        try:
+            session = kwargs["session"]
+            if SessionManager.CheckAdmin(session) is True:
+                return fn(*args, **kwargs)
+            else:
+                return False, CController._Unauthorized(session)
+        except Exception as e:
+            print "Exception in COrgan: %s" % str(e)
+            return False, e
+    return wrapper
+
+
+def ExceptionWarp(fn):
+    """
+    Decorator for session admin valid required.
+    """
+    @wraps(fn)
+    def wrapper(*args, **kwargs):
+        try:
+            return fn(*args, **kwargs)
+        except Exception as e:
+            print "Exception in COrgan: %s" % str(e)
+            return False, e
+    return wrapper
 
 
 class CController:
@@ -81,8 +137,8 @@ class CController:
     """
     COrgan Platform User Management Methods
     """
-    @staticmethod
-    def PlatformUserAdd(session, username, encrypted_password, level):
+    @adminRequireWarp
+    def PlatformUserAdd(self, session, username, encrypted_password, level):
         """
         Add a platform user.
         :param session: session id
@@ -90,35 +146,19 @@ class CController:
         :param encrypted_password: new user's password with encryption
         :param level: new user level flag
         """
-        try:
-            if SessionManager.CheckAdmin(session) is True:
-                success_flag = UserModel.Add(username, encrypted_password, level)
-                return True, success_flag
-            else:
-                return False, CController._Unauthorized(session)
-        except Exception as e:
-            print "Exception in COrgan: %s" % str(e)
-            return False, e
-    
-    @staticmethod
-    def PlatformUserRemove(session, username):
+        return True, UserModel.Add(username, encrypted_password, level)
+
+    @adminRequireWarp
+    def PlatformUserRemove(self, session, username):
         """
         Remove a platform user.
         :param session: session id
         :param username: user's name to be removed
         """
-        try:
-            if SessionManager.CheckAdmin(session) is True:
-                success_flag = UserModel.Delete(username)
-                return True, success_flag
-            else:
-                return False, CController._Unauthorized(session)
-        except Exception as e:
-            print "Exception in COrgan: %s" % str(e)
-            return False, e
-    
-    @staticmethod
-    def PlatformUserUpdate(session, username, new_encrypted_password, new_level):
+        return True, UserModel.Delete(username)
+
+    @authorizeRequireWarp
+    def PlatformUserUpdate(self, session, username, new_encrypted_password, new_level):
         """
         Update a platform user.
         :param session: session id
@@ -126,194 +166,149 @@ class CController:
         :param new_encrypted_password: user's new password with encryption
         :param new_level: new level flag of user
         """
-        try:
-            if SessionManager.Check(session) is True:
-                success_flag = UserModel.Update(username, new_encrypted_password, new_level)
-                return True, success_flag
-            else:
-                return False, CController._Unauthorized(session)
-        except Exception as e:
-            print "Exception in COrgan: %s" % str(e)
-            return False, e
-    
-    @staticmethod
-    def PlatformUserGet(session, username):
+        return True, UserModel.Update(username, new_encrypted_password, new_level)
+
+    @authorizeRequireWarp
+    def PlatformUserGet(self, session, username):
         """
         Get a platform user.
         :param session: session id
         :param username: user's name to be retrieve
         """
-        try:
-            if SessionManager.Check(session) is True:
-                return True, UserModel.Retrieve(username)
-            else:
-                return False, CController._Unauthorized(session)
-        except Exception as e:
-            print "Exception in COrgan: %s" % str(e)
-            return False, e
-    
-    @staticmethod
-    def PlatformUserGetAll(session):
+        return True, UserModel.Retrieve(username)
+
+    @adminRequireWarp
+    def PlatformUserGetAll(self, session):
         """
         Get all platform user as a list.
         :param session: session id
         """
-        try:
-            if SessionManager.CheckAdmin(session) is True:
-                return True, UserModel.RetrieveAllValid()
-            else:
-                return False, CController._Unauthorized(session)
-        except Exception as e:
-            print "Exception in COrgan: %s" % str(e)
-            return False, e
+        return True, UserModel.RetrieveAllValid()
 
     """
     Worker Methods
     """
-    @staticmethod
-    def AddHuman(personId, firstName, lastName, note):
+    def AddHuman(self, session, personId, firstName, lastName, note):
         pass
 
-    @staticmethod
-    def RemoveHuman(personId):
+    def RemoveHuman(self, session, personId):
         pass
 
-    @staticmethod
-    def UpdateHuman(personId, **kwargs):
+    def UpdateHuman(self, session, personId, **kwargs):
         pass
 
-    @staticmethod
-    def RetrieveHuman(personId):
+    def RetrieveHuman(self, session, personId):
         pass
 
-    @staticmethod
-    def RetrieveAllHuman():
+    def RetrieveAllHuman(self, session):
         pass
 
-    @staticmethod
-    def AddAgent(name, location, rType, note):
+    def AddAgent(self, session, name, location, rType, note):
         pass
 
-    @staticmethod
-    def RemoveAgent(name):
+    def RemoveAgent(self, session, name):
         pass
 
-    @staticmethod
-    def UpdateAgent(name, **kwargs):
+    def UpdateAgent(self, session, name, **kwargs):
         pass
 
-    @staticmethod
-    def RetrieveAgent(name):
+    def RetrieveAgent(self, session, name):
         pass
 
-    @staticmethod
-    def RetrieveAllAgent():
+    def RetrieveAllAgent(self, session):
         pass
 
-    @staticmethod
-    def RetrieveAllWorker():
+    def RetrieveAllWorker(self, session):
         pass
 
     """
     Organization Methods
     """
-    @staticmethod
-    def AddGroup(name, description, note, belongToName, groupType):
+    def AddGroup(self, session, name, description, note, belongToName, groupType):
         pass
 
-    @staticmethod
-    def RemoveGroup(name):
+    def RemoveGroup(self, session, name):
         pass
 
-    @staticmethod
-    def UpdateGroup(name, **kwargs):
+    def UpdateGroup(self, session, name, **kwargs):
         pass
 
-    @staticmethod
-    def RetrieveGroup(name):
+    def RetrieveGroup(self, session, name):
         pass
 
-    @staticmethod
-    def RetrieveAllGroup():
+    def RetrieveAllGroup(self, session):
         pass
 
-    @staticmethod
-    def AddPosition(name, description, note, belongToName):
+    def AddPosition(self, session, name, description, note, belongToName):
         pass
 
-    @staticmethod
-    def RemovePosition(name):
+    def RemovePosition(self, session, name):
         pass
 
-    @staticmethod
-    def UpdatePosition(name, **kwargs):
+    def UpdatePosition(self, session, name, **kwargs):
         pass
 
-    @staticmethod
-    def RetrievePosition(name):
+    def RetrievePosition(self, session, name):
         pass
 
-    @staticmethod
-    def RetrieveAllPosition():
+    def RetrieveAllPosition(self, session):
         pass
 
     """
     Connection Constrain Methods
     """
-    @staticmethod
-    def RetrieveHumanInGroup(groupName):
+    def RetrieveHumanInGroup(self, session, groupName):
         pass
 
-    @staticmethod
-    def RetrieveAgentInGroup(groupName):
+    def RetrieveAgentInGroup(self, session, groupName):
         pass
 
-    @staticmethod
-    def RetrieveHumanInPosition(posName):
+    def RetrieveHumanInPosition(self, session, posName):
         pass
 
-    @staticmethod
-    def RetrieveAgentInPosition(posName):
+    def RetrieveAgentInPosition(self, session, posName):
         pass
 
-    @staticmethod
-    def RetrieveHumanInWhatGroup(personId):
+    def RetrieveHumanInWhatGroup(self, session, personId):
         pass
 
-    @staticmethod
-    def RetrieveHumanInWhatPosition(personId):
+    def RetrieveHumanInWhatPosition(self, session, personId):
         pass
 
-    @staticmethod
-    def SpanTreeOfGroup(groupName):
+    def SpanTreeOfGroup(self, session, groupName):
         pass
 
-    @staticmethod
-    def SpanTreeOfPosition(posName):
+    def SpanTreeOfPosition(self, session, posName):
         pass
 
-    @staticmethod
-    def SpanTreeOfOrganizationInGroup():
+    def SpanTreeOfOrganizationInGroup(self, session):
         pass
 
-    @staticmethod
-    def SpanTreeOfOrganizationInPosition():
+    def SpanTreeOfOrganizationInPosition(self, session):
         pass
 
-    @staticmethod
-    def AddHumanToGroup(personId, groupName):
+    def AddHumanToGroup(self, session, personId, groupName):
         pass
 
-    @staticmethod
-    def RemoveHumanFromGroup(personId, groupName):
+    def RemoveHumanFromGroup(self, session, personId, groupName):
         pass
 
-    @staticmethod
-    def AddHumanPosition(personId, posName):
+    def AddHumanPosition(self, session, personId, posName):
         pass
 
-    @staticmethod
-    def RemoveHumanPosition(personId, posName):
+    def RemoveHumanPosition(self, session, personId, posName):
+        pass
+
+    """
+    COrgan Configuration 
+    """
+    def SetOrganizationName(self, session, orgName):
+        pass
+
+    def GetOrganizationName(self, session):
+        pass
+
+    def GetCurrentDataVersion(self, session):
         pass
 
     """
@@ -337,3 +332,17 @@ class CController:
             print "Exception in COrgan authorization check: %s" % str(e)
         finally:
             return GCC.UNAUTHORIZED
+
+    @authorizeRequireWarp
+    def Contest(self, session, pr):
+        print pr
+
+"""
+Static Code
+"""
+CControllerCore = CController()
+
+
+if __name__ == '__main__':
+    CControllerCore.Contest('testadmin2', 'testprint')
+    pass
