@@ -17,10 +17,13 @@ class PositionModel:
         pass
 
     @staticmethod
-    def Initialize():
+    def Initialize(forced=False):
         """
         Initialize the model.
+        :param forced: forced reinitialize
         """
+        if forced is False and PositionModel._persistDAO is not None:
+            return
         from DAO import MySQLDAO
         PositionModel._persistDAO = MySQLDAO.MySQLDAO()
         PositionModel._persistDAO.Initialize()
@@ -75,6 +78,7 @@ class PositionModel:
         PositionModel._persistDAO.ExecuteSQL(sql, needRet=False)
         sql = "DELETE FROM ren_connect WHERE belongToGroupId = '%s'" % rObj.GlobalId
         PositionModel._persistDAO.ExecuteSQL(sql, needRet=False)
+        return True
 
     @staticmethod
     def Retrieve(name):

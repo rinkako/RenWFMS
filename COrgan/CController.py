@@ -7,6 +7,14 @@
 """
 import GlobalConfigContext as GCC
 from functools import wraps
+
+from Model.AgentModel import AgentModel
+from Model.CConfigModel import CConfigModel
+from Model.ConnectModel import ConnectModel
+from Model.GroupModel import GroupModel
+from Model.HumanModel import HumanModel
+from Model.PositionModel import PositionModel
+from Model.RuntimeLogModel import RuntimeLogModel
 from Model.UserModel import UserModel
 from SessionManager import SessionManager
 from Utility.LogUtil import LogUtil
@@ -22,13 +30,12 @@ def authorizeRequireWarp(fn):
     Decorator for session valid required.
     """
     @wraps(fn)
-    def wrapper(*args, **kwargs):
+    def wrapper(self, session, *args, **kwargs):
         try:
-            session = args[1]
             if SessionManager.Check(session) is True:
-                return fn(*args, **kwargs)
+                return fn(self, session, *args, **kwargs)
             else:
-                return False, CController._Unauthorized(session)
+                return False, CController.Unauthorized(session)
         except Exception as e:
             print "Exception in COrgan: %s" % str(e)
             return False, e
@@ -40,13 +47,12 @@ def adminRequireWarp(fn):
     Decorator for session admin valid required.
     """
     @wraps(fn)
-    def wrapper(*args, **kwargs):
+    def wrapper(self, session, *args, **kwargs):
         try:
-            session = kwargs["session"]
             if SessionManager.CheckAdmin(session) is True:
-                return fn(*args, **kwargs)
+                return fn(self, session, *args, **kwargs)
             else:
-                return False, CController._Unauthorized(session)
+                return False, CController.Unauthorized(session)
         except Exception as e:
             print "Exception in COrgan: %s" % str(e)
             return False, e
@@ -55,7 +61,7 @@ def adminRequireWarp(fn):
 
 def ExceptionWarp(fn):
     """
-    Decorator for session admin valid required.
+    Decorator for COrgan std exception.
     """
     @wraps(fn)
     def wrapper(*args, **kwargs):
@@ -67,6 +73,7 @@ def ExceptionWarp(fn):
     return wrapper
 
 
+# noinspection PyUnusedLocal
 class CController:
     """
     This class performs the COrgan controller role. All service requests are
@@ -88,7 +95,17 @@ class CController:
     """
 
     def __init__(self):
-        pass
+        """
+        Create a new core controller.
+        """
+        CController._agentModel.Initialize()
+        CController._humanModel.Initialize()
+        CController._groupModel.Initialize()
+        CController._positionModel.Initialize()
+        CController._connectModel.Initialize()
+        CController._userModel.Initialize()
+        CController._logModel.Initialize()
+        CController._configModel.Initialize()
 
     """
     Authorization Methods 
@@ -188,71 +205,245 @@ class CController:
     """
     Worker Methods
     """
+    @authorizeRequireWarp
     def AddHuman(self, session, personId, firstName, lastName, note):
-        pass
+        """
 
+        :param session:
+        :param personId:
+        :param firstName:
+        :param lastName:
+        :param note:
+        :return:
+        """
+        if CController._humanModel.Contains(personId) is True:
+            return True, None
+        return True, CController._humanModel.Add(personId, firstName, lastName, note)
+
+    @authorizeRequireWarp
     def RemoveHuman(self, session, personId):
-        pass
+        """
 
+        :param session:
+        :param personId:
+        :return:
+        """
+        return True, CController._humanModel.Remove(personId)
+
+    @authorizeRequireWarp
     def UpdateHuman(self, session, personId, **kwargs):
-        pass
+        """
 
+        :param session:
+        :param personId:
+        :param kwargs:
+        :return:
+        """
+        CController._humanModel.Update(personId, **kwargs)
+        return True, True
+
+    @authorizeRequireWarp
     def RetrieveHuman(self, session, personId):
-        pass
+        """
 
+        :param session:
+        :param personId:
+        :return:
+        """
+        return True, CController._humanModel.Retrieve(personId)
+
+    @authorizeRequireWarp
     def RetrieveAllHuman(self, session):
-        pass
+        """
 
+        :param session:
+        :return:
+        """
+        return True, CController._humanModel.RetrieveAll()
+
+    @authorizeRequireWarp
     def AddAgent(self, session, name, location, rType, note):
-        pass
+        """
 
+        :param session:
+        :param name:
+        :param location:
+        :param rType:
+        :param note:
+        :return:
+        """
+        if CController._agentModel.Contains(name) is True:
+            return True, None
+        return True, CController._agentModel.Add(name, location, note, rType)
+
+    @authorizeRequireWarp
     def RemoveAgent(self, session, name):
-        pass
+        """
 
+        :param session:
+        :param name:
+        :return:
+        """
+        return True, CController._agentModel.Remove(name)
+
+    @authorizeRequireWarp
     def UpdateAgent(self, session, name, **kwargs):
-        pass
+        """
 
+        :param session:
+        :param name:
+        :param kwargs:
+        :return:
+        """
+        CController._agentModel.Update(name, **kwargs)
+        return True, True
+
+    @authorizeRequireWarp
     def RetrieveAgent(self, session, name):
-        pass
+        """
 
+        :param session:
+        :param name:
+        :return:
+        """
+        return True, CController._agentModel.Retrieve(name)
+
+    @authorizeRequireWarp
     def RetrieveAllAgent(self, session):
-        pass
+        """
 
+        :param session:
+        :return:
+        """
+        return True, CController._agentModel.RetrieveAll()
+
+    @authorizeRequireWarp
     def RetrieveAllWorker(self, session):
-        pass
+        """
+
+        :param session:
+        :return:
+        """
+        humanList = CController._humanModel.RetrieveAll()
+        agentList = CController._agentModel.RetrieveAll()
+        return True, humanList + agentList
 
     """
     Organization Methods
     """
-    def AddGroup(self, session, name, description, note, belongToName, groupType):
-        pass
+    @authorizeRequireWarp
+    def AddGroup(self, session, name, description, note, belongToId, groupType):
+        """
 
+        :param session:
+        :param name:
+        :param description:
+        :param note:
+        :param belongToId:
+        :param groupType:
+        :return:
+        """
+        if CController._groupModel.Contains(name) is True:
+            return True, None
+        CController._groupModel.Add(name, description, note, belongToId, groupType)
+
+    @authorizeRequireWarp
     def RemoveGroup(self, session, name):
-        pass
+        """
 
+        :param session:
+        :param name:
+        :return:
+        """
+        return True, CController._groupModel.Remove(name)
+
+    @authorizeRequireWarp
     def UpdateGroup(self, session, name, **kwargs):
-        pass
+        """
 
+        :param session:
+        :param name:
+        :param kwargs:
+        :return:
+        """
+        CController._groupModel.Update(name, **kwargs)
+        return True, True
+
+    @authorizeRequireWarp
     def RetrieveGroup(self, session, name):
-        pass
+        """
 
+        :param session:
+        :param name:
+        :return:
+        """
+        return True, CController._groupModel.Retrieve(name)
+
+    @authorizeRequireWarp
     def RetrieveAllGroup(self, session):
-        pass
+        """
 
-    def AddPosition(self, session, name, description, note, belongToName):
-        pass
+        :param session:
+        :return:
+        """
+        return True, CController._groupModel.RetrieveAll()
 
+    @authorizeRequireWarp
+    def AddPosition(self, session, name, description, note, belongToId, reportToId):
+        """
+
+        :param session:
+        :param name:
+        :param description:
+        :param note:
+        :param belongToId:
+        :param reportToId:
+        :return:
+        """
+        if CController._positionModel.Contains(name) is True:
+            return True, None
+        return True, CController._positionModel.Add(name, description, note, belongToId, reportToId)
+
+    @authorizeRequireWarp
     def RemovePosition(self, session, name):
-        pass
+        """
 
+        :param session:
+        :param name:
+        :return:
+        """
+        return True, CController._positionModel.Remove(name)
+
+    @authorizeRequireWarp
     def UpdatePosition(self, session, name, **kwargs):
-        pass
+        """
 
+        :param session:
+        :param name:
+        :param kwargs:
+        :return:
+        """
+        CController._positionModel.Update(name, **kwargs)
+        return True, True
+
+    @authorizeRequireWarp
     def RetrievePosition(self, session, name):
-        pass
+        """
 
+        :param session:
+        :param name:
+        :return:
+        """
+        return True, CController._positionModel.Retrieve(name)
+
+    @authorizeRequireWarp
     def RetrieveAllPosition(self, session):
-        pass
+        """
+
+        :param session:
+        :return:
+        """
+        return True, CController._positionModel.RetrieveAll()
 
     """
     Connection Constrain Methods
@@ -302,20 +493,55 @@ class CController:
     """
     COrgan Configuration 
     """
+    @adminRequireWarp
     def SetOrganizationName(self, session, orgName):
-        pass
+        """
+        Set organization name.
+        :param session: session id
+        :param orgName: organization name
+        """
+        CController._configModel.AddOrUpdate(GCC.CONFIG_ORGANIZATION_KEY, orgName)
+        return True, True
 
+    @authorizeRequireWarp
     def GetOrganizationName(self, session):
-        pass
+        """
+        Get organization name.
+        :param session: session id
+        """
+        return True, CController._configModel.Retrieve(GCC.CONFIG_ORGANIZATION_KEY)
 
+    @adminRequireWarp
+    def SetUpdateNotifyRouter(self, session, routerUrl):
+        """
+        Set update notify router gateway.
+        :param session: session id
+        :param routerUrl: gateway url
+        """
+        CController._configModel.AddOrUpdate(GCC.CONFIG_DATA_UPDATE_ROUTER, routerUrl)
+        return True, True
+
+    @adminRequireWarp
+    def GetUpdateNotifyRouter(self, session):
+        """
+        Get update notify router gateway.
+        :param session: session id
+        """
+        return True, CController._configModel.Retrieve(GCC.CONFIG_DATA_UPDATE_ROUTER)
+
+    @authorizeRequireWarp
     def GetCurrentDataVersion(self, session):
-        pass
+        """
+        Get the data version of current moment.
+        :param session: session id
+        """
+        return True, CController._configModel.Retrieve(GCC.CONFIG_DATA_VERSION_KEY)
 
     """
     Support Methods
     """
     @staticmethod
-    def _Unauthorized(session):
+    def Unauthorized(session):
         """
         Warp unauthorized service request feedback package.
         :param session: session id
@@ -335,10 +561,28 @@ class CController:
 
     @authorizeRequireWarp
     def EchoTest(self, session, pr):
+        """
+        Debug echo function.
+        :param session: session id
+        :param pr: echo text
+        """
         print pr
 
+    """
+    Static Fields
+    """
+    _agentModel = AgentModel()
+    _humanModel = HumanModel()
+    _groupModel = GroupModel()
+    _positionModel = PositionModel()
+    _connectModel = ConnectModel()
+    _userModel = UserModel()
+    _logModel = RuntimeLogModel()
+    _configModel = CConfigModel()
+
+
 """
-Static Code
+Global Static Code
 """
 CControllerCore = CController()
 

@@ -17,10 +17,13 @@ class GroupModel:
         pass
 
     @staticmethod
-    def Initialize():
+    def Initialize(forced=False):
         """
         Initialize the model.
+        :param forced: forced reinitialize
         """
+        if forced is False and GroupModel._persistDAO is not None:
+            return
         from DAO import MySQLDAO
         GroupModel._persistDAO = MySQLDAO.MySQLDAO()
         GroupModel._persistDAO.Initialize()
@@ -35,17 +38,17 @@ class GroupModel:
         GroupModel._persistDAO = None
 
     @staticmethod
-    def Add(name, description, note, belongToGroupName, groupType):
+    def Add(name, description, note, belongToGroupId, groupType):
         """
         Add a group.
         :param name: group unique name
         :param description: description text
         :param note: note text
-        :param belongToGroupName: belong to which group id name
+        :param belongToGroupId: belong to which group id
         :param groupType: group type enum
         :return: if execution success
         """
-        tpd = Group(name, description, note, belongToGroupName, groupType)
+        tpd = Group(name, description, note, belongToGroupId, groupType)
         return GroupModel.AddPackage(tpd)
 
     @staticmethod
@@ -75,6 +78,7 @@ class GroupModel:
         GroupModel._persistDAO.ExecuteSQL(sql, needRet=False)
         sql = "DELETE FROM ren_connect WHERE belongToGroupId = '%s'" % rObj.GlobalId
         GroupModel._persistDAO.ExecuteSQL(sql, needRet=False)
+        return True
 
     @staticmethod
     def Retrieve(name):

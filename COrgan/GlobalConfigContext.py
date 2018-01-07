@@ -16,3 +16,7 @@ RDBPASSWORD = '43420024'
 RDBPORT = '3306'
 RDBPATH = 'rencorgan'
 UNAUTHORIZED = "__COrgan_Unauthorized__"
+
+CONFIG_ORGANIZATION_KEY = 'organizationName'
+CONFIG_DATA_UPDATE_ROUTER = 'updateNotifyRouterUrl'
+CONFIG_DATA_VERSION_KEY = 'dataVersion'

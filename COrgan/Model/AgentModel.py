@@ -17,10 +17,13 @@ class AgentModel:
         pass
 
     @staticmethod
-    def Initialize():
+    def Initialize(forced=False):
         """
         Initialize the model.
+        :param forced: forced reinitialize
         """
+        if forced is False and AgentModel._persistDAO is not None:
+            return
         from DAO import MySQLDAO
         AgentModel._persistDAO = MySQLDAO.MySQLDAO()
         AgentModel._persistDAO.Initialize()
@@ -75,8 +78,14 @@ class AgentModel:
         Remove
         :param agentName: agent unique name to be removed
         """
+        rObj = AgentModel.Retrieve(agentName)
+        if rObj is None:
+            return False
         sql = "DELETE FROM ren_agent WHERE name = '%s'" % agentName
         AgentModel._persistDAO.ExecuteSQL(sql, needRet=False)
+        sql = "DELETE FROM ren_connect WHERE workerId = '%s'" % rObj.GlobalId
+        AgentModel._persistDAO.ExecuteSQL(sql, needRet=False)
+        return True
 
     @staticmethod
     def Update(agentName, **kwargs):

@@ -17,10 +17,13 @@ class UserModel:
         pass
 
     @staticmethod
-    def Initialize():
+    def Initialize(forced=False):
         """
         Initialize the model.
+        :param forced: forced reinitialize
         """
+        if forced is False and UserModel._persistDAO is not None:
+            return
         from DAO import MySQLDAO
         UserModel._persistDAO = MySQLDAO.MySQLDAO()
         UserModel._persistDAO.Initialize()

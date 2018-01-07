@@ -8,6 +8,18 @@
 from Entity.Worker import Worker
 
 
+class AgentType:
+    """
+    Enum of agent type
+    """
+    def __init__(self):
+        pass
+
+    Reentrant = 1
+
+    NotReentrant = 2
+
+
 class Agent(Worker):
     """
     Entity class for `agent` data package.
@@ -28,13 +40,3 @@ class Agent(Worker):
         self.Type = reentrantType
 
 
-class AgentType:
-    """
-    Enum of agent type
-    """
-    def __init__(self):
-        pass
-
-    Reentrant = 1
-
-    NotReentrant = 2

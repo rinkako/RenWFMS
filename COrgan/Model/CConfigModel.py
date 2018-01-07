@@ -15,10 +15,13 @@ class CConfigModel:
         pass
 
     @staticmethod
-    def Initialize():
+    def Initialize(forced=False):
         """
         Initialize the model.
+        :param forced: forced reinitialize
         """
+        if forced is False and CConfigModel._persistDAO is not None:
+            return
         from DAO import MySQLDAO
         CConfigModel._persistDAO = MySQLDAO.MySQLDAO()
         CConfigModel._persistDAO.Initialize()
@@ -65,7 +68,7 @@ class CConfigModel:
         ret = CConfigModel._persistDAO.ExecuteSQL(sql, needRet=True)
         if len(ret) > 0:
             retObj = ret[0]
-            return retObj["rkey"], retObj["rvalue"]
+            return retObj["rvalue"]
         else:
             return None
 

@@ -15,10 +15,13 @@ class ConnectModel:
         pass
 
     @staticmethod
-    def Initialize():
+    def Initialize(forced=False):
         """
         Initialize the model.
+        :param forced: forced reinitialize
         """
+        if forced is False and ConnectModel._persistDAO is not None:
+            return
         from DAO import MySQLDAO
         ConnectModel._persistDAO = MySQLDAO.MySQLDAO()
         ConnectModel._persistDAO.Initialize()

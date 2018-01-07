@@ -17,10 +17,13 @@ class RuntimeLogModel:
         pass
 
     @staticmethod
-    def Initialize():
+    def Initialize(forced=False):
         """
         Initialize the logger.
+        :param forced: forced reinitialize
         """
+        if forced is False and RuntimeLogModel._persistDAO is not None:
+            return
         from DAO import MySQLDAO
         RuntimeLogModel._persistDAO = MySQLDAO.MySQLDAO()
         RuntimeLogModel._persistDAO.Initialize()
