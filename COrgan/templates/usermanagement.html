@@ -2,9 +2,9 @@
 
 {% block LHeader %}
     <!-- DATA TABLES -->
-	<link rel="stylesheet" type="text/css" href="{{ url_for('LDashboard.static', filename='js/datatables/media/css/jquery.dataTables.min.css') }}" />
-	<link rel="stylesheet" type="text/css" href="{{ url_for('LDashboard.static', filename='js/datatables/media/assets/css/datatables.min.css') }}" />
-	<link rel="stylesheet" type="text/css" href="{{ url_for('LDashboard.static', filename='js/datatables/extras/TableTools/media/css/TableTools.min.css') }}" />
+	<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='js/datatables/media/css/jquery.dataTables.min.css') }}" />
+	<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='js/datatables/media/assets/css/datatables.min.css') }}" />
+	<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='js/datatables/extras/TableTools/media/css/TableTools.min.css') }}" />
 {% endblock %}
 
 {% block LBody %}
@@ -53,7 +53,6 @@
                                             <th>Name</th>
                                             <th>Level</th>
                                             <th>CreateTime</th>
-                                            <th>Authorized Binding</th>
                                             <th>OP.</th>
                                         </tr>
                                     </thead>
@@ -70,20 +69,13 @@
                                                 {% endif %}
                                                 </td>
                                                 <td> {{ dictItem["createtimestamp"] }} </td>
-                                                <td>
-                                                {% if dictItem["level"] == 0 %}
-                                                    {{ dictItem["accessiblebinding"].replace(";", "<br/>") | safe }}
-                                                {% else %}
-                                                    全部
-                                                {% endif %}
-                                                </td>
                                                 <td class="center">
                                                     {% if dictItem["id"] != 1 %}
-                                                        <a href="{{ url_for('LDashboard.userManagement') + "edit/" + dictItem["username"]}}">
+                                                        <a href="{{ url_for('userManagement') + "edit/" + dictItem["username"]}}">
                                                             <button class="btn btn-xs btn-info">编辑</button>
                                                         </a>
                                                         &nbsp;
-                                                        <button onClick="delConfirm('{{ url_for('LDashboard.userManagement') + "performdelete/" + dictItem["username"]}}')" class="btn btn-xs btn-danger">删除</button>
+                                                        <button onClick="delConfirm('{{ url_for('userManagement') + "performdelete/" + dictItem["username"]}}')" class="btn btn-xs btn-danger">删除</button>
                                                     {% else %}
                                                         <span style="color: #9d9d9d; ">主管理员不可修改</span>
                                                     {% endif %}
@@ -112,10 +104,10 @@
 
 {% block LScript %}
     <!-- DATA TABLES -->
-	<script type="text/javascript" src="{{ url_for('LDashboard.static', filename='js/datatables/media/js/jquery.dataTables.min.js') }}"></script>
-	<script type="text/javascript" src="{{ url_for('LDashboard.static', filename='js/datatables/media/assets/js/datatables.min.js') }}"></script>
-	<script type="text/javascript" src="{{ url_for('LDashboard.static', filename='js/datatables/extras/TableTools/media/js/TableTools.min.js') }}"></script>
-	<script type="text/javascript" src="{{ url_for('LDashboard.static', filename='js/datatables/extras/TableTools/media/js/ZeroClipboard.min.js') }}"></script>
+	<script type="text/javascript" src="{{ url_for('static', filename='js/datatables/media/js/jquery.dataTables.min.js') }}"></script>
+	<script type="text/javascript" src="{{ url_for('static', filename='js/datatables/media/assets/js/datatables.min.js') }}"></script>
+	<script type="text/javascript" src="{{ url_for('static', filename='js/datatables/extras/TableTools/media/js/TableTools.min.js') }}"></script>
+	<script type="text/javascript" src="{{ url_for('static', filename='js/datatables/extras/TableTools/media/js/ZeroClipboard.min.js') }}"></script>
 	<script>
 		jQuery(document).ready(function() {
 			App.setPage("dynamic_table");  //Set current page
@@ -132,10 +124,10 @@
              }
          }
          function addBindingBtn() {
-             window.location.href = "{{ url_for('LDashboard.addPlatformUser') }}"
+             window.location.href = "{{ url_for('addPlatformUser') }}"
          }
          function refreshMyself() {
-             window.location.href = "{{ url_for('LDashboard.userManagement') }}"
+             window.location.href = "{{ url_for('userManagement') }}"
          }
     </script>
 {% endblock %}

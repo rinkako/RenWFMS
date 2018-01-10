@@ -10,6 +10,7 @@ from functools import wraps
 
 from Model.AgentModel import AgentModel
 from Model.CConfigModel import CConfigModel
+from Model.CapabilityModel import CapabilityModel
 from Model.ConnectModel import ConnectModel
 from Model.GroupModel import GroupModel
 from Model.HumanModel import HumanModel
@@ -102,6 +103,7 @@ class CController:
         CController._humanModel.Initialize()
         CController._groupModel.Initialize()
         CController._positionModel.Initialize()
+        CController._capabilityModel.Initialize()
         CController._connectModel.Initialize()
         CController._userModel.Initialize()
         CController._logModel.Initialize()
@@ -445,6 +447,61 @@ class CController:
         """
         return True, CController._positionModel.RetrieveAll()
 
+    @authorizeRequireWarp
+    def AddCapability(self, session, name, description, note):
+        """
+
+        :param session:
+        :param name:
+        :param description:
+        :param note:
+        :return:
+        """
+        if CController._capabilityModel.Contains(name) is True:
+            return True, None
+        return True, CController._capabilityModel.Add(name, description, note)
+
+    @authorizeRequireWarp
+    def RemoveCapability(self, session, name):
+        """
+
+        :param session:
+        :param name:
+        :return:
+        """
+        return True, CController._capabilityModel.Remove(name)
+
+    @authorizeRequireWarp
+    def UpdateCapability(self, session, name, **kwargs):
+        """
+
+        :param session:
+        :param name:
+        :param kwargs:
+        :return:
+        """
+        CController._capabilityModel.Update(name, **kwargs)
+        return True, True
+
+    @authorizeRequireWarp
+    def RetrieveCapability(self, session, name):
+        """
+
+        :param session:
+        :param name:
+        :return:
+        """
+        return True, CController._positionModel.Retrieve(name)
+
+    @authorizeRequireWarp
+    def RetrieveAllCapabilities(self, session):
+        """
+
+        :param session:
+        :return:
+        """
+        return True, CController._positionModel.RetrieveAll()
+
     """
     Connection Constrain Methods
     """
@@ -581,6 +638,7 @@ class CController:
     _humanModel = HumanModel()
     _groupModel = GroupModel()
     _positionModel = PositionModel()
+    _capabilityModel = CapabilityModel()
     _connectModel = ConnectModel()
     _userModel = UserModel()
     _logModel = RuntimeLogModel()

@@ -2,21 +2,21 @@
 
 {% block LHeader %}
     <!-- DATE RANGE PICKER -->
-	<link rel="stylesheet" type="text/css" href="{{ url_for('LDashboard.static', filename='js/bootstrap-daterangepicker/daterangepicker-bs3.css') }}" />
+	<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='js/bootstrap-daterangepicker/daterangepicker-bs3.css') }}" />
 	<!-- TYPEAHEAD -->
-	<link rel="stylesheet" type="text/css" href="{{ url_for('LDashboard.static', filename='js/typeahead/typeahead.css') }}" />
+	<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='js/typeahead/typeahead.css') }}" />
 	<!-- FILE UPLOAD -->
-	<link rel="stylesheet" type="text/css" href="{{ url_for('LDashboard.static', filename='js/bootstrap-fileupload/bootstrap-fileupload.min.css') }}" />
+	<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='js/bootstrap-fileupload/bootstrap-fileupload.min.css') }}" />
 	<!-- SELECT2 -->
-	<link rel="stylesheet" type="text/css" href="{{ url_for('LDashboard.static', filename='js/select2/select2.min.css') }}" />
+	<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='js/select2/select2.min.css') }}" />
 	<!-- UNIFORM -->
-	<link rel="stylesheet" type="text/css" href="{{ url_for('LDashboard.static', filename='js/uniform/css/uniform.default.min.css') }}" />
+	<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='js/uniform/css/uniform.default.min.css') }}" />
 	<!-- JQUERY UPLOAD -->
 	<!-- blueimp Gallery styles -->
-	<link rel="stylesheet" href="{{ url_for('LDashboard.static', filename='js/blueimp/gallery/blueimp-gallery.min.css') }}">
+	<link rel="stylesheet" href="{{ url_for('static', filename='js/blueimp/gallery/blueimp-gallery.min.css') }}">
 	<!-- CSS to style the file input field as button and adjust the Bootstrap progress bars -->
-	<link rel="stylesheet" href="{{ url_for('LDashboard.static', filename='js/jquery-upload/css/jquery.fileupload.css') }}">
-	<link rel="stylesheet" href="{{ url_for('LDashboard.static', filename='js/jquery-upload/css/jquery.fileupload-ui.css') }}">
+	<link rel="stylesheet" href="{{ url_for('static', filename='js/jquery-upload/css/jquery.fileupload.css') }}">
+	<link rel="stylesheet" href="{{ url_for('static', filename='js/jquery-upload/css/jquery.fileupload-ui.css') }}">
 {% endblock %}
 
 {% block LBody %}
@@ -31,7 +31,7 @@
 			<ul class="breadcrumb">
 				<li>
 					<i class="fa fa-home"></i>
-					<a href="{{ url_for('LDashboard.home') }}">Home</a>
+					<a href="{{ url_for('home') }}">Home</a>
 				</li>
 				<li>
 					{{ L_PageTitle }}
@@ -57,7 +57,7 @@
                                 <h4><i class="fa fa-bars"></i>新建授权用户</h4>
                             </div>
                             <div class="box-body big">
-                                <form role="form" method="post" action="{{ url_for('LDashboard.performAddPlatformUser') }}">
+                                <form role="form" method="post" action="{{ url_for('performAddPlatformUser') }}">
                                     <div class="form-group">
                                         <label for="tUsername">唯一用户名(Unique username)</label>
                                         <input name="f_username" type="text" class="form-control" id="tUsername">
@@ -71,15 +71,6 @@
                                         <select name="f_level" id="tType" class="form-control col-md-12">
                                             <option>平台用户</option>
                                             <option>管理员</option>
-                                        </select>
-                                    </div>
-                                    <br/><br/>
-                                    <div class="form-group">
-                                        <label class="control-label" for="e2">授权访问的数据绑定</label>
-                                        <select onchange="checkselect('e2')" name="f_accessList" multiple id="e2" class="col-md-12">
-                                            {% for bindName in bindList %}
-                                                <option>{{ bindName }}</option>
-                                            {% endfor %}
                                         </select>
                                     </div>
                                     <br/><br/>
@@ -108,15 +99,15 @@
 
 {% block LScript %}
     <!-- TYPEHEAD -->
-	<script type="text/javascript" src="{{ url_for('LDashboard.static', filename='js/typeahead/typeahead.min.js') }}"></script>
+	<script type="text/javascript" src="{{ url_for('static', filename='js/typeahead/typeahead.min.js') }}"></script>
 	<!-- AUTOSIZE -->
-	<script type="text/javascript" src="{{ url_for('LDashboard.static', filename='js/autosize/jquery.autosize.min.js') }}"></script>
+	<script type="text/javascript" src="{{ url_for('static', filename='js/autosize/jquery.autosize.min.js') }}"></script>
 	<!-- COUNTABLE -->
-	<script type="text/javascript" src="{{ url_for('LDashboard.static', filename='js/countable/jquery.simplyCountable.min.js') }}"></script>
+	<script type="text/javascript" src="{{ url_for('static', filename='js/countable/jquery.simplyCountable.min.js') }}"></script>
 	<!-- INPUT MASK -->
-	<script type="text/javascript" src="{{ url_for('LDashboard.static', filename='js/bootstrap-inputmask/bootstrap-inputmask.min.js') }}"></script>
+	<script type="text/javascript" src="{{ url_for('static', filename='js/bootstrap-inputmask/bootstrap-inputmask.min.js') }}"></script>
 	<!-- SELECT2 -->
-	<script type="text/javascript" src="{{ url_for('LDashboard.static', filename='js/select2/select2.min.js') }}"></script>
+	<script type="text/javascript" src="{{ url_for('static', filename='js/select2/select2.min.js') }}"></script>
 
 
 	<script>
@@ -128,18 +119,5 @@
 		    App.setPage("forms");  //Set current page
 			App.init(); //Initialise plugins and elements
 		});
-		function checkselect(objname) {
-            o = document.getElementById(objname);
-            t = document.getElementById("output_binds");
-            var intvalue="";
-            for(i=0;i<o.length;i++){
-                if(o.options[i].selected){
-                    intvalue+=o.options[i].value+";";
-                }
-            }
-            t.value=intvalue.substr(0,intvalue.length-1);
-            console.log(t.value);
-        }
-
 	</script>
 {% endblock %}

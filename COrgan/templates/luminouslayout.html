@@ -95,46 +95,10 @@
                     </a>
                 </li>
 
-                <li id="active-dashQuery" class="has-sub">
-                    <a class="" href="javascript:;">
-                        <i class="fa fa-magic fa-fw"></i>
-                        <span class="menu-text">工作项</span>
-                        <span class="arrow"></span>
-                        <span id="selected-dashQuery"></span>
-                    </a>
-                    <ul class="sub">
-                        <li id="current-dashQuery-record">
-                            <a class="" href="{{ url_for('home') }}">
-                                <span class="sub-menu-text">工作项执行记录</span>
-                            </a>
-                        </li>
-                        <li id="current-dashQuery-new">
-                            <a class="" href="{{ url_for('home') }}">
-                                <span class="sub-menu-text">新建临时查询</span>
-                            </a>
-                        </li>
-                        <li id="current-dashProcedureQuery-new">
-                            <a class="" href="{{ url_for('home') }}">
-                                <span class="sub-menu-text">新建过程查询</span>
-                            </a>
-                        </li>
-                        <li id="current-dashMultiQuery-new">
-                            <a class="" href="{{ url_for('home') }}">
-                                <span class="sub-menu-text">新建复合任务</span>
-                            </a>
-                        </li>
-                        <li id="current-dashQuery-my">
-                            <a class="" href="{{ url_for('home') }}">
-                                <span class="sub-menu-text">我的任务</span>
-                            </a>
-                        </li>
-                    </ul>
-                </li>
-
                 <li id="active-timers">
                     <a class="" href="{{ url_for('home') }}">
                         <i class="fa fa-clock-o fa-fw"></i>
-                        <span class="menu-text">任务计划</span>
+                        <span class="menu-text">人力资源</span>
                         <span id="selected-timers"></span>
                     </a>
                 </li>
@@ -142,7 +106,7 @@
                 <li id="active-dataDictionary">
                     <a class="" href="{{ url_for('home') }}">
                         <i class="fa fa-book fa-fw"></i>
-                        <span class="menu-text">数据字典</span>
+                        <span class="menu-text">Agent资源</span>
                         <span id="selected-dataDictionary"></span>
                     </a>
                 </li>
@@ -150,18 +114,18 @@
                 <li id="active-dataBindings">
                     <a class="" href="{{ url_for('home') }}">
                         <i class="fa fa-cubes fa-fw"></i>
-                        <span class="menu-text">数据绑定</span>
+                        <span class="menu-text">组织和能力</span>
                         <span id="selected-dataBindings"></span>
                     </a>
                 </li>
 
-                    <li id="active-userManagement">
-                        <a class="" href="{{ url_for('home') }}">
-                            <i class="fa fa-user fa-fw"></i>
-                            <span class="menu-text">用户管理</span>
-                            <span id="selected-userManagement"></span>
-                        </a>
-                    </li>
+                <li id="active-userManagement">
+                    <a class="" href="{{ url_for('userManagement') }}">
+                        <i class="fa fa-user fa-fw"></i>
+                        <span class="menu-text">授权管理</span>
+                        <span id="selected-userManagement"></span>
+                    </a>
+                </li>
 
             </ul>
             <!-- /SIDEBAR MENU -->
