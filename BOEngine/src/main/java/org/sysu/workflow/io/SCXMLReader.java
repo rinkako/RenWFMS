@@ -3,6 +3,7 @@ package org.sysu.workflow.io;
 
 import org.sysu.workflow.Evaluator;
 import org.sysu.workflow.PathResolver;
+import org.sysu.workflow.bridge.InheritableContext;
 import org.sysu.workflow.env.SimpleErrorHandler;
 import org.sysu.workflow.env.URLResolver;
 import org.apache.commons.logging.LogFactory;
@@ -40,7 +41,7 @@ import java.util.*;
  * parsed is well-formed and correct. If that assumption does not hold,
  * any subsequent behavior is undefined.</p>
  * <p/>
- * SCXMLReader 提供了读写SCXML文档的能力，，
+ * SCXMLReader 提供了读写SCXML文档的能力。
  * <p/>
  * SCXMLReader 假设SCXML文档是形式良好的，正确的。
  *
@@ -225,12 +226,12 @@ public final class SCXMLReader {
 
 
     //---- workflow扩展的元素 ----//
-    private static final String ELEM_USERTASK = "userTask";
-    private static final String ELEM_SERVICETASK = "serviceTask";
-    private static final String ELEM_SUBSTATEMACHINE = "subStateMachine";
-    private static final String ELEM_FORM = "form";
+//    private static final String ELEM_USERTASK = "userTask";
+//    private static final String ELEM_SERVICETASK = "serviceTask";
+//    private static final String ELEM_SUBSTATEMACHINE = "subStateMachine";
+//    private static final String ELEM_FORM = "form";
 
-    //---- BOO拓展 ----//
+    //---- BOO拓展的元素 ----//
     private static final String ELEM_BOO_LAYOUT = "layout";
     private static final String ELEM_BOO_TASKS = "tasks";
     private static final String ELEM_BOO_TASK = "task";
@@ -276,13 +277,18 @@ public final class SCXMLReader {
     private static final String ATTR_VERSION = "version";
 
     //---- workflow扩展的属性 ----//
-    private static final String ATTR_INSTANCES = "instances";
-    private static final String ATTR_INSTANCESEXPR = "instancesExpr";
-    private static final String ATTR_MESSAGEMODE="messageMode";
-    private static final String ATTR_TARGETNAME="targetName";
-    private static final String ATTR_TARGETSTATE="targetState";
-
-    private static final String ATTR_BROLE = "brole";
+    /*newbo元素的属性*/
+    private static final String ATTR_BOO_INSTANCES = "instances";
+    private static final String ATTR_BOO_INSTANCESEXPR = "instancesExpr";
+    /*send元素扩展的属性*/
+    private static final String ATTR_BOO_MESSAGEMODE="messageMode";
+    private static final String ATTR_BOO_TARGETNAME="targetName";
+    private static final String ATTR_BOO_TARGETSTATE="targetState";
+    /*task元素的属性*/
+    private static final String ATTR_BOO_BROLE = "brole";
+    private static final String ATTR_BOO_PRINCIPLE = "principle";
+    /*businessclass元素扩展的属性*/
+    private static final String ATTR_BOO_EXTENDS = "extends";
 
     /*
      * Public methods
@@ -605,9 +611,24 @@ public final class SCXMLReader {
         scxml.setInitial(readAV(reader, ATTR_INITIAL));
         scxml.setName(readAV(reader, ATTR_NAME));
         scxml.setProfile(readAV(reader, ATTR_PROFILE));
+        scxml.setBaseBusinessObjectName(readAV(reader, ATTR_BOO_EXTENDS));
+
+        //创建继承上下文实例
+        String baseBOName = scxml.getBaseBusinessObjectName();
+        if(baseBOName == null || baseBOName.length() <= 0) {
+            //do nothing;
+        }else{
+            try{
+                InheritableContext inheritor = BOInheritHandler.InheritConnect(scxml, scxml.getBaseBusinessObjectName());
+                scxml.setInheritedContext(inheritor);
+            }catch(Exception e){
+                e.printStackTrace();
+            }
+        }
+
         //version属性是必须的
         scxml.setVersion(readRequiredAV(reader, ELEM_SCXML, ATTR_VERSION));
-        //验证version是否为 1
+        //验证version是否为 1.0
         if (!SCXML_REQUIRED_VERSION.equals(scxml.getVersion())) {
             throw new ModelException(new MessageFormat(ERR_INVALID_VERSION).format(new Object[]{scxml.getVersion()}));
         }
@@ -624,7 +645,7 @@ public final class SCXMLReader {
                 case XMLStreamConstants.START_ELEMENT:
                     pushNamespaces(reader, configuration);
                     nsURI = reader.getNamespaceURI();
-                    name = reader.getLocalName();
+                    name = reader.getLocalName();//获取当前读取到的元素名
                     if (XMLNS_SCXML.equals(nsURI)) {
                         if (ELEM_STATE.equals(name)) {
                             readState(reader, configuration, scxml, null);
@@ -1054,6 +1075,34 @@ public final class SCXMLReader {
                 default:
             }
         }
+        /*将InheritableContext中的DataModel更新到该BO实例的DataModel中
+        对应于OOP的子类内存对象包含父类字段对象的实现方式*/
+
+        //获取InheritableContext中的Data List
+        InheritableContext inheritableContext = scxml.getInheritedContext();
+        List<Data> dm_inherit = inheritableContext.getInheritedDatamodel().getData();
+
+        //获取当前实例化的BO的Data List
+        List<Data> dm_current = dm.getData();
+
+        //基类继承父类的datamodel
+        for(Data data:dm_inherit){
+            boolean temp = false;
+            for(int i = 0;i < dm_current.size();i++){
+                if(dm_current.get(i).getId().equals(data.getId())){
+                    temp = true;
+                    break;
+                }
+            }
+            if(temp == false){
+                dm_current.add(data);
+            }
+        }
+        dm = new Datamodel();
+        for(Data d:dm_current){
+            dm.addData(d);
+        }
+
         scxml.setDatamodel(dm);
     }
 
@@ -1073,6 +1122,7 @@ public final class SCXMLReader {
                                       final SCXML scxml, final TransitionalState parent)
             throws XMLStreamException, ModelException {
         Tasks tasks = new Tasks();
+
         loop:
         while (reader.hasNext()) {
             String name, nsURI;
@@ -1080,7 +1130,7 @@ public final class SCXMLReader {
                 case XMLStreamConstants.START_ELEMENT:
                     pushNamespaces(reader, configuration);
                     nsURI = reader.getNamespaceURI();
-                    name = reader.getLocalName();
+                    name = reader.getLocalName();//获取下一个元素的名字
                     if (XMLNS_SCXML.equals(nsURI)) {
                         if (ELEM_BOO_TASK.equals(name)) {
                             readTask(reader, configuration, tasks);
@@ -1099,6 +1149,60 @@ public final class SCXMLReader {
                 default:
             }
         }
+        //将子类的Tasks更新到InheritableContext的Tasks列表中，当call任务时，在InheritableContext中寻找Task或SubProcess的定义。
+        //获取InheritableContext中的task列表和subprocess列表
+        InheritableContext inheritableContext = scxml.getInheritedContext();
+        Tasks tks_inherit = inheritableContext.getInheritedTasks();
+        List<Task> task_inherit = tks_inherit.getTaskList();
+        List<SubProcess> process_inherit = tks_inherit.getProcessList();
+
+        //获取当前正在实例化的BO的task列表和subprocess列表
+        List<Task> task_current = tasks.getTaskList();
+        List<SubProcess> process_current = tasks.getProcessList();
+
+        //将子类的Tasks更新到InheritableContext的Tasks列表中
+        for(Task task:task_current){
+            boolean temp = false;
+            for(int i = 0; i < task_inherit.size();i++){
+                if(task_inherit.get(i).getName().equals(task.getName())) {
+                    task_inherit.set(i, task);
+                    temp = true;
+                    break;
+                }
+            }
+            if(temp == false){
+                task_inherit.add(task);
+            }
+        }
+        for(SubProcess sp:process_current){
+            boolean temp = false;
+            for(int i = 0; i < process_inherit.size();i++){
+                if(process_inherit.get(i).getName().equals(sp.getName())) {
+                    process_inherit.set(i, sp);
+                    temp = true;
+                    break;
+                }
+            }
+            if(temp == false){
+                process_inherit.add(sp);
+            }
+        }
+        Tasks tks = new Tasks();
+        for(Task task:task_inherit){
+            tks.addTask(task);
+        }
+        for(SubProcess sp:process_inherit){
+            tks.addProcess(sp);
+        }
+        inheritableContext.setInheritedTasks(tks);
+        scxml.setInheritedContext(inheritableContext);
+//        tasks = new Tasks();
+//        for(Task t:task_current){
+//            tasks.addTask(t);
+//        }
+//        for(SubProcess p:process_current){
+//            tasks.addProcess(p);
+//        }
         scxml.setTasks(tasks);
     }
 
@@ -1117,7 +1221,8 @@ public final class SCXMLReader {
     private static void readResources(final XMLStreamReader reader, final Configuration configuration,
                                   final SCXML scxml, final TransitionalState parent)
             throws XMLStreamException, ModelException {
-        Resources rsObj = new Resources();
+        Resources resources = new Resources();
+
         loop:
         while (reader.hasNext()) {
             String name, nsURI;
@@ -1128,9 +1233,9 @@ public final class SCXMLReader {
                     name = reader.getLocalName();
                     if (XMLNS_SCXML.equals(nsURI)) {
                         if (ELEM_BOO_RESOURCE.equals(name)) {
-                            readResource(reader, configuration, rsObj);
+                            readResource(reader, configuration, resources);
                         } else if (ELEM_BOO_ROLE.equals(name)) {
-                            readRole(reader, configuration, rsObj);
+                            readRole(reader, configuration, resources);
                         }
                         else {
                             reportIgnoredElement(reader, configuration, ELEM_BOO_RESOURCES, nsURI, name);
@@ -1145,7 +1250,7 @@ public final class SCXMLReader {
                 default:
             }
         }
-        scxml.setResources(rsObj);
+        scxml.setResources(resources);
     }
 
     /**
@@ -1180,7 +1285,7 @@ public final class SCXMLReader {
         Task tk = new Task();
         tk.setId(readRequiredAV(reader, ELEM_BOO_TASK, ATTR_ID));
         tk.setName(readAV(reader, ATTR_NAME));
-        tk.setRole(readRequiredAV(reader, ELEM_BOO_TASK, ATTR_BROLE));
+        tk.setBrole(readRequiredAV(reader, ELEM_BOO_TASK, ATTR_BOO_BROLE));
         // agent和assignee不能同时指定，但必须指定其中一个
 //        String agent = readAV(reader, ATTR_AGENT);
 //        String assignee = readAV(reader, ATTR_ASSIGNEE);
@@ -1196,10 +1301,32 @@ public final class SCXMLReader {
 //        } else {
 //            tk.setAgent(agent);
 //        }
-        tk.setInstanceExpr(readAV(reader, ATTR_INSTANCESEXPR));
+        tk.setPrinciple(readAV(reader, ATTR_BOO_PRINCIPLE));
         tk.setEvent(readRequiredAV(reader, ELEM_BOO_TASK, ATTR_EVENT));
+        tk.setInstanceExpr(readAV(reader, ATTR_BOO_INSTANCESEXPR));//实际已经没这个属性了
         readNamespaces(configuration, tk);
         tasks.addTask(tk);
+        skipToEndElement(reader);
+    }
+
+    /**
+     * Read the contents of this &lt;subprocess&gt; element.
+     *
+     * @param reader        The {@link XMLStreamReader} providing the SCXML document to parse.
+     * @param configuration The {@link Configuration} to use while parsing.
+     * @param tasks         The parent {@link Tasks} for this subprocess.
+     * @throws XMLStreamException   An exception processing the underlying {@link XMLStreamReader}.
+     * @throws ModelException
+     */
+    private static void readSubProcess(final XMLStreamReader reader, final Configuration configuration, final Tasks tasks)
+            throws XMLStreamException, ModelException {
+        SubProcess subprocess = new SubProcess();
+        subprocess.setId(readRequiredAV(reader, ELEM_BOO_SUBPROCESS, ATTR_ID));
+        subprocess.setName(readAV(reader, ATTR_NAME));
+        subprocess.setSrc(readAV(reader, ATTR_SRC));
+        subprocess.setEvent(readRequiredAV(reader, ELEM_BOO_SUBPROCESS, ATTR_EVENT));
+        readNamespaces(configuration, subprocess);
+        tasks.addProcess(subprocess);
         skipToEndElement(reader);
     }
 
@@ -1214,6 +1341,7 @@ public final class SCXMLReader {
     private static void readResource(final XMLStreamReader reader, final Configuration configuration, final Resources resObj)
             throws XMLStreamException, ModelException {
         Resource rs = new Resource();
+
         rs.setName(readRequiredAV(reader, ELEM_BOO_TASK, ATTR_NAME));
         rs.setType(readRequiredAV(reader, ELEM_BOO_TASK, ATTR_TYPE));
         rs.setCount(readAV(reader, ATTR_EXPR));
@@ -1236,20 +1364,6 @@ public final class SCXMLReader {
         tr.setName(readRequiredAV(reader, ELEM_BOO_ROLE, ATTR_NAME));
         readNamespaces(configuration, tr);
         resObj.AddRole(tr);
-        skipToEndElement(reader);
-    }
-
-    private static void readSubProcess(final XMLStreamReader reader, final Configuration configuration, final Tasks tasks)
-        throws XMLStreamException, ModelException {
-        SubProcess subprocess = new SubProcess();
-
-        subprocess.setId(readRequiredAV(reader, ELEM_BOO_SUBPROCESS, ATTR_ID));
-        subprocess.setName(readAV(reader, ATTR_NAME));
-        subprocess.setEvent(readRequiredAV(reader, ELEM_BOO_TASK, ATTR_EVENT));
-        subprocess.setSrc(readAV(reader, ATTR_SRC));
-
-        readNamespaces(configuration, subprocess);
-        tasks.addProcess(subprocess);
         skipToEndElement(reader);
     }
 
@@ -1631,10 +1745,10 @@ public final class SCXMLReader {
                     name = reader.getLocalName();
                     if (XMLNS_SCXML.equals(nsURI)) {
                         if (ELEM_BOO_NEWBO.equals(name)) {
-                            //RINKAKO: 读取子状态机
+                            //RINKAKO: 读取子业务对象
                             readSubStateMachine(reader, configuration, executable, parent);
                         } else if (ELEM_BOO_CALL.equals(name)) {
-                            //RINKAKO: 读取CALL
+                            //RINKAKO: 读取CALL标签
                             readCall(reader, configuration, executable, parent);
                         } else if (ELEM_RAISE.equals(name)) {
                             //读取raise事件
@@ -1850,30 +1964,6 @@ public final class SCXMLReader {
     }
 
     /**
-     * Read the contents of this &lt;call&gt; element.
-     *
-     * @param reader        The {@link XMLStreamReader} providing the SCXML document to parse.
-     * @param configuration The {@link Configuration} to use while parsing.
-     * @param executable    The parent {@link Executable} for this action.
-     * @param parent        The optional parent {@link ActionsContainer} if this action is a child of one.
-     * @throws XMLStreamException An exception processing the underlying {@link XMLStreamReader}.
-     */
-    private static void readCall(final XMLStreamReader reader, final Configuration configuration,
-                                final Executable executable, final ActionsContainer parent)
-            throws XMLStreamException, ModelException {
-        Call call = new Call();
-        call.setName(readRequiredAV(reader, ELEM_BOO_CALL, ATTR_NAME));
-        readNamespaces(configuration, call);
-        call.setParent(executable);
-        if (parent != null) {
-            parent.addAction(call);
-        } else {
-            executable.addAction(call);
-        }
-        skipToEndElement(reader);
-    }
-
-    /**
      * Read the contents of this &lt;assign&gt; element.
      *
      * @param reader        The {@link XMLStreamReader} providing the SCXML document to parse.
@@ -1989,9 +2079,9 @@ public final class SCXMLReader {
         }
         readNamespaces(configuration, send);
 
-        send.setMessageMode(readAV(reader,ATTR_MESSAGEMODE));
-        send.setTargetName(readAV(reader,ATTR_TARGETNAME));
-        send.setTargetState(readAV(reader,ATTR_TARGETSTATE));
+        send.setMessageMode(readAV(reader,ATTR_BOO_MESSAGEMODE));
+        send.setTargetName(readAV(reader,ATTR_BOO_TARGETNAME));
+        send.setTargetState(readAV(reader,ATTR_BOO_TARGETSTATE));
 
         loop:
         while (reader.hasNext()) {
@@ -2229,6 +2319,58 @@ public final class SCXMLReader {
     }
 
     /**
+     * Read the contents of this &lt;call&gt; element.
+     *
+     * @param reader        The {@link XMLStreamReader} providing the SCXML document to parse.
+     * @param configuration The {@link Configuration} to use while parsing.
+     * @param executable    The parent {@link Executable} for this action.
+     * @param parent        The optional parent {@link ActionsContainer} if this action is a child of one.
+     * @throws XMLStreamException An exception processing the underlying {@link XMLStreamReader}.
+     */
+    private static void readCall(final XMLStreamReader reader, final Configuration configuration,
+                                 final Executable executable, final ActionsContainer parent)
+            throws XMLStreamException, ModelException {
+        Call call = new Call();
+        call.setName(readRequiredAV(reader, ELEM_BOO_CALL, ATTR_NAME));
+        call.setInstances(Integer.parseInt(readAV(reader, ATTR_BOO_INSTANCES)));
+        call.setNamelist(readAV(reader, ATTR_NAMELIST));
+
+        loop:
+        while(reader.hasNext()){
+            String name, nsURI;
+            switch (reader.next()) {
+                case XMLStreamConstants.START_ELEMENT:
+                    pushNamespaces(reader, configuration);
+                    nsURI = reader.getNamespaceURI();
+                    name = reader.getLocalName();
+                    if (XMLNS_SCXML.equals(nsURI)) {
+                        if (ELEM_PARAM.equals(name)) {
+                            readParam(reader, configuration, call);
+                        } else {
+                            reportIgnoredElement(reader, configuration, ELEM_BOO_CALL, nsURI, name);
+                        }
+                    } else {
+                        reportIgnoredElement(reader, configuration, ELEM_BOO_CALL, nsURI, name);
+                    }
+                    break;
+                case XMLStreamConstants.END_ELEMENT:
+                    popNamespaces(reader, configuration);
+                    break loop;
+                default:
+            }
+        }
+        readNamespaces(configuration, call);
+        call.setParent(executable);
+        if (parent != null) {
+            parent.addAction(call);
+        } else {
+            executable.addAction(call);
+        }
+        skipToEndElement(reader);
+    }
+
+    /**
+     * 读取newbo元素的内容
      * @param reader
      * @param configuration
      * @param executable
@@ -2237,7 +2379,8 @@ public final class SCXMLReader {
     private static void readSubStateMachine(XMLStreamReader reader, Configuration configuration, Executable executable, ActionsContainer parent) throws XMLStreamException, ModelException {
         SubStateMachine subStateMachine = new SubStateMachine();
         subStateMachine.setSrc(readAV(reader, ATTR_SRC));
-        subStateMachine.setInstances(Integer.parseInt(readAV(reader, ATTR_INSTANCES)));
+        subStateMachine.setInstances(Integer.parseInt(readAV(reader, ATTR_BOO_INSTANCES)));
+        subStateMachine.setNamelist(readAV(reader, ATTR_NAMELIST));
         subStateMachine.setPathResolver(configuration.pathResolver);
         if (subStateMachine.getSrc() == null) {
             return;

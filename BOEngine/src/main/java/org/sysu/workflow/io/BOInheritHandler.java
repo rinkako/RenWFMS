@@ -21,7 +21,7 @@ public class BOInheritHandler {
         if (deliver == null) {
             return null;
         }
-        Stack<SCXML> inheritObjectStack = new Stack<SCXML>();
+        Stack<SCXML> inheritObjectStack = new Stack();
         BOInheritHandler.RecursiveInheritHandler(baseName, inheritObjectStack);
         InheritableContext inheritor = new InheritableContext();
         BOInheritHandler.GenerateInheritableContext(inheritor, inheritObjectStack);
@@ -36,7 +36,7 @@ public class BOInheritHandler {
     private static void RecursiveInheritHandler(String baseName, Stack<SCXML> inheritStack) throws Exception {
         URL url = BOInheritHandler.class.getClassLoader().getResource(baseName);
         String nextBase = BOInheritHandler.PushSCXML(url, inheritStack);
-        if (nextBase == null || nextBase.equals("")) {
+        if (nextBase == null || nextBase.length() <= 0) {
             return;
         }
         BOInheritHandler.RecursiveInheritHandler(nextBase, inheritStack);

@@ -30,10 +30,11 @@ public class Task extends Action implements Serializable {
     /**
      * 把任务指定给某类业务角色
      */
-    private String role;
+    private String brole;
 
     /**
      * 任务实例个数，默认情况下为1
+     * 实际已经没这个属性了
      */
     private String instanceExpr = "1";
 
@@ -51,6 +52,11 @@ public class Task extends Action implements Serializable {
      * 任务完成后发送到接收该事件的业务对象实例的外部队列的事件名，可包含数据
      */
     private String event;
+
+    /**
+     * 任务分派策略
+     */
+    private String principle;
 
     /**
      * 获取id的值
@@ -85,16 +91,16 @@ public class Task extends Action implements Serializable {
     /**
      * 获取agent的值
      */
-    public String getRole() {
-        return this.role;
+    public String getBrole() {
+        return this.brole;
     }
 
     /**
      * 设置agent的值
-     * @param role 任务的业务角色
+     * @param brole 任务的业务角色
      */
-    public void setRole(String role) {
-        this.role = role;
+    public void setBrole(String brole) {
+        this.brole = brole;
     }
 
     /**
@@ -155,6 +161,21 @@ public class Task extends Action implements Serializable {
      */
     public void setEvent(String event) {
         this.event = event;
+    }
+
+    /**
+     * 获取principle的值
+     */
+    public String getPrinciple() {
+        return principle;
+    }
+
+    /**
+     * 设置principle的值
+     * @param principle 当前任务的分配策略
+     */
+    public void setPrinciple(String principle) {
+        this.principle = principle;
     }
 
     /**
