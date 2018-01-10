@@ -56,14 +56,15 @@ class GroupModel:
         """
         Add a group by its data package.
         :param dp: Group instance
-        :return: if execution success
+        :return: global id
         """
         assert isinstance(dp, Group)
-        uid = "Dept_%s_%s" % (dp.Name, uuid.uuid1())
+        uid = "Dept_%s" % uuid.uuid1()
         sql = "INSERT INTO ren_group(id, name, description, note, belongToId, groupType) " \
               "VALUES ('%s', '%s', '%s', '%s', '%s', %s)" % \
               (uid, dp.Name, dp.Description, dp.Note, dp.BelongToGroupId, dp.GroupType)
-        return GroupModel._persistDAO.ExecuteSQL(sql, needRet=True)
+        GroupModel._persistDAO.ExecuteSQL(sql, needRet=False)
+        return uid
 
     @staticmethod
     def Remove(name):
@@ -150,6 +151,22 @@ class GroupModel:
         ret = GroupModel._persistDAO.ExecuteSQL(sql, needRet=True)
         if len(ret) > 0:
             return ret[0]["id"]
+        else:
+            return None
+
+    @staticmethod
+    def GetByGlobalId(gid):
+        """
+        Get package by global id.
+        :param gid: global id
+        :return: package instance
+        """
+        sql = "SELECT * FROM ren_group WHERE id = '%s'" % gid
+        ret = GroupModel._persistDAO.ExecuteSQL(sql, needRet=True)
+        if len(ret) > 0:
+            rd = GroupModel._dispatchRetObj(ret[0])
+            rd.GlobalId = ret[0]["id"]
+            return rd
         else:
             return None
 

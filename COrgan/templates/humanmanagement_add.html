@@ -54,17 +54,17 @@
                         <!-- BASIC -->
                         <div class="box border orange">
                             <div class="box-title">
-                                <h4><i class="fa fa-bars"></i>修改用户信息</h4>
+                                <h4><i class="fa fa-bars"></i>新建人力资源</h4>
                             </div>
                             <div class="box-body big">
-                                <form role="form" method="post" action="{{ url_for('performEditPlatformUser') }}">
+                                <form id="addUserForm" role="form" method="post" onsubmit="return check()" action="{{ url_for('performAddPlatformUser') }}">
                                     <div class="form-group">
-                                        <label for="tUsername">唯一用户名</label>
-                                        <input type="text" class="form-control" id="tUsername" value="{{ UserObj["username"] }}" disabled>
+                                        <label for="tUsername">唯一用户名(Unique username)</label>
+                                        <input name="f_username" type="text" class="form-control" id="tUsername">
                                     </div>
                                     <div class="form-group">
-                                        <label for="tPassword">密码</label>
-                                        <input name="f_nPassword" type="password" class="form-control" id="tPassword" value="" placeholder="未更改">
+                                        <label for="tPassword">密码(Password)</label>
+                                        <input name="f_nPassword" type="password" class="form-control" id="tPassword">
                                     </div>
                                     <div class="form-group">
                                         <label for="tType">用户类型(Type)</label>
@@ -74,7 +74,6 @@
                                         </select>
                                     </div>
                                     <br/><br/>
-                                    <input type="hidden" name="h_username" value="{{ UserObj["username"] }}">
                                     <button type="submit" class="btn btn-success col-md-3">提交</button>
                                     <br/>
                                 </form>
@@ -111,24 +110,23 @@
 
 
 	<script>
-        window.onload = initControls();
-        function initControls() {
-            jQuery("#active-userManagement").addClass("active");
-            jQuery("#selected-userManagement").addClass("selected");
-            var curType = {{ UserObj["level"] }};
-            if (curType === 1) {
-                document.getElementById('tType').options[1].selected = true;
+        function check(){
+            tusr = document.getElementById("tUsername").value;
+            tpwd = document.getElementById("tPassword").value;
+            if (tusr === '' || tpwd === '') {
+                alert("请完整填写表单！");
+                return false;
             }
             else {
-                document.getElementById('tType').options[0].selected = true;
+                return true;
             }
         }
 
-
 		jQuery(document).ready(function() {
-		    App.setPage("forms");  //Set current page
+            jQuery("#active-human").addClass("active");
+            jQuery("#selected-human").addClass("selected");
+			App.setPage("forms");  //Set current page
 			App.init(); //Initialise plugins and elements
 		});
-
 	</script>
 {% endblock %}

@@ -264,6 +264,16 @@ class CController:
         return True, CController._humanModel.RetrieveAll()
 
     @authorizeRequireWarp
+    def RetrieveHumanById(self, session, gid):
+        """
+
+        :param session:
+        :param gid:
+        :return:
+        """
+        return True, CController._humanModel.GetByGlobalId(gid)
+
+    @authorizeRequireWarp
     def AddAgent(self, session, name, location, rType, note):
         """
 
@@ -320,6 +330,16 @@ class CController:
         return True, CController._agentModel.RetrieveAll()
 
     @authorizeRequireWarp
+    def RetrieveAgentById(self, session, gid):
+        """
+
+        :param session:
+        :param gid:
+        :return:
+        """
+        return True, CController._agentModel.GetByGlobalId(gid)
+
+    @authorizeRequireWarp
     def RetrieveAllWorker(self, session):
         """
 
@@ -347,7 +367,7 @@ class CController:
         """
         if CController._groupModel.Contains(name) is True:
             return True, None
-        CController._groupModel.Add(name, description, note, belongToId, groupType)
+        return True, CController._groupModel.Add(name, description, note, belongToId, groupType)
 
     @authorizeRequireWarp
     def RemoveGroup(self, session, name):
@@ -389,6 +409,26 @@ class CController:
         :return:
         """
         return True, CController._groupModel.RetrieveAll()
+
+    @authorizeRequireWarp
+    def RetrieveGroupById(self, session, gid):
+        """
+
+        :param session:
+        :param gid:
+        :return:
+        """
+        return True, CController._groupModel.GetByGlobalId(gid)
+
+    @authorizeRequireWarp
+    def RetrieveGroupId(self, session, name):
+        """
+
+        :param session:
+        :param name:
+        :return:
+        """
+        return True, CController._groupModel.GetGlobalId(name)
 
     @authorizeRequireWarp
     def AddPosition(self, session, name, description, note, belongToId, reportToId):
@@ -448,6 +488,16 @@ class CController:
         return True, CController._positionModel.RetrieveAll()
 
     @authorizeRequireWarp
+    def RetrievePositionById(self, session, gid):
+        """
+
+        :param session:
+        :param gid:
+        :return:
+        """
+        return True, CController._positionModel.GetByGlobalId(gid)
+
+    @authorizeRequireWarp
     def AddCapability(self, session, name, description, note):
         """
 
@@ -491,7 +541,7 @@ class CController:
         :param name:
         :return:
         """
-        return True, CController._positionModel.Retrieve(name)
+        return True, CController._capabilityModel.Retrieve(name)
 
     @authorizeRequireWarp
     def RetrieveAllCapabilities(self, session):
@@ -500,7 +550,17 @@ class CController:
         :param session:
         :return:
         """
-        return True, CController._positionModel.RetrieveAll()
+        return True, CController._capabilityModel.RetrieveAll()
+
+    @authorizeRequireWarp
+    def RetrieveCapabilityById(self, session, gid):
+        """
+
+        :param session:
+        :param gid:
+        :return:
+        """
+        return True, CController._capabilityModel.GetByGlobalId(gid)
 
     """
     Connection Constrain Methods
@@ -621,6 +681,54 @@ class CController:
             print "Exception in COrgan authorization check: %s" % str(e)
         finally:
             return GCC.UNAUTHORIZED
+
+    @staticmethod
+    def GetGroupTypeEnum(typeStr):
+        # type: (str) -> int
+        """
+        Get GroupType enum value from its string.
+        :param typeStr: type string
+        :return: enum value
+        """
+        from Entity.Group import GroupType
+        if typeStr == "Department":
+            return GroupType.Department
+        elif typeStr == "Team":
+            return GroupType.Team
+        elif typeStr == "Group":
+            return GroupType.Group
+        elif typeStr == "Cluster":
+            return GroupType.Cluster
+        elif typeStr == "Division":
+            return GroupType.Division
+        elif typeStr == "Branch":
+            return GroupType.Branch
+        else:
+            return GroupType.Unit
+
+    @staticmethod
+    def ParseGroupTypeEnum(typeInt):
+        # type: (int) -> str
+        """
+        Parse GroupType String to its enum value.
+        :param typeInt: type value
+        :return: string
+        """
+        from Entity.Group import GroupType
+        if typeInt == GroupType.Department:
+            return "Department"
+        elif typeInt == GroupType.Team:
+            return "Team"
+        elif typeInt == GroupType.Group:
+            return "Group"
+        elif typeInt == GroupType.Cluster:
+            return "Cluster"
+        elif typeInt == GroupType.Division:
+            return "Division"
+        elif typeInt == GroupType.Branch:
+            return "Branch"
+        else:
+            return "Unit"
 
     @authorizeRequireWarp
     def EchoTest(self, session, pr):

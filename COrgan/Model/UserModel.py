@@ -49,7 +49,7 @@ class UserModel:
         t = time.strftime("%Y-%m-%d %H:%M:%S", time.localtime(time.time()))
         sql = """INSERT INTO ren_user (username, password, level, state, createtimestamp) 
                  VALUES ('%s', '%s', %s, %s, '%s')""" % (username, password, level, 0, t)
-        return UserModel._persistDAO.ExecuteSQL(sql, needRet=True)
+        return UserModel._persistDAO.ExecuteSQL(sql, needRet=False)
 
     @staticmethod
     def Delete(username):

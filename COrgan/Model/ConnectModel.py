@@ -45,7 +45,7 @@ class ConnectModel:
         """
         sql = "INSERT INTO ren_connect(workerId, belongToGroupId) VALUES ('%s', '%s')" % \
               (workerId, groupId)
-        return ConnectModel._persistDAO.ExecuteSQL(sql, needRet=True)
+        return ConnectModel._persistDAO.ExecuteSQL(sql, needRet=False)
 
     @staticmethod
     def Remove(workerId, groupId):
