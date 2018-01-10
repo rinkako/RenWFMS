@@ -114,7 +114,7 @@ public class Send extends NamelistHolder implements ContentContainer {
 
 
     /**
-     * 我们消息发送机制 扩展的内容
+     * BOO引擎的消息发送机制 扩展的内容
      */
     private String messageMode;
 

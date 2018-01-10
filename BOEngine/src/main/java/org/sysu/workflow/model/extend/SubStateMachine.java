@@ -1,10 +1,12 @@
 package org.sysu.workflow.model.extend;
 
+import org.sysu.workflow.bridge.InheritableContext;
 import org.sysu.workflow.engine.InstanceManager;
 import org.sysu.workflow.engine.TimeInstanceTree;
 import org.sysu.workflow.engine.TimeTreeNode;
 import org.sysu.workflow.env.MulitStateMachineDispatcher;
 import org.sysu.workflow.env.SimpleErrorReporter;
+import org.sysu.workflow.io.BOInheritHandler;
 import org.sysu.workflow.io.SCXMLReader;
 import org.sysu.workflow.*;
 import org.sysu.workflow.model.*;
@@ -101,7 +103,7 @@ public class SubStateMachine extends NamelistHolder implements PathResolverHolde
             Context ctx = exctx.getContext(parentState);
             ctx.setLocal(getNamespacesKey(), getNamespaces());
             Map<String, Object> payloadDataMap = new LinkedHashMap<String, Object>();
-            addParamsToPayload(exctx, payloadDataMap);
+            addParamsToPayload(exctx, payloadDataMap);//将param元素中的参数添加到一个map中
             // get resource file url
             //final URL url = this.getClass().getClassLoader().getResource(getSrc());
 
@@ -131,17 +133,17 @@ public class SubStateMachine extends NamelistHolder implements PathResolverHolde
                 SCXMLExecutor executor = new SCXMLExecutor(evaluator, new MulitStateMachineDispatcher(), new SimpleErrorReporter(), null, currentExecutionContext.RootTid);
                 executor.setStateMachine(scxml);
                 System.out.println("Create sub state machine from: " + url.getFile());
-                // init execution context
+                //初始化执行上下文
                 Context rootContext = evaluator.newContext(null);
                 for (Map.Entry<String,Object> entry : payloadDataMap.entrySet()){
                     rootContext.set(entry.getKey(), entry.getValue());
                 }
                 executor.setRootContext(rootContext);
                 executor.setExecutorIndex(iTree.Root.getExect().getSCXMLExecutor().getExecutorIndex());
-                // start dash sub state machine
+                // 启动状态机执行器
                 executor.go();
-                // maintain the relation of this sub state machine on the instance tree
 
+                // maintain the relation of this sub state machine on the instance tree
                 TimeTreeNode subNode = new TimeTreeNode(executor.getExctx().getStateMachine().getName(), executor.Tid, executor.getExctx(), curNode);
                 curNode.AddChild(subNode);
 

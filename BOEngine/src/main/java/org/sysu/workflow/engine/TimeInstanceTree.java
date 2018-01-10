@@ -34,6 +34,7 @@ public class TimeInstanceTree {
         }
         Stack<TimeTreeNode> searchStack = new Stack<TimeTreeNode>();
         searchStack.push(this.Root);
+        //深度优先搜索
         while (!searchStack.empty()) {
             TimeTreeNode curNode = searchStack.pop();
             if (curNode.getTimeId().equals(tid)) {

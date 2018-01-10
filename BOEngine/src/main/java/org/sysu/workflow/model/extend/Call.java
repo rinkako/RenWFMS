@@ -7,6 +7,7 @@ import org.sysu.workflow.ActionExecutionContext;
 import org.sysu.workflow.Context;
 import org.sysu.workflow.model.EnterableState;
 import org.sysu.workflow.model.ModelException;
+import org.sysu.workflow.model.NamelistHolder;
 import org.sysu.workflow.model.ParamsContainer;
 
 import java.io.Serializable;
@@ -18,7 +19,7 @@ import java.util.Map;
  * Call标签类
  * Created by Rinkako on 2017/3/8.
  */
-public class Call extends ParamsContainer implements Serializable {
+public class Call extends NamelistHolder implements Serializable {
     /**
      * Serial version UID.
      */
@@ -28,6 +29,11 @@ public class Call extends ParamsContainer implements Serializable {
      * The name of the task or the sub process to call
      */
     private String name;
+
+    /**
+     * How many task instances ought to be create
+     */
+    private int instances = 1;
 
     /**
      * Get the value of name
@@ -45,6 +51,21 @@ public class Call extends ParamsContainer implements Serializable {
         this.name = name;
     }
 
+    /**
+     * Get the value of instance
+     * @return value of instance property
+     */
+    public int getInstances() {
+        return instances;
+    }
+
+    /**
+     * Set the value of instance
+     * @param instances the instance value to set, represent how many task instances ought to be created
+     */
+    public void setInstances(int instances) {
+        this.instances = instances;
+    }
 
     /**
      * Execute RPC
@@ -73,7 +94,7 @@ public class Call extends ParamsContainer implements Serializable {
                     if (t.getName().equals(this.name)) {
                         // Send Message to APP
                         EngineBridge.QuickEnqueueBOMessage(scxmlExecContext.getSCXMLExecutor().getExecutorIndex(),
-                                this.name, payloadDataMap, t.getRole(), t.getEvent());
+                                this.name, payloadDataMap, t.getBrole(), t.getEvent());
                         successFlag = true;
                         break;
                     }

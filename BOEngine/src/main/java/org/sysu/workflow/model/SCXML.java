@@ -130,7 +130,7 @@ public class SCXML implements Serializable, Observable,
 
     private InheritableContext inheritedContext;
 
-    private String baseBusinessObjectName = null;
+    private String baseBusinessObjectName;
 
     /**
      * Constructor.
