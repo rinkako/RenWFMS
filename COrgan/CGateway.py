@@ -8,6 +8,8 @@
 import json
 from datetime import datetime
 import GlobalConfigContext as GCC
+from CController import CController
+from Utility.EncryptUtil import EncryptUtil
 
 
 class CGateway:
@@ -111,3 +113,36 @@ class CGateway:
         if flagVal is False:
             return CGateway._ExceptionResponse()
         return None
+
+    """
+    Restful API Gateway
+    """
+    @staticmethod
+    def Connect(**argd):
+        flag, ret = CController.Connect(argd["username"], EncryptUtil.EncryptSHA256(argd["password"]))
+        if flag is False:
+            return CGateway._ExceptionResponse()
+        if ret is None:
+            return CGateway._FailureResponse({"message": "invalid user id or password"})
+        return CGateway._SuccessResponse({"session": ret})
+
+    @staticmethod
+    def CheckConnect(**argd):
+        flag, ret = CController.CheckConnect(argd["session"])
+        xFlag = CGateway._HandleExceptionAndUnauthorized(flag, ret, argd["session"])
+        if xFlag is not None:
+            return xFlag
+        return CGateway._SuccessResponse() if ret is True else CGateway._FailureResponse()
+
+    @staticmethod
+    def Disconnect(**argd):
+        flag, ret = CController.Disconnect(argd["session"])
+        xFlag = CGateway._HandleExceptionAndUnauthorized(flag, ret, argd["session"])
+        if xFlag is not None:
+            return xFlag
+        return CGateway._SuccessResponse() if ret is True else CGateway._FailureResponse()
+
+
+if __name__ == '__main__':
+    r = EncryptUtil.EncryptSHA256('123456')
+    pass

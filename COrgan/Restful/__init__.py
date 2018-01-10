@@ -8,8 +8,8 @@
 This module is a Flask blueprint for web service request handing,
 all RESTful APIs are defined here.
 """
-from functools import wraps
 from flask import Blueprint, request, redirect, url_for, session
+from CGateway import CGateway
 
 restfulBp = Blueprint('Restful', __name__,
                       template_folder='templates',
@@ -68,7 +68,20 @@ def home():
 def connect():
     username = request.values.get("username")
     password = request.values.get("password")
+    argd = {"#username": username,
+            "#password": password}
+    return StartDash(argd, CGateway.Connect, _ArgsException)
 
 
+@restfulBp.route("/disconnect/", methods=["GET", "POST"])
+def disconnect():
+    sid = request.values.get('session')
+    argd = {"#session": sid}
+    return StartDash(argd, CGateway.Disconnect, _ArgsException)
 
 
+@restfulBp.route("/check/", methods=["GET", "POST"])
+def check():
+    sid = request.values.get('session')
+    argd = {"#session": sid}
+    return StartDash(argd, CGateway.CheckConnect, _ArgsException)

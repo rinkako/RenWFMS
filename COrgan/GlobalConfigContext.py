@@ -16,6 +16,7 @@ RDBPASSWORD = '43420024'
 RDBPORT = '3306'
 RDBPATH = 'rencorgan'
 UNAUTHORIZED = "__COrgan_Unauthorized__"
+LPWDSALT = 'LuMiNous'
 
 CONFIG_ORGANIZATION_KEY = 'organizationName'
 CONFIG_DATA_UPDATE_ROUTER = 'updateNotifyRouterUrl'

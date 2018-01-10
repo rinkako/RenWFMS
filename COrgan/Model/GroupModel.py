@@ -153,7 +153,6 @@ class GroupModel:
         else:
             return None
 
-
     @staticmethod
     def _dispatchRetObj(retObj):
         """
