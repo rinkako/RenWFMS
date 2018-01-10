@@ -49,7 +49,7 @@ def userManagement():
     flag, res = core.PlatformUserGetAll('testadmin')
     if flag is False:
         return redirect(url_for('AccessErrorPage', dt='x'))
-    t = {'L_PageTitle': u'用户管理',
+    t = {'L_PageTitle': u'授权管理',
          'L_PageDescription': u'管理COrgan中的授权访问的用户账户',
          'userList': res}
     return render_template('usermanagement.html', **t)
@@ -57,7 +57,7 @@ def userManagement():
 
 @app.route('/userManagement/add/')
 def addPlatformUser():
-    t = {'L_PageTitle': u'添加授权用户',
+    t = {'L_PageTitle': u'添加授权',
          'L_PageDescription': u'为COrgan添加一个授权访问的用户账户'}
     return render_template('usermanagement_add.html', **t)
 
@@ -88,7 +88,7 @@ def editPlatformUser(uname):
     if flag is False:
         return redirect(url_for('AccessErrorPage', dt='x'))
     t = {'L_PageTitle': u'编辑: ' + uname,
-         'L_PageDescription': u'编辑用户授权',
+         'L_PageDescription': u'编辑授权',
          'UserObj': res}
     return render_template('usermanagement_edit.html', **t)
 

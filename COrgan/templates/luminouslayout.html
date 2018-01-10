@@ -73,7 +73,7 @@
     </div>
 </header>
 <!--/HEADER -->
-<div class="copyrights">Luminous Project 2017</div>
+<div class="copyrights">Ren Project 2018</div>
 <!-- PAGE -->
 <section id="page">
     <!-- SIDEBAR -->
@@ -90,39 +90,57 @@
                 <li id="active-home">
                     <a href="{{ url_for('home') }}">
                         <i class="fa fa-tachometer fa-fw"></i>
-                        <span class="menu-text">欢迎</span>
+                        <span class="menu-text">Welcome</span>
                         <span id="selected-home"></span>
                     </a>
                 </li>
 
                 <li id="active-timers">
                     <a class="" href="{{ url_for('home') }}">
-                        <i class="fa fa-clock-o fa-fw"></i>
-                        <span class="menu-text">人力资源</span>
+                        <i class="fa fa-user fa-fw"></i>
+                        <span class="menu-text">Human</span>
                         <span id="selected-timers"></span>
                     </a>
                 </li>
 
                 <li id="active-dataDictionary">
                     <a class="" href="{{ url_for('home') }}">
-                        <i class="fa fa-book fa-fw"></i>
-                        <span class="menu-text">Agent资源</span>
+                        <i class="fa fa-laptop fa-fw"></i>
+                        <span class="menu-text">Agent</span>
                         <span id="selected-dataDictionary"></span>
                     </a>
                 </li>
 
-                <li id="active-dataBindings">
-                    <a class="" href="{{ url_for('home') }}">
+                <li id="active-dashQuery" class="has-sub">
+                    <a class="" href="javascript:;">
                         <i class="fa fa-cubes fa-fw"></i>
-                        <span class="menu-text">组织和能力</span>
-                        <span id="selected-dataBindings"></span>
+                        <span class="menu-text">Organizable</span>
+                        <span class="arrow"></span>
+                        <span id="selected-dashQuery"></span>
                     </a>
+                    <ul class="sub">
+                        <li id="current-dashQuery-record">
+                            <a class="" href="{{ url_for('home') }}">
+                                <span class="sub-menu-text">Group</span>
+                            </a>
+                        </li>
+                        <li id="current-dashQuery-new">
+                            <a class="" href="{{ url_for('home') }}">
+                                <span class="sub-menu-text">Position</span>
+                            </a>
+                        </li>
+                        <li id="current-dashProcedureQuery-new">
+                            <a class="" href="{{ url_for('home') }}">
+                                <span class="sub-menu-text">Capability</span>
+                            </a>
+                        </li>
+                    </ul>
                 </li>
 
                 <li id="active-userManagement">
                     <a class="" href="{{ url_for('userManagement') }}">
-                        <i class="fa fa-user fa-fw"></i>
-                        <span class="menu-text">授权管理</span>
+                        <i class="fa fa-key fa-fw"></i>
+                        <span class="menu-text">Authority Management</span>
                         <span id="selected-userManagement"></span>
                     </a>
                 </li>
