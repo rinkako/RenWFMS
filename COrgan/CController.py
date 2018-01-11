@@ -576,13 +576,24 @@ class CController:
     Connection Constrain Methods
     """
     @authorizeRequireWarp
+    def RemoveHumanConnection(self, session, personId):
+        """
+
+        :param session:
+        :param personId:
+        :return:
+        """
+        try:
+            flag, human = self.RetrieveHuman(session, personId)
+            if flag is False or human is None:
+                return False, None
+            CController._connectModel.RemoveByWorker(human.GlobalId)
+            return True, True
+        except:
+            return False, False
+
     def RetrieveHumanInGroup(self, session, groupName):
         pass
-        pass
-        gid = CController._groupModel.GetGlobalId(groupName)
-        if gid is None:
-            return True, None
-        return True, None
 
     def RetrieveAgentInGroup(self, session, groupName):
         pass
@@ -593,11 +604,80 @@ class CController:
     def RetrieveAgentInPosition(self, session, posName):
         pass
 
+    @authorizeRequireWarp
     def RetrieveHumanInWhatGroup(self, session, personId):
-        pass
+        """
 
+        :param session:
+        :param personId:
+        :return:
+        """
+        flag, human = self.RetrieveHuman(session, personId)
+        if flag is False or human is None:
+            return False, None
+        cons = CController._connectModel.RetrieveByWorker(human.GlobalId)
+        filteredId = []
+        for kvp in cons:
+            groupKey = kvp["belongToGroupId"]
+            if groupKey.startswith("Dept_") is True:
+                filteredId.append(groupKey)
+        retList = []
+        for gk in filteredId:
+            flag, groupObj = self.RetrieveGroupById(session, gk)
+            if flag is False or groupObj is None:
+                return False, None
+            retList.append(groupObj.Name)
+        return True, retList
+
+    @authorizeRequireWarp
     def RetrieveHumanInWhatPosition(self, session, personId):
-        pass
+        """
+
+        :param session:
+        :param personId:
+        :return:
+        """
+        flag, human = self.RetrieveHuman(session, personId)
+        if flag is False or human is None:
+            return False, None
+        cons = CController._connectModel.RetrieveByWorker(human.GlobalId)
+        filteredId = []
+        for kvp in cons:
+            groupKey = kvp["belongToGroupId"]
+            if groupKey.startswith("Pos_") is True:
+                filteredId.append(groupKey)
+        retList = []
+        for gk in filteredId:
+            flag, groupObj = self.RetrievePositionById(session, gk)
+            if flag is False or groupObj is None:
+                return False, None
+            retList.append(groupObj.Name)
+        return True, retList
+
+    @authorizeRequireWarp
+    def RetrieveHumanWithWhatCapability(self, session, personId):
+        """
+
+        :param session:
+        :param personId:
+        :return:
+        """
+        flag, human = self.RetrieveHuman(session, personId)
+        if flag is False or human is None:
+            return False, None
+        cons = CController._connectModel.RetrieveByWorker(human.GlobalId)
+        filteredId = []
+        for kvp in cons:
+            groupKey = kvp["belongToGroupId"]
+            if groupKey.startswith("Capa_") is True:
+                filteredId.append(groupKey)
+        retList = []
+        for gk in filteredId:
+            flag, groupObj = self.RetrieveCapabilityById(session, gk)
+            if flag is False or groupObj is None:
+                return False, None
+            retList.append(groupObj.Name)
+        return True, retList
 
     def SpanTreeOfGroup(self, session, groupName):
         pass

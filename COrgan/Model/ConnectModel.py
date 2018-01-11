@@ -53,10 +53,18 @@ class ConnectModel:
         Remove a connection.
         :param workerId: worker id
         :param groupId: organizable id
-        :return: a list of connection dictionary
         """
         sql = "DELETE FROM ren_connect WHERE workerId = '%s' AND belongToGroupId = '%s'" % \
               (workerId, groupId)
+        ConnectModel._persistDAO.ExecuteSQL(sql, needRet=False)
+
+    @staticmethod
+    def RemoveByWorker(workerId):
+        """
+        Remove connections of worker.
+        :param workerId: worker id
+        """
+        sql = "DELETE FROM ren_connect WHERE workerId = '%s'" % workerId
         ConnectModel._persistDAO.ExecuteSQL(sql, needRet=False)
 
     @staticmethod

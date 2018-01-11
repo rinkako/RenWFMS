@@ -59,19 +59,20 @@
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        {% for dictItem in userList %}
+                                        {% for human in userList %}
                                             <tr class="gradeX">
-                                                <td> {{ dictItem["person_id"] }} </td>
-                                                <td> {{ dictItem["firstname"] }} {{ dictItem["lastname"] }} </td>
-                                                <td> pos. </td>
-                                                <td> grp. </td>
-                                                <td> cap. </td>
+                                                <td> {{ human.PersonId }} </td>
+                                                <td> {{ human.FirstName }} {{ human.LastName }} </td>
+                                                <td> {{ human.Note }} </td>
+                                                <td> {{ positionList[loop.index - 1] | safe }} </td>
+                                                <td> {{ groupList[loop.index - 1] | safe }} </td>
+                                                <td> {{ capabilityList[loop.index - 1] | safe }} </td>
                                                 <td class="center">
-                                                    <a href="{{ url_for('userManagement') + "edit/" + dictItem["person_id"]}}">
+                                                    <a href="{{ url_for('humanManagement') + "edit/" + human.PersonId }}">
                                                     <button class="btn btn-xs btn-info">编辑</button>
                                                     </a>
                                                     &nbsp;
-                                                    <button onClick="delConfirm('{{ url_for('userManagement') + "performdelete/" + dictItem["username"]}}')" class="btn btn-xs btn-danger">删除</button>
+                                                    <button onClick="delConfirm('{{ url_for('humanManagement') + "performdelete/" + human.PersonId }}')" class="btn btn-xs btn-danger">删除</button>
                                                 </td>
                                             </tr>
                                         {% endfor %}

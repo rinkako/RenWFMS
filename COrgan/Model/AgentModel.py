@@ -186,7 +186,8 @@ class AgentModel:
         :return: Agent instance
         """
         assert retObj is not None
-        retAgent = Agent(retObj["id"], retObj["name"], retObj["location"], retObj["note"], retObj["type"])
+        retAgent = Agent(retObj["name"], retObj["location"], retObj["note"], retObj["type"])
+        retAgent.GlobalId = retObj["id"]
         return retAgent
 
     _persistDAO = None

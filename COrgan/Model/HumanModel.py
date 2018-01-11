@@ -187,6 +187,7 @@ class HumanModel:
         """
         assert retObj is not None
         retHuman = Human(retObj["person_id"], retObj["firstname"], retObj["lastname"], retObj["note"])
+        retHuman.GlobalId = retObj["id"]
         return retHuman
 
     """
