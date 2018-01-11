@@ -23,5 +23,5 @@ class Position(Organizable):
         :param belongTo: belong to which group
         """
         Organizable.__init__(self, "", name, description, note)
-        self.BelongToDepartment = belongTo
+        self.BelongToGroup = belongTo
         self.ReportToPosition = reportTo

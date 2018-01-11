@@ -498,6 +498,16 @@ class CController:
         return True, CController._positionModel.GetByGlobalId(gid)
 
     @authorizeRequireWarp
+    def RetrievePositionId(self, session, name):
+        """
+
+        :param session:
+        :param name:
+        :return:
+        """
+        return True, CController._positionModel.GetGlobalId(name)
+
+    @authorizeRequireWarp
     def AddCapability(self, session, name, description, note):
         """
 

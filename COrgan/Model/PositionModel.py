@@ -62,7 +62,7 @@ class PositionModel:
         uid = "Pos_%s" % uuid.uuid1()
         sql = "INSERT INTO ren_position(id, name, description, note, belongToId, reportToId) " \
               "VALUES ('%s', '%s', '%s', '%s', '%s', '%s')" % \
-              (uid, dp.Name, dp.Description, dp.Note, dp.BelongToDepartment, dp.ReportToPosition)
+              (uid, dp.Name, dp.Description, dp.Note, dp.BelongToGroup, dp.ReportToPosition)
         PositionModel._persistDAO.ExecuteSQL(sql, needRet=False)
         return uid
 

@@ -190,7 +190,7 @@ def groupManagement():
     belongToList = []
     typeList = []
     for group in res:
-        if group.BelongToGroupId is not None:
+        if group.BelongToGroupId is not '':
             xflag, belonger = core.RetrieveGroupById('testadmin', group.BelongToGroupId)
             if xflag is False:
                 redirect(url_for('AccessErrorPage', dt='x'))
@@ -303,6 +303,172 @@ def performDeleteGroup(uname):
     if (flag & res) is False:
         return redirect(url_for('AccessErrorPage', dt='x'))
     return redirect(url_for('groupManagement'))
+
+
+"""
+Position Resources Management Routers
+"""
+
+
+@app.route('/position/')
+def positionManagement():
+    flag, res = core.RetrieveAllPosition('testadmin')
+    if flag is False:
+        return redirect(url_for('AccessErrorPage', dt='x'))
+    belongToList = []
+    reportToList = []
+    for pos in res:
+        from Entity.Position import Position
+        assert isinstance(pos, Position)
+        # report
+        if pos.ReportToPosition != '':
+            xflag, reporter = core.RetrievePositionById('testadmin', pos.ReportToPosition)
+            if xflag is False:
+                redirect(url_for('AccessErrorPage', dt='x'))
+            if reporter is not None:
+                reportToList.append(reporter.Name)
+            else:
+                reportToList.append('')
+        else:
+            reportToList.append('')
+        # belong
+        if pos.BelongToGroup != '':
+            xflag, belonger = core.RetrieveGroupById('testadmin', pos.BelongToGroup)
+            if xflag is False:
+                redirect(url_for('AccessErrorPage', dt='x'))
+            if belonger is not None:
+                belongToList.append(belonger.Name)
+            else:
+                belongToList.append('')
+        else:
+            belongToList.append('')
+    t = {'L_PageTitle': u'职位管理',
+         'L_PageDescription': u'管理组织中的职位清单',
+         'bindList': res,
+         'belongToList': belongToList,
+         'reportToList': reportToList}
+    return render_template('positionmanagement.html', **t)
+
+
+@app.route('/position/add')
+def addPosition():
+    gflag, groups = core.RetrieveAllGroup('testadmin')
+    pflag, positions = core.RetrieveAllPosition('testadmin')
+    if (gflag & pflag) is False:
+        return redirect(url_for('AccessErrorPage', dt='x'))
+    t = {'L_PageTitle': u'添加职位',
+         'L_PageDescription': u'为组织添加一个职务',
+         'groupList': groups,
+         'positionList': positions}
+    return render_template('positionmanagement_add.html', **t)
+
+
+@app.route('/position/performadd/', methods=["POST"])
+def performAddPosition():
+    reportToId = request.form['f_report']
+    reportGid = ''
+    if reportToId != '(None)':
+        xflag, reportGid = core.RetrievePositionId('testadmin', reportToId)
+        if xflag is False or reportGid is None:
+            return redirect(url_for('AccessErrorPage', dt='x'))
+    belongToId = request.form['f_belong']
+    xflag, belongGid = core.RetrieveGroupId('testadmin', belongToId)
+    if xflag is False or belongGid is None:
+        return redirect(url_for('AccessErrorPage', dt='x'))
+    flag, res = core.AddPosition('testadmin',
+                                 request.form['f_positionname'],
+                                 request.form['f_description'],
+                                 request.form['f_note'],
+                                 belongGid,
+                                 reportGid)
+    if flag is False or res is None:
+        return redirect(url_for('AccessErrorPage', dt='add'))
+    return redirect(url_for('positionManagement'))
+
+
+@app.route('/position/edit/<uname>/', methods=["GET"])
+def editPosition(uname):
+    flag, res = core.RetrievePosition('testadmin', uname)
+    if flag is False or res is None:
+        return redirect(url_for('AccessErrorPage', dt='x'))
+    flag, grpList = core.RetrieveAllGroup('testadmin')
+    if flag is False or grpList is None:
+        return redirect(url_for('AccessErrorPage', dt='x'))
+    flag, posList = core.RetrieveAllPosition('testadmin')
+    if flag is False or posList is None:
+        return redirect(url_for('AccessErrorPage', dt='x'))
+    # remove self
+    rIdx = None
+    for pos in posList:
+        if pos.Name == uname:
+            rIdx = pos
+            break
+    if rIdx is not None:
+        posList.remove(rIdx)
+    else:
+        return redirect(url_for('AccessErrorPage', dt='x'))
+    belongIdx = 0
+    flag, belongToObj = core.RetrieveGroupById('testadmin', res.BelongToGroup)
+    if flag is False or belongToObj is None:
+        return redirect(url_for('AccessErrorPage', dt='x'))
+    for x in range(0, len(grpList)):
+        if grpList[x].Name == belongToObj.Name:
+            belongIdx = x
+            break
+    reportIdx = 0
+    if res.ReportToPosition != '':
+        flag, reportToObj = core.RetrievePositionById('testadmin', res.ReportToPosition)
+        if flag is False or reportToObj is None:
+            return redirect(url_for('AccessErrorPage', dt='x'))
+        for x in range(0, len(posList)):
+            if posList[x].Name == reportToObj.Name:
+                reportIdx = x + 1
+                break
+    t = {'L_PageTitle': u'编辑: ' + uname,
+         'L_PageDescription': u'编辑子组描述项',
+         'packItem': res,
+         'groupList': grpList,
+         'positionList': posList,
+         'belongIdx': belongIdx,
+         'reportIdx': reportIdx}
+    return render_template('positionmanagement_edit.html', **t)
+
+
+@app.route('/position/performedit/', methods=["POST"])
+def performEditPosition():
+    belongToId = request.form['f_belong']
+    xflag, belongGid = core.RetrieveGroupId('testadmin', belongToId)
+    if xflag is False or belongGid is None:
+        return redirect(url_for('AccessErrorPage', dt='x'))
+    belongToIdText = "'%s'" % belongGid if belongGid is not None else "''"
+
+    reportToId = request.form['f_report']
+    reportGid = None
+    if reportToId != '(None)':
+        xflag, reportGid = core.RetrievePositionId('testadmin', reportToId)
+        if xflag is False or reportGid is None:
+            return redirect(url_for('AccessErrorPage', dt='x'))
+    reportToIdText = "'%s'" % reportGid if reportGid is not None else "''"
+    updateDict = {
+        "description": "'%s'" % request.form['f_description'],
+        "note": "'%s'" % request.form['f_note'],
+        "belongToId": belongToIdText,
+        "reportToId": reportToIdText
+    }
+    flag, res = core.UpdatePosition('testadmin',
+                                    request.form['h_positionname'],
+                                    **updateDict)
+    if flag is False:
+        return redirect(url_for('AccessErrorPage', dt='x'))
+    return redirect(url_for('positionManagement'))
+
+
+@app.route('/position/performdelete/<uname>/', methods=["GET"])
+def performDeletePosition(uname):
+    flag, res = core.RemovePosition('testadmin', uname)
+    if (flag & res) is False:
+        return redirect(url_for('AccessErrorPage', dt='x'))
+    return redirect(url_for('positionManagement'))
 
 
 """
