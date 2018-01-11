@@ -479,7 +479,7 @@ Human Resources Management Routers
 @app.route('/human/')
 def humanManagement():
     flag, res = core.RetrieveAllHuman('testadmin')
-    if flag is False:
+    if flag is False or res is None:
         return redirect(url_for('AccessErrorPage', dt='x'))
     t = {'L_PageTitle': u'人力资源管理',
          'L_PageDescription': u'管理组织中的人力资源',
@@ -489,9 +489,45 @@ def humanManagement():
 
 @app.route('/human/add/')
 def addHuman():
+    flag1, groupList = core.RetrieveAllGroup('testadmin')
+    flag2, positionList = core.RetrieveAllPosition('testadmin')
+    flag3, capabilityList = core.RetrieveAllCapabilities('testadmin')
+    if (flag1 & flag2 & flag3) is False or groupList is None or positionList is None or capabilityList is None:
+        return redirect(url_for('AccessErrorPage', dt='x'))
     t = {'L_PageTitle': u'添加人力',
-         'L_PageDescription': u'为组织添加一个人力资源'}
+         'L_PageDescription': u'为组织添加一个人力资源',
+         'groupList': groupList,
+         'positionList': positionList,
+         'capabilityList': capabilityList}
     return render_template('humanmanagement_add.html', **t)
+
+
+@app.route('/human/performadd/', methods=["POST"])
+def performAddHuman():
+    pid = request.form['f_personid']
+    flag, res = core.AddHuman('testadmin',
+                              pid,
+                              request.form['f_firstname'],
+                              request.form['f_lastname'],
+                              request.form['f_note'])
+    if flag is False or res is None:
+        return redirect(url_for('AccessErrorPage', dt='add'))
+    capaVec = request.form['output_capability'].split(';')
+    groupVec = request.form['output_group'].split(';')
+    posVec = request.form['output_position'].split(';')
+    for cp in capaVec:
+        xflag, xret = core.AddHumanCapability('testadmin', pid, cp)
+        if xflag is False or xret is None:
+            return redirect(url_for('AccessErrorPage', dt='x'))
+    for gr in groupVec:
+        xflag, xret = core.AddHumanToGroup('testadmin', pid, gr)
+        if xflag is False or xret is None:
+            return redirect(url_for('AccessErrorPage', dt='x'))
+    for ps in posVec:
+        xflag, xret = core.AddHumanPosition('testadmin', pid, ps)
+        if xflag is False or xret is None:
+            return redirect(url_for('AccessErrorPage', dt='x'))
+    return redirect(url_for('humanManagement'))
 
 
 if __name__ == '__main__':

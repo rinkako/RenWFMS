@@ -611,17 +611,101 @@ class CController:
     def SpanTreeOfOrganizationInPosition(self, session):
         pass
 
+    @authorizeRequireWarp
     def AddHumanToGroup(self, session, personId, groupName):
-        pass
+        """
 
+        :param session:
+        :param personId:
+        :param groupName:
+        :return:
+        """
+        flag1, human = self.RetrieveHuman(session, personId)
+        flag2, group = self.RetrieveGroup(session, groupName)
+        if (flag1 & flag2) is False or human is None or group is None:
+            return False, None
+        CController._connectModel.Add(human.GlobalId, group.GlobalId)
+        return True, True
+
+    @authorizeRequireWarp
     def RemoveHumanFromGroup(self, session, personId, groupName):
-        pass
+        """
 
-    def AddHumanPosition(self, session, personId, posName):
-        pass
+        :param session:
+        :param personId:
+        :param groupName:
+        :return:
+        """
+        flag1, human = self.RetrieveHuman(session, personId)
+        flag2, group = self.RetrieveGroup(session, groupName)
+        if (flag1 & flag2) is False or human is None or group is None:
+            return False, None
+        CController._connectModel.Remove(human.GlobalId, group.GlobalId)
+        return True, True
 
-    def RemoveHumanPosition(self, session, personId, posName):
-        pass
+    @authorizeRequireWarp
+    def AddHumanPosition(self, session, personId, positionName):
+        """
+
+        :param session:
+        :param personId:
+        :param positionName:
+        :return:
+        """
+        flag1, human = self.RetrieveHuman(session, personId)
+        flag2, position = self.RetrievePosition(session, positionName)
+        if (flag1 & flag2) is False or human is None or position is None:
+            return False, None
+        CController._connectModel.Add(human.GlobalId, position.GlobalId)
+        return True, True
+
+    @authorizeRequireWarp
+    def RemoveHumanPosition(self, session, personId, positionName):
+        """
+
+        :param session:
+        :param personId:
+        :param positionName:
+        :return:
+        """
+        flag1, human = self.RetrieveHuman(session, personId)
+        flag2, position = self.RetrievePosition(session, positionName)
+        if (flag1 & flag2) is False or human is None or position is None:
+            return False, None
+        CController._connectModel.Remove(human.GlobalId, position.GlobalId)
+        return True, True
+
+    @authorizeRequireWarp
+    def AddHumanCapability(self, session, personId, capabilityName):
+        """
+
+        :param session:
+        :param personId:
+        :param capabilityName:
+        :return:
+        """
+        flag1, human = self.RetrieveHuman(session, personId)
+        flag2, capability = self.RetrieveCapability(session, capabilityName)
+        if (flag1 & flag2) is False or human is None or capability is None:
+            return False, None
+        CController._connectModel.Add(human.GlobalId, capability.GlobalId)
+        return True, True
+
+    @authorizeRequireWarp
+    def RemoveHumanCapability(self, session, personId, capabilityName):
+        """
+
+        :param session:
+        :param personId:
+        :param capabilityName:
+        :return:
+        """
+        flag1, human = self.RetrieveHuman(session, personId)
+        flag2, capability = self.RetrieveCapability(session, capabilityName)
+        if (flag1 & flag2) is False or human is None or capability is None:
+            return False, None
+        CController._connectModel.Remove(human.GlobalId, capability.GlobalId)
+        return True, True
 
     """
     COrgan Configuration 

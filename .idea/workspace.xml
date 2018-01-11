@@ -2,47 +2,11 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="388c6061-8899-47cb-8152-3b3371cb9ca0" name="Default" comment="">
-      <change beforePath="" afterPath="$PROJECT_DIR$/COrgan/templates/positionmanagement.html" />
-      <change beforePath="" afterPath="$PROJECT_DIR$/COrgan/templates/positionmanagement_add.html" />
-      <change beforePath="" afterPath="$PROJECT_DIR$/COrgan/templates/positionmanagement_edit.html" />
-      <change beforePath="$PROJECT_DIR$/.gitignore" afterPath="$PROJECT_DIR$/.gitignore" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
       <change beforePath="$PROJECT_DIR$/COrgan/CController.py" afterPath="$PROJECT_DIR$/COrgan/CController.py" />
       <change beforePath="$PROJECT_DIR$/COrgan/COrganApp.py" afterPath="$PROJECT_DIR$/COrgan/COrganApp.py" />
-      <change beforePath="$PROJECT_DIR$/COrgan/Entity/Position.py" afterPath="$PROJECT_DIR$/COrgan/Entity/Position.py" />
-      <change beforePath="$PROJECT_DIR$/COrgan/Model/PositionModel.py" afterPath="$PROJECT_DIR$/COrgan/Model/PositionModel.py" />
-      <change beforePath="$PROJECT_DIR$/COrgan/templates/luminouslayout.html" afterPath="$PROJECT_DIR$/COrgan/templates/luminouslayout.html" />
-      <change beforePath="$PROJECT_DIR$/RenResourceService/target/classes/org/sysu/renResourcing/GlobalDataContext.class" afterPath="" />
-      <change beforePath="$PROJECT_DIR$/RenResourceService/target/classes/org/sysu/renResourcing/RMain.class" afterPath="" />
-      <change beforePath="$PROJECT_DIR$/RenResourceService/target/classes/org/sysu/renResourcing/RenResourceServiceApplication.class" afterPath="" />
-      <change beforePath="$PROJECT_DIR$/RenResourceService/target/classes/org/sysu/renResourcing/adapter/IRPCRequestAdapter.class" afterPath="" />
-      <change beforePath="$PROJECT_DIR$/RenResourceService/target/classes/org/sysu/renResourcing/adapter/RestfulRequestAdapter.class" afterPath="" />
-      <change beforePath="$PROJECT_DIR$/RenResourceService/target/classes/org/sysu/renResourcing/adapter/YAWLRequestAdapter.class" afterPath="" />
-      <change beforePath="$PROJECT_DIR$/RenResourceService/target/classes/org/sysu/renResourcing/allocator/RAllocator.class" afterPath="" />
-      <change beforePath="$PROJECT_DIR$/RenResourceService/target/classes/org/sysu/renResourcing/controller/AccessController.class" afterPath="" />
-      <change beforePath="$PROJECT_DIR$/RenResourceService/target/classes/org/sysu/renResourcing/controller/AgentController.class" afterPath="" />
-      <change beforePath="$PROJECT_DIR$/RenResourceService/target/classes/org/sysu/renResourcing/controller/ClusterController.class" afterPath="" />
-      <change beforePath="$PROJECT_DIR$/RenResourceService/target/classes/org/sysu/renResourcing/controller/HumanController.class" afterPath="" />
-      <change beforePath="$PROJECT_DIR$/RenResourceService/target/classes/org/sysu/renResourcing/controller/LogController.class" afterPath="" />
-      <change beforePath="$PROJECT_DIR$/RenResourceService/target/classes/org/sysu/renResourcing/controller/ResourceController.class" afterPath="" />
-      <change beforePath="$PROJECT_DIR$/RenResourceService/target/classes/org/sysu/renResourcing/controller/RoleController.class" afterPath="" />
-      <change beforePath="$PROJECT_DIR$/RenResourceService/target/classes/org/sysu/renResourcing/controller/WorkQueueController.class" afterPath="" />
-      <change beforePath="$PROJECT_DIR$/RenResourceService/target/classes/org/sysu/renResourcing/controller/WorkitemController.class" afterPath="" />
-      <change beforePath="$PROJECT_DIR$/RenResourceService/target/classes/org/sysu/renResourcing/dto/ReturnElement.class" afterPath="" />
-      <change beforePath="$PROJECT_DIR$/RenResourceService/target/classes/org/sysu/renResourcing/dto/ReturnModel.class" afterPath="" />
-      <change beforePath="$PROJECT_DIR$/RenResourceService/target/classes/org/sysu/renResourcing/dto/StatusCode.class" afterPath="" />
-      <change beforePath="$PROJECT_DIR$/RenResourceService/target/classes/org/sysu/renResourcing/entity/RIdentifier.class" afterPath="" />
-      <change beforePath="$PROJECT_DIR$/RenResourceService/target/classes/org/sysu/renResourcing/entity/RServiceItem.class" afterPath="" />
-      <change beforePath="$PROJECT_DIR$/RenResourceService/target/classes/org/sysu/renResourcing/entity/RServiceType.class" afterPath="" />
-      <change beforePath="$PROJECT_DIR$/RenResourceService/target/classes/org/sysu/renResourcing/entity/RSession.class" afterPath="" />
-      <change beforePath="$PROJECT_DIR$/RenResourceService/target/classes/org/sysu/renResourcing/executor/RAsyncExecutor.class" afterPath="" />
-      <change beforePath="$PROJECT_DIR$/RenResourceService/target/classes/org/sysu/renResourcing/log/REngineEvent.class" afterPath="" />
-      <change beforePath="$PROJECT_DIR$/RenResourceService/target/classes/org/sysu/renResourcing/log/REvent.class" afterPath="" />
-      <change beforePath="$PROJECT_DIR$/RenResourceService/target/classes/org/sysu/renResourcing/log/RLogger.class" afterPath="" />
-      <change beforePath="$PROJECT_DIR$/RenResourceService/target/classes/org/sysu/renResourcing/log/RResourcingEvent.class" afterPath="" />
-      <change beforePath="$PROJECT_DIR$/RenResourceService/target/classes/org/sysu/renResourcing/resource/RResource.class" afterPath="" />
-      <change beforePath="$PROJECT_DIR$/RenResourceService/target/classes/org/sysu/renResourcing/util/TimestampUtil.class" afterPath="" />
-      <change beforePath="$PROJECT_DIR$/RenResourceService/target/classes/org/sysu/renResourcing/util/XMLUtil.class" afterPath="" />
+      <change beforePath="$PROJECT_DIR$/COrgan/templates/humanmanagement.html" afterPath="$PROJECT_DIR$/COrgan/templates/humanmanagement.html" />
+      <change beforePath="$PROJECT_DIR$/COrgan/templates/humanmanagement_add.html" afterPath="$PROJECT_DIR$/COrgan/templates/humanmanagement_add.html" />
     </list>
     <ignored path="/output/" />
     <ignored path="$PROJECT_DIR$/ModelChecker/target/" />
@@ -56,7 +20,7 @@
     <option name="LAST_RESOLUTION" value="IGNORE" />
   </component>
   <component name="CoverageDataManager">
-    <SUITE FILE_PATH="coverage/RenWFMS$COrganApp.coverage" NAME="COrganApp Coverage Results" MODIFIED="1515663883287" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/COrgan" />
+    <SUITE FILE_PATH="coverage/RenWFMS$COrganApp.coverage" NAME="COrganApp Coverage Results" MODIFIED="1515675601684" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/COrgan" />
   </component>
   <component name="DatabaseView">
     <option name="SHOW_INTERMEDIATE" value="true" />
@@ -88,108 +52,73 @@
         <item name="MySQL - rencorgan@localhost" type="feb32156:DbDataSourceImpl" />
         <item name="schemas" type="d4e8921:DatabaseStructure$FamilyGroup" />
         <item name="rencorgan: schema" type="c314c289:MysqlImplModel$Schema" />
-        <item name="ren_position: table" type="98d5ac3d:MysqlImplModel$Table" />
+        <item name="ren_human: table" type="98d5ac3d:MysqlImplModel$Table" />
       </path>
     </expand>
     <select />
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="450">
-      <file leaf-file-name="COrganApp.py" pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/COrgan/COrganApp.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="304">
-              <caret line="458" column="60" lean-forward="false" selection-start-line="458" selection-start-column="60" selection-end-line="458" selection-end-column="60" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="app.py" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/venv/Lib/site-packages/flask/app.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="202">
-              <caret line="1996" column="0" lean-forward="false" selection-start-line="1996" selection-start-column="0" selection-end-line="1996" selection-end-column="0" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="__init__.py" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/venv/Lib/site-packages/werkzeug/debug/__init__.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="180">
-              <caret line="283" column="0" lean-forward="false" selection-start-line="283" selection-start-column="0" selection-end-line="283" selection-end-column="0" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="serving.py" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/venv/Lib/site-packages/werkzeug/serving.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="162">
-              <caret line="289" column="0" lean-forward="false" selection-start-line="289" selection-start-column="0" selection-end-line="289" selection-end-column="0" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="SocketServer.py" pinned="false" current-in-tab="false">
-        <entry file="file://C:/Python27/Lib/SocketServer.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="172">
-              <caret line="232" column="0" lean-forward="false" selection-start-line="232" selection-start-column="0" selection-end-line="232" selection-end-column="0" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="BaseHTTPServer.py" pinned="false" current-in-tab="false">
-        <entry file="file://C:/Python27/Lib/BaseHTTPServer.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="180">
-              <caret line="339" column="0" lean-forward="false" selection-start-line="339" selection-start-column="0" selection-end-line="339" selection-end-column="0" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="positionmanagement_edit.html" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/COrgan/templates/positionmanagement_edit.html">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="102">
-              <caret line="85" column="70" lean-forward="false" selection-start-line="85" selection-start-column="58" selection-end-line="85" selection-end-column="70" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="positionmanagement_add.html" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/COrgan/templates/positionmanagement_add.html">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="124">
-              <caret line="85" column="70" lean-forward="false" selection-start-line="85" selection-start-column="58" selection-end-line="85" selection-end-column="70" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="groupmanagement_edit.html" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/COrgan/templates/groupmanagement_edit.html">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="204">
-              <caret line="132" column="8" lean-forward="true" selection-start-line="132" selection-start-column="8" selection-end-line="139" selection-end-column="0" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="CController.py" pinned="false" current-in-tab="false">
+      <file leaf-file-name="CController.py" pinned="true" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/COrgan/CController.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="229">
-              <caret line="500" column="8" lean-forward="false" selection-start-line="500" selection-start-column="8" selection-end-line="500" selection-end-column="8" />
+            <state relative-caret-position="237">
+              <caret line="678" column="8" lean-forward="false" selection-start-line="678" selection-start-column="8" selection-end-line="678" selection-end-column="8" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="ConnectModel.py" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/COrgan/Model/ConnectModel.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="245">
+              <caret line="50" column="8" lean-forward="false" selection-start-line="50" selection-start-column="8" selection-end-line="50" selection-end-column="8" />
+              <folding>
+                <marker date="1515600796123" expanded="true" signature="1902:1973" ph="SELECT worke... ren_connect" />
+                <marker date="1515600796123" expanded="true" signature="2626:2675" ph="SELECT worke... ren_connect" />
+                <marker date="1515600796123" expanded="true" signature="3165:3235" ph="INSERT INTO ren_connect... " />
+                <marker date="1515600796123" expanded="true" signature="3784:3854" ph="INSERT INTO ren_connect... " />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="COrganApp.py" pinned="true" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/COrgan/COrganApp.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="581">
+              <caret line="526" column="51" lean-forward="false" selection-start-line="526" selection-start-column="51" selection-end-line="526" selection-end-column="51" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="humanmanagement_add.html" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/COrgan/templates/humanmanagement_add.html">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="-783">
+              <caret line="105" column="80" lean-forward="false" selection-start-line="105" selection-start-column="63" selection-end-line="105" selection-end-column="80" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="luminouslayout.html" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/COrgan/templates/luminouslayout.html">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="0">
+              <caret line="87" column="29" lean-forward="false" selection-start-line="87" selection-start-column="25" selection-end-line="87" selection-end-column="29" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="humanmanagement.html" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/COrgan/templates/humanmanagement.html">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="-189">
+              <caret line="39" column="28" lean-forward="true" selection-start-line="39" selection-start-column="28" selection-end-line="39" selection-end-column="28" />
               <folding />
             </state>
           </provider>
@@ -219,11 +148,13 @@
         <option value="$PROJECT_DIR$/BOEngine/src/main/java/org/sysu/workflow/io/SCXMLReader.java" />
         <option value="$PROJECT_DIR$/.gitignore" />
         <option value="$PROJECT_DIR$/COrgan/Entity/Position.py" />
-        <option value="$PROJECT_DIR$/COrgan/CController.py" />
         <option value="$PROJECT_DIR$/COrgan/templates/luminouslayout.html" />
         <option value="$PROJECT_DIR$/COrgan/templates/positionmanagement.html" />
         <option value="$PROJECT_DIR$/COrgan/templates/positionmanagement_add.html" />
         <option value="$PROJECT_DIR$/COrgan/templates/positionmanagement_edit.html" />
+        <option value="$PROJECT_DIR$/COrgan/templates/humanmanagement.html" />
+        <option value="$PROJECT_DIR$/COrgan/templates/humanmanagement_add.html" />
+        <option value="$PROJECT_DIR$/COrgan/CController.py" />
         <option value="$PROJECT_DIR$/COrgan/COrganApp.py" />
       </list>
     </option>
@@ -270,12 +201,6 @@
               <item name="RenWFMS" type="b2602c69:ProjectViewProjectNode" />
               <item name="RenWFMS" type="462c0819:PsiDirectoryNode" />
               <item name="COrgan" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="RenWFMS" type="b2602c69:ProjectViewProjectNode" />
-              <item name="RenWFMS" type="462c0819:PsiDirectoryNode" />
-              <item name="COrgan" type="462c0819:PsiDirectoryNode" />
-              <item name="Model" type="462c0819:PsiDirectoryNode" />
             </path>
             <path>
               <item name="RenWFMS" type="b2602c69:ProjectViewProjectNode" />
@@ -450,12 +375,20 @@
       <option name="presentableId" value="Default" />
       <updated>1514616517839</updated>
       <workItem from="1515607101801" duration="75000" />
-      <workItem from="1515641945976" duration="16521000" />
+      <workItem from="1515641945976" duration="25863000" />
     </task>
+    <task id="LOCAL-00001" summary="position views">
+      <created>1515663926015</created>
+      <option name="number" value="00001" />
+      <option name="presentableId" value="LOCAL-00001" />
+      <option name="project" value="LOCAL" />
+      <updated>1515663926015</updated>
+    </task>
+    <option name="localTasksCounter" value="2" />
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="16596000" />
+    <option name="totallyTimeSpent" value="25938000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="-8" y="-8" width="1936" height="1056" extended-state="6" />
@@ -472,21 +405,21 @@
       <window_info id="UI Designer" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
       <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.39915073" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
-      <window_info id="Palette&#9;" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
-      <window_info id="Image Layers" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
-      <window_info id="Java Enterprise" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="8" side_tool="false" content_ui="tabs" />
-      <window_info id="Capture Analysis" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
-      <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="10" side_tool="false" content_ui="tabs" />
-      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.21656051" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
-      <window_info id="Spring" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="8" side_tool="false" content_ui="tabs" />
-      <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="9" side_tool="false" content_ui="tabs" />
-      <window_info id="Persistence" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="4" side_tool="true" content_ui="tabs" />
-      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.13854167" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
-      <window_info id="Bean Validation" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
-      <window_info id="Web" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="4" side_tool="true" content_ui="tabs" />
-      <window_info id="SciView" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
-      <window_info id="Theme Preview" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
-      <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="5" side_tool="true" content_ui="tabs" />
+      <window_info id="Palette&#9;" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="10" side_tool="false" content_ui="tabs" />
+      <window_info id="Image Layers" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="8" side_tool="false" content_ui="tabs" />
+      <window_info id="Java Enterprise" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="10" side_tool="false" content_ui="tabs" />
+      <window_info id="Capture Analysis" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
+      <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="12" side_tool="false" content_ui="tabs" />
+      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.19002123" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
+      <window_info id="Spring" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="9" side_tool="false" content_ui="tabs" />
+      <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="11" side_tool="false" content_ui="tabs" />
+      <window_info id="Persistence" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="5" side_tool="true" content_ui="tabs" />
+      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.15885417" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
+      <window_info id="Bean Validation" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
+      <window_info id="Web" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="6" side_tool="true" content_ui="tabs" />
+      <window_info id="SciView" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="8" side_tool="false" content_ui="tabs" />
+      <window_info id="Theme Preview" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="9" side_tool="false" content_ui="tabs" />
+      <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="true" content_ui="tabs" />
       <window_info id="Cvs" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
       <window_info id="Message" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Commander" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
@@ -502,46 +435,17 @@
   <component name="VcsContentAnnotationSettings">
     <option name="myLimit" value="2678400000" />
   </component>
+  <component name="VcsManagerConfiguration">
+    <MESSAGE value="position views" />
+    <option name="LAST_COMMIT_MESSAGE" value="position views" />
+  </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
-      <breakpoints>
-        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
-          <url>file://$PROJECT_DIR$/COrgan/COrganApp.py</url>
-          <line>438</line>
-          <option name="timeStamp" value="3" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
-          <url>file://$PROJECT_DIR$/COrgan/COrganApp.py</url>
-          <line>390</line>
-          <option name="timeStamp" value="5" />
-        </line-breakpoint>
-      </breakpoints>
       <option name="time" value="6" />
     </breakpoint-manager>
     <watches-manager />
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/BOEngine/src/main/java/org/sysu/workflow/bridge/InheritableContext.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="495">
-          <caret line="15" column="34" lean-forward="false" selection-start-line="15" selection-start-column="19" selection-end-line="15" selection-end-column="34" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/BOEngine/src/main/java/org/sysu/workflow/model/SCXML.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="4356">
-          <caret line="132" column="41" lean-forward="false" selection-start-line="132" selection-start-column="19" selection-end-line="132" selection-end-column="41" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/BOEngine/src/main/java/org/sysu/workflow/io/BOInheritHandler.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="2145">
-          <caret line="65" column="48" lean-forward="true" selection-start-line="65" selection-start-column="48" selection-end-line="65" selection-end-column="48" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/BOEngine/src/main/java/org/sysu/workflow/bridge/EngineBridge.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="216">
@@ -793,14 +697,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/COrgan/templates/luminouslayout.html">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="418">
-          <caret line="127" column="20" lean-forward="false" selection-start-line="127" selection-start-column="20" selection-end-line="127" selection-end-column="20" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/COrgan/templates/positionmanagement.html">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="490">
@@ -821,14 +717,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="369">
           <caret line="25" column="13" lean-forward="false" selection-start-line="25" selection-start-column="13" selection-end-line="25" selection-end-column="13" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/COrgan/CController.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="229">
-          <caret line="500" column="8" lean-forward="false" selection-start-line="500" selection-start-column="8" selection-end-line="500" selection-end-column="8" />
           <folding />
         </state>
       </provider>
@@ -897,10 +785,55 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/COrgan/templates/luminouslayout.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="0">
+          <caret line="87" column="29" lean-forward="false" selection-start-line="87" selection-start-column="25" selection-end-line="87" selection-end-column="29" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/COrgan/templates/humanmanagement.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-189">
+          <caret line="39" column="28" lean-forward="true" selection-start-line="39" selection-start-column="28" selection-end-line="39" selection-end-column="28" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/COrgan/templates/humanmanagement_add.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-783">
+          <caret line="105" column="80" lean-forward="false" selection-start-line="105" selection-start-column="63" selection-end-line="105" selection-end-column="80" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/COrgan/Model/ConnectModel.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="245">
+          <caret line="50" column="8" lean-forward="false" selection-start-line="50" selection-start-column="8" selection-end-line="50" selection-end-column="8" />
+          <folding>
+            <marker date="1515600796123" expanded="true" signature="1902:1973" ph="SELECT worke... ren_connect" />
+            <marker date="1515600796123" expanded="true" signature="2626:2675" ph="SELECT worke... ren_connect" />
+            <marker date="1515600796123" expanded="true" signature="3165:3235" ph="INSERT INTO ren_connect... " />
+            <marker date="1515600796123" expanded="true" signature="3784:3854" ph="INSERT INTO ren_connect... " />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/COrgan/CController.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="237">
+          <caret line="678" column="8" lean-forward="false" selection-start-line="678" selection-start-column="8" selection-end-line="678" selection-end-column="8" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/COrgan/COrganApp.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="304">
-          <caret line="458" column="60" lean-forward="false" selection-start-line="458" selection-start-column="60" selection-end-line="458" selection-end-column="60" />
+        <state relative-caret-position="581">
+          <caret line="526" column="51" lean-forward="false" selection-start-line="526" selection-start-column="51" selection-end-line="526" selection-end-column="51" />
           <folding />
         </state>
       </provider>
