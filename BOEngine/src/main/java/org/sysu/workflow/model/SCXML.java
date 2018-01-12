@@ -438,7 +438,7 @@ public class SCXML implements Serializable, Observable,
         return baseBusinessObjectName;
     }
 
-    public void setBaseBusinessObjectName(String baseBusinessObjectName) {
+    public void setBaseBusinessObjectName(final String baseBusinessObjectName) {
         this.baseBusinessObjectName = baseBusinessObjectName;
     }
 }

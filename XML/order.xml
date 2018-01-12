@@ -1,17 +1,11 @@
-<businessclass
-        initial="Initial"
-        name="GuestOrder"
-        extends="GuestCheck"
-        version="1.0"
-        xmlns="http://www.w3.org/2005/07/scxml">
+<businessclass initial="Initial" name="Order" version="1.0" xmlns="http://www.w3.org/2005/07/scxml">
  <datamodel>
-  <data expr="0" id="startKOCount"></data>
-  <data expr="0" id="finishKOCount"></data>
+  <data expr="0" id="Count"></data>
  </datamodel>
  <tasks>
-    <task id="addItem" brole="agent" name="addItemTask" event="submit">
+    <task id="add" brole="agent" name="addItemTask" event="submit">
     </task>
-    <task id="updateDeliTime" brole="agent" name="updateDeliTimeTask" event="updateDeliTimeComplete">
+    <task id="update" brole="agent" name="updateDeliTimeTask" event="updateDeliTimeComplete">
     </task>
  </tasks>
  <resources>

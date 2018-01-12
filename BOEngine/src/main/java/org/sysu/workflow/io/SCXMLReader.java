@@ -613,8 +613,11 @@ public final class SCXMLReader {
         scxml.setProfile(readAV(reader, ATTR_PROFILE));
         scxml.setBaseBusinessObjectName(readAV(reader, ATTR_BOO_EXTENDS));
 
+        String na = scxml.getName();
+        System.out.println("name:" + na);
         //创建继承上下文实例
         String baseBOName = scxml.getBaseBusinessObjectName();
+        System.out.println("baseName:" + baseBOName);
         if(baseBOName == null || baseBOName.length() <= 0) {
             //do nothing;
         }else{
@@ -1080,24 +1083,27 @@ public final class SCXMLReader {
 
         //获取InheritableContext中的Data List
         InheritableContext inheritableContext = scxml.getInheritedContext();
-        List<Data> dm_inherit = inheritableContext.getInheritedDatamodel().getData();
+        Datamodel dm_inherit = inheritableContext.getInheritedDatamodel();
 
         //获取当前实例化的BO的Data List
         List<Data> dm_current = dm.getData();
 
-        //基类继承父类的datamodel
-        for(Data data:dm_inherit){
-            boolean temp = false;
-            for(int i = 0;i < dm_current.size();i++){
-                if(dm_current.get(i).getId().equals(data.getId())){
-                    temp = true;
-                    break;
+        if(dm_inherit.getData() != null){
+            //基类继承父类的datamodel
+            for(Data data:dm_inherit.getData()){
+                boolean temp = false;
+                for(int i = 0;i < dm_current.size();i++){
+                    if(dm_current.get(i).getId().equals(data.getId())){
+                        temp = true;
+                        break;
+                    }
+                }
+                if(temp == false){
+                    dm_current.add(data);
                 }
             }
-            if(temp == false){
-                dm_current.add(data);
-            }
         }
+
         dm = new Datamodel();
         for(Data d:dm_current){
             dm.addData(d);

@@ -5,13 +5,18 @@ import org.sysu.workflow.Evaluator;
 import org.sysu.workflow.SCXMLExecutor;
 import org.sysu.workflow.SCXMLTestHelper;
 import org.sysu.workflow.TriggerEvent;
+import org.sysu.workflow.bridge.InheritableContext;
 import org.sysu.workflow.env.MulitStateMachineDispatcher;
 import org.sysu.workflow.env.SimpleErrorReporter;
 import org.sysu.workflow.env.jexl.JexlEvaluator;
+import org.sysu.workflow.model.Data;
+import org.sysu.workflow.model.Datamodel;
 import org.sysu.workflow.model.SCXML;
 import org.apache.commons.codec.binary.Base64;
 import org.junit.Assert;
 import org.junit.Test;
+import org.sysu.workflow.model.extend.Task;
+import org.sysu.workflow.model.extend.Tasks;
 
 import java.io.UnsupportedEncodingException;
 import java.net.URL;
@@ -72,6 +77,18 @@ public class SCXMLReaderTest {
         URL url = SCXMLTestHelper.getResource("GuestOrder.xml");
         //URL url = new URL("file", "", "E:\\Documents\\GitProject\\BOOWorkflow\\BOWorkflow\\target\\classes\\GuestOrder.xml");
         SCXML scxml = new SCXMLReader().read(url);
+
+        Datamodel dm = scxml.getDatamodel();
+        System.out.print("guest order继承的data");
+        for(Data data:dm.getData()){
+            System.out.println(data);
+        }
+
+        InheritableContext inheritableContext = scxml.getInheritedContext();
+        Tasks tasks = inheritableContext.getInheritedTasks();
+        for(Task task:tasks.getTaskList()){
+            System.out.println(task.getName()+":"+task.getId());
+        }
         Evaluator evaluator = new JexlEvaluator();
         SCXMLExecutor executor = new SCXMLExecutor(evaluator, new MulitStateMachineDispatcher(), new SimpleErrorReporter());
         executor.setStateMachine(scxml);

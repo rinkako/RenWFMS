@@ -34,7 +34,7 @@ public class BOInheritHandler {
      * @param inheritStack inherit stack
      */
     private static void RecursiveInheritHandler(String baseName, Stack<SCXML> inheritStack) throws Exception {
-        URL url = BOInheritHandler.class.getClassLoader().getResource(baseName);
+        URL url = BOInheritHandler.class.getClassLoader().getResource(baseName+".xml");
         String nextBase = BOInheritHandler.PushSCXML(url, inheritStack);
         if (nextBase == null || nextBase.length() <= 0) {
             return;
