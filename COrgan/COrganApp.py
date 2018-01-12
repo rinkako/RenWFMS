@@ -721,6 +721,80 @@ def performAddAgent():
     return redirect(url_for('agentManagement'))
 
 
+@app.route('/agent/edit/<uname>/', methods=["GET"])
+def editAgent(uname):
+    flag, res = core.RetrieveAgent('testadmin', uname)
+    if flag is False or res is None:
+        return redirect(url_for('AccessErrorPage', dt='x'))
+    xflag, groups = core.RetrieveAgentInWhatGroup('testadmin', res.Name)
+    if xflag is False or groups is None:
+        return redirect(url_for('AccessErrorPage', dt='x'))
+    groupStr = ';'.join(groups)
+    xflag, capabilities = core.RetrieveAgentWithWhatCapability('testadmin', res.Name)
+    if xflag is False or capabilities is None:
+        return redirect(url_for('AccessErrorPage', dt='x'))
+    capabilityStr = ';'.join(capabilities)
+    xflag, positions = core.RetrieveAgentInWhatPosition('testadmin', res.Name)
+    if xflag is False or positions is None:
+        return redirect(url_for('AccessErrorPage', dt='x'))
+    positionStr = ';'.join(positions)
+    flag1, groupList = core.RetrieveAllGroup('testadmin')
+    flag2, positionList = core.RetrieveAllPosition('testadmin')
+    flag3, capabilityList = core.RetrieveAllCapabilities('testadmin')
+    if (flag1 & flag2 & flag3) is False or groupList is None or positionList is None or capabilityList is None:
+        return redirect(url_for('AccessErrorPage', dt='x'))
+    t = {'L_PageTitle': u'编辑: ' + uname,
+         'L_PageDescription': u'编辑Agent描述项',
+         'packItem': res,
+         'groupList': groupList,
+         'positionList': positionList,
+         'capabilityList': capabilityList,
+         'groupStr': groupStr,
+         'capabilityStr': capabilityStr,
+         'positionStr': positionStr}
+    return render_template('agentmanagement_edit.html', **t)
+
+
+@app.route('/agent/performedit/', methods=["POST"])
+def performEditAgent():
+    agentName = request.form['h_name']
+    updateDict = {
+        "location": "'%s'" % request.form['f_location'],
+        "type": "%s" % int(request.form['f_type']),
+        "note": "'%s'" % request.form['f_note'],
+    }
+    flag, res = core.UpdateAgent('testadmin',
+                                 agentName,
+                                 **updateDict)
+    if (flag & res) is False:
+        return redirect(url_for('AccessErrorPage', dt='x'))
+    flag, removeFlag = core.RemoveAgentConnection('testadmin', agentName)
+    if (flag & removeFlag) is False:
+        return redirect(url_for('AccessErrorPage', dt='x'))
+    capaVec = []
+    groupVec = []
+    posVec = []
+    if request.form['output_capability'] != '':
+        capaVec = request.form['output_capability'].split(';')
+    if request.form['output_group'] != '':
+        groupVec = request.form['output_group'].split(';')
+    if request.form['output_position'] != '':
+        posVec = request.form['output_position'].split(';')
+    for cp in capaVec:
+        xflag, xret = core.AddAgentCapability('testadmin', agentName, cp)
+        if xflag is False or xret is None:
+            return redirect(url_for('AccessErrorPage', dt='x'))
+    for gr in groupVec:
+        xflag, xret = core.AddAgentToGroup('testadmin', agentName, gr)
+        if xflag is False or xret is None:
+            return redirect(url_for('AccessErrorPage', dt='x'))
+    for ps in posVec:
+        xflag, xret = core.AddAgentPosition('testadmin', agentName, ps)
+        if xflag is False or xret is None:
+            return redirect(url_for('AccessErrorPage', dt='x'))
+    return redirect(url_for('agentManagement'))
+
+
 @app.route('/agent/performdelete/<uname>/', methods=["GET"])
 def performDeleteAgent(uname):
     flag, res = core.RemoveAgent('testadmin', uname)

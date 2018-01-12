@@ -193,3 +193,4 @@ RenResourceService/target/classes/org/sysu/renResourcing/resource/Human.class
 RenResourceService/target/generated-sources/
 RenResourceService/target/generated-test-sources/
 /venv/
+/.idea/workspace.xml

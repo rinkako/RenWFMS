@@ -592,6 +592,23 @@ class CController:
         except:
             return False, False
 
+    @authorizeRequireWarp
+    def RemoveAgentConnection(self, session, agentName):
+        """
+
+        :param session:
+        :param agentName:
+        :return:
+        """
+        try:
+            flag, agent = self.RetrieveAgent(session, agentName)
+            if flag is False or agent is None:
+                return False, None
+            CController._connectModel.RemoveByWorker(agent.GlobalId)
+            return True, True
+        except:
+            return False, False
+
     def RetrieveHumanInGroup(self, session, groupName):
         pass
 
