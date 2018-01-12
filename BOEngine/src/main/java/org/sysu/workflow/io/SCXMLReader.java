@@ -618,7 +618,8 @@ public final class SCXMLReader {
         //创建继承上下文实例
         String baseBOName = scxml.getBaseBusinessObjectName();
         System.out.println("baseName:" + baseBOName);
-        if(baseBOName == null || baseBOName.length() <= 0) {
+
+        if(baseBOName == null || baseBOName.length() <= 0){
             //do nothing;
         }else{
             try{
@@ -628,7 +629,6 @@ public final class SCXMLReader {
                 e.printStackTrace();
             }
         }
-
         //version属性是必须的
         scxml.setVersion(readRequiredAV(reader, ELEM_SCXML, ATTR_VERSION));
         //验证version是否为 1.0
@@ -1081,25 +1081,25 @@ public final class SCXMLReader {
         /*将InheritableContext中的DataModel更新到该BO实例的DataModel中
         对应于OOP的子类内存对象包含父类字段对象的实现方式*/
 
+        //获取当前实例化的BO的Data List
+        List<Data> dm_current = dm.getData();//获取当前实例化的BO的Data List
         //获取InheritableContext中的Data List
         InheritableContext inheritableContext = scxml.getInheritedContext();
-        Datamodel dm_inherit = inheritableContext.getInheritedDatamodel();
-
-        //获取当前实例化的BO的Data List
-        List<Data> dm_current = dm.getData();
-
-        if(dm_inherit.getData() != null){
-            //基类继承父类的datamodel
-            for(Data data:dm_inherit.getData()){
-                boolean temp = false;
-                for(int i = 0;i < dm_current.size();i++){
-                    if(dm_current.get(i).getId().equals(data.getId())){
-                        temp = true;
-                        break;
+        if(inheritableContext != null) {
+            Datamodel dm_inherit = inheritableContext.getInheritedDatamodel();
+            if (dm_inherit.getData() != null) {
+                //基类继承父类的datamodel
+                for (Data data : dm_inherit.getData()) {
+                    boolean temp = false;
+                    for (int i = 0; i < dm_current.size(); i++) {
+                        if (dm_current.get(i).getId().equals(data.getId())) {
+                            temp = true;
+                            break;
+                        }
                     }
-                }
-                if(temp == false){
-                    dm_current.add(data);
+                    if (temp == false) {
+                        dm_current.add(data);
+                    }
                 }
             }
         }
@@ -1156,52 +1156,55 @@ public final class SCXMLReader {
             }
         }
         //将子类的Tasks更新到InheritableContext的Tasks列表中，当call任务时，在InheritableContext中寻找Task或SubProcess的定义。
-        //获取InheritableContext中的task列表和subprocess列表
-        InheritableContext inheritableContext = scxml.getInheritedContext();
-        Tasks tks_inherit = inheritableContext.getInheritedTasks();
-        List<Task> task_inherit = tks_inherit.getTaskList();
-        List<SubProcess> process_inherit = tks_inherit.getProcessList();
 
         //获取当前正在实例化的BO的task列表和subprocess列表
         List<Task> task_current = tasks.getTaskList();
         List<SubProcess> process_current = tasks.getProcessList();
 
-        //将子类的Tasks更新到InheritableContext的Tasks列表中
-        for(Task task:task_current){
-            boolean temp = false;
-            for(int i = 0; i < task_inherit.size();i++){
-                if(task_inherit.get(i).getName().equals(task.getName())) {
-                    task_inherit.set(i, task);
-                    temp = true;
-                    break;
+        //获取InheritableContext中的task列表和subprocess列表
+        InheritableContext inheritableContext = scxml.getInheritedContext();
+        if(inheritableContext != null){
+            Tasks tks_inherit = inheritableContext.getInheritedTasks();
+            List<Task> task_inherit = tks_inherit.getTaskList();
+            List<SubProcess> process_inherit = tks_inherit.getProcessList();
+            //将子类的Tasks更新到InheritableContext的Tasks列表中
+            for(Task task:task_current){
+                boolean temp = false;
+                for(int i = 0; i < task_inherit.size();i++){
+                    if(task_inherit.get(i).getName().equals(task.getName())) {
+                        task_inherit.set(i, task);
+                        temp = true;
+                        break;
+                    }
+                }
+                if(temp == false){
+                    task_inherit.add(task);
                 }
             }
-            if(temp == false){
-                task_inherit.add(task);
-            }
-        }
-        for(SubProcess sp:process_current){
-            boolean temp = false;
-            for(int i = 0; i < process_inherit.size();i++){
-                if(process_inherit.get(i).getName().equals(sp.getName())) {
-                    process_inherit.set(i, sp);
-                    temp = true;
-                    break;
+            for(SubProcess sp:process_current){
+                boolean temp = false;
+                for(int i = 0; i < process_inherit.size();i++){
+                    if(process_inherit.get(i).getName().equals(sp.getName())) {
+                        process_inherit.set(i, sp);
+                        temp = true;
+                        break;
+                    }
+                }
+                if(temp == false){
+                    process_inherit.add(sp);
                 }
             }
-            if(temp == false){
-                process_inherit.add(sp);
+
+            Tasks tks = new Tasks();
+            for(Task task:task_inherit){
+                tks.addTask(task);
             }
+            for(SubProcess sp:process_inherit){
+                tks.addProcess(sp);
+            }
+            inheritableContext.setInheritedTasks(tks);
+            scxml.setInheritedContext(inheritableContext);
         }
-        Tasks tks = new Tasks();
-        for(Task task:task_inherit){
-            tks.addTask(task);
-        }
-        for(SubProcess sp:process_inherit){
-            tks.addProcess(sp);
-        }
-        inheritableContext.setInheritedTasks(tks);
-        scxml.setInheritedContext(inheritableContext);
 //        tasks = new Tasks();
 //        for(Task t:task_current){
 //            tasks.addTask(t);
@@ -2338,7 +2341,9 @@ public final class SCXMLReader {
             throws XMLStreamException, ModelException {
         Call call = new Call();
         call.setName(readRequiredAV(reader, ELEM_BOO_CALL, ATTR_NAME));
-        call.setInstances(Integer.parseInt(readAV(reader, ATTR_BOO_INSTANCES)));
+        if(readAV(reader, ATTR_BOO_INSTANCES) != null && readAV(reader, ATTR_BOO_INSTANCES).length() > 0){
+            call.setInstances(Integer.parseInt(readAV(reader, ATTR_BOO_INSTANCES)));
+        }
         call.setNamelist(readAV(reader, ATTR_NAMELIST));
 
         loop:

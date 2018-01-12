@@ -79,9 +79,9 @@ public class SCXMLReaderTest {
         SCXML scxml = new SCXMLReader().read(url);
 
         Datamodel dm = scxml.getDatamodel();
-        System.out.print("guest order继承的data");
+        System.out.println("guest order的data");
         for(Data data:dm.getData()){
-            System.out.println(data);
+            System.out.println(data.getId() + ":" + data.getExpr());
         }
 
         InheritableContext inheritableContext = scxml.getInheritedContext();

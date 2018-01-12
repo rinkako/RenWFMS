@@ -1,4 +1,7 @@
 <businessclass initial="Initial" name="GuestCheck" version="1.0" xmlns="http://www.w3.org/2005/07/scxml">
+ <datamodel>
+  <data expr="1" id="Count"></data>
+ </datamodel>
  <tasks>
     <task id="calculate" brole="agent" name="calculateTask" event="calculated">
     </task>
