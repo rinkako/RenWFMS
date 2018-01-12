@@ -165,7 +165,11 @@ class CController:
         :param encrypted_password: new user's password with encryption
         :param level: new user level flag
         """
-        return True, UserModel.Add(username, encrypted_password, level)
+        try:
+            UserModel.Add(username, encrypted_password, level)
+            return True, True
+        except:
+            return True, False
 
     @adminRequireWarp
     def PlatformUserRemove(self, session, username):
@@ -210,13 +214,13 @@ class CController:
     @authorizeRequireWarp
     def AddHuman(self, session, personId, firstName, lastName, note):
         """
-
-        :param session:
-        :param personId:
-        :param firstName:
-        :param lastName:
-        :param note:
-        :return:
+        
+        :param session: session id
+        :param personId: person unique id
+        :param firstName: human first name text
+        :param lastName: human last name text
+        :param note: note text
+        :return: execution state tuple
         """
         if CController._humanModel.Contains(personId) is True:
             return True, None
@@ -226,9 +230,9 @@ class CController:
     def RemoveHuman(self, session, personId):
         """
 
-        :param session:
-        :param personId:
-        :return:
+        :param session: session id
+        :param personId: person unique id
+        :return: execution state tuple
         """
         return True, CController._humanModel.Remove(personId)
 
@@ -236,10 +240,10 @@ class CController:
     def UpdateHuman(self, session, personId, **kwargs):
         """
 
-        :param session:
-        :param personId:
+        :param session: session id
+        :param personId: person unique id
         :param kwargs:
-        :return:
+        :return: execution state tuple
         """
         CController._humanModel.Update(personId, **kwargs)
         return True, True
@@ -248,9 +252,9 @@ class CController:
     def RetrieveHuman(self, session, personId):
         """
 
-        :param session:
-        :param personId:
-        :return:
+        :param session: session id
+        :param personId: person unique id
+        :return: execution state tuple
         """
         return True, CController._humanModel.Retrieve(personId)
 
@@ -258,8 +262,8 @@ class CController:
     def RetrieveAllHuman(self, session):
         """
 
-        :param session:
-        :return:
+        :param session: session id
+        :return: execution state tuple
         """
         return True, CController._humanModel.RetrieveAll()
 
@@ -267,9 +271,9 @@ class CController:
     def RetrieveHumanById(self, session, gid):
         """
 
-        :param session:
-        :param gid:
-        :return:
+        :param session: session id
+        :param gid: global id
+        :return: execution state tuple
         """
         return True, CController._humanModel.GetByGlobalId(gid)
 
@@ -277,12 +281,12 @@ class CController:
     def AddAgent(self, session, name, location, rType, note):
         """
 
-        :param session:
-        :param name:
-        :param location:
-        :param rType:
-        :param note:
-        :return:
+        :param session: session id
+        :param name: agent unique name
+        :param location: agent call location
+        :param rType: reentrant type enum value
+        :param note: note text
+        :return: execution state tuple
         """
         if CController._agentModel.Contains(name) is True:
             return True, None
@@ -292,9 +296,9 @@ class CController:
     def RemoveAgent(self, session, name):
         """
 
-        :param session:
-        :param name:
-        :return:
+        :param session: session id
+        :param name: agent unique name
+        :return: execution state tuple
         """
         return True, CController._agentModel.Remove(name)
 
@@ -302,10 +306,10 @@ class CController:
     def UpdateAgent(self, session, name, **kwargs):
         """
 
-        :param session:
-        :param name:
-        :param kwargs:
-        :return:
+        :param session: session id
+        :param name: agent unique name
+        :param kwargs: update key-value pair dictionary
+        :return: execution state tuple
         """
         CController._agentModel.Update(name, **kwargs)
         return True, True
@@ -314,9 +318,9 @@ class CController:
     def RetrieveAgent(self, session, name):
         """
 
-        :param session:
-        :param name:
-        :return:
+        :param session: session id
+        :param name: agent unique name
+        :return: execution state tuple
         """
         return True, CController._agentModel.Retrieve(name)
 
@@ -324,8 +328,8 @@ class CController:
     def RetrieveAllAgent(self, session):
         """
 
-        :param session:
-        :return:
+        :param session: session id
+        :return: execution state tuple
         """
         return True, CController._agentModel.RetrieveAll()
 
@@ -333,9 +337,9 @@ class CController:
     def RetrieveAgentById(self, session, gid):
         """
 
-        :param session:
-        :param gid:
-        :return:
+        :param session: session id
+        :param gid: global id
+        :return: execution state tuple
         """
         return True, CController._agentModel.GetByGlobalId(gid)
 
@@ -343,8 +347,8 @@ class CController:
     def RetrieveAllWorker(self, session):
         """
 
-        :param session:
-        :return:
+        :param session: session id
+        :return: execution state tuple
         """
         humanList = CController._humanModel.RetrieveAll()
         agentList = CController._agentModel.RetrieveAll()
@@ -357,13 +361,13 @@ class CController:
     def AddGroup(self, session, name, description, note, belongToId, groupType):
         """
 
-        :param session:
-        :param name:
-        :param description:
-        :param note:
-        :param belongToId:
-        :param groupType:
-        :return:
+        :param session: session id
+        :param name: group unique name
+        :param description: description text
+        :param note: note text
+        :param belongToId: belong to group global id
+        :param groupType: group type enum value
+        :return: execution state tuple
         """
         if CController._groupModel.Contains(name) is True:
             return True, None
@@ -373,9 +377,9 @@ class CController:
     def RemoveGroup(self, session, name):
         """
 
-        :param session:
-        :param name:
-        :return:
+        :param session: session id
+        :param name: group unique name
+        :return: execution state tuple
         """
         return True, CController._groupModel.Remove(name)
 
@@ -383,10 +387,10 @@ class CController:
     def UpdateGroup(self, session, name, **kwargs):
         """
 
-        :param session:
-        :param name:
-        :param kwargs:
-        :return:
+        :param session: session id
+        :param name: group unique name
+        :param kwargs: update key-value pair dictionary
+        :return: execution state tuple
         """
         CController._groupModel.Update(name, **kwargs)
         return True, True
@@ -395,9 +399,9 @@ class CController:
     def RetrieveGroup(self, session, name):
         """
 
-        :param session:
-        :param name:
-        :return:
+        :param session: session id
+        :param name: group unique name
+        :return: execution state tuple
         """
         return True, CController._groupModel.Retrieve(name)
 
@@ -405,8 +409,8 @@ class CController:
     def RetrieveAllGroup(self, session):
         """
 
-        :param session:
-        :return:
+        :param session: session id
+        :return: execution state tuple
         """
         return True, CController._groupModel.RetrieveAll()
 
@@ -414,9 +418,9 @@ class CController:
     def RetrieveGroupById(self, session, gid):
         """
 
-        :param session:
-        :param gid:
-        :return:
+        :param session: session id
+        :param gid: global id
+        :return: execution state tuple
         """
         return True, CController._groupModel.GetByGlobalId(gid)
 
@@ -424,9 +428,9 @@ class CController:
     def RetrieveGroupId(self, session, name):
         """
 
-        :param session:
-        :param name:
-        :return:
+        :param session: session id
+        :param name: group unique name
+        :return: execution state tuple
         """
         return True, CController._groupModel.GetGlobalId(name)
 
@@ -434,13 +438,13 @@ class CController:
     def AddPosition(self, session, name, description, note, belongToId, reportToId):
         """
 
-        :param session:
-        :param name:
-        :param description:
-        :param note:
-        :param belongToId:
-        :param reportToId:
-        :return:
+        :param session: session id
+        :param name: position unique name
+        :param description: description text
+        :param note: note text
+        :param belongToId: belong to group global id
+        :param reportToId: report to position global id
+        :return: execution state tuple
         """
         if CController._positionModel.Contains(name) is True:
             return True, None
@@ -450,9 +454,9 @@ class CController:
     def RemovePosition(self, session, name):
         """
 
-        :param session:
-        :param name:
-        :return:
+        :param session: session id
+        :param name: position unique name
+        :return: execution state tuple
         """
         return True, CController._positionModel.Remove(name)
 
@@ -460,10 +464,10 @@ class CController:
     def UpdatePosition(self, session, name, **kwargs):
         """
 
-        :param session:
-        :param name:
-        :param kwargs:
-        :return:
+        :param session: session id
+        :param name: position unique name
+        :param kwargs: update key-value pair dictionary
+        :return: execution state tuple
         """
         CController._positionModel.Update(name, **kwargs)
         return True, True
@@ -472,9 +476,9 @@ class CController:
     def RetrievePosition(self, session, name):
         """
 
-        :param session:
-        :param name:
-        :return:
+        :param session: session id
+        :param name: position unique name
+        :return: execution state tuple
         """
         return True, CController._positionModel.Retrieve(name)
 
@@ -482,8 +486,8 @@ class CController:
     def RetrieveAllPosition(self, session):
         """
 
-        :param session:
-        :return:
+        :param session: session id
+        :return: execution state tuple
         """
         return True, CController._positionModel.RetrieveAll()
 
@@ -491,9 +495,9 @@ class CController:
     def RetrievePositionById(self, session, gid):
         """
 
-        :param session:
-        :param gid:
-        :return:
+        :param session: session id
+        :param gid: global id
+        :return: execution state tuple
         """
         return True, CController._positionModel.GetByGlobalId(gid)
 
@@ -501,9 +505,9 @@ class CController:
     def RetrievePositionId(self, session, name):
         """
 
-        :param session:
-        :param name:
-        :return:
+        :param session: session id
+        :param name: position unique name
+        :return: execution state tuple
         """
         return True, CController._positionModel.GetGlobalId(name)
 
@@ -511,11 +515,11 @@ class CController:
     def AddCapability(self, session, name, description, note):
         """
 
-        :param session:
-        :param name:
-        :param description:
-        :param note:
-        :return:
+        :param session: session id
+        :param name: capability unique name
+        :param description: description text
+        :param note: note text
+        :return: execution state tuple
         """
         if CController._capabilityModel.Contains(name) is True:
             return True, None
@@ -525,9 +529,9 @@ class CController:
     def RemoveCapability(self, session, name):
         """
 
-        :param session:
-        :param name:
-        :return:
+        :param session: session id
+        :param name: capability unique name
+        :return: execution state tuple
         """
         return True, CController._capabilityModel.Remove(name)
 
@@ -535,10 +539,10 @@ class CController:
     def UpdateCapability(self, session, name, **kwargs):
         """
 
-        :param session:
-        :param name:
-        :param kwargs:
-        :return:
+        :param session: session id
+        :param name: capability unique name
+        :param kwargs: update key-value pair dictionary
+        :return: execution state tuple
         """
         CController._capabilityModel.Update(name, **kwargs)
         return True, True
@@ -547,9 +551,9 @@ class CController:
     def RetrieveCapability(self, session, name):
         """
 
-        :param session:
-        :param name:
-        :return:
+        :param session: session id
+        :param name: capability unique name
+        :return: execution state tuple
         """
         return True, CController._capabilityModel.Retrieve(name)
 
@@ -557,8 +561,8 @@ class CController:
     def RetrieveAllCapabilities(self, session):
         """
 
-        :param session:
-        :return:
+        :param session: session id
+        :return: execution state tuple
         """
         return True, CController._capabilityModel.RetrieveAll()
 
@@ -566,9 +570,9 @@ class CController:
     def RetrieveCapabilityById(self, session, gid):
         """
 
-        :param session:
-        :param gid:
-        :return:
+        :param session: session id
+        :param gid: global id
+        :return: execution state tuple
         """
         return True, CController._capabilityModel.GetByGlobalId(gid)
 
@@ -579,9 +583,9 @@ class CController:
     def RemoveHumanConnection(self, session, personId):
         """
 
-        :param session:
-        :param personId:
-        :return:
+        :param session: session id
+        :param personId: person unique id
+        :return: execution state tuple
         """
         try:
             flag, human = self.RetrieveHuman(session, personId)
@@ -596,9 +600,9 @@ class CController:
     def RemoveAgentConnection(self, session, agentName):
         """
 
-        :param session:
-        :param agentName:
-        :return:
+        :param session: session id
+        :param agentName: agent unique name
+        :return: execution state tuple
         """
         try:
             flag, agent = self.RetrieveAgent(session, agentName)
@@ -621,13 +625,19 @@ class CController:
     def RetrieveAgentInPosition(self, session, posName):
         pass
 
+    def RetrieveHumanWithCapability(self, session, capabilityName):
+        pass
+
+    def RetrieveAgentWithCapability(self, session, capabilityName):
+        pass
+
     @authorizeRequireWarp
     def RetrieveHumanInWhatGroup(self, session, personId):
         """
 
-        :param session:
-        :param personId:
-        :return:
+        :param session: session id
+        :param personId: person unique id
+        :return: execution state tuple
         """
         flag, human = self.RetrieveHuman(session, personId)
         if flag is False or human is None:
@@ -650,9 +660,9 @@ class CController:
     def RetrieveHumanInWhatPosition(self, session, personId):
         """
 
-        :param session:
-        :param personId:
-        :return:
+        :param session: session id
+        :param personId: person unique id
+        :return: execution state tuple
         """
         flag, human = self.RetrieveHuman(session, personId)
         if flag is False or human is None:
@@ -675,9 +685,9 @@ class CController:
     def RetrieveHumanWithWhatCapability(self, session, personId):
         """
 
-        :param session:
-        :param personId:
-        :return:
+        :param session: session id
+        :param personId: person unique id
+        :return: execution state tuple
         """
         flag, human = self.RetrieveHuman(session, personId)
         if flag is False or human is None:
@@ -700,9 +710,9 @@ class CController:
     def RetrieveAgentInWhatGroup(self, session, agentName):
         """
 
-        :param session:
-        :param agentName:
-        :return:
+        :param session: session id
+        :param agentName: agent unique name
+        :return: execution state tuple
         """
         flag, agent = self.RetrieveAgent(session, agentName)
         if flag is False or agent is None:
@@ -725,9 +735,9 @@ class CController:
     def RetrieveAgentInWhatPosition(self, session, agentName):
         """
 
-        :param session:
-        :param agentName:
-        :return:
+        :param session: session id
+        :param agentName: agent unique name
+        :return: execution state tuple
         """
         flag, agent = self.RetrieveAgent(session, agentName)
         if flag is False or agent is None:
@@ -750,9 +760,9 @@ class CController:
     def RetrieveAgentWithWhatCapability(self, session, agentName):
         """
 
-        :param session:
-        :param agentName:
-        :return:
+        :param session: session id
+        :param agentName: agent unique name
+        :return: execution state tuple
         """
         flag, agent = self.RetrieveAgent(session, agentName)
         if flag is False or agent is None:
@@ -771,26 +781,14 @@ class CController:
             retList.append(groupObj.Name)
         return True, retList
 
-    def SpanTreeOfGroup(self, session, groupName):
-        pass
-
-    def SpanTreeOfPosition(self, session, posName):
-        pass
-
-    def SpanTreeOfOrganizationInGroup(self, session):
-        pass
-
-    def SpanTreeOfOrganizationInPosition(self, session):
-        pass
-
     @authorizeRequireWarp
     def AddHumanToGroup(self, session, personId, groupName):
         """
 
-        :param session:
-        :param personId:
-        :param groupName:
-        :return:
+        :param session: session id
+        :param personId: person unique id
+        :param groupName: group unique name
+        :return: execution state tuple
         """
         flag1, human = self.RetrieveHuman(session, personId)
         flag2, group = self.RetrieveGroup(session, groupName)
@@ -803,10 +801,10 @@ class CController:
     def RemoveHumanFromGroup(self, session, personId, groupName):
         """
 
-        :param session:
-        :param personId:
-        :param groupName:
-        :return:
+        :param session: session id
+        :param personId: person unique id
+        :param groupName: group unique name
+        :return: execution state tuple
         """
         flag1, human = self.RetrieveHuman(session, personId)
         flag2, group = self.RetrieveGroup(session, groupName)
@@ -819,10 +817,10 @@ class CController:
     def AddHumanPosition(self, session, personId, positionName):
         """
 
-        :param session:
-        :param personId:
-        :param positionName:
-        :return:
+        :param session: session id
+        :param personId: person unique id
+        :param positionName: position unique name
+        :return: execution state tuple
         """
         flag1, human = self.RetrieveHuman(session, personId)
         flag2, position = self.RetrievePosition(session, positionName)
@@ -835,10 +833,10 @@ class CController:
     def RemoveHumanPosition(self, session, personId, positionName):
         """
 
-        :param session:
-        :param personId:
-        :param positionName:
-        :return:
+        :param session: session id
+        :param personId: person unique id
+        :param positionName: position unique name
+        :return: execution state tuple
         """
         flag1, human = self.RetrieveHuman(session, personId)
         flag2, position = self.RetrievePosition(session, positionName)
@@ -851,10 +849,10 @@ class CController:
     def AddHumanCapability(self, session, personId, capabilityName):
         """
 
-        :param session:
-        :param personId:
-        :param capabilityName:
-        :return:
+        :param session: session id
+        :param personId: person unique id
+        :param capabilityName: capability unique name
+        :return: execution state tuple
         """
         flag1, human = self.RetrieveHuman(session, personId)
         flag2, capability = self.RetrieveCapability(session, capabilityName)
@@ -867,10 +865,10 @@ class CController:
     def RemoveHumanCapability(self, session, personId, capabilityName):
         """
 
-        :param session:
-        :param personId:
-        :param capabilityName:
-        :return:
+        :param session: session id
+        :param personId: person unique id
+        :param capabilityName: capability unique name
+        :return: execution state tuple
         """
         flag1, human = self.RetrieveHuman(session, personId)
         flag2, capability = self.RetrieveCapability(session, capabilityName)
@@ -883,10 +881,10 @@ class CController:
     def AddAgentToGroup(self, session, agentName, groupName):
         """
 
-        :param session:
-        :param agentName:
-        :param groupName:
-        :return:
+        :param session: session id
+        :param agentName: agent unique name
+        :param groupName: group unique name
+        :return: execution state tuple
         """
         flag1, agent = self.RetrieveAgent(session, agentName)
         flag2, group = self.RetrieveGroup(session, groupName)
@@ -899,10 +897,10 @@ class CController:
     def RemoveAgentFromGroup(self, session, agentName, groupName):
         """
 
-        :param session:
-        :param agentName:
-        :param groupName:
-        :return:
+        :param session: session id
+        :param agentName: agent unique name
+        :param groupName: group unique name
+        :return: execution state tuple
         """
         flag1, agent = self.RetrieveAgent(session, agentName)
         flag2, group = self.RetrieveGroup(session, groupName)
@@ -915,10 +913,10 @@ class CController:
     def AddAgentPosition(self, session, agentName, positionName):
         """
 
-        :param session:
-        :param agentName:
-        :param positionName:
-        :return:
+        :param session: session id
+        :param agentName: agent unique name
+        :param positionName: position unique name
+        :return: execution state tuple
         """
         flag1, agent = self.RetrieveAgent(session, agentName)
         flag2, position = self.RetrievePosition(session, positionName)
@@ -931,10 +929,10 @@ class CController:
     def RemoveAgentPosition(self, session, agentName, positionName):
         """
 
-        :param session:
-        :param agentName:
-        :param positionName:
-        :return:
+        :param session: session id
+        :param agentName: agent unique name
+        :param positionName: position unique name
+        :return: execution state tuple
         """
         flag1, agent = self.RetrieveAgent(session, agentName)
         flag2, position = self.RetrievePosition(session, positionName)
@@ -947,10 +945,10 @@ class CController:
     def AddAgentCapability(self, session, agentName, capabilityName):
         """
 
-        :param session:
-        :param agentName:
-        :param capabilityName:
-        :return:
+        :param session: session id
+        :param agentName: agent unique name
+        :param capabilityName: capability unique name
+        :return: execution state tuple
         """
         flag1, agent = self.RetrieveAgent(session, agentName)
         flag2, capability = self.RetrieveCapability(session, capabilityName)
@@ -963,10 +961,10 @@ class CController:
     def RemoveAgentCapability(self, session, agentName, capabilityName):
         """
 
-        :param session:
-        :param agentName:
-        :param capabilityName:
-        :return:
+        :param session: session id
+        :param agentName: agent unique name
+        :param capabilityName: capability unique name
+        :return: execution state tuple
         """
         flag1, agent = self.RetrieveAgent(session, agentName)
         flag2, capability = self.RetrieveCapability(session, capabilityName)
@@ -984,6 +982,7 @@ class CController:
         Set organization name.
         :param session: session id
         :param orgName: organization name
+        :return: execution state tuple
         """
         CController._configModel.AddOrUpdate(GCC.CONFIG_ORGANIZATION_KEY, orgName)
         return True, True
@@ -993,6 +992,7 @@ class CController:
         """
         Get organization name.
         :param session: session id
+        :return: execution state tuple
         """
         return True, CController._configModel.Retrieve(GCC.CONFIG_ORGANIZATION_KEY)
 
@@ -1002,6 +1002,7 @@ class CController:
         Set update notify router gateway.
         :param session: session id
         :param routerUrl: gateway url
+        :return: execution state tuple
         """
         CController._configModel.AddOrUpdate(GCC.CONFIG_DATA_UPDATE_ROUTER, routerUrl)
         return True, True
@@ -1011,6 +1012,7 @@ class CController:
         """
         Get update notify router gateway.
         :param session: session id
+        :return: execution state tuple
         """
         return True, CController._configModel.Retrieve(GCC.CONFIG_DATA_UPDATE_ROUTER)
 
@@ -1019,12 +1021,26 @@ class CController:
         """
         Get the data version of current moment.
         :param session: session id
+        :return: execution state tuple
         """
         return True, CController._configModel.Retrieve(GCC.CONFIG_DATA_VERSION_KEY)
 
     """
     Support Methods
     """
+    @staticmethod
+    def AmIAdmin(session):
+        """
+        Get whether I am an admin.
+        :param session: session id
+        :return: True if admin session
+        """
+        try:
+            return True, SessionManager.CheckAdmin(session)
+        except Exception as e:
+            print "Exception in COrgan: %s" % str(e)
+            return False, e
+
     @staticmethod
     def Unauthorized(session):
         """

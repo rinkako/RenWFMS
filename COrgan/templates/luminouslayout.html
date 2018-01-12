@@ -59,12 +59,15 @@
                 <a href="#" class="dropdown-toggle" data-toggle="dropdown">
                     <img alt="" src="{{ url_for('static', filename='img/avatars/avatar3.jpg') }}" />
                     <span class="username">
-                        用户名
+                        {{ session['AuID'] }}
+                        {% if session['AuType'] > 0 %}
+                            &nbsp;(管理员)
+                        {% endif %}
                     </span>
                     <i class="fa fa-angle-down"></i>
                 </a>
                 <ul class="dropdown-menu">
-                    <li><a href="{{ url_for('home') }}"><i class="fa fa-power-off"></i> Log Out</a></li>
+                    <li><a href="{{ url_for('performLogout') }}"><i class="fa fa-power-off"></i> Log Out</a></li>
                 </ul>
             </li>
             <!-- END USER LOGIN DROPDOWN -->
@@ -125,7 +128,7 @@
                             </a>
                         </li>
                         <li id="current-organizable-position">
-                            <a class="" href="{{ url_for('home') }}">
+                            <a class="" href="{{ url_for('positionManagement') }}">
                                 <span class="sub-menu-text">Position</span>
                             </a>
                         </li>
@@ -137,6 +140,7 @@
                     </ul>
                 </li>
 
+                {% if session['AuType'] > 0 %}
                 <li id="active-userManagement">
                     <a class="" href="{{ url_for('userManagement') }}">
                         <i class="fa fa-key fa-fw"></i>
@@ -144,6 +148,7 @@
                         <span id="selected-userManagement"></span>
                     </a>
                 </li>
+                {% endif %}
 
             </ul>
             <!-- /SIDEBAR MENU -->

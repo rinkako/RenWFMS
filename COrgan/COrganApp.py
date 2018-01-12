@@ -12,7 +12,9 @@ Actually, it launches as a Flask application, for web service request handing.
 Here defines the routing of web UI, and all RESTful APIs are defined at another
 Restful blueprint package.
 """
-from flask import Flask, render_template, redirect, url_for, request
+from functools import wraps
+
+from flask import Flask, render_template, redirect, url_for, request, session
 
 import CController
 import GlobalConfigContext
@@ -22,7 +24,46 @@ app = Flask(__name__, template_folder='templates', static_folder='static')
 core = CController.CControllerCore
 
 
+"""
+Warppers
+"""
+
+
+def authorizeRequire(fn):
+    """
+    Decorator for login required router.
+    """
+    @wraps(fn)
+    def wrapper(*args, **kwds):
+        user = session.get('SID', None)
+        if user:
+            return fn(*args, **kwds)
+        else:
+            return redirect(url_for('Login3'))
+    return wrapper
+
+
+def adminRequire(fn):
+    """
+    Decorator for admin required router.
+    """
+    @wraps(fn)
+    def wrapper(*args, **kwds):
+        auType = session.get('AuType', None)
+        if auType is not None and auType > 0:
+            return fn(*args, **kwds)
+        else:
+            return redirect(url_for('AccessErrorPage', dt='unauthorized'))
+    return wrapper
+
+
+"""
+Common Routers
+"""
+
+
 @app.route('/')
+@authorizeRequire
 def home():
     t = {'L_PageTitle': 'homepage'}
     return render_template('index.html', **t)
@@ -47,8 +88,10 @@ User Management Routers
 
 
 @app.route('/userManagement/')
+@authorizeRequire
+@adminRequire
 def userManagement():
-    flag, res = core.PlatformUserGetAll('testadmin')
+    flag, res = core.PlatformUserGetAll(session['SID'])
     if flag is False:
         return redirect(url_for('AccessErrorPage', dt='x'))
     t = {'L_PageTitle': u'授权管理',
@@ -58,6 +101,8 @@ def userManagement():
 
 
 @app.route('/userManagement/add/')
+@authorizeRequire
+@adminRequire
 def addPlatformUser():
     t = {'L_PageTitle': u'添加授权',
          'L_PageDescription': u'为COrgan添加一个授权访问的用户账户'}
@@ -65,28 +110,34 @@ def addPlatformUser():
 
 
 @app.route('/userManagement/performadd/', methods=["POST"])
+@authorizeRequire
+@adminRequire
 def performAddPlatformUser():
     from Utility.EncryptUtil import EncryptUtil
-    flag, res = core.PlatformUserAdd('testadmin',
+    flag, res = core.PlatformUserAdd(session['SID'],
                                      request.form['f_username'],
                                      EncryptUtil.EncryptSHA256(request.form['f_nPassword']),
                                      1 if request.form['f_level'] == u"管理员" else 0)
-    if flag is False or res is None:
+    if (flag & res) is False:
         return redirect(url_for('AccessErrorPage', dt='add'))
     return redirect(url_for('userManagement'))
 
 
 @app.route('/userManagement/performdelete/<uname>/', methods=["GET"])
+@authorizeRequire
+@adminRequire
 def performDeletePlatformUser(uname):
-    flag, res = core.PlatformUserRemove('testadmin', uname)
+    flag, res = core.PlatformUserRemove(session['SID'], uname)
     if flag is False:
         return redirect(url_for('AccessErrorPage', dt='x'))
     return redirect(url_for('userManagement'))
 
 
 @app.route('/userManagement/edit/<uname>/', methods=["GET"])
+@authorizeRequire
+@adminRequire
 def editPlatformUser(uname):
-    flag, res = core.PlatformUserGet('testadmin', uname)
+    flag, res = core.PlatformUserGet(session['SID'], uname)
     if flag is False:
         return redirect(url_for('AccessErrorPage', dt='x'))
     t = {'L_PageTitle': u'编辑: ' + uname,
@@ -96,12 +147,14 @@ def editPlatformUser(uname):
 
 
 @app.route('/userManagement/performedit/', methods=["POST"])
+@authorizeRequire
+@adminRequire
 def performEditPlatformUser():
     pwd = None
     if request.form['f_nPassword'] != "":
         from Utility.EncryptUtil import EncryptUtil
         pwd = EncryptUtil.EncryptSHA256(request.form['f_nPassword'])
-    flag, res = core.PlatformUserUpdate('testadmin',
+    flag, res = core.PlatformUserUpdate(session['SID'],
                                         request.form['h_username'],
                                         pwd,
                                         1 if request.form['f_level'] == u"管理员" else 0)
@@ -116,8 +169,9 @@ Capability Management Routers
 
 
 @app.route('/capability/')
+@authorizeRequire
 def capabilityManagement():
-    flag, res = core.RetrieveAllCapabilities('testadmin')
+    flag, res = core.RetrieveAllCapabilities(session['SID'])
     if flag is False:
         return redirect(url_for('AccessErrorPage', dt='x'))
     t = {'L_PageTitle': u'能力管理',
@@ -127,6 +181,7 @@ def capabilityManagement():
 
 
 @app.route('/capability/add')
+@authorizeRequire
 def addCapability():
     t = {'L_PageTitle': u'添加人力',
          'L_PageDescription': u'为组织添加一个人力资源'}
@@ -134,8 +189,9 @@ def addCapability():
 
 
 @app.route('/capability/performadd/', methods=["POST"])
+@authorizeRequire
 def performAddCapability():
-    flag, res = core.AddCapability('testadmin',
+    flag, res = core.AddCapability(session['SID'],
                                    request.form['f_capaname'],
                                    request.form['f_description'],
                                    request.form['f_note'])
@@ -145,8 +201,9 @@ def performAddCapability():
 
 
 @app.route('/capability/edit/<uname>/', methods=["GET"])
+@authorizeRequire
 def editCapability(uname):
-    flag, res = core.RetrieveCapability('testadmin', uname)
+    flag, res = core.RetrieveCapability(session['SID'], uname)
     if flag is False:
         return redirect(url_for('AccessErrorPage', dt='x'))
     t = {'L_PageTitle': u'编辑: ' + uname,
@@ -156,12 +213,13 @@ def editCapability(uname):
 
 
 @app.route('/capability/performedit/', methods=["POST"])
+@authorizeRequire
 def performEditCapability():
     updateDict = {
         "description": "'%s'" % request.form['f_description'],
         "note": "'%s'" % request.form['f_note']
     }
-    flag, res = core.UpdateCapability('testadmin',
+    flag, res = core.UpdateCapability(session['SID'],
                                       request.form['h_capaname'],
                                       **updateDict)
     if flag is False:
@@ -170,8 +228,9 @@ def performEditCapability():
 
 
 @app.route('/capability/performdelete/<uname>/', methods=["GET"])
+@authorizeRequire
 def performDeleteCapability(uname):
-    flag, res = core.RemoveCapability('testadmin', uname)
+    flag, res = core.RemoveCapability(session['SID'], uname)
     if flag is False:
         return redirect(url_for('AccessErrorPage', dt='x'))
     return redirect(url_for('capabilityManagement'))
@@ -183,15 +242,16 @@ Group Resources Management Routers
 
 
 @app.route('/group/')
+@authorizeRequire
 def groupManagement():
-    flag, res = core.RetrieveAllGroup('testadmin')
+    flag, res = core.RetrieveAllGroup(session['SID'])
     if flag is False:
         return redirect(url_for('AccessErrorPage', dt='x'))
     belongToList = []
     typeList = []
     for group in res:
         if group.BelongToGroupId is not '':
-            xflag, belonger = core.RetrieveGroupById('testadmin', group.BelongToGroupId)
+            xflag, belonger = core.RetrieveGroupById(session['SID'], group.BelongToGroupId)
             if xflag is False:
                 redirect(url_for('AccessErrorPage', dt='x'))
             if belonger is not None:
@@ -210,8 +270,9 @@ def groupManagement():
 
 
 @app.route('/group/add')
+@authorizeRequire
 def addGroup():
-    flag, ret = core.RetrieveAllGroup('testadmin')
+    flag, ret = core.RetrieveAllGroup(session['SID'])
     if flag is False:
         return redirect(url_for('AccessErrorPage', dt='x'))
     t = {'L_PageTitle': u'添加子组',
@@ -221,14 +282,15 @@ def addGroup():
 
 
 @app.route('/group/performadd/', methods=["POST"])
+@authorizeRequire
 def performAddGroup():
     belongToId = request.form['f_belong']
     gid = ''
     if belongToId != '(None)':
-        xflag, gid = core.RetrieveGroupId('testadmin', belongToId)
+        xflag, gid = core.RetrieveGroupId(session['SID'], belongToId)
         if xflag is False or gid is None:
             return redirect(url_for('AccessErrorPage', dt='x'))
-    flag, res = core.AddGroup('testadmin',
+    flag, res = core.AddGroup(session['SID'],
                               request.form['f_groupname'],
                               request.form['f_description'],
                               request.form['f_note'],
@@ -240,11 +302,12 @@ def performAddGroup():
 
 
 @app.route('/group/edit/<uname>/', methods=["GET"])
+@authorizeRequire
 def editGroup(uname):
-    flag, res = core.RetrieveGroup('testadmin', uname)
+    flag, res = core.RetrieveGroup(session['SID'], uname)
     if flag is False or res is None:
         return redirect(url_for('AccessErrorPage', dt='x'))
-    flag, grpList = core.RetrieveAllGroup('testadmin')
+    flag, grpList = core.RetrieveAllGroup(session['SID'])
     if flag is False or grpList is None:
         return redirect(url_for('AccessErrorPage', dt='x'))
     # remove self
@@ -259,7 +322,7 @@ def editGroup(uname):
         return redirect(url_for('AccessErrorPage', dt='x'))
     belongIdx = 0
     if res.BelongToGroupId != '':
-        flag, belongToObj = core.RetrieveGroupById('testadmin', res.BelongToGroupId)
+        flag, belongToObj = core.RetrieveGroupById(session['SID'], res.BelongToGroupId)
         if flag is False or belongToObj is None:
             return redirect(url_for('AccessErrorPage', dt='x'))
         for x in range(0, len(grpList)):
@@ -275,11 +338,12 @@ def editGroup(uname):
 
 
 @app.route('/group/performedit/', methods=["POST"])
+@authorizeRequire
 def performEditGroup():
     belongToId = request.form['f_belong']
     gid = None
     if belongToId != '(None)':
-        xflag, gid = core.RetrieveGroupId('testadmin', belongToId)
+        xflag, gid = core.RetrieveGroupId(session['SID'], belongToId)
         if xflag is False or gid is None:
             return redirect(url_for('AccessErrorPage', dt='x'))
     belongToIdText = "'%s'" % gid if gid is not None else "''"
@@ -289,7 +353,7 @@ def performEditGroup():
         "groupType": "%s" % int(request.form['f_type']),
         "belongToId": belongToIdText
     }
-    flag, res = core.UpdateGroup('testadmin',
+    flag, res = core.UpdateGroup(session['SID'],
                                  request.form['h_groupname'],
                                  **updateDict)
     if flag is False:
@@ -298,8 +362,9 @@ def performEditGroup():
 
 
 @app.route('/group/performdelete/<uname>/', methods=["GET"])
+@authorizeRequire
 def performDeleteGroup(uname):
-    flag, res = core.RemoveGroup('testadmin', uname)
+    flag, res = core.RemoveGroup(session['SID'], uname)
     if (flag & res) is False:
         return redirect(url_for('AccessErrorPage', dt='x'))
     return redirect(url_for('groupManagement'))
@@ -311,8 +376,9 @@ Position Resources Management Routers
 
 
 @app.route('/position/')
+@authorizeRequire
 def positionManagement():
-    flag, res = core.RetrieveAllPosition('testadmin')
+    flag, res = core.RetrieveAllPosition(session['SID'])
     if flag is False:
         return redirect(url_for('AccessErrorPage', dt='x'))
     belongToList = []
@@ -322,7 +388,7 @@ def positionManagement():
         assert isinstance(pos, Position)
         # report
         if pos.ReportToPosition != '':
-            xflag, reporter = core.RetrievePositionById('testadmin', pos.ReportToPosition)
+            xflag, reporter = core.RetrievePositionById(session['SID'], pos.ReportToPosition)
             if xflag is False:
                 redirect(url_for('AccessErrorPage', dt='x'))
             if reporter is not None:
@@ -333,7 +399,7 @@ def positionManagement():
             reportToList.append('')
         # belong
         if pos.BelongToGroup != '':
-            xflag, belonger = core.RetrieveGroupById('testadmin', pos.BelongToGroup)
+            xflag, belonger = core.RetrieveGroupById(session['SID'], pos.BelongToGroup)
             if xflag is False:
                 redirect(url_for('AccessErrorPage', dt='x'))
             if belonger is not None:
@@ -351,9 +417,10 @@ def positionManagement():
 
 
 @app.route('/position/add')
+@authorizeRequire
 def addPosition():
-    gflag, groups = core.RetrieveAllGroup('testadmin')
-    pflag, positions = core.RetrieveAllPosition('testadmin')
+    gflag, groups = core.RetrieveAllGroup(session['SID'])
+    pflag, positions = core.RetrieveAllPosition(session['SID'])
     if (gflag & pflag) is False:
         return redirect(url_for('AccessErrorPage', dt='x'))
     t = {'L_PageTitle': u'添加职位',
@@ -364,18 +431,19 @@ def addPosition():
 
 
 @app.route('/position/performadd/', methods=["POST"])
+@authorizeRequire
 def performAddPosition():
     reportToId = request.form['f_report']
     reportGid = ''
     if reportToId != '(None)':
-        xflag, reportGid = core.RetrievePositionId('testadmin', reportToId)
+        xflag, reportGid = core.RetrievePositionId(session['SID'], reportToId)
         if xflag is False or reportGid is None:
             return redirect(url_for('AccessErrorPage', dt='x'))
     belongToId = request.form['f_belong']
-    xflag, belongGid = core.RetrieveGroupId('testadmin', belongToId)
+    xflag, belongGid = core.RetrieveGroupId(session['SID'], belongToId)
     if xflag is False or belongGid is None:
         return redirect(url_for('AccessErrorPage', dt='x'))
-    flag, res = core.AddPosition('testadmin',
+    flag, res = core.AddPosition(session['SID'],
                                  request.form['f_positionname'],
                                  request.form['f_description'],
                                  request.form['f_note'],
@@ -387,14 +455,15 @@ def performAddPosition():
 
 
 @app.route('/position/edit/<uname>/', methods=["GET"])
+@authorizeRequire
 def editPosition(uname):
-    flag, res = core.RetrievePosition('testadmin', uname)
+    flag, res = core.RetrievePosition(session['SID'], uname)
     if flag is False or res is None:
         return redirect(url_for('AccessErrorPage', dt='x'))
-    flag, grpList = core.RetrieveAllGroup('testadmin')
+    flag, grpList = core.RetrieveAllGroup(session['SID'])
     if flag is False or grpList is None:
         return redirect(url_for('AccessErrorPage', dt='x'))
-    flag, posList = core.RetrieveAllPosition('testadmin')
+    flag, posList = core.RetrieveAllPosition(session['SID'])
     if flag is False or posList is None:
         return redirect(url_for('AccessErrorPage', dt='x'))
     # remove self
@@ -408,7 +477,7 @@ def editPosition(uname):
     else:
         return redirect(url_for('AccessErrorPage', dt='x'))
     belongIdx = 0
-    flag, belongToObj = core.RetrieveGroupById('testadmin', res.BelongToGroup)
+    flag, belongToObj = core.RetrieveGroupById(session['SID'], res.BelongToGroup)
     if flag is False or belongToObj is None:
         return redirect(url_for('AccessErrorPage', dt='x'))
     for x in range(0, len(grpList)):
@@ -417,7 +486,7 @@ def editPosition(uname):
             break
     reportIdx = 0
     if res.ReportToPosition != '':
-        flag, reportToObj = core.RetrievePositionById('testadmin', res.ReportToPosition)
+        flag, reportToObj = core.RetrievePositionById(session['SID'], res.ReportToPosition)
         if flag is False or reportToObj is None:
             return redirect(url_for('AccessErrorPage', dt='x'))
         for x in range(0, len(posList)):
@@ -435,9 +504,10 @@ def editPosition(uname):
 
 
 @app.route('/position/performedit/', methods=["POST"])
+@authorizeRequire
 def performEditPosition():
     belongToId = request.form['f_belong']
-    xflag, belongGid = core.RetrieveGroupId('testadmin', belongToId)
+    xflag, belongGid = core.RetrieveGroupId(session['SID'], belongToId)
     if xflag is False or belongGid is None:
         return redirect(url_for('AccessErrorPage', dt='x'))
     belongToIdText = "'%s'" % belongGid if belongGid is not None else "''"
@@ -445,7 +515,7 @@ def performEditPosition():
     reportToId = request.form['f_report']
     reportGid = None
     if reportToId != '(None)':
-        xflag, reportGid = core.RetrievePositionId('testadmin', reportToId)
+        xflag, reportGid = core.RetrievePositionId(session['SID'], reportToId)
         if xflag is False or reportGid is None:
             return redirect(url_for('AccessErrorPage', dt='x'))
     reportToIdText = "'%s'" % reportGid if reportGid is not None else "''"
@@ -455,7 +525,7 @@ def performEditPosition():
         "belongToId": belongToIdText,
         "reportToId": reportToIdText
     }
-    flag, res = core.UpdatePosition('testadmin',
+    flag, res = core.UpdatePosition(session['SID'],
                                     request.form['h_positionname'],
                                     **updateDict)
     if flag is False:
@@ -464,8 +534,9 @@ def performEditPosition():
 
 
 @app.route('/position/performdelete/<uname>/', methods=["GET"])
+@authorizeRequire
 def performDeletePosition(uname):
-    flag, res = core.RemovePosition('testadmin', uname)
+    flag, res = core.RemovePosition(session['SID'], uname)
     if (flag & res) is False:
         return redirect(url_for('AccessErrorPage', dt='x'))
     return redirect(url_for('positionManagement'))
@@ -477,23 +548,24 @@ Human Resources Management Routers
 
 
 @app.route('/human/')
+@authorizeRequire
 def humanManagement():
-    flag, res = core.RetrieveAllHuman('testadmin')
+    flag, res = core.RetrieveAllHuman(session['SID'])
     if flag is False or res is None:
         return redirect(url_for('AccessErrorPage', dt='x'))
     capabilityList = []
     groupList = []
     positionList = []
     for h in res:
-        xflag, groups = core.RetrieveHumanInWhatGroup('testadmin', h.PersonId)
+        xflag, groups = core.RetrieveHumanInWhatGroup(session['SID'], h.PersonId)
         if xflag is False or groups is None:
             return redirect(url_for('AccessErrorPage', dt='add'))
         groupList.append('<br/>'.join(groups) + '<br/>')
-        xflag, capabilities = core.RetrieveHumanWithWhatCapability('testadmin', h.PersonId)
+        xflag, capabilities = core.RetrieveHumanWithWhatCapability(session['SID'], h.PersonId)
         if xflag is False or capabilities is None:
             return redirect(url_for('AccessErrorPage', dt='add'))
         capabilityList.append('<br/>'.join(capabilities) + '<br/>')
-        xflag, positions = core.RetrieveHumanInWhatPosition('testadmin', h.PersonId)
+        xflag, positions = core.RetrieveHumanInWhatPosition(session['SID'], h.PersonId)
         if xflag is False or positions is None:
             return redirect(url_for('AccessErrorPage', dt='add'))
         positionList.append('<br/>'.join(positions) + '<br/>')
@@ -507,10 +579,11 @@ def humanManagement():
 
 
 @app.route('/human/add/')
+@authorizeRequire
 def addHuman():
-    flag1, groupList = core.RetrieveAllGroup('testadmin')
-    flag2, positionList = core.RetrieveAllPosition('testadmin')
-    flag3, capabilityList = core.RetrieveAllCapabilities('testadmin')
+    flag1, groupList = core.RetrieveAllGroup(session['SID'])
+    flag2, positionList = core.RetrieveAllPosition(session['SID'])
+    flag3, capabilityList = core.RetrieveAllCapabilities(session['SID'])
     if (flag1 & flag2 & flag3) is False or groupList is None or positionList is None or capabilityList is None:
         return redirect(url_for('AccessErrorPage', dt='x'))
     t = {'L_PageTitle': u'添加人力',
@@ -522,9 +595,10 @@ def addHuman():
 
 
 @app.route('/human/performadd/', methods=["POST"])
+@authorizeRequire
 def performAddHuman():
     pid = request.form['f_personid']
-    flag, res = core.AddHuman('testadmin',
+    flag, res = core.AddHuman(session['SID'],
                               pid,
                               request.form['f_firstname'],
                               request.form['f_lastname'],
@@ -541,40 +615,41 @@ def performAddHuman():
     if request.form['output_position'] != '':
         posVec = request.form['output_position'].split(';')
     for cp in capaVec:
-        xflag, xret = core.AddHumanCapability('testadmin', pid, cp)
+        xflag, xret = core.AddHumanCapability(session['SID'], pid, cp)
         if xflag is False or xret is None:
             return redirect(url_for('AccessErrorPage', dt='x'))
     for gr in groupVec:
-        xflag, xret = core.AddHumanToGroup('testadmin', pid, gr)
+        xflag, xret = core.AddHumanToGroup(session['SID'], pid, gr)
         if xflag is False or xret is None:
             return redirect(url_for('AccessErrorPage', dt='x'))
     for ps in posVec:
-        xflag, xret = core.AddHumanPosition('testadmin', pid, ps)
+        xflag, xret = core.AddHumanPosition(session['SID'], pid, ps)
         if xflag is False or xret is None:
             return redirect(url_for('AccessErrorPage', dt='x'))
     return redirect(url_for('humanManagement'))
 
 
 @app.route('/human/edit/<uname>/', methods=["GET"])
+@authorizeRequire
 def editHuman(uname):
-    flag, res = core.RetrieveHuman('testadmin', uname)
+    flag, res = core.RetrieveHuman(session['SID'], uname)
     if flag is False or res is None:
         return redirect(url_for('AccessErrorPage', dt='x'))
-    xflag, groups = core.RetrieveHumanInWhatGroup('testadmin', res.PersonId)
+    xflag, groups = core.RetrieveHumanInWhatGroup(session['SID'], res.PersonId)
     if xflag is False or groups is None:
         return redirect(url_for('AccessErrorPage', dt='x'))
     groupStr = ';'.join(groups)
-    xflag, capabilities = core.RetrieveHumanWithWhatCapability('testadmin', res.PersonId)
+    xflag, capabilities = core.RetrieveHumanWithWhatCapability(session['SID'], res.PersonId)
     if xflag is False or capabilities is None:
         return redirect(url_for('AccessErrorPage', dt='x'))
     capabilityStr = ';'.join(capabilities)
-    xflag, positions = core.RetrieveHumanInWhatPosition('testadmin', res.PersonId)
+    xflag, positions = core.RetrieveHumanInWhatPosition(session['SID'], res.PersonId)
     if xflag is False or positions is None:
         return redirect(url_for('AccessErrorPage', dt='x'))
     positionStr = ';'.join(positions)
-    flag1, groupList = core.RetrieveAllGroup('testadmin')
-    flag2, positionList = core.RetrieveAllPosition('testadmin')
-    flag3, capabilityList = core.RetrieveAllCapabilities('testadmin')
+    flag1, groupList = core.RetrieveAllGroup(session['SID'])
+    flag2, positionList = core.RetrieveAllPosition(session['SID'])
+    flag3, capabilityList = core.RetrieveAllCapabilities(session['SID'])
     if (flag1 & flag2 & flag3) is False or groupList is None or positionList is None or capabilityList is None:
         return redirect(url_for('AccessErrorPage', dt='x'))
     t = {'L_PageTitle': u'编辑: ' + uname,
@@ -590,6 +665,7 @@ def editHuman(uname):
 
 
 @app.route('/human/performedit/', methods=["POST"])
+@authorizeRequire
 def performEditHuman():
     pid = request.form['h_personid']
     updateDict = {
@@ -597,12 +673,12 @@ def performEditHuman():
         "lastname": "'%s'" % request.form['f_lastname'],
         "note": "'%s'" % request.form['f_note'],
     }
-    flag, res = core.UpdateHuman('testadmin',
+    flag, res = core.UpdateHuman(session['SID'],
                                  pid,
                                  **updateDict)
     if (flag & res) is False:
         return redirect(url_for('AccessErrorPage', dt='x'))
-    flag, removeFlag = core.RemoveHumanConnection('testadmin', pid)
+    flag, removeFlag = core.RemoveHumanConnection(session['SID'], pid)
     if (flag & removeFlag) is False:
         return redirect(url_for('AccessErrorPage', dt='x'))
     capaVec = []
@@ -615,23 +691,24 @@ def performEditHuman():
     if request.form['output_position'] != '':
         posVec = request.form['output_position'].split(';')
     for cp in capaVec:
-        xflag, xret = core.AddHumanCapability('testadmin', pid, cp)
+        xflag, xret = core.AddHumanCapability(session['SID'], pid, cp)
         if xflag is False or xret is None:
             return redirect(url_for('AccessErrorPage', dt='x'))
     for gr in groupVec:
-        xflag, xret = core.AddHumanToGroup('testadmin', pid, gr)
+        xflag, xret = core.AddHumanToGroup(session['SID'], pid, gr)
         if xflag is False or xret is None:
             return redirect(url_for('AccessErrorPage', dt='x'))
     for ps in posVec:
-        xflag, xret = core.AddHumanPosition('testadmin', pid, ps)
+        xflag, xret = core.AddHumanPosition(session['SID'], pid, ps)
         if xflag is False or xret is None:
             return redirect(url_for('AccessErrorPage', dt='x'))
     return redirect(url_for('humanManagement'))
 
 
 @app.route('/human/performdelete/<uname>/', methods=["GET"])
+@authorizeRequire
 def performDeleteHuman(uname):
-    flag, res = core.RemoveHuman('testadmin', uname)
+    flag, res = core.RemoveHuman(session['SID'], uname)
     if (flag & res) is False:
         return redirect(url_for('AccessErrorPage', dt='x'))
     return redirect(url_for('humanManagement'))
@@ -643,23 +720,24 @@ Agent Resources Management Routers
 
 
 @app.route('/agent/')
+@authorizeRequire
 def agentManagement():
-    flag, res = core.RetrieveAllAgent('testadmin')
+    flag, res = core.RetrieveAllAgent(session['SID'])
     if flag is False or res is None:
         return redirect(url_for('AccessErrorPage', dt='x'))
     capabilityList = []
     groupList = []
     positionList = []
     for h in res:
-        xflag, groups = core.RetrieveAgentInWhatGroup('testadmin', h.Name)
+        xflag, groups = core.RetrieveAgentInWhatGroup(session['SID'], h.Name)
         if xflag is False or groups is None:
             return redirect(url_for('AccessErrorPage', dt='add'))
         groupList.append('<br/>'.join(groups) + '<br/>')
-        xflag, capabilities = core.RetrieveAgentWithWhatCapability('testadmin', h.Name)
+        xflag, capabilities = core.RetrieveAgentWithWhatCapability(session['SID'], h.Name)
         if xflag is False or capabilities is None:
             return redirect(url_for('AccessErrorPage', dt='add'))
         capabilityList.append('<br/>'.join(capabilities) + '<br/>')
-        xflag, positions = core.RetrieveAgentInWhatPosition('testadmin', h.Name)
+        xflag, positions = core.RetrieveAgentInWhatPosition(session['SID'], h.Name)
         if xflag is False or positions is None:
             return redirect(url_for('AccessErrorPage', dt='add'))
         positionList.append('<br/>'.join(positions) + '<br/>')
@@ -673,10 +751,11 @@ def agentManagement():
 
 
 @app.route('/agent/add/')
+@authorizeRequire
 def addAgent():
-    flag1, groupList = core.RetrieveAllGroup('testadmin')
-    flag2, positionList = core.RetrieveAllPosition('testadmin')
-    flag3, capabilityList = core.RetrieveAllCapabilities('testadmin')
+    flag1, groupList = core.RetrieveAllGroup(session['SID'])
+    flag2, positionList = core.RetrieveAllPosition(session['SID'])
+    flag3, capabilityList = core.RetrieveAllCapabilities(session['SID'])
     if (flag1 & flag2 & flag3) is False or groupList is None or positionList is None or capabilityList is None:
         return redirect(url_for('AccessErrorPage', dt='x'))
     t = {'L_PageTitle': u'添加Agent',
@@ -688,9 +767,10 @@ def addAgent():
 
 
 @app.route('/agent/performadd/', methods=["POST"])
+@authorizeRequire
 def performAddAgent():
     agentName = request.form['f_name']
-    flag, res = core.AddAgent('testadmin',
+    flag, res = core.AddAgent(session['SID'],
                               agentName,
                               request.form['f_location'],
                               int(request.form['f_type']),
@@ -707,40 +787,41 @@ def performAddAgent():
     if request.form['output_position'] != '':
         posVec = request.form['output_position'].split(';')
     for cp in capaVec:
-        xflag, xret = core.AddAgentCapability('testadmin', agentName, cp)
+        xflag, xret = core.AddAgentCapability(session['SID'], agentName, cp)
         if xflag is False or xret is None:
             return redirect(url_for('AccessErrorPage', dt='x'))
     for gr in groupVec:
-        xflag, xret = core.AddAgentToGroup('testadmin', agentName, gr)
+        xflag, xret = core.AddAgentToGroup(session['SID'], agentName, gr)
         if xflag is False or xret is None:
             return redirect(url_for('AccessErrorPage', dt='x'))
     for ps in posVec:
-        xflag, xret = core.AddAgentPosition('testadmin', agentName, ps)
+        xflag, xret = core.AddAgentPosition(session['SID'], agentName, ps)
         if xflag is False or xret is None:
             return redirect(url_for('AccessErrorPage', dt='x'))
     return redirect(url_for('agentManagement'))
 
 
 @app.route('/agent/edit/<uname>/', methods=["GET"])
+@authorizeRequire
 def editAgent(uname):
-    flag, res = core.RetrieveAgent('testadmin', uname)
+    flag, res = core.RetrieveAgent(session['SID'], uname)
     if flag is False or res is None:
         return redirect(url_for('AccessErrorPage', dt='x'))
-    xflag, groups = core.RetrieveAgentInWhatGroup('testadmin', res.Name)
+    xflag, groups = core.RetrieveAgentInWhatGroup(session['SID'], res.Name)
     if xflag is False or groups is None:
         return redirect(url_for('AccessErrorPage', dt='x'))
     groupStr = ';'.join(groups)
-    xflag, capabilities = core.RetrieveAgentWithWhatCapability('testadmin', res.Name)
+    xflag, capabilities = core.RetrieveAgentWithWhatCapability(session['SID'], res.Name)
     if xflag is False or capabilities is None:
         return redirect(url_for('AccessErrorPage', dt='x'))
     capabilityStr = ';'.join(capabilities)
-    xflag, positions = core.RetrieveAgentInWhatPosition('testadmin', res.Name)
+    xflag, positions = core.RetrieveAgentInWhatPosition(session['SID'], res.Name)
     if xflag is False or positions is None:
         return redirect(url_for('AccessErrorPage', dt='x'))
     positionStr = ';'.join(positions)
-    flag1, groupList = core.RetrieveAllGroup('testadmin')
-    flag2, positionList = core.RetrieveAllPosition('testadmin')
-    flag3, capabilityList = core.RetrieveAllCapabilities('testadmin')
+    flag1, groupList = core.RetrieveAllGroup(session['SID'])
+    flag2, positionList = core.RetrieveAllPosition(session['SID'])
+    flag3, capabilityList = core.RetrieveAllCapabilities(session['SID'])
     if (flag1 & flag2 & flag3) is False or groupList is None or positionList is None or capabilityList is None:
         return redirect(url_for('AccessErrorPage', dt='x'))
     t = {'L_PageTitle': u'编辑: ' + uname,
@@ -756,6 +837,7 @@ def editAgent(uname):
 
 
 @app.route('/agent/performedit/', methods=["POST"])
+@authorizeRequire
 def performEditAgent():
     agentName = request.form['h_name']
     updateDict = {
@@ -763,12 +845,12 @@ def performEditAgent():
         "type": "%s" % int(request.form['f_type']),
         "note": "'%s'" % request.form['f_note'],
     }
-    flag, res = core.UpdateAgent('testadmin',
+    flag, res = core.UpdateAgent(session['SID'],
                                  agentName,
                                  **updateDict)
     if (flag & res) is False:
         return redirect(url_for('AccessErrorPage', dt='x'))
-    flag, removeFlag = core.RemoveAgentConnection('testadmin', agentName)
+    flag, removeFlag = core.RemoveAgentConnection(session['SID'], agentName)
     if (flag & removeFlag) is False:
         return redirect(url_for('AccessErrorPage', dt='x'))
     capaVec = []
@@ -781,26 +863,95 @@ def performEditAgent():
     if request.form['output_position'] != '':
         posVec = request.form['output_position'].split(';')
     for cp in capaVec:
-        xflag, xret = core.AddAgentCapability('testadmin', agentName, cp)
+        xflag, xret = core.AddAgentCapability(session['SID'], agentName, cp)
         if xflag is False or xret is None:
             return redirect(url_for('AccessErrorPage', dt='x'))
     for gr in groupVec:
-        xflag, xret = core.AddAgentToGroup('testadmin', agentName, gr)
+        xflag, xret = core.AddAgentToGroup(session['SID'], agentName, gr)
         if xflag is False or xret is None:
             return redirect(url_for('AccessErrorPage', dt='x'))
     for ps in posVec:
-        xflag, xret = core.AddAgentPosition('testadmin', agentName, ps)
+        xflag, xret = core.AddAgentPosition(session['SID'], agentName, ps)
         if xflag is False or xret is None:
             return redirect(url_for('AccessErrorPage', dt='x'))
     return redirect(url_for('agentManagement'))
 
 
 @app.route('/agent/performdelete/<uname>/', methods=["GET"])
+@authorizeRequire
 def performDeleteAgent(uname):
-    flag, res = core.RemoveAgent('testadmin', uname)
+    flag, res = core.RemoveAgent(session['SID'], uname)
     if (flag & res) is False:
         return redirect(url_for('AccessErrorPage', dt='x'))
     return redirect(url_for('agentManagement'))
+
+
+"""
+Login Routers
+"""
+
+
+@app.route('/login/')
+def Login():
+    _logout()
+    t = {
+        'msg': ''
+    }
+    return render_template('login.html', **t)
+
+
+@app.route('/login2/')
+def Login2():
+    _logout()
+    t = {
+        'msg': 'Invalid User ID or Password'
+    }
+    return render_template('login.html', **t)
+
+
+@app.route('/loginRequire/')
+def Login3():
+    _logout()
+    t = {
+        'msg': 'Please login first'
+    }
+    return render_template('login.html', **t)
+
+
+@app.route('/performLogin/', methods=["GET", "POST"])
+def performLogin():
+    if request.method == 'GET':
+        return redirect(url_for('Login'))
+    usrId = request.form["passedUserId"]
+    usrPwd = request.form["passedUserPwd"]
+    import re
+    if re.match('^[A-Za-z0-9@.]+$', usrId) is None:
+        return redirect(url_for('Login2'))
+    from Utility.EncryptUtil import EncryptUtil
+    usrPwd = EncryptUtil.EncryptSHA256(usrPwd)
+    flag, ret = core.Connect(usrId, usrPwd)
+    if flag is False or ret is None:
+        return redirect(url_for('Login2'))
+    session['AuID'] = usrId
+    session['SID'] = ret
+    session['AuType'] = 1 if core.AmIAdmin(ret)[1] is True else 0
+    return redirect(url_for('home'))
+
+
+@app.route('/performLogout/', methods=["GET", "POST"])
+def performLogout():
+    return redirect(url_for('Login'))
+
+
+def _logout():
+    """
+    Perform Logout logic and clear the session.
+    """
+    if 'SID' in session:
+        sid = session['SID']
+        if sid != "" and sid is not None:
+            flag, ret = core.Disconnect(session['SID'])
+            session.clear()
 
 
 if __name__ == '__main__':
