@@ -18,7 +18,7 @@ public class BOInheritHandler {
      * @return inheritable context for this scxml instance
      */
     public static InheritableContext InheritConnect(SCXML deliver, String baseName) throws Exception {
-        if (deliver == null) {
+        if (deliver == null || baseName == null || baseName.length() <= 0) {
             return null;
         }
         Stack<SCXML> inheritObjectStack = new Stack();
@@ -35,6 +35,7 @@ public class BOInheritHandler {
      */
     private static void RecursiveInheritHandler(String baseName, Stack<SCXML> inheritStack) throws Exception {
         URL url = BOInheritHandler.class.getClassLoader().getResource(baseName+".xml");
+        System.out.println("url:"+url);
         String nextBase = BOInheritHandler.PushSCXML(url, inheritStack);
         if (nextBase == null || nextBase.length() <= 0) {
             return;
