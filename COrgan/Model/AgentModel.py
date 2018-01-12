@@ -55,13 +55,14 @@ class AgentModel:
         """
         Add an agent by Agent package data.
         :param ap: agent instance
-        :return: execution result
+        :return: uid
         """
         assert isinstance(ap, Agent)
-        uid = "Agent_%s_%s" % (ap.GlobalId, uuid.uuid1())
+        uid = "Agent_%s" % uuid.uuid1()
         sql = "INSERT INTO ren_agent(id, name, location, type, note) VALUES " \
-              "('%s', '%s', '%s', %s, '%s')" % (uid, ap.GlobalId, ap.Location, ap.Type, ap.Note)
-        return AgentModel._persistDAO.ExecuteSQL(sql, needRet=True)
+              "('%s', '%s', '%s', %s, '%s')" % (uid, ap.Name, ap.Location, ap.Type, ap.Note)
+        AgentModel._persistDAO.ExecuteSQL(sql, needRet=False)
+        return uid
 
     @staticmethod
     def Contains(agentName):
@@ -162,6 +163,22 @@ class AgentModel:
             return None
 
     @staticmethod
+    def GetByGlobalId(gid):
+        """
+        Get package by global id.
+        :param gid: global id
+        :return: package instance
+        """
+        sql = "SELECT * FROM ren_agent WHERE id = '%s'" % gid
+        ret = AgentModel._persistDAO.ExecuteSQL(sql, needRet=True)
+        if len(ret) > 0:
+            rd = AgentModel._dispatchRetObj(ret[0])
+            rd.GlobalId = ret[0]["id"]
+            return rd
+        else:
+            return None
+
+    @staticmethod
     def _dispatchRetObj(retObj):
         """
         Dispatch retObj dictionary to Agent instance.
@@ -169,7 +186,8 @@ class AgentModel:
         :return: Agent instance
         """
         assert retObj is not None
-        retAgent = Agent(retObj["id"], retObj["name"], retObj["location"], retObj["note"], retObj["type"])
+        retAgent = Agent(retObj["name"], retObj["location"], retObj["note"], retObj["type"])
+        retAgent.GlobalId = retObj["id"]
         return retAgent
 
     _persistDAO = None

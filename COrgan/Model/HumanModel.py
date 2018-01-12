@@ -55,13 +55,14 @@ class HumanModel:
         """
         Add a human by Human package data.
         :param hp: Human instance
-        :return: execution result
+        :return: uid
         """
         assert isinstance(hp, Human)
-        uid = "Human_%s_%s" % (hp.GlobalId, uuid.uuid1())
+        uid = "Human_%s" % uuid.uuid1()
         sql = "INSERT INTO ren_human(id, person_id, firstname, lastname, note) VALUES " \
               "('%s', '%s', '%s', '%s', '%s')" % (uid, hp.PersonId, hp.FirstName, hp.LastName, hp.Note)
-        return HumanModel._persistDAO.ExecuteSQL(sql, needRet=True)
+        HumanModel._persistDAO.ExecuteSQL(sql, needRet=False)
+        return uid
 
     @staticmethod
     def Contains(personId):
@@ -162,6 +163,22 @@ class HumanModel:
             return None
 
     @staticmethod
+    def GetByGlobalId(gid):
+        """
+        Get package by global id.
+        :param gid: global id
+        :return: package instance
+        """
+        sql = "SELECT * FROM ren_human WHERE id = '%s'" % gid
+        ret = HumanModel._persistDAO.ExecuteSQL(sql, needRet=True)
+        if len(ret) > 0:
+            rd = HumanModel._dispatchRetObj(ret[0])
+            rd.GlobalId = ret[0]["id"]
+            return rd
+        else:
+            return None
+
+    @staticmethod
     def _dispatchRetObj(retObj):
         """
         Dispatch retObj dictionary to Human instance.
@@ -170,6 +187,7 @@ class HumanModel:
         """
         assert retObj is not None
         retHuman = Human(retObj["person_id"], retObj["firstname"], retObj["lastname"], retObj["note"])
+        retHuman.GlobalId = retObj["id"]
         return retHuman
 
     """

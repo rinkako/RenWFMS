@@ -100,7 +100,8 @@ class MySQLDAO(AbstractDAO):
             try:
                 if dp > 1:
                     return
-                LogUtil.ErrorLog("In ExecuteSQL, " + str(e), MySQLDAO.__name__, dp=dp+1)
+                LogUtil.ErrorLog("In ExecuteSQL, " + str(e) + " | Query: << " + (u"%s" % sql) + " >>",
+                                 MySQLDAO.__name__, dp=dp+1)
             except:
                 from traceback import format_exc
                 print 'ExecuteSQL Exception:'

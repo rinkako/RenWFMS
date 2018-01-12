@@ -54,14 +54,15 @@ class CapabilityModel:
         """
         Add a capability by its data package.
         :param dp: Group instance
-        :return: if execution success
+        :return: uid
         """
         assert isinstance(dp, Capability)
-        uid = "Dept_%s_%s" % (dp.Name, uuid.uuid1())
+        uid = "Capa_%s" % uuid.uuid1()
         sql = "INSERT INTO ren_capability(id, name, description, note) " \
               "VALUES ('%s', '%s', '%s', '%s')" % \
               (uid, dp.Name, dp.Description, dp.Note)
-        return CapabilityModel._persistDAO.ExecuteSQL(sql, needRet=True)
+        CapabilityModel._persistDAO.ExecuteSQL(sql, needRet=False)
+        return uid
 
     @staticmethod
     def Remove(name):
@@ -148,6 +149,22 @@ class CapabilityModel:
         ret = CapabilityModel._persistDAO.ExecuteSQL(sql, needRet=True)
         if len(ret) > 0:
             return ret[0]["id"]
+        else:
+            return None
+
+    @staticmethod
+    def GetByGlobalId(gid):
+        """
+        Get package by global id.
+        :param gid: global id
+        :return: package instance
+        """
+        sql = "SELECT * FROM ren_capability WHERE id = '%s'" % gid
+        ret = CapabilityModel._persistDAO.ExecuteSQL(sql, needRet=True)
+        if len(ret) > 0:
+            rd = CapabilityModel._dispatchRetObj(ret[0])
+            rd.GlobalId = ret[0]["id"]
+            return rd
         else:
             return None
 

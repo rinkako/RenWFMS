@@ -35,16 +35,16 @@ class GroupType:
     def __init__(self):
         pass
 
-    Group = 1
+    Department = 0
 
-    Team = 2
+    Team = 1
 
-    Department = 4
+    Group = 2
 
-    Cluster = 8
+    Cluster = 3
 
-    Division = 16
+    Division = 4
 
-    Branch = 32
+    Branch = 5
 
-    Unit = 64
+    Unit = 6

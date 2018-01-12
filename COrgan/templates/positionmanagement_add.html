@@ -54,27 +54,41 @@
                         <!-- BASIC -->
                         <div class="box border orange">
                             <div class="box-title">
-                                <h4><i class="fa fa-bars"></i>修改用户信息</h4>
+                                <h4><i class="fa fa-bars"></i>新建职位项</h4>
                             </div>
                             <div class="box-body big">
-                                <form role="form" method="post" action="{{ url_for('performEditPlatformUser') }}">
+                                <form id="addUserForm" role="form" method="post" onsubmit="return check()" action="{{ url_for('performAddPosition') }}">
                                     <div class="form-group">
-                                        <label for="tUsername">唯一用户名</label>
-                                        <input type="text" class="form-control" id="tUsername" value="{{ UserObj["username"] }}" disabled>
+                                        <label for="tPositionname">职位名称(*)</label>
+                                        <input name="f_positionname" type="text" class="form-control" id="tPositionname">
+                                    </div>
+									<div class="form-group">
+										<label for="tDescription">职位描述</label>
+										<input name="f_description" type="text" class="form-control" id="tDescription">
+									</div>
+                                    <div class="form-group">
+                                        <label for="tNote">备注</label>
+                                        <input name="f_note" type="text" class="form-control" id="tNote">
                                     </div>
                                     <div class="form-group">
-                                        <label for="tPassword">密码</label>
-                                        <input name="f_nPassword" type="password" class="form-control" id="tPassword" value="" placeholder="未更改">
-                                    </div>
-                                    <div class="form-group">
-                                        <label for="tType">用户类型(Type)</label>
-                                        <select name="f_level" id="tType" class="form-control col-md-12">
-                                            <option>平台用户</option>
-                                            <option>管理员</option>
+                                        <label for="tBelong">职位所属的子组</label>
+                                        <select name="f_belong" id="tBelong" class="form-control col-md-12">
+											{% for grp in groupList %}
+												<option>{{ grp.Name }}</option>
+											{% endfor %}
                                         </select>
                                     </div>
                                     <br/><br/>
-                                    <input type="hidden" name="h_username" value="{{ UserObj["username"] }}">
+									<div class="form-group">
+										<label for="tReport">直接上级职位</label>
+										<select name="f_report" id="tReport" class="form-control col-md-12">
+                                            <option>(None)</option>
+                                            {% for pos in positionList %}
+                                                <option>{{ pos.Name }}</option>
+                                            {% endfor %}
+										</select>
+									</div>
+                                    <br/><br/>
                                     <button type="submit" class="btn btn-success col-md-3">提交</button>
                                     <br/>
                                 </form>
@@ -111,24 +125,23 @@
 
 
 	<script>
-        window.onload = initControls();
-        function initControls() {
-            jQuery("#active-userManagement").addClass("active");
-            jQuery("#selected-userManagement").addClass("selected");
-            var curType = {{ UserObj["level"] }};
-            if (curType === 1) {
-                document.getElementById('tType').options[1].selected = true;
+        function check(){
+            var tusr = document.getElementById("tPositionname").value;
+            if (tusr.trim() === '') {
+                alert("请完整填写表单！");
+                return false;
             }
             else {
-                document.getElementById('tType').options[0].selected = true;
+                return true;
             }
         }
 
-
 		jQuery(document).ready(function() {
-		    App.setPage("forms");  //Set current page
+            jQuery("#active-organizable").addClass("active");
+            jQuery("#selected-organizable").addClass("selected");
+            jQuery("#current-organizable-position").addClass("current");
+			App.setPage("forms");  //Set current page
 			App.init(); //Initialise plugins and elements
 		});
-
 	</script>
 {% endblock %}

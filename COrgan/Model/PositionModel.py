@@ -56,14 +56,15 @@ class PositionModel:
         """
         Add a position by data package.
         :param dp: Position instance
-        :return: if execution success
+        :return: uid
         """
         assert isinstance(dp, Position)
-        uid = "Pos_%s_%s" % (dp.Name, uuid.uuid1())
+        uid = "Pos_%s" % uuid.uuid1()
         sql = "INSERT INTO ren_position(id, name, description, note, belongToId, reportToId) " \
               "VALUES ('%s', '%s', '%s', '%s', '%s', '%s')" % \
-              (uid, dp.Name, dp.Description, dp.Note, dp.BelongToDepartment, dp.ReportToPosition)
-        return PositionModel._persistDAO.ExecuteSQL(sql, needRet=True)
+              (uid, dp.Name, dp.Description, dp.Note, dp.BelongToGroup, dp.ReportToPosition)
+        PositionModel._persistDAO.ExecuteSQL(sql, needRet=False)
+        return uid
 
     @staticmethod
     def Remove(name):
@@ -150,6 +151,22 @@ class PositionModel:
         ret = PositionModel._persistDAO.ExecuteSQL(sql, needRet=True)
         if len(ret) > 0:
             return ret[0]["id"]
+        else:
+            return None
+
+    @staticmethod
+    def GetByGlobalId(gid):
+        """
+        Get package by global id.
+        :param gid: global id
+        :return: package instance
+        """
+        sql = "SELECT * FROM ren_position WHERE id = '%s'" % gid
+        ret = PositionModel._persistDAO.ExecuteSQL(sql, needRet=True)
+        if len(ret) > 0:
+            rd = PositionModel._dispatchRetObj(ret[0])
+            rd.GlobalId = ret[0]["id"]
+            return rd
         else:
             return None
 

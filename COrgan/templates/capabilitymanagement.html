@@ -38,7 +38,7 @@
                         <!-- BOX -->
                         <div class="box border blue">
                             <div class="box-title">
-                                <h4><i class="fa fa-key"></i>授权清单</h4>
+                                <h4><i class="fa fa-magic"></i>能力清单</h4>
                                 <div class="tools hidden-xs">
                                     <a onclick="refreshMyself()" class="reload">
                                         <i class="fa fa-refresh"></i>
@@ -49,36 +49,26 @@
                                 <table id="datatable1" cellpadding="0" cellspacing="0" border="0" class="datatable table table-striped table-bordered table-hover">
                                     <thead>
                                         <tr>
-                                            <th>ID</th>
+                                            <th>#</th>
                                             <th>Name</th>
-                                            <th>Level</th>
-                                            <th>CreateTime</th>
+                                            <th>Description</th>
+                                            <th>Note</th>
                                             <th>OP.</th>
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        {% for dictItem in userList %}
+                                        {% for packItem in bindList %}
                                             <tr class="gradeX">
-                                                <td> {{ dictItem["id"] }} </td>
-                                                <td> {{ dictItem["username"] }} </td>
-                                                <td>
-                                                {% if dictItem["level"] == 0 %}
-                                                    平台用户
-                                                {% else %}
-                                                    管理员
-                                                {% endif %}
-                                                </td>
-                                                <td> {{ dictItem["createtimestamp"] }} </td>
+                                                <td> {{ loop.index }} </td>
+                                                <td> {{ packItem.Name }} </td>
+                                                <td> {{ packItem.Description }} </td>
+                                                <td> {{ packItem.Note }} </td>
                                                 <td class="center">
-                                                    {% if dictItem["id"] != 1 %}
-                                                        <a href="{{ url_for('userManagement') + "edit/" + dictItem["username"]}}">
-                                                            <button class="btn btn-xs btn-info">编辑</button>
-                                                        </a>
-                                                        &nbsp;
-                                                        <button onClick="delConfirm('{{ url_for('userManagement') + "performdelete/" + dictItem["username"]}}')" class="btn btn-xs btn-danger">删除</button>
-                                                    {% else %}
-                                                        <span style="color: #9d9d9d; ">主管理员不可修改</span>
-                                                    {% endif %}
+                                                    <a href="{{ url_for('capabilityManagement') + "edit/" + packItem.Name }}">
+                                                        <button class="btn btn-xs btn-info">编辑</button>
+                                                    </a>
+                                                    &nbsp;
+                                                    <button onClick="delConfirm('{{ url_for('capabilityManagement') + "performdelete/" + packItem.Name }}')" class="btn btn-xs btn-danger">删除</button>
                                                 </td>
                                             </tr>
                                         {% endfor %}
@@ -112,8 +102,9 @@
 		jQuery(document).ready(function() {
 			App.setPage("dynamic_table");  //Set current page
 			App.init(); //Initialise plugins and elements
-            jQuery("#active-userManagement").addClass("active");
-            jQuery("#selected-userManagement").addClass("selected");
+            jQuery("#active-organizable").addClass("active");
+            jQuery("#selected-organizable").addClass("selected");
+            jQuery("#current-organizable-capability").addClass("current");
 		});
 	</script>
 
@@ -124,10 +115,10 @@
              }
          }
          function addBindingBtn() {
-             window.location.href = "{{ url_for('addPlatformUser') }}"
+             window.location.href = "{{ url_for('addCapability') }}"
          }
          function refreshMyself() {
-             window.location.href = "{{ url_for('userManagement') }}"
+             window.location.href = "{{ url_for('capabilityManagement') }}"
          }
     </script>
 {% endblock %}
