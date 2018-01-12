@@ -54,25 +54,29 @@
                         <!-- BASIC -->
                         <div class="box border orange">
                             <div class="box-title">
-                                <h4><i class="fa fa-bars"></i>新建人力资源</h4>
+                                <h4><i class="fa fa-bars"></i>新建Agent资源</h4>
                             </div>
                             <div class="box-body big">
-                                <form id="addUserForm" role="form" method="post" onsubmit="return check()" action="{{ url_for('performAddHuman') }}">
+                                <form id="addUserForm" role="form" method="post" onsubmit="return check()" action="{{ url_for('performAddAgent') }}">
                                     <div class="form-group">
-                                        <label for="tPersonid">唯一标识符(*)</label>
-                                        <input name="f_personid" type="text" class="form-control" id="tPersonid">
+                                        <label for="tName">唯一标识符(*)</label>
+                                        <input name="f_name" type="text" class="form-control" id="tName">
                                     </div>
                                     <div class="form-group">
-                                        <label for="tFirstname">名</label>
-                                        <input name="f_firstname" type="text" class="form-control" id="tFirstname">
-                                    </div>
-                                    <div class="form-group">
-                                        <label for="tLastname">姓</label>
-                                        <input name="f_lastname" type="text" class="form-control" id="tLastname">
+                                        <label for="tLocation">位置(*)</label>
+                                        <input name="f_location" type="text" class="form-control" id="tLocation">
                                     </div>
                                     <div class="form-group">
                                         <label for="tNote">备注</label>
                                         <input name="f_note" type="text" class="form-control" id="tNote">
+                                    </div>
+
+                                    <div class="form-group">
+                                        <label for="tType">类型(*)</label>
+                                        <select name="f_type" id="tType" class="form-control col-md-12">
+                                            <option value="0">Reentrant</option>
+                                            <option value="1">NotReentrant</option>
+                                        </select>
                                     </div>
 
                                     <div class="form-group">
@@ -143,8 +147,9 @@
 
 	<script>
         function check(){
-            tusr = document.getElementById("tPersonid").value;
-            if (tusr.trim() === '') {
+            tusr = document.getElementById("tName").value;
+            tloc = document.getElementById("tLocation").value;
+            if (tusr.trim() === '' || tloc.trim() === '') {
                 alert("请完整填写表单！");
                 return false;
             }

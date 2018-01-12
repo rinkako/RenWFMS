@@ -637,6 +637,98 @@ def performDeleteHuman(uname):
     return redirect(url_for('humanManagement'))
 
 
+"""
+Agent Resources Management Routers
+"""
+
+
+@app.route('/agent/')
+def agentManagement():
+    flag, res = core.RetrieveAllAgent('testadmin')
+    if flag is False or res is None:
+        return redirect(url_for('AccessErrorPage', dt='x'))
+    capabilityList = []
+    groupList = []
+    positionList = []
+    for h in res:
+        xflag, groups = core.RetrieveAgentInWhatGroup('testadmin', h.Name)
+        if xflag is False or groups is None:
+            return redirect(url_for('AccessErrorPage', dt='add'))
+        groupList.append('<br/>'.join(groups) + '<br/>')
+        xflag, capabilities = core.RetrieveAgentWithWhatCapability('testadmin', h.Name)
+        if xflag is False or capabilities is None:
+            return redirect(url_for('AccessErrorPage', dt='add'))
+        capabilityList.append('<br/>'.join(capabilities) + '<br/>')
+        xflag, positions = core.RetrieveAgentInWhatPosition('testadmin', h.Name)
+        if xflag is False or positions is None:
+            return redirect(url_for('AccessErrorPage', dt='add'))
+        positionList.append('<br/>'.join(positions) + '<br/>')
+    t = {'L_PageTitle': u'Agent资源管理',
+         'L_PageDescription': u'管理组织中的Agent资源',
+         'userList': res,
+         'capabilityList': capabilityList,
+         'groupList': groupList,
+         'positionList': positionList}
+    return render_template('agentmanagement.html', **t)
+
+
+@app.route('/agent/add/')
+def addAgent():
+    flag1, groupList = core.RetrieveAllGroup('testadmin')
+    flag2, positionList = core.RetrieveAllPosition('testadmin')
+    flag3, capabilityList = core.RetrieveAllCapabilities('testadmin')
+    if (flag1 & flag2 & flag3) is False or groupList is None or positionList is None or capabilityList is None:
+        return redirect(url_for('AccessErrorPage', dt='x'))
+    t = {'L_PageTitle': u'添加Agent',
+         'L_PageDescription': u'为组织添加一个Agent资源',
+         'groupList': groupList,
+         'positionList': positionList,
+         'capabilityList': capabilityList}
+    return render_template('agentmanagement_add.html', **t)
+
+
+@app.route('/agent/performadd/', methods=["POST"])
+def performAddAgent():
+    agentName = request.form['f_name']
+    flag, res = core.AddAgent('testadmin',
+                              agentName,
+                              request.form['f_location'],
+                              int(request.form['f_type']),
+                              request.form['f_note'])
+    if flag is False or res is None:
+        return redirect(url_for('AccessErrorPage', dt='add'))
+    capaVec = []
+    groupVec = []
+    posVec = []
+    if request.form['output_capability'] != '':
+        capaVec = request.form['output_capability'].split(';')
+    if request.form['output_group'] != '':
+        groupVec = request.form['output_group'].split(';')
+    if request.form['output_position'] != '':
+        posVec = request.form['output_position'].split(';')
+    for cp in capaVec:
+        xflag, xret = core.AddAgentCapability('testadmin', agentName, cp)
+        if xflag is False or xret is None:
+            return redirect(url_for('AccessErrorPage', dt='x'))
+    for gr in groupVec:
+        xflag, xret = core.AddAgentToGroup('testadmin', agentName, gr)
+        if xflag is False or xret is None:
+            return redirect(url_for('AccessErrorPage', dt='x'))
+    for ps in posVec:
+        xflag, xret = core.AddAgentPosition('testadmin', agentName, ps)
+        if xflag is False or xret is None:
+            return redirect(url_for('AccessErrorPage', dt='x'))
+    return redirect(url_for('agentManagement'))
+
+
+@app.route('/agent/performdelete/<uname>/', methods=["GET"])
+def performDeleteAgent(uname):
+    flag, res = core.RemoveAgent('testadmin', uname)
+    if (flag & res) is False:
+        return redirect(url_for('AccessErrorPage', dt='x'))
+    return redirect(url_for('agentManagement'))
+
+
 if __name__ == '__main__':
     app.secret_key = GlobalConfigContext.RAPPKEY
     app.debug = True

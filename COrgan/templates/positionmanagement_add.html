@@ -127,7 +127,7 @@
 	<script>
         function check(){
             var tusr = document.getElementById("tPositionname").value;
-            if (tusr === '') {
+            if (tusr.trim() === '') {
                 alert("请完整填写表单！");
                 return false;
             }

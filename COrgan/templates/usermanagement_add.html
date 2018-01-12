@@ -113,7 +113,7 @@
         function check(){
             tusr = document.getElementById("tUsername").value;
             tpwd = document.getElementById("tPassword").value;
-            if (tusr === '' || tpwd === '') {
+            if (tusr.trim() === '' || tpwd.trim() === '') {
                 alert("请完整填写表单！");
                 return false;
             }

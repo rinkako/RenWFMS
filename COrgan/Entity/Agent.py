@@ -15,9 +15,9 @@ class AgentType:
     def __init__(self):
         pass
 
-    Reentrant = 1
+    Reentrant = 0
 
-    NotReentrant = 2
+    NotReentrant = 1
 
 
 class Agent(Worker):

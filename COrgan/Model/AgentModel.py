@@ -60,7 +60,7 @@ class AgentModel:
         assert isinstance(ap, Agent)
         uid = "Agent_%s" % uuid.uuid1()
         sql = "INSERT INTO ren_agent(id, name, location, type, note) VALUES " \
-              "('%s', '%s', '%s', %s, '%s')" % (uid, ap.GlobalId, ap.Location, ap.Type, ap.Note)
+              "('%s', '%s', '%s', %s, '%s')" % (uid, ap.Name, ap.Location, ap.Type, ap.Note)
         AgentModel._persistDAO.ExecuteSQL(sql, needRet=False)
         return uid
 

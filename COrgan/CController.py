@@ -679,6 +679,81 @@ class CController:
             retList.append(groupObj.Name)
         return True, retList
 
+    @authorizeRequireWarp
+    def RetrieveAgentInWhatGroup(self, session, agentName):
+        """
+
+        :param session:
+        :param agentName:
+        :return:
+        """
+        flag, agent = self.RetrieveAgent(session, agentName)
+        if flag is False or agent is None:
+            return False, None
+        cons = CController._connectModel.RetrieveByWorker(agent.GlobalId)
+        filteredId = []
+        for kvp in cons:
+            groupKey = kvp["belongToGroupId"]
+            if groupKey.startswith("Dept_") is True:
+                filteredId.append(groupKey)
+        retList = []
+        for gk in filteredId:
+            flag, groupObj = self.RetrieveGroupById(session, gk)
+            if flag is False or groupObj is None:
+                return False, None
+            retList.append(groupObj.Name)
+        return True, retList
+
+    @authorizeRequireWarp
+    def RetrieveAgentInWhatPosition(self, session, agentName):
+        """
+
+        :param session:
+        :param agentName:
+        :return:
+        """
+        flag, agent = self.RetrieveAgent(session, agentName)
+        if flag is False or agent is None:
+            return False, None
+        cons = CController._connectModel.RetrieveByWorker(agent.GlobalId)
+        filteredId = []
+        for kvp in cons:
+            groupKey = kvp["belongToGroupId"]
+            if groupKey.startswith("Pos_") is True:
+                filteredId.append(groupKey)
+        retList = []
+        for gk in filteredId:
+            flag, groupObj = self.RetrievePositionById(session, gk)
+            if flag is False or groupObj is None:
+                return False, None
+            retList.append(groupObj.Name)
+        return True, retList
+
+    @authorizeRequireWarp
+    def RetrieveAgentWithWhatCapability(self, session, agentName):
+        """
+
+        :param session:
+        :param agentName:
+        :return:
+        """
+        flag, agent = self.RetrieveAgent(session, agentName)
+        if flag is False or agent is None:
+            return False, None
+        cons = CController._connectModel.RetrieveByWorker(agent.GlobalId)
+        filteredId = []
+        for kvp in cons:
+            groupKey = kvp["belongToGroupId"]
+            if groupKey.startswith("Capa_") is True:
+                filteredId.append(groupKey)
+        retList = []
+        for gk in filteredId:
+            flag, groupObj = self.RetrieveCapabilityById(session, gk)
+            if flag is False or groupObj is None:
+                return False, None
+            retList.append(groupObj.Name)
+        return True, retList
+
     def SpanTreeOfGroup(self, session, groupName):
         pass
 
@@ -785,6 +860,102 @@ class CController:
         if (flag1 & flag2) is False or human is None or capability is None:
             return False, None
         CController._connectModel.Remove(human.GlobalId, capability.GlobalId)
+        return True, True
+
+    @authorizeRequireWarp
+    def AddAgentToGroup(self, session, agentName, groupName):
+        """
+
+        :param session:
+        :param agentName:
+        :param groupName:
+        :return:
+        """
+        flag1, agent = self.RetrieveAgent(session, agentName)
+        flag2, group = self.RetrieveGroup(session, groupName)
+        if (flag1 & flag2) is False or agent is None or group is None:
+            return False, None
+        CController._connectModel.Add(agent.GlobalId, group.GlobalId)
+        return True, True
+
+    @authorizeRequireWarp
+    def RemoveAgentFromGroup(self, session, agentName, groupName):
+        """
+
+        :param session:
+        :param agentName:
+        :param groupName:
+        :return:
+        """
+        flag1, agent = self.RetrieveAgent(session, agentName)
+        flag2, group = self.RetrieveGroup(session, groupName)
+        if (flag1 & flag2) is False or agent is None or group is None:
+            return False, None
+        CController._connectModel.Remove(agent.GlobalId, group.GlobalId)
+        return True, True
+
+    @authorizeRequireWarp
+    def AddAgentPosition(self, session, agentName, positionName):
+        """
+
+        :param session:
+        :param agentName:
+        :param positionName:
+        :return:
+        """
+        flag1, agent = self.RetrieveAgent(session, agentName)
+        flag2, position = self.RetrievePosition(session, positionName)
+        if (flag1 & flag2) is False or agent is None or position is None:
+            return False, None
+        CController._connectModel.Add(agent.GlobalId, position.GlobalId)
+        return True, True
+
+    @authorizeRequireWarp
+    def RemoveAgentPosition(self, session, agentName, positionName):
+        """
+
+        :param session:
+        :param agentName:
+        :param positionName:
+        :return:
+        """
+        flag1, agent = self.RetrieveAgent(session, agentName)
+        flag2, position = self.RetrievePosition(session, positionName)
+        if (flag1 & flag2) is False or agent is None or position is None:
+            return False, None
+        CController._connectModel.Remove(agent.GlobalId, position.GlobalId)
+        return True, True
+
+    @authorizeRequireWarp
+    def AddAgentCapability(self, session, agentName, capabilityName):
+        """
+
+        :param session:
+        :param agentName:
+        :param capabilityName:
+        :return:
+        """
+        flag1, agent = self.RetrieveAgent(session, agentName)
+        flag2, capability = self.RetrieveCapability(session, capabilityName)
+        if (flag1 & flag2) is False or agent is None or capability is None:
+            return False, None
+        CController._connectModel.Add(agent.GlobalId, capability.GlobalId)
+        return True, True
+
+    @authorizeRequireWarp
+    def RemoveAgentCapability(self, session, agentName, capabilityName):
+        """
+
+        :param session:
+        :param agentName:
+        :param capabilityName:
+        :return:
+        """
+        flag1, agent = self.RetrieveAgent(session, agentName)
+        flag2, capability = self.RetrieveCapability(session, capabilityName)
+        if (flag1 & flag2) is False or agent is None or capability is None:
+            return False, None
+        CController._connectModel.Remove(agent.GlobalId, capability.GlobalId)
         return True, True
 
     """
