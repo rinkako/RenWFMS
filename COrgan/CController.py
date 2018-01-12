@@ -214,7 +214,7 @@ class CController:
     @authorizeRequireWarp
     def AddHuman(self, session, personId, firstName, lastName, note):
         """
-        
+        Add a human resource to organization.
         :param session: session id
         :param personId: person unique id
         :param firstName: human first name text
@@ -229,7 +229,7 @@ class CController:
     @authorizeRequireWarp
     def RemoveHuman(self, session, personId):
         """
-
+        Remove a human resource from organization.
         :param session: session id
         :param personId: person unique id
         :return: execution state tuple
@@ -239,7 +239,7 @@ class CController:
     @authorizeRequireWarp
     def UpdateHuman(self, session, personId, **kwargs):
         """
-
+        Update a human resource info in organization.
         :param session: session id
         :param personId: person unique id
         :param kwargs:
@@ -251,7 +251,7 @@ class CController:
     @authorizeRequireWarp
     def RetrieveHuman(self, session, personId):
         """
-
+        Get a human resource data package in organization by name.
         :param session: session id
         :param personId: person unique id
         :return: execution state tuple
@@ -261,7 +261,7 @@ class CController:
     @authorizeRequireWarp
     def RetrieveAllHuman(self, session):
         """
-
+        Get all human resource data packages in organization.
         :param session: session id
         :return: execution state tuple
         """
@@ -270,7 +270,7 @@ class CController:
     @authorizeRequireWarp
     def RetrieveHumanById(self, session, gid):
         """
-
+        Get a human resource data package in organization by global id.
         :param session: session id
         :param gid: global id
         :return: execution state tuple
@@ -280,7 +280,7 @@ class CController:
     @authorizeRequireWarp
     def AddAgent(self, session, name, location, rType, note):
         """
-
+        Add an agent resource to organization.
         :param session: session id
         :param name: agent unique name
         :param location: agent call location
@@ -295,7 +295,7 @@ class CController:
     @authorizeRequireWarp
     def RemoveAgent(self, session, name):
         """
-
+        Remove an agent resource from organization.
         :param session: session id
         :param name: agent unique name
         :return: execution state tuple
@@ -305,7 +305,7 @@ class CController:
     @authorizeRequireWarp
     def UpdateAgent(self, session, name, **kwargs):
         """
-
+        Update an agent resource info in organization.
         :param session: session id
         :param name: agent unique name
         :param kwargs: update key-value pair dictionary
@@ -317,7 +317,7 @@ class CController:
     @authorizeRequireWarp
     def RetrieveAgent(self, session, name):
         """
-
+        Get an agent resource data package in organization by name.
         :param session: session id
         :param name: agent unique name
         :return: execution state tuple
@@ -327,7 +327,7 @@ class CController:
     @authorizeRequireWarp
     def RetrieveAllAgent(self, session):
         """
-
+        Get all agent resource data packages in organization.
         :param session: session id
         :return: execution state tuple
         """
@@ -336,7 +336,7 @@ class CController:
     @authorizeRequireWarp
     def RetrieveAgentById(self, session, gid):
         """
-
+        Get an agent resource data package in organization by global id.
         :param session: session id
         :param gid: global id
         :return: execution state tuple
@@ -346,7 +346,7 @@ class CController:
     @authorizeRequireWarp
     def RetrieveAllWorker(self, session):
         """
-
+        Get all worker resource data package in organization.
         :param session: session id
         :return: execution state tuple
         """
@@ -360,7 +360,7 @@ class CController:
     @authorizeRequireWarp
     def AddGroup(self, session, name, description, note, belongToId, groupType):
         """
-
+        Add a group to organization.
         :param session: session id
         :param name: group unique name
         :param description: description text
@@ -376,7 +376,7 @@ class CController:
     @authorizeRequireWarp
     def RemoveGroup(self, session, name):
         """
-
+        Remove a group from organization.
         :param session: session id
         :param name: group unique name
         :return: execution state tuple
@@ -386,7 +386,7 @@ class CController:
     @authorizeRequireWarp
     def UpdateGroup(self, session, name, **kwargs):
         """
-
+        Update a group info in organization.
         :param session: session id
         :param name: group unique name
         :param kwargs: update key-value pair dictionary
@@ -398,7 +398,7 @@ class CController:
     @authorizeRequireWarp
     def RetrieveGroup(self, session, name):
         """
-
+        Get an group data package in organization by name.
         :param session: session id
         :param name: group unique name
         :return: execution state tuple
@@ -408,7 +408,7 @@ class CController:
     @authorizeRequireWarp
     def RetrieveAllGroup(self, session):
         """
-
+        Get all group data packages in organization.
         :param session: session id
         :return: execution state tuple
         """
@@ -417,7 +417,7 @@ class CController:
     @authorizeRequireWarp
     def RetrieveGroupById(self, session, gid):
         """
-
+        Get an group data package in organization by global id.
         :param session: session id
         :param gid: global id
         :return: execution state tuple
@@ -427,7 +427,7 @@ class CController:
     @authorizeRequireWarp
     def RetrieveGroupId(self, session, name):
         """
-
+        Get an group global id by name.
         :param session: session id
         :param name: group unique name
         :return: execution state tuple
@@ -437,7 +437,7 @@ class CController:
     @authorizeRequireWarp
     def AddPosition(self, session, name, description, note, belongToId, reportToId):
         """
-
+        Add a position to organization.
         :param session: session id
         :param name: position unique name
         :param description: description text
@@ -453,7 +453,7 @@ class CController:
     @authorizeRequireWarp
     def RemovePosition(self, session, name):
         """
-
+        Remove a position from organization.
         :param session: session id
         :param name: position unique name
         :return: execution state tuple
@@ -463,7 +463,7 @@ class CController:
     @authorizeRequireWarp
     def UpdatePosition(self, session, name, **kwargs):
         """
-
+        Update a position info in organization.
         :param session: session id
         :param name: position unique name
         :param kwargs: update key-value pair dictionary
@@ -475,7 +475,7 @@ class CController:
     @authorizeRequireWarp
     def RetrievePosition(self, session, name):
         """
-
+        Get a position data package in organization by name.
         :param session: session id
         :param name: position unique name
         :return: execution state tuple
@@ -485,7 +485,7 @@ class CController:
     @authorizeRequireWarp
     def RetrieveAllPosition(self, session):
         """
-
+        Get all position data packages in organization.
         :param session: session id
         :return: execution state tuple
         """
@@ -494,7 +494,7 @@ class CController:
     @authorizeRequireWarp
     def RetrievePositionById(self, session, gid):
         """
-
+        Get a position data package in organization by global id.
         :param session: session id
         :param gid: global id
         :return: execution state tuple
@@ -504,7 +504,7 @@ class CController:
     @authorizeRequireWarp
     def RetrievePositionId(self, session, name):
         """
-
+        Get a position global id by name.
         :param session: session id
         :param name: position unique name
         :return: execution state tuple
@@ -514,7 +514,7 @@ class CController:
     @authorizeRequireWarp
     def AddCapability(self, session, name, description, note):
         """
-
+        Add a capability to organization.
         :param session: session id
         :param name: capability unique name
         :param description: description text
@@ -528,7 +528,7 @@ class CController:
     @authorizeRequireWarp
     def RemoveCapability(self, session, name):
         """
-
+        Remove a capability from organization.
         :param session: session id
         :param name: capability unique name
         :return: execution state tuple
@@ -538,7 +538,7 @@ class CController:
     @authorizeRequireWarp
     def UpdateCapability(self, session, name, **kwargs):
         """
-
+        Update a capability info in organization.
         :param session: session id
         :param name: capability unique name
         :param kwargs: update key-value pair dictionary
@@ -550,7 +550,7 @@ class CController:
     @authorizeRequireWarp
     def RetrieveCapability(self, session, name):
         """
-
+        Get a capability data package in organization by name.
         :param session: session id
         :param name: capability unique name
         :return: execution state tuple
@@ -560,7 +560,7 @@ class CController:
     @authorizeRequireWarp
     def RetrieveAllCapabilities(self, session):
         """
-
+        Get all capability data packages in organization.
         :param session: session id
         :return: execution state tuple
         """
@@ -569,12 +569,22 @@ class CController:
     @authorizeRequireWarp
     def RetrieveCapabilityById(self, session, gid):
         """
-
+        Get a capability data package in organization by global id.
         :param session: session id
         :param gid: global id
         :return: execution state tuple
         """
         return True, CController._capabilityModel.GetByGlobalId(gid)
+
+    @authorizeRequireWarp
+    def RetrieveCapabilityId(self, session, name):
+        """
+        Get a capability global id by name.
+        :param session: session id
+        :param name: position unique name
+        :return: execution state tuple
+        """
+        return True, CController._capabilityModel.GetGlobalId(name)
 
     """
     Connection Constrain Methods
@@ -582,7 +592,7 @@ class CController:
     @authorizeRequireWarp
     def RemoveHumanConnection(self, session, personId):
         """
-
+        Remove all connection from a human.
         :param session: session id
         :param personId: person unique id
         :return: execution state tuple
@@ -599,7 +609,7 @@ class CController:
     @authorizeRequireWarp
     def RemoveAgentConnection(self, session, agentName):
         """
-
+        Remove all connection from an agent.
         :param session: session id
         :param agentName: agent unique name
         :return: execution state tuple
@@ -613,28 +623,10 @@ class CController:
         except:
             return False, False
 
-    def RetrieveHumanInGroup(self, session, groupName):
-        pass
-
-    def RetrieveAgentInGroup(self, session, groupName):
-        pass
-
-    def RetrieveHumanInPosition(self, session, posName):
-        pass
-
-    def RetrieveAgentInPosition(self, session, posName):
-        pass
-
-    def RetrieveHumanWithCapability(self, session, capabilityName):
-        pass
-
-    def RetrieveAgentWithCapability(self, session, capabilityName):
-        pass
-
     @authorizeRequireWarp
     def RetrieveHumanInWhatGroup(self, session, personId):
         """
-
+        Get a list of name string what group human in.
         :param session: session id
         :param personId: person unique id
         :return: execution state tuple
@@ -659,7 +651,7 @@ class CController:
     @authorizeRequireWarp
     def RetrieveHumanInWhatPosition(self, session, personId):
         """
-
+        Get a list of name string what position human at.
         :param session: session id
         :param personId: person unique id
         :return: execution state tuple
@@ -684,7 +676,7 @@ class CController:
     @authorizeRequireWarp
     def RetrieveHumanWithWhatCapability(self, session, personId):
         """
-
+        Get a list of name string what capability human with.
         :param session: session id
         :param personId: person unique id
         :return: execution state tuple
@@ -709,7 +701,7 @@ class CController:
     @authorizeRequireWarp
     def RetrieveAgentInWhatGroup(self, session, agentName):
         """
-
+        Get a list of name string what group agent in.
         :param session: session id
         :param agentName: agent unique name
         :return: execution state tuple
@@ -734,7 +726,7 @@ class CController:
     @authorizeRequireWarp
     def RetrieveAgentInWhatPosition(self, session, agentName):
         """
-
+        Get a list of name string what position agent at.
         :param session: session id
         :param agentName: agent unique name
         :return: execution state tuple
@@ -759,7 +751,7 @@ class CController:
     @authorizeRequireWarp
     def RetrieveAgentWithWhatCapability(self, session, agentName):
         """
-
+        Get a list of name string what capability agent with.
         :param session: session id
         :param agentName: agent unique name
         :return: execution state tuple
@@ -784,7 +776,7 @@ class CController:
     @authorizeRequireWarp
     def AddHumanToGroup(self, session, personId, groupName):
         """
-
+        Add a human to a group.
         :param session: session id
         :param personId: person unique id
         :param groupName: group unique name
@@ -800,7 +792,7 @@ class CController:
     @authorizeRequireWarp
     def RemoveHumanFromGroup(self, session, personId, groupName):
         """
-
+        Remove a human from a group.
         :param session: session id
         :param personId: person unique id
         :param groupName: group unique name
@@ -816,7 +808,7 @@ class CController:
     @authorizeRequireWarp
     def AddHumanPosition(self, session, personId, positionName):
         """
-
+        Add a human to a position.
         :param session: session id
         :param personId: person unique id
         :param positionName: position unique name
@@ -832,7 +824,7 @@ class CController:
     @authorizeRequireWarp
     def RemoveHumanPosition(self, session, personId, positionName):
         """
-
+        Remove a human from a position.
         :param session: session id
         :param personId: person unique id
         :param positionName: position unique name
@@ -848,7 +840,7 @@ class CController:
     @authorizeRequireWarp
     def AddHumanCapability(self, session, personId, capabilityName):
         """
-
+        Add a capability to a human.
         :param session: session id
         :param personId: person unique id
         :param capabilityName: capability unique name
@@ -864,7 +856,7 @@ class CController:
     @authorizeRequireWarp
     def RemoveHumanCapability(self, session, personId, capabilityName):
         """
-
+        Remove a capability from a human.
         :param session: session id
         :param personId: person unique id
         :param capabilityName: capability unique name
@@ -880,7 +872,7 @@ class CController:
     @authorizeRequireWarp
     def AddAgentToGroup(self, session, agentName, groupName):
         """
-
+        Add an agent to a group.
         :param session: session id
         :param agentName: agent unique name
         :param groupName: group unique name
@@ -896,7 +888,7 @@ class CController:
     @authorizeRequireWarp
     def RemoveAgentFromGroup(self, session, agentName, groupName):
         """
-
+        Remove an agent from a group.
         :param session: session id
         :param agentName: agent unique name
         :param groupName: group unique name
@@ -912,7 +904,7 @@ class CController:
     @authorizeRequireWarp
     def AddAgentPosition(self, session, agentName, positionName):
         """
-
+        Add an agent to a position.
         :param session: session id
         :param agentName: agent unique name
         :param positionName: position unique name
@@ -928,7 +920,7 @@ class CController:
     @authorizeRequireWarp
     def RemoveAgentPosition(self, session, agentName, positionName):
         """
-
+        Remove an agent from a position.
         :param session: session id
         :param agentName: agent unique name
         :param positionName: position unique name
@@ -944,7 +936,7 @@ class CController:
     @authorizeRequireWarp
     def AddAgentCapability(self, session, agentName, capabilityName):
         """
-
+        Add a capability to an agent.
         :param session: session id
         :param agentName: agent unique name
         :param capabilityName: capability unique name
@@ -960,7 +952,7 @@ class CController:
     @authorizeRequireWarp
     def RemoveAgentCapability(self, session, agentName, capabilityName):
         """
-
+        Remove a capability to an agent.
         :param session: session id
         :param agentName: agent unique name
         :param capabilityName: capability unique name
@@ -972,6 +964,24 @@ class CController:
             return False, None
         CController._connectModel.Remove(agent.GlobalId, capability.GlobalId)
         return True, True
+
+    def RetrieveHumanInGroup(self, session, groupName):
+        pass
+
+    def RetrieveAgentInGroup(self, session, groupName):
+        pass
+
+    def RetrieveHumanInPosition(self, session, posName):
+        pass
+
+    def RetrieveAgentInPosition(self, session, posName):
+        pass
+
+    def RetrieveHumanWithCapability(self, session, capabilityName):
+        pass
+
+    def RetrieveAgentWithCapability(self, session, capabilityName):
+        pass
 
     """
     COrgan Configuration 
@@ -1108,15 +1118,6 @@ class CController:
         else:
             return "Unit"
 
-    @authorizeRequireWarp
-    def EchoTest(self, session, pr):
-        """
-        Debug echo function.
-        :param session: session id
-        :param pr: echo text
-        """
-        print pr
-
     """
     Static Fields
     """
@@ -1135,8 +1136,3 @@ class CController:
 Global Static Code
 """
 CControllerCore = CController()
-
-
-if __name__ == '__main__':
-    CControllerCore.EchoTest('testadmin2', 'testprint')
-    pass

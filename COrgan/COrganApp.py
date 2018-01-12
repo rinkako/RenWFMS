@@ -12,12 +12,10 @@ Actually, it launches as a Flask application, for web service request handing.
 Here defines the routing of web UI, and all RESTful APIs are defined at another
 Restful blueprint package.
 """
-from functools import wraps
-
-from flask import Flask, render_template, redirect, url_for, request, session
-
 import CController
 import GlobalConfigContext
+from functools import wraps
+from flask import Flask, render_template, redirect, url_for, request, session
 from Restful import restfulBp
 
 app = Flask(__name__, template_folder='templates', static_folder='static')
