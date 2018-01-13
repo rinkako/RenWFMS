@@ -125,9 +125,9 @@ class CGateway:
     @staticmethod
     def Connect(**argd):
         """
-
-        :param argd:
-        :return:
+        Restful API for authority connection.
+        :param argd: request argument dictionary
+        :return: dumped json string
         """
         flag, ret = CController.CController.Connect(argd["username"], EncryptUtil.EncryptSHA256(argd["password"]))
         if flag is False:
@@ -139,9 +139,9 @@ class CGateway:
     @staticmethod
     def CheckConnect(**argd):
         """
-
-        :param argd:
-        :return:
+        Restful API for authority token validation check.
+        :param argd: request argument dictionary
+        :return: dumped json string
         """
         flag, ret = CController.CController.CheckConnect(argd["session"])
         xFlag = CGateway._HandleExceptionAndUnauthorized(flag, ret, argd["session"])
@@ -152,9 +152,9 @@ class CGateway:
     @staticmethod
     def Disconnect(**argd):
         """
-
-        :param argd:
-        :return:
+        Restful API for authority token destroy.
+        :param argd: request argument dictionary
+        :return: dumped json string
         """
         flag, ret = CController.CController.Disconnect(argd["session"])
         xFlag = CGateway._HandleExceptionAndUnauthorized(flag, ret, argd["session"])
@@ -166,11 +166,37 @@ class CGateway:
     Data Retrieving API
     """
     @staticmethod
+    def GetOrganization(**argd):
+        """
+        Restful API for getting organization name.
+        :param argd: request argument dictionary
+        :return: dumped json string
+        """
+        flag, ret = CGateway.core.GetOrganizationName(argd["session"])
+        xFlag = CGateway._HandleExceptionAndUnauthorized(flag, ret, argd["session"])
+        if xFlag is not None:
+            return xFlag
+        return CGateway._SuccessResponse({'return': ret})
+
+    @staticmethod
+    def GetDataVersion(**argd):
+        """
+        Restful API for getting data version string.
+        :param argd: request argument dictionary
+        :return: dumped json string
+        """
+        flag, ret = CGateway.core.GetCurrentDataVersion(argd["session"])
+        xFlag = CGateway._HandleExceptionAndUnauthorized(flag, ret, argd["session"])
+        if xFlag is not None:
+            return xFlag
+        return CGateway._SuccessResponse({'return': ret})
+
+    @staticmethod
     def RetrieveAllHuman(**argd):
         """
-
-        :param argd:
-        :return:
+        Restful API for getting all human.
+        :param argd: request argument dictionary
+        :return: dumped json string
         """
         flag, ret = CGateway.core.RetrieveAllHuman(argd["session"])
         xFlag = CGateway._HandleExceptionAndUnauthorized(flag, ret, argd["session"])
@@ -184,9 +210,9 @@ class CGateway:
     @staticmethod
     def RetrieveAllAgent(**argd):
         """
-
-        :param argd:
-        :return:
+        Restful API for getting all agent.
+        :param argd: request argument dictionary
+        :return: dumped json string
         """
         flag, ret = CGateway.core.RetrieveAllAgent(argd["session"])
         xFlag = CGateway._HandleExceptionAndUnauthorized(flag, ret, argd["session"])
@@ -200,9 +226,9 @@ class CGateway:
     @staticmethod
     def RetrieveAllGroups(**argd):
         """
-
-        :param argd:
-        :return:
+        Restful API for getting all group.
+        :param argd: request argument dictionary
+        :return: dumped json string
         """
         flag, ret = CGateway.core.RetrieveAllGroup(argd["session"])
         xFlag = CGateway._HandleExceptionAndUnauthorized(flag, ret, argd["session"])
@@ -216,9 +242,9 @@ class CGateway:
     @staticmethod
     def RetrieveAllPositions(**argd):
         """
-
-        :param argd:
-        :return:
+        Restful API for getting all position.
+        :param argd: request argument dictionary
+        :return: dumped json string
         """
         flag, ret = CGateway.core.RetrieveAllPosition(argd["session"])
         xFlag = CGateway._HandleExceptionAndUnauthorized(flag, ret, argd["session"])
@@ -232,9 +258,9 @@ class CGateway:
     @staticmethod
     def RetrieveAllCapabilities(**argd):
         """
-
-        :param argd:
-        :return:
+        Restful API for getting all capability.
+        :param argd: request argument dictionary
+        :return: dumped json string
         """
         flag, ret = CGateway.core.RetrieveAllCapabilities(argd["session"])
         xFlag = CGateway._HandleExceptionAndUnauthorized(flag, ret, argd["session"])
@@ -246,24 +272,11 @@ class CGateway:
         return CGateway._SuccessResponse({'return': hmBuilder})
 
     @staticmethod
-    def RetrieveHumanInWhatPosition(**argd):
-        """
-
-        :param argd:
-        :return:
-        """
-        flag, ret = CGateway.core.RetrieveHumanInWhatPosition(argd["session"], argd["personId"])
-        xFlag = CGateway._HandleExceptionAndUnauthorized(flag, ret, argd["session"])
-        if xFlag is not None:
-            return xFlag
-        return CGateway._SuccessResponse({'return': ret})
-
-    @staticmethod
     def RetrieveHumanInWhatGroup(**argd):
         """
-
-        :param argd:
-        :return:
+        Restful API for getting a set of groups that a specific human in.
+        :param argd: request argument dictionary
+        :return: dumped json string
         """
         flag, ret = CGateway.core.RetrieveHumanInWhatGroup(argd["session"], argd["personId"])
         xFlag = CGateway._HandleExceptionAndUnauthorized(flag, ret, argd["session"])
@@ -272,13 +285,143 @@ class CGateway:
         return CGateway._SuccessResponse({'return': ret})
 
     @staticmethod
+    def RetrieveHumanInWhatPosition(**argd):
+        """
+        Restful API for getting a set of positions that a specific human at.
+        :param argd: request argument dictionary
+        :return: dumped json string
+        """
+        flag, ret = CGateway.core.RetrieveHumanInWhatPosition(argd["session"], argd["personId"])
+        xFlag = CGateway._HandleExceptionAndUnauthorized(flag, ret, argd["session"])
+        if xFlag is not None:
+            return xFlag
+        return CGateway._SuccessResponse({'return': ret})
+
+    @staticmethod
     def RetrieveHumanWithWhatCapability(**argd):
         """
-
-        :param argd:
-        :return:
+        Restful API for getting a set of capabilities that a specific human with.
+        :param argd: request argument dictionary
+        :return: dumped json string
         """
         flag, ret = CGateway.core.RetrieveHumanWithWhatCapability(argd["session"], argd["personId"])
+        xFlag = CGateway._HandleExceptionAndUnauthorized(flag, ret, argd["session"])
+        if xFlag is not None:
+            return xFlag
+        return CGateway._SuccessResponse({'return': ret})
+
+    @staticmethod
+    def RetrieveAgentInWhatGroup(**argd):
+        """
+        Restful API for getting a set of groups that a specific agent in.
+        :param argd: request argument dictionary
+        :return: dumped json string
+        """
+        flag, ret = CGateway.core.RetrieveAgentInWhatGroup(argd["session"], argd["personId"])
+        xFlag = CGateway._HandleExceptionAndUnauthorized(flag, ret, argd["session"])
+        if xFlag is not None:
+            return xFlag
+        return CGateway._SuccessResponse({'return': ret})
+
+    @staticmethod
+    def RetrieveAgentInWhatPosition(**argd):
+        """
+        Restful API for getting a set of positions that a specific agent at.
+        :param argd: request argument dictionary
+        :return: dumped json string
+        """
+        flag, ret = CGateway.core.RetrieveAgentInWhatPosition(argd["session"], argd["personId"])
+        xFlag = CGateway._HandleExceptionAndUnauthorized(flag, ret, argd["session"])
+        if xFlag is not None:
+            return xFlag
+        return CGateway._SuccessResponse({'return': ret})
+
+    @staticmethod
+    def RetrieveAgentWithWhatCapability(**argd):
+        """
+        Restful API for getting a set of capabilities that a specific agent with.
+        :param argd: request argument dictionary
+        :return: dumped json string
+        """
+        flag, ret = CGateway.core.RetrieveAgentWithWhatCapability(argd["session"], argd["personId"])
+        xFlag = CGateway._HandleExceptionAndUnauthorized(flag, ret, argd["session"])
+        if xFlag is not None:
+            return xFlag
+        return CGateway._SuccessResponse({'return': ret})
+
+    @staticmethod
+    def RetrieveHumanInGroup(**argd):
+        """
+        Restful API for getting a set of human that a specific group contains.
+        :param argd: request argument dictionary
+        :return: dumped json string
+        """
+        flag, ret = CGateway.core.RetrieveHumanInGroup(argd["session"], argd["name"])
+        xFlag = CGateway._HandleExceptionAndUnauthorized(flag, ret, argd["session"])
+        if xFlag is not None:
+            return xFlag
+        return CGateway._SuccessResponse({'return': ret})
+
+    @staticmethod
+    def RetrieveAgentInGroup(**argd):
+        """
+        Restful API for getting a set of agent that a specific group contains.
+        :param argd: request argument dictionary
+        :return: dumped json string
+        """
+        flag, ret = CGateway.core.RetrieveAgentInGroup(argd["session"], argd["name"])
+        xFlag = CGateway._HandleExceptionAndUnauthorized(flag, ret, argd["session"])
+        if xFlag is not None:
+            return xFlag
+        return CGateway._SuccessResponse({'return': ret})
+
+    @staticmethod
+    def RetrieveHumanInPosition(**argd):
+        """
+        Restful API for getting a set of humans that a specific position contains.
+        :param argd: request argument dictionary
+        :return: dumped json string
+        """
+        flag, ret = CGateway.core.RetrieveHumanInPosition(argd["session"], argd["name"])
+        xFlag = CGateway._HandleExceptionAndUnauthorized(flag, ret, argd["session"])
+        if xFlag is not None:
+            return xFlag
+        return CGateway._SuccessResponse({'return': ret})
+
+    @staticmethod
+    def RetrieveAgentInPosition(**argd):
+        """
+        Restful API for getting a set of agents that a specific position contains.
+        :param argd: request argument dictionary
+        :return: dumped json string
+        """
+        flag, ret = CGateway.core.RetrieveAgentInPosition(argd["session"], argd["name"])
+        xFlag = CGateway._HandleExceptionAndUnauthorized(flag, ret, argd["session"])
+        if xFlag is not None:
+            return xFlag
+        return CGateway._SuccessResponse({'return': ret})
+
+    @staticmethod
+    def RetrieveHumanWithCapability(**argd):
+        """
+        Restful API for getting a set of humans that a specific capability category contains.
+        :param argd: request argument dictionary
+        :return: dumped json string
+        """
+        flag, ret = CGateway.core.RetrieveHumanWithCapability(argd["session"], argd["name"])
+        xFlag = CGateway._HandleExceptionAndUnauthorized(flag, ret, argd["session"])
+        if xFlag is not None:
+            return xFlag
+        return CGateway._SuccessResponse({'return': ret})
+
+    @staticmethod
+    def RetrieveAgentWithCapability(**argd):
+        """
+        Restful API for getting a set of agents that a specific capability category contains.
+        :param argd: request argument dictionary
+        :return: dumped json string
+        """
+        flag, ret = CGateway.core.RetrieveAgentWithCapability(argd["session"], argd["name"])
         xFlag = CGateway._HandleExceptionAndUnauthorized(flag, ret, argd["session"])
         if xFlag is not None:
             return xFlag

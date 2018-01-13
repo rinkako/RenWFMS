@@ -52,7 +52,7 @@ class RuntimeLogModel:
               % (label, level, message, t)
         if RuntimeLogModel._persistDAO is None:
             RuntimeLogModel.Initialize()
-        RuntimeLogModel._persistDAO.ExecuteSQL(sql, False, dp)
+        RuntimeLogModel._persistDAO.ExecuteSQL(sql, False, dp, updateVersion=False)
 
     @staticmethod
     def LogError(label, message, timestamp=None):

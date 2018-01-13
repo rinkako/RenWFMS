@@ -885,6 +885,40 @@ def performDeleteAgent(uname):
 
 
 """
+Config Management Routers
+"""
+
+
+@app.route('/config/')
+@authorizeRequire
+@adminRequire
+def configManagement():
+    flag1, organ = core.GetOrganizationName(session['SID'])
+    flag2, notifier = core.GetUpdateNotifyRouter(session['SID'])
+    flag3, dataversion = core.GetCurrentDataVersion(session['SID'])
+    if (flag1 & flag2 & flag3) is False:
+        return redirect(url_for('AccessErrorPage', dt='x'))
+    t = {'L_PageTitle': u'设置',
+         'L_PageDescription': u'管理COrgan的配置设置',
+         'my_organ': organ,
+         'my_notifier': notifier,
+         'my_dataversion': dataversion,
+         }
+    return render_template('configpage.html', **t)
+
+
+@app.route('/config/performUpdate', methods=["POST"])
+@authorizeRequire
+@adminRequire
+def performUpdateConfig():
+    flag1, ret1 = core.SetOrganizationName(session['SID'], request.form['f_organ'])
+    flag2, ret2 = core.SetUpdateNotifyRouter(session['SID'], request.form['f_notifier'])
+    if (flag1 & flag2) is False:
+        return redirect(url_for('AccessErrorPage', dt='x'))
+    return redirect(url_for('configManagement'))
+
+
+"""
 Login Routers
 """
 
@@ -955,6 +989,9 @@ def _logout():
             session.clear()
 
 
+"""
+COrgan App Entry Point
+"""
 if __name__ == '__main__':
     app.secret_key = GlobalConfigContext.RAPPKEY
     app.debug = True

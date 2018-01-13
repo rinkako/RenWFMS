@@ -77,7 +77,7 @@ class PositionModel:
             return False
         sql = "DELETE FROM ren_position WHERE name = '%s'" % name
         PositionModel._persistDAO.ExecuteSQL(sql, needRet=False)
-        sql = "DELETE FROM ren_connect WHERE belongToGroupId = '%s'" % rObj.GlobalId
+        sql = "DELETE FROM ren_connect WHERE belongToOrganizableId = '%s'" % rObj.GlobalId
         PositionModel._persistDAO.ExecuteSQL(sql, needRet=False)
         return True
 

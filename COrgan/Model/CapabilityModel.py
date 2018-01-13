@@ -75,7 +75,7 @@ class CapabilityModel:
             return False
         sql = "DELETE FROM ren_capability WHERE name = '%s'" % name
         CapabilityModel._persistDAO.ExecuteSQL(sql, needRet=False)
-        sql = "DELETE FROM ren_connect WHERE belongToGroupId = '%s'" % rObj.GlobalId
+        sql = "DELETE FROM ren_connect WHERE belongToOrganizableId = '%s'" % rObj.GlobalId
         CapabilityModel._persistDAO.ExecuteSQL(sql, needRet=False)
         return True
 

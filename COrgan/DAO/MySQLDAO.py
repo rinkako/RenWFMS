@@ -74,7 +74,26 @@ class MySQLDAO(AbstractDAO):
         """
         return self.ExecuteSQL('SELECT * FROM %s LIMIT %s' % (tableName, limit), needRet=True)
 
-    def ExecuteSQL(self, sql, needRet=True, dp=0):
+    def ExecuteSQL(self, sql, needRet=True, dp=0, updateVersion=True):
+        """
+        Execute a specific SQL and update data version if need.
+        :param sql: sql string
+        :param needRet: need return execution result
+        :param dp: depth of exception stack
+        :param updateVersion: need update data version
+        :return: execution result table
+        """
+        retVal = self.ActualExecuteSQL(sql, needRet=needRet, dp=dp)
+        try:
+            if updateVersion is True and sql.startswith('SELECT') is False:
+                import uuid
+                vsql = "UPDATE ren_cconfig SET rvalue = 'COrganDataVer_%s' WHERE rkey = 'dataVersion'" % uuid.uuid1()
+                self.ActualExecuteSQL(vsql, needRet=needRet, dp=dp)
+        except:
+            LogUtil.ErrorLog('COrgan cannot update data version', 'MySQLDAO')
+        return retVal
+
+    def ActualExecuteSQL(self, sql, needRet=True, dp=0):
         """
         Execute a specific SQL.
         :param sql: sql string
@@ -110,10 +129,3 @@ class MySQLDAO(AbstractDAO):
             if cursor is not None:
                 cursor.close()
             self._executeMutex.release()
-
-
-if __name__ == '__main__':
-    dao = MySQLDAO()
-    dao.Initialize()
-    r = dao.ExecuteSQL('SELECT * FROM ren_human', needRet=True)
-    pass

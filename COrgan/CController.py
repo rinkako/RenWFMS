@@ -7,7 +7,6 @@
 """
 import GlobalConfigContext as GCC
 from functools import wraps
-
 from Model.AgentModel import AgentModel
 from Model.CConfigModel import CConfigModel
 from Model.CapabilityModel import CapabilityModel
@@ -634,10 +633,10 @@ class CController:
         flag, human = self.RetrieveHuman(session, personId)
         if flag is False or human is None:
             return False, None
-        cons = CController._connectModel.RetrieveByWorker(human.GlobalId)
+        cons = CController._connectModel.RetrieveByWorkerGlobalId(human.GlobalId)
         filteredId = []
         for kvp in cons:
-            groupKey = kvp["belongToGroupId"]
+            groupKey = kvp["belongToOrganizableId"]
             if groupKey.startswith("Dept_") is True:
                 filteredId.append(groupKey)
         retList = []
@@ -659,10 +658,10 @@ class CController:
         flag, human = self.RetrieveHuman(session, personId)
         if flag is False or human is None:
             return False, None
-        cons = CController._connectModel.RetrieveByWorker(human.GlobalId)
+        cons = CController._connectModel.RetrieveByWorkerGlobalId(human.GlobalId)
         filteredId = []
         for kvp in cons:
-            groupKey = kvp["belongToGroupId"]
+            groupKey = kvp["belongToOrganizableId"]
             if groupKey.startswith("Pos_") is True:
                 filteredId.append(groupKey)
         retList = []
@@ -684,10 +683,10 @@ class CController:
         flag, human = self.RetrieveHuman(session, personId)
         if flag is False or human is None:
             return False, None
-        cons = CController._connectModel.RetrieveByWorker(human.GlobalId)
+        cons = CController._connectModel.RetrieveByWorkerGlobalId(human.GlobalId)
         filteredId = []
         for kvp in cons:
-            groupKey = kvp["belongToGroupId"]
+            groupKey = kvp["belongToOrganizableId"]
             if groupKey.startswith("Capa_") is True:
                 filteredId.append(groupKey)
         retList = []
@@ -709,10 +708,10 @@ class CController:
         flag, agent = self.RetrieveAgent(session, agentName)
         if flag is False or agent is None:
             return False, None
-        cons = CController._connectModel.RetrieveByWorker(agent.GlobalId)
+        cons = CController._connectModel.RetrieveByWorkerGlobalId(agent.GlobalId)
         filteredId = []
         for kvp in cons:
-            groupKey = kvp["belongToGroupId"]
+            groupKey = kvp["belongToOrganizableId"]
             if groupKey.startswith("Dept_") is True:
                 filteredId.append(groupKey)
         retList = []
@@ -734,10 +733,10 @@ class CController:
         flag, agent = self.RetrieveAgent(session, agentName)
         if flag is False or agent is None:
             return False, None
-        cons = CController._connectModel.RetrieveByWorker(agent.GlobalId)
+        cons = CController._connectModel.RetrieveByWorkerGlobalId(agent.GlobalId)
         filteredId = []
         for kvp in cons:
-            groupKey = kvp["belongToGroupId"]
+            groupKey = kvp["belongToOrganizableId"]
             if groupKey.startswith("Pos_") is True:
                 filteredId.append(groupKey)
         retList = []
@@ -759,10 +758,10 @@ class CController:
         flag, agent = self.RetrieveAgent(session, agentName)
         if flag is False or agent is None:
             return False, None
-        cons = CController._connectModel.RetrieveByWorker(agent.GlobalId)
+        cons = CController._connectModel.RetrieveByWorkerGlobalId(agent.GlobalId)
         filteredId = []
         for kvp in cons:
-            groupKey = kvp["belongToGroupId"]
+            groupKey = kvp["belongToOrganizableId"]
             if groupKey.startswith("Capa_") is True:
                 filteredId.append(groupKey)
         retList = []
@@ -772,6 +771,84 @@ class CController:
                 return False, None
             retList.append(groupObj.Name)
         return True, retList
+
+    @authorizeRequireWarp
+    def RetrieveHumanInGroup(self, session, groupName):
+        """
+        Get a list of human instances in a group.
+        :param session: session id
+        :param groupName: group unique name
+        :return: execution state tuple
+        """
+        flag, org = self.RetrieveGroup(session, groupName)
+        if flag is False or org is None:
+            return False, None
+        return True, CController._connectModel.RetrieveHumanByGlobalId(org.GlobalId)
+
+    @authorizeRequireWarp
+    def RetrieveAgentInGroup(self, session, groupName):
+        """
+        Get a list of agent instances in a group.
+        :param session: session id
+        :param groupName: group unique name
+        :return: execution state tuple
+        """
+        flag, org = self.RetrieveGroup(session, groupName)
+        if flag is False or org is None:
+            return False, None
+        return True, CController._connectModel.RetrieveAgentByGlobalId(org.GlobalId)
+
+    @authorizeRequireWarp
+    def RetrieveHumanInPosition(self, session, posName):
+        """
+        Get a list of human instances at a position.
+        :param session: session id
+        :param posName: position unique name
+        :return: execution state tuple
+        """
+        flag, org = self.RetrievePosition(session, posName)
+        if flag is False or org is None:
+            return False, None
+        return True, CController._connectModel.RetrieveHumanByGlobalId(org.GlobalId)
+
+    @authorizeRequireWarp
+    def RetrieveAgentInPosition(self, session, posName):
+        """
+        Get a list of agent instances at a position.
+        :param session: session id
+        :param posName: position unique name
+        :return: execution state tuple
+        """
+        flag, org = self.RetrievePosition(session, posName)
+        if flag is False or org is None:
+            return False, None
+        return True, CController._connectModel.RetrieveAgentByGlobalId(org.GlobalId)
+
+    @authorizeRequireWarp
+    def RetrieveHumanWithCapability(self, session, capabilityName):
+        """
+        Get a list of human instances with a capability.
+        :param session: session id
+        :param capabilityName: capability unique name
+        :return: execution state tuple
+        """
+        flag, org = self.RetrieveCapability(session, capabilityName)
+        if flag is False or org is None:
+            return False, None
+        return True, CController._connectModel.RetrieveHumanByGlobalId(org.GlobalId)
+
+    @authorizeRequireWarp
+    def RetrieveAgentWithCapability(self, session, capabilityName):
+        """
+        Get a list of agent instances with a capability.
+        :param session: session id
+        :param capabilityName: capability unique name
+        :return: execution state tuple
+        """
+        flag, org = self.RetrieveCapability(session, capabilityName)
+        if flag is False or org is None:
+            return False, None
+        return True, CController._connectModel.RetrieveAgentByGlobalId(org.GlobalId)
 
     @authorizeRequireWarp
     def AddHumanToGroup(self, session, personId, groupName):
@@ -965,24 +1042,6 @@ class CController:
         CController._connectModel.Remove(agent.GlobalId, capability.GlobalId)
         return True, True
 
-    def RetrieveHumanInGroup(self, session, groupName):
-        pass
-
-    def RetrieveAgentInGroup(self, session, groupName):
-        pass
-
-    def RetrieveHumanInPosition(self, session, posName):
-        pass
-
-    def RetrieveAgentInPosition(self, session, posName):
-        pass
-
-    def RetrieveHumanWithCapability(self, session, capabilityName):
-        pass
-
-    def RetrieveAgentWithCapability(self, session, capabilityName):
-        pass
-
     """
     COrgan Configuration 
     """
@@ -994,8 +1053,11 @@ class CController:
         :param orgName: organization name
         :return: execution state tuple
         """
-        CController._configModel.AddOrUpdate(GCC.CONFIG_ORGANIZATION_KEY, orgName)
-        return True, True
+        try:
+            CController._configModel.AddOrUpdate(GCC.CONFIG_ORGANIZATION_KEY, orgName)
+            return True, True
+        except:
+            return False, False
 
     @authorizeRequireWarp
     def GetOrganizationName(self, session):
@@ -1014,8 +1076,11 @@ class CController:
         :param routerUrl: gateway url
         :return: execution state tuple
         """
-        CController._configModel.AddOrUpdate(GCC.CONFIG_DATA_UPDATE_ROUTER, routerUrl)
-        return True, True
+        try:
+            CController._configModel.AddOrUpdate(GCC.CONFIG_DATA_UPDATE_ROUTER, routerUrl)
+            return True, True
+        except:
+            return False, False
 
     @adminRequireWarp
     def GetUpdateNotifyRouter(self, session):

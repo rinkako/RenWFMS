@@ -43,7 +43,7 @@ class ConnectModel:
         :param groupId: organizable id
         :return: execution result
         """
-        sql = "INSERT INTO ren_connect(workerId, belongToGroupId) VALUES ('%s', '%s')" % \
+        sql = "INSERT INTO ren_connect(workerId, belongToOrganizableId) VALUES ('%s', '%s')" % \
               (workerId, groupId)
         return ConnectModel._persistDAO.ExecuteSQL(sql, needRet=False)
 
@@ -54,7 +54,7 @@ class ConnectModel:
         :param workerId: worker id
         :param groupId: organizable id
         """
-        sql = "DELETE FROM ren_connect WHERE workerId = '%s' AND belongToGroupId = '%s'" % \
+        sql = "DELETE FROM ren_connect WHERE workerId = '%s' AND belongToOrganizableId = '%s'" % \
               (workerId, groupId)
         ConnectModel._persistDAO.ExecuteSQL(sql, needRet=False)
 
@@ -68,23 +68,47 @@ class ConnectModel:
         ConnectModel._persistDAO.ExecuteSQL(sql, needRet=False)
 
     @staticmethod
-    def RetrieveByWorker(workerId):
+    def RetrieveByWorkerGlobalId(workerId):
         """
         Retrieve connections into a list by worker id.
         :param workerId: worker id
         :return: a list of connection dictionary
         """
-        sql = "SELECT workerId, belongToGroupId FROM ren_connect WHERE workerId = '%s'" % workerId
+        sql = "SELECT workerId, belongToOrganizableId FROM ren_connect WHERE workerId = '%s'" % workerId
         return ConnectModel._persistDAO.ExecuteSQL(sql, needRet=True)
 
     @staticmethod
-    def RetrieveByGroup(groupId):
+    def RetrieveByOrganizableGlobalId(groupId):
         """
         Retrieve connections into a list by group id.
         :param groupId: organizable id
         :return: a list of connection dictionary
         """
-        sql = "SELECT workerId, belongToGroupId FROM ren_connect WHERE belongToGroupId = '%s'" % groupId
+        sql = "SELECT workerId, belongToOrganizableId FROM ren_connect WHERE belongToOrganizableId = '%s'" % groupId
+        return ConnectModel._persistDAO.ExecuteSQL(sql, needRet=True)
+
+    @staticmethod
+    def RetrieveHumanByGlobalId(gid):
+        """
+        Retrieve connections joined table by group global id.
+        :param gid:
+        :return:
+        """
+        sql = "SELECT * FROM ren_connect INNER JOIN ren_human " \
+              "ON ren_human.id = ren_connect.workerId " \
+              "WHERE ren_connect.belongToOrganizableId = '%s'" % gid
+        return ConnectModel._persistDAO.ExecuteSQL(sql, needRet=True)
+
+    @staticmethod
+    def RetrieveAgentByGlobalId(gid):
+        """
+        Retrieve connections joined table by group global id.
+        :param gid:
+        :return:
+        """
+        sql = "SELECT * FROM ren_connect INNER JOIN ren_agent " \
+              "ON ren_agent.id = ren_connect.workerId " \
+              "WHERE ren_connect.belongToOrganizableId = '%s'" % gid
         return ConnectModel._persistDAO.ExecuteSQL(sql, needRet=True)
 
     @staticmethod
@@ -93,7 +117,7 @@ class ConnectModel:
         Retrieve all connections into a list.
         :return: a list of connection dictionary
         """
-        sql = "SELECT workerId, belongToGroupId FROM ren_connect"
+        sql = "SELECT workerId, belongToOrganizableId FROM ren_connect"
         return ConnectModel._persistDAO.ExecuteSQL(sql, needRet=True)
 
     @staticmethod
@@ -106,7 +130,7 @@ class ConnectModel:
         sql = "DELETE * FROM ren_connect WHERE workerId = '%s'" % workerId
         ConnectModel._persistDAO.ExecuteSQL(sql, needRet=False)
         for p in kvp:
-            sql = "INSERT INTO ren_connect(workerId, belongToGroupId) VALUES ('%s', '%s')" % \
+            sql = "INSERT INTO ren_connect(workerId, belongToOrganizableId) VALUES ('%s', '%s')" % \
                   (p["workerId"], p["belongToGroupId"])
             ConnectModel._persistDAO.ExecuteSQL(sql, needRet=True)
 
@@ -117,10 +141,10 @@ class ConnectModel:
         :param groupId: worker unique id name
         :param kvp: list of dict
         """
-        sql = "DELETE * FROM ren_connect WHERE belongToGroupId = '%s'" % groupId
+        sql = "DELETE * FROM ren_connect WHERE belongToOrganizableId = '%s'" % groupId
         ConnectModel._persistDAO.ExecuteSQL(sql, needRet=False)
         for p in kvp:
-            sql = "INSERT INTO ren_connect(workerId, belongToGroupId) VALUES ('%s', '%s')" % \
+            sql = "INSERT INTO ren_connect(workerId, belongToOrganizableId) VALUES ('%s', '%s')" % \
                   (p["workerId"], p["belongToGroupId"])
             ConnectModel._persistDAO.ExecuteSQL(sql, needRet=True)
 
