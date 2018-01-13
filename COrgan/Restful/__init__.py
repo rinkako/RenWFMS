@@ -40,7 +40,7 @@ def _ArgsException(key):
     :param key: the missed required attribute
     :return: response string
     """
-    return r"""{"message": "Missed required attribute: %s", "State": "Failed"}""" % key
+    return r"""{"return": "Missed required attribute: %s", "code": "Failed"}""" % key
 
 
 def StartDash(rawDict, successServer, failureServer):
@@ -61,11 +61,11 @@ def StartDash(rawDict, successServer, failureServer):
 
 @restfulBp.route('/')
 def home():
-    return "test echo"
+    return "Welcome to COrgan Gateway."
 
 
-@restfulBp.route('/connect/', methods=["GET", "POST"])
-def connect():
+@restfulBp.route('/connect', methods=["GET", "POST"])
+def Connect():
     username = request.values.get("username")
     password = request.values.get("password")
     argd = {"#username": username,
@@ -73,15 +73,77 @@ def connect():
     return StartDash(argd, CGateway.Connect, _ArgsException)
 
 
-@restfulBp.route("/disconnect/", methods=["GET", "POST"])
-def disconnect():
+@restfulBp.route("/disconnect", methods=["GET", "POST"])
+def DisConnect():
     sid = request.values.get('session')
     argd = {"#session": sid}
     return StartDash(argd, CGateway.Disconnect, _ArgsException)
 
 
-@restfulBp.route("/check/", methods=["GET", "POST"])
-def check():
+@restfulBp.route("/check", methods=["GET", "POST"])
+def Check():
     sid = request.values.get('session')
     argd = {"#session": sid}
     return StartDash(argd, CGateway.CheckConnect, _ArgsException)
+
+
+@restfulBp.route("/human/getall", methods=["GET", "POST"])
+def GetAllHuman():
+    sid = request.values.get('session')
+    argd = {"#session": sid}
+    return StartDash(argd, CGateway.RetrieveAllHuman, _ArgsException)
+
+
+@restfulBp.route("/agent/getall", methods=["GET", "POST"])
+def GetAllAgent():
+    sid = request.values.get('session')
+    argd = {"#session": sid}
+    return StartDash(argd, CGateway.RetrieveAllAgent, _ArgsException)
+
+
+@restfulBp.route("/group/getall", methods=["GET", "POST"])
+def GetAllGroup():
+    sid = request.values.get('session')
+    argd = {"#session": sid}
+    return StartDash(argd, CGateway.RetrieveAllGroups, _ArgsException)
+
+
+@restfulBp.route("/position/getall", methods=["GET", "POST"])
+def GetAllPosition():
+    sid = request.values.get('session')
+    argd = {"#session": sid}
+    return StartDash(argd, CGateway.RetrieveAllPositions, _ArgsException)
+
+
+@restfulBp.route("/capability/getall", methods=["GET", "POST"])
+def GetAllCapability():
+    sid = request.values.get('session')
+    argd = {"#session": sid}
+    return StartDash(argd, CGateway.RetrieveAllCapabilities, _ArgsException)
+
+
+@restfulBp.route("/relation/gethumanposition", methods=["GET", "POST"])
+def GetHumanPosition():
+    sid = request.values.get('session')
+    personId = request.values.get('personId')
+    argd = {"#session": sid,
+            "#personId": personId}
+    return StartDash(argd, CGateway.RetrieveHumanInWhatPosition, _ArgsException)
+
+
+@restfulBp.route("/relation/gethumangroup", methods=["GET", "POST"])
+def GetHumanGroup():
+    sid = request.values.get('session')
+    personId = request.values.get('personId')
+    argd = {"#session": sid,
+            "#personId": personId}
+    return StartDash(argd, CGateway.RetrieveHumanInWhatGroup, _ArgsException)
+
+
+@restfulBp.route("/relation/gethumancapability", methods=["GET", "POST"])
+def GetHumanCapability():
+    sid = request.values.get('session')
+    personId = request.values.get('personId')
+    argd = {"#session": sid,
+            "#personId": personId}
+    return StartDash(argd, CGateway.RetrieveHumanWithWhatCapability, _ArgsException)

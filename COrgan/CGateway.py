@@ -6,9 +6,9 @@
 @time   : 2018/1/8
 """
 import json
-from datetime import datetime
+import CController
 import GlobalConfigContext as GCC
-from CController import CController
+from datetime import datetime
 from Utility.EncryptUtil import EncryptUtil
 
 
@@ -24,6 +24,11 @@ class CGateway:
     to be passed to here as a web service request parameter dictionary and
     return a JSON response string.
     """
+
+    """
+    CController Static Instance
+    """
+    core = CController.CControllerCore
 
     def __init__(self):
         pass
@@ -50,7 +55,7 @@ class CGateway:
         :param response_dict: A dictionary, key is the label and value is the body
         :return: JSON string
         """
-        dumpResp = json.dumps(response_dict, skipkeys=True, default=CGateway._DumpEntityHandler)
+        dumpResp = json.dumps(response_dict, skipkeys=True, ensure_ascii=False, default=CGateway._DumpEntityHandler)
         return u"%s\n" % dumpResp
 
     @staticmethod
@@ -62,7 +67,7 @@ class CGateway:
         """
         if args_dict is None:
             args_dict = {}
-        args_dict["State"] = "Success"
+        args_dict["code"] = "Success"
         return CGateway._DumpResponse(args_dict)
 
     @staticmethod
@@ -74,7 +79,7 @@ class CGateway:
         """
         if args_dict is None:
             args_dict = {}
-        args_dict["State"] = "Failed"
+        args_dict["code"] = "Failed"
         return CGateway._DumpResponse(args_dict)
 
     @staticmethod
@@ -86,7 +91,7 @@ class CGateway:
         """
         if args_dict is None:
             args_dict = {}
-        args_dict["State"] = "Exception"
+        args_dict["code"] = "Exception"
         return CGateway._DumpResponse(args_dict)
 
     @staticmethod
@@ -96,8 +101,8 @@ class CGateway:
         :param session: session id
         :return: the unauthorized exception JSON string
         """
-        return CGateway._DumpResponse({"Message": "Unauthorized Service Request. session:%s" % session,
-                                       "State": "Unauthorized"})
+        return CGateway._DumpResponse({"return": "Unauthorized Service Request. session:%s" % session,
+                                       "code": "Unauthorized"})
 
     @staticmethod
     def _HandleExceptionAndUnauthorized(flagVal, retVal, session=None):
@@ -115,20 +120,30 @@ class CGateway:
         return None
 
     """
-    Restful API Gateway
+    Authority API
     """
     @staticmethod
     def Connect(**argd):
-        flag, ret = CController.Connect(argd["username"], EncryptUtil.EncryptSHA256(argd["password"]))
+        """
+
+        :param argd:
+        :return:
+        """
+        flag, ret = CController.CController.Connect(argd["username"], EncryptUtil.EncryptSHA256(argd["password"]))
         if flag is False:
             return CGateway._ExceptionResponse()
         if ret is None:
-            return CGateway._FailureResponse({"message": "invalid user id or password"})
+            return CGateway._FailureResponse({"return": "invalid user id or password"})
         return CGateway._SuccessResponse({"session": ret})
 
     @staticmethod
     def CheckConnect(**argd):
-        flag, ret = CController.CheckConnect(argd["session"])
+        """
+
+        :param argd:
+        :return:
+        """
+        flag, ret = CController.CController.CheckConnect(argd["session"])
         xFlag = CGateway._HandleExceptionAndUnauthorized(flag, ret, argd["session"])
         if xFlag is not None:
             return xFlag
@@ -136,13 +151,135 @@ class CGateway:
 
     @staticmethod
     def Disconnect(**argd):
-        flag, ret = CController.Disconnect(argd["session"])
+        """
+
+        :param argd:
+        :return:
+        """
+        flag, ret = CController.CController.Disconnect(argd["session"])
         xFlag = CGateway._HandleExceptionAndUnauthorized(flag, ret, argd["session"])
         if xFlag is not None:
             return xFlag
         return CGateway._SuccessResponse() if ret is True else CGateway._FailureResponse()
 
+    """
+    Data Retrieving API
+    """
+    @staticmethod
+    def RetrieveAllHuman(**argd):
+        """
 
-if __name__ == '__main__':
-    r = EncryptUtil.EncryptSHA256('123456')
-    pass
+        :param argd:
+        :return:
+        """
+        flag, ret = CGateway.core.RetrieveAllHuman(argd["session"])
+        xFlag = CGateway._HandleExceptionAndUnauthorized(flag, ret, argd["session"])
+        if xFlag is not None:
+            return xFlag
+        hmBuilder = []
+        for hm in ret:
+            hmBuilder.append(hm.ToJsonDict())
+        return CGateway._SuccessResponse({'return': hmBuilder})
+
+    @staticmethod
+    def RetrieveAllAgent(**argd):
+        """
+
+        :param argd:
+        :return:
+        """
+        flag, ret = CGateway.core.RetrieveAllAgent(argd["session"])
+        xFlag = CGateway._HandleExceptionAndUnauthorized(flag, ret, argd["session"])
+        if xFlag is not None:
+            return xFlag
+        hmBuilder = []
+        for hm in ret:
+            hmBuilder.append(hm.ToJsonDict())
+        return CGateway._SuccessResponse({'return': hmBuilder})
+
+    @staticmethod
+    def RetrieveAllGroups(**argd):
+        """
+
+        :param argd:
+        :return:
+        """
+        flag, ret = CGateway.core.RetrieveAllGroup(argd["session"])
+        xFlag = CGateway._HandleExceptionAndUnauthorized(flag, ret, argd["session"])
+        if xFlag is not None:
+            return xFlag
+        hmBuilder = []
+        for hm in ret:
+            hmBuilder.append(hm.ToJsonDict())
+        return CGateway._SuccessResponse({'return': hmBuilder})
+
+    @staticmethod
+    def RetrieveAllPositions(**argd):
+        """
+
+        :param argd:
+        :return:
+        """
+        flag, ret = CGateway.core.RetrieveAllPosition(argd["session"])
+        xFlag = CGateway._HandleExceptionAndUnauthorized(flag, ret, argd["session"])
+        if xFlag is not None:
+            return xFlag
+        hmBuilder = []
+        for hm in ret:
+            hmBuilder.append(hm.ToJsonDict())
+        return CGateway._SuccessResponse({'return': hmBuilder})
+
+    @staticmethod
+    def RetrieveAllCapabilities(**argd):
+        """
+
+        :param argd:
+        :return:
+        """
+        flag, ret = CGateway.core.RetrieveAllCapabilities(argd["session"])
+        xFlag = CGateway._HandleExceptionAndUnauthorized(flag, ret, argd["session"])
+        if xFlag is not None:
+            return xFlag
+        hmBuilder = []
+        for hm in ret:
+            hmBuilder.append(hm.ToJsonDict())
+        return CGateway._SuccessResponse({'return': hmBuilder})
+
+    @staticmethod
+    def RetrieveHumanInWhatPosition(**argd):
+        """
+
+        :param argd:
+        :return:
+        """
+        flag, ret = CGateway.core.RetrieveHumanInWhatPosition(argd["session"], argd["personId"])
+        xFlag = CGateway._HandleExceptionAndUnauthorized(flag, ret, argd["session"])
+        if xFlag is not None:
+            return xFlag
+        return CGateway._SuccessResponse({'return': ret})
+
+    @staticmethod
+    def RetrieveHumanInWhatGroup(**argd):
+        """
+
+        :param argd:
+        :return:
+        """
+        flag, ret = CGateway.core.RetrieveHumanInWhatGroup(argd["session"], argd["personId"])
+        xFlag = CGateway._HandleExceptionAndUnauthorized(flag, ret, argd["session"])
+        if xFlag is not None:
+            return xFlag
+        return CGateway._SuccessResponse({'return': ret})
+
+    @staticmethod
+    def RetrieveHumanWithWhatCapability(**argd):
+        """
+
+        :param argd:
+        :return:
+        """
+        flag, ret = CGateway.core.RetrieveHumanWithWhatCapability(argd["session"], argd["personId"])
+        xFlag = CGateway._HandleExceptionAndUnauthorized(flag, ret, argd["session"])
+        if xFlag is not None:
+            return xFlag
+        return CGateway._SuccessResponse({'return': ret})

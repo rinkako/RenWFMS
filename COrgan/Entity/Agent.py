@@ -38,4 +38,15 @@ class Agent(Worker):
         self.Location = location
         self.Type = reentrantType
 
-
+    def ToJsonDict(self):
+        """
+        Get json dict.
+        :return:
+        """
+        return {
+            'GlobalId': self.GlobalId,
+            'Note': self.Note,
+            'Name': self.Name,
+            'Location': self.Location,
+            'Type': self.Type
+        }

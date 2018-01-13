@@ -22,3 +22,15 @@ class Capability(Organizable):
         :param note: note of this group
         """
         Organizable.__init__(self, "", name, description, note)
+
+    def ToJsonDict(self):
+        """
+        Get json dict.
+        :return:
+        """
+        return {
+            'GlobalId': self.GlobalId,
+            'Name': self.Name,
+            'Description': self.Description,
+            'Note': self.Note
+        }

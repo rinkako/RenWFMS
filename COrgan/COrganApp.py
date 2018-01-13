@@ -938,6 +938,9 @@ def performLogin():
 
 @app.route('/performLogout/', methods=["GET", "POST"])
 def performLogout():
+    """
+    Perform logout action.
+    """
     return redirect(url_for('Login'))
 
 

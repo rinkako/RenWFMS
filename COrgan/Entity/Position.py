@@ -25,3 +25,16 @@ class Position(Organizable):
         Organizable.__init__(self, "", name, description, note)
         self.BelongToGroup = belongTo
         self.ReportToPosition = reportTo
+
+    def ToJsonDict(self):
+        """
+        Get json dict.
+        """
+        return {
+            'GlobalId': self.GlobalId,
+            'Name': self.Name,
+            'Description': self.Description,
+            'Note': self.Note,
+            'BelongToGroupId': self.BelongToGroup,
+            'ReportToPosition': self.ReportToPosition
+        }

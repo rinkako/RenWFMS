@@ -25,3 +25,16 @@ class Human(Worker):
         self.PersonId = humanId
         self.FirstName = fName
         self.LastName = lName
+
+    def ToJsonDict(self):
+        """
+        Get json dict.
+        :return:
+        """
+        return {
+            'GlobalId': self.GlobalId,
+            'Note': self.Note,
+            'PersonId': self.PersonId,
+            'FirstName': self.FirstName,
+            'LastName': self.LastName
+        }
