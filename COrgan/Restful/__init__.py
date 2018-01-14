@@ -11,10 +11,7 @@ all RESTful APIs are defined here.
 from flask import Blueprint, request
 from CGateway import CGateway
 
-restfulBp = Blueprint('Restful', __name__,
-                      template_folder='templates',
-                      static_folder='static',
-                      url_prefix='/api')
+restfulBp = Blueprint('Restful', __name__, url_prefix='/api')
 
 
 """
