@@ -1,22 +1,10 @@
 ﻿{% extends "luminouslayout.html" %}
 
 {% block LHeader %}
-    <!-- DATE RANGE PICKER -->
-	<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='js/bootstrap-daterangepicker/daterangepicker-bs3.css') }}" />
 	<!-- TYPEAHEAD -->
 	<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='js/typeahead/typeahead.css') }}" />
-	<!-- FILE UPLOAD -->
-	<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='js/bootstrap-fileupload/bootstrap-fileupload.min.css') }}" />
 	<!-- SELECT2 -->
 	<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='js/select2/select2.min.css') }}" />
-	<!-- UNIFORM -->
-	<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='js/uniform/css/uniform.default.min.css') }}" />
-	<!-- JQUERY UPLOAD -->
-	<!-- blueimp Gallery styles -->
-	<link rel="stylesheet" href="{{ url_for('static', filename='js/blueimp/gallery/blueimp-gallery.min.css') }}">
-	<!-- CSS to style the file input field as button and adjust the Bootstrap progress bars -->
-	<link rel="stylesheet" href="{{ url_for('static', filename='js/jquery-upload/css/jquery.fileupload.css') }}">
-	<link rel="stylesheet" href="{{ url_for('static', filename='js/jquery-upload/css/jquery.fileupload-ui.css') }}">
 {% endblock %}
 
 {% block LBody %}
@@ -122,8 +110,6 @@
 	<script type="text/javascript" src="{{ url_for('static', filename='js/autosize/jquery.autosize.min.js') }}"></script>
 	<!-- COUNTABLE -->
 	<script type="text/javascript" src="{{ url_for('static', filename='js/countable/jquery.simplyCountable.min.js') }}"></script>
-	<!-- INPUT MASK -->
-	<script type="text/javascript" src="{{ url_for('static', filename='js/bootstrap-inputmask/bootstrap-inputmask.min.js') }}"></script>
 	<!-- SELECT2 -->
 	<script type="text/javascript" src="{{ url_for('static', filename='js/select2/select2.min.js') }}"></script>
 

@@ -9,19 +9,9 @@
     <meta name="author" content="">
     <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/cloud-admin.css') }}" >
     <link rel="stylesheet" type="text/css"  href="{{ url_for('static', filename='css/themes/default.css') }}" id="skin-switcher" >
-    <!-- <link rel="stylesheet" type="text/css"  href="{{ url_for('static', filename='css/responsive.css') }}" >
-    <!-- STYLESHEETS --><!--[if lt IE 9]><!-- <script src="{{ url_for('static', filename='js/flot/excanvas.min.js') }}"></script><script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script><script src="http://css3-mediaqueries-js.googlecode.com/svn/trunk/css3-mediaqueries.js"></script><![endif]-->
     <link href="{{ url_for('static', filename='font-awesome-4.7.0/css/font-awesome.min.css') }}" rel="stylesheet">
     <!-- ANIMATE -->
     <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/animatecss/animate.min.css') }}" />
-    <!-- DATE RANGE PICKER -->
-    <!-- <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='js/bootstrap-daterangepicker/daterangepicker-bs3.css') }}" />
-    <!-- TODO -->
-    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='js/jquery-todo/css/styles.css') }}" />
-    <!-- FULL CALENDAR -->
-    <!-- <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='js/fullcalendar/fullcalendar.min.css') }}" />
-    <!-- GRITTER -->
-    <!-- <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='js/gritter/css/jquery.gritter.css') }}" />
     {% block LHeader %}
     {% endblock %}
     <!-- FONTS -->
@@ -75,8 +65,6 @@
         <!-- END TOP NAVIGATION MENU -->
     </div>
 </header>
-<!--/HEADER -->
-<div class="copyrights">Ren Project 2018</div>
 <!-- PAGE -->
 <section id="page">
     <!-- SIDEBAR -->
@@ -191,42 +179,10 @@
 <!-- Placed at the end of the document so the pages load faster -->
 <!-- JQUERY -->
 <script src="{{ url_for('static', filename='js/jquery/jquery-2.0.3.min.js') }}"></script>
-<!-- JQUERY UI-->
-<!-- <script src="{{ url_for('static', filename='js/jquery-ui-1.10.3.custom/js/jquery-ui-1.10.3.custom.min.js') }}"></script>
 <!-- BOOTSTRAP -->
 <script src="{{ url_for('static', filename='bootstrap-dist/js/bootstrap.min.js') }}"></script>
-<!-- DATE RANGE PICKER -->
-<!-- <script src="{{ url_for('static', filename='js/bootstrap-daterangepicker/moment.min.js') }}"></script>
-<!-- <script src="{{ url_for('static', filename='js/bootstrap-daterangepicker/daterangepicker.min.js') }}"></script>
-<!-- SLIMSCROLL -->
-<!-- <script type="text/javascript" src="{{ url_for('static', filename='js/jQuery-slimScroll-1.3.0/jquery.slimscroll.min.js') }}"></script>
-<!-- SLIMSCROLL -->
-<!-- <script type="text/javascript" src="{{ url_for('static', filename='js/jQuery-slimScroll-1.3.0/jquery.slimscroll.min.js') }}"></script><script type="text/javascript" src="{{ url_for('static', filename='js/jQuery-slimScroll-1.3.0/slimScrollHorizontal.min.js') }}"></script>
-<!-- BLOCK UI -->
-<script type="text/javascript" src="{{ url_for('static', filename='js/jQuery-BlockUI/jquery.blockUI.min.js') }}"></script>
-<!-- SPARKLINES -->
-<!-- <script type="text/javascript" src="{{ url_for('static', filename='js/sparklines/jquery.sparkline.min.js') }}"></script>
-<!-- EASY PIE CHART -->
-<!-- <script src="{{ url_for('static', filename='js/jquery-easing/jquery.easing.min.js') }}"></script>
-<!-- <script type="text/javascript" src="{{ url_for('static', filename='js/easypiechart/jquery.easypiechart.min.js') }}"></script>
-<!-- FLOT CHARTS -->
-<!-- <script src="{{ url_for('static', filename='js/flot/jquery.flot.min.js') }}"></script>
-<!-- <script src="{{ url_for('static', filename='js/flot/jquery.flot.time.min.js') }}"></script>
-<!-- <script src="{{ url_for('static', filename='js/flot/jquery.flot.selection.min.js') }}"></script>
-<!-- <script src="{{ url_for('static', filename='js/flot/jquery.flot.resize.min.js') }}"></script>
-<!-- <script src="{{ url_for('static', filename='js/flot/jquery.flot.pie.min.js') }}"></script>
-<!-- <script src="{{ url_for('static', filename='js/flot/jquery.flot.stack.min.js') }}"></script>
-<!-- <script src="{{ url_for('static', filename='js/flot/jquery.flot.crosshair.min.js') }}"></script>
-<!-- TODO -->
-<!-- <script type="text/javascript" src="{{ url_for('static', filename='js/jquery-todo/js/paddystodolist.js') }}"></script>
-<!-- TIMEAGO -->
-<!-- <script type="text/javascript" src="{{ url_for('static', filename='js/timeago/jquery.timeago.min.js') }}"></script>
-<!-- FULL CALENDAR -->
-<!-- <script type="text/javascript" src="{{ url_for('static', filename='js/fullcalendar/fullcalendar.min.js') }}"></script>
 <!-- COOKIE -->
 <script type="text/javascript" src="{{ url_for('static', filename='js/jQuery-Cookie/jquery.cookie.min.js') }}"></script>
-<!-- GRITTER -->
-<!-- <script type="text/javascript" src="{{ url_for('static', filename='js/gritter/js/jquery.gritter.min.js') }}"></script>
 <!-- CUSTOM SCRIPT -->
 <script src="{{ url_for('static', filename='js/script.js') }}"></script>
 {% block LScript %}

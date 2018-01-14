@@ -127,7 +127,6 @@ coverage.xml
 *.pot
 
 # Django stuff:
-*.log
 .static_storage/
 .media/
 local_settings.py
@@ -180,9 +179,7 @@ venv.bak/
 .mypy_cache/
 
 .idea/dataSources.local.xml
-.idea/workspace.xml
 COrgan/GlobalConfigContext.pyc
-COrgan/static/
 ModelChecker/target/classes/org/
 ModelChecker/target/generated-sources/
 RenResourceService/.DS_Store
