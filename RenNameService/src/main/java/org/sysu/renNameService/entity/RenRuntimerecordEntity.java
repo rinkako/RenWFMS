@@ -1,11 +1,11 @@
-package org.sysu.renNameService.Entity;
+package org.sysu.renNameService.entity;
 
 import javax.persistence.*;
 import java.sql.Timestamp;
 import java.util.Objects;
 
 @Entity
-@Table(name = "ren_runtimerecord", schema = "rennameservice", catalog = "")
+@Table(name = "ren_runtimerecord", schema = "rennameservice")
 public class RenRuntimerecordEntity {
     private String rtid;
     private String processId;

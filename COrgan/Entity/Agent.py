@@ -22,7 +22,7 @@ class AgentType:
 
 class Agent(Worker):
     """
-    Entity class for `agent` data package.
+    entity class for `agent` data package.
     """
 
     def __init__(self, name, location, note, reentrantType=AgentType.Reentrant):

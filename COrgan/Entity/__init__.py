@@ -5,6 +5,6 @@
 @author : Rinkako
 @time   : 2017/12/26
 
-COrgan Entity Package
+COrgan entity Package
 This package contains modules of the organization entity class.
 """

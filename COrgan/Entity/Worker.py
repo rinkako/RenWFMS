@@ -10,7 +10,7 @@ from abc import ABCMeta
 
 class Worker:
     """
-    Entity class for worker, which is the basic data package
+    entity class for worker, which is the basic data package
     for intelligent resource like Human or Agent.
     """
     __metaclass__ = ABCMeta

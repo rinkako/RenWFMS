@@ -9,7 +9,7 @@
 
 class CSession:
     """
-    COrgan Platform Connection Session Entity
+    COrgan Platform Connection Session entity
 
     The class is used to save the state of a connection between
     gateway and services invoker.

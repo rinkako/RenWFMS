@@ -10,7 +10,7 @@ from Entity.Organizable import Organizable
 
 class Group(Organizable):
     """
-    Entity class for `group` data package.
+    entity class for `group` data package.
     Group is a set of workers in some types.
     """
 

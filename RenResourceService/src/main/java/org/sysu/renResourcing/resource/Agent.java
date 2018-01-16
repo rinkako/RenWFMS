@@ -9,7 +9,7 @@ import java.util.ArrayList;
  */
 public class Agent extends RResource {
     /**
-     * Construct a new Human Entity.
+     * Construct a new Human entity.
      */
     public Agent() {
         this.Role = new ArrayList<>();

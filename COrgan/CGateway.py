@@ -39,7 +39,7 @@ class CGateway:
     @staticmethod
     def _DumpEntityHandler(obj):
         """
-        Handle how to dump a Luminous Entity into JSON serializable object.
+        Handle how to dump a Luminous entity into JSON serializable object.
         :param obj: entity object
         :return: JSON serializable object
         """

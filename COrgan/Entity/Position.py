@@ -10,7 +10,7 @@ from Entity.Organizable import Organizable
 
 class Position(Organizable):
     """
-    Entity class for `position` data package.
+    entity class for `position` data package.
     Position means a worker in what place of a department.
     """
 

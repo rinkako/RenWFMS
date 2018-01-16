@@ -3,7 +3,7 @@ package org.sysu.renResourcing.entity;
 /**
  * Author: Rinkako
  * Date  : 2017/11/14
- * Usage : Session Entity for Token split item storing
+ * Usage : Session entity for Token split item storing
  */
 public class RSession extends RIdentifier {
     public String Username;

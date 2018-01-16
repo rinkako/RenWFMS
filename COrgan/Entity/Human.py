@@ -10,7 +10,7 @@ from Entity.Worker import Worker
 
 class Human(Worker):
     """
-    Entity class for `human` data package.
+    entity class for `human` data package.
     """
 
     def __init__(self, humanId, fName, lName, note):

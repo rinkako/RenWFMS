@@ -10,7 +10,7 @@ from abc import ABCMeta
 
 class Organizable:
     """
-    Entity class for organizable group, which is the basic data
+    entity class for organizable group, which is the basic data
     package for intelligent resource like Team, Department, etc.
     """
     __metaclass__ = ABCMeta

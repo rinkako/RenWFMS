@@ -10,7 +10,7 @@ from Entity.Organizable import Organizable
 
 class Capability(Organizable):
     """
-    Entity class for `capability` data package.
+    entity class for `capability` data package.
     Group is a set of workers having a specific capability.
     """
 
