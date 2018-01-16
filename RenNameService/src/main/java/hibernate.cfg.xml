@@ -6,13 +6,12 @@
     <session-factory>
         <property name="connection.url">jdbc:mysql://localhost:3306/rennameservice</property>
         <property name="connection.driver_class">com.mysql.jdbc.Driver</property>
-        <property name="connection.username">root</property>
-        <property name="connection.password">43420024</property>
         <property name="current_session_context_class">thread</property>
         <property name="hibernate.show_sql">true</property>
         <property name="hibernate.format_sql">true</property>
         <property name="hbm2ddl.auto">update</property>
         <property name="hibernate.dialect">org.hibernate.dialect.MySQLDialect</property>
         <mapping class="org.sysu.renNameService.entity.RenRuntimerecordEntity"/>
+        <mapping class="org.sysu.renNameService.entity.RenRolemapEntity"/>
     </session-factory>
 </hibernate-configuration>
