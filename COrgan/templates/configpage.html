@@ -47,6 +47,10 @@
                             <div class="box-body big">
                                 <form id="addUserForm" role="form" method="post" onsubmit="return check()" action="{{ url_for('performUpdateConfig') }}">
                                     <div class="form-group">
+                                        <label for="tOrgId">组织的全局唯一ID：</label>
+                                        <input name="f_orgid" type="text" class="form-control" id="tOrgId" value="{{ my_orgid }}" disabled>
+                                    </div>
+                                    <div class="form-group">
                                         <label for="tOrgan">组织名(*)：</label>
                                         <input name="f_organ" type="text" class="form-control" id="tOrgan" value="{{ my_organ }}">
                                     </div>

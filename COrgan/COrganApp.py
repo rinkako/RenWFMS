@@ -896,13 +896,15 @@ def configManagement():
     flag1, organ = core.GetOrganizationName(session['SID'])
     flag2, notifier = core.GetUpdateNotifyRouter(session['SID'])
     flag3, dataversion = core.GetCurrentDataVersion(session['SID'])
-    if (flag1 & flag2 & flag3) is False:
+    flag4, oid = core.GetOrganizationId(session['SID'])
+    if (flag1 & flag2 & flag3 & flag4) is False:
         return redirect(url_for('AccessErrorPage', dt='x'))
     t = {'L_PageTitle': u'设置',
          'L_PageDescription': u'管理COrgan的配置设置',
          'my_organ': organ,
          'my_notifier': notifier,
          'my_dataversion': dataversion,
+         'my_orgid': oid
          }
     return render_template('configpage.html', **t)
 

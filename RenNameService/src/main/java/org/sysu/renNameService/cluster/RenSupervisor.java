@@ -10,4 +10,6 @@ public class RenSupervisor {
 
     private String supervisorToken;
 
+    private String nameServiceId;
+
 }

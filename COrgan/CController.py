@@ -107,6 +107,10 @@ class CController:
         CController._userModel.Initialize()
         CController._logModel.Initialize()
         CController._configModel.Initialize()
+        # First run time init
+        if CController._configModel.Retrieve(GCC.CONFIG_ORGANIZATION_ID_KEY) is None:
+            import uuid
+            CController._configModel.AddOrUpdate(GCC.CONFIG_ORGANIZATION_ID_KEY, "COrg_%s" % uuid.uuid1())
 
     """
     Authorization Methods 
@@ -1099,6 +1103,15 @@ class CController:
         :return: execution state tuple
         """
         return True, CController._configModel.Retrieve(GCC.CONFIG_DATA_VERSION_KEY)
+
+    @authorizeRequireWarp
+    def GetOrganizationId(self, session):
+        """
+        Get the global id of this organization.
+        :param session: session id
+        :return: execution state tuple
+        """
+        return True, CController._configModel.Retrieve(GCC.CONFIG_ORGANIZATION_ID_KEY)
 
     """
     Support Methods

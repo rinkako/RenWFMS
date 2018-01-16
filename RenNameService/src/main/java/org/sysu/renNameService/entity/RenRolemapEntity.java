@@ -4,11 +4,12 @@ import javax.persistence.*;
 import java.util.Objects;
 
 @Entity
-@Table(name = "ren_rolemap", schema = "rennameservice", catalog = "")
+@Table(name = "ren_rolemap", schema = "rennameservice")
 public class RenRolemapEntity {
     private String mapId;
     private String rtid;
     private String broleName;
+    private String corganGid;
     private String mappedGid;
     private String dataVersion;
     private int transactionIsolation;
@@ -41,6 +42,16 @@ public class RenRolemapEntity {
 
     public void setBroleName(String broleName) {
         this.broleName = broleName;
+    }
+
+    @Basic
+    @Column(name = "corgan_gid", nullable = false, length = 64)
+    public String getCorganGid() {
+        return corganGid;
+    }
+
+    public void setCorganGid(String corganGid) {
+        this.corganGid = corganGid;
     }
 
     @Basic
