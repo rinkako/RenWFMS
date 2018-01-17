@@ -13,5 +13,6 @@
         <property name="hibernate.dialect">org.hibernate.dialect.MySQLDialect</property>
         <mapping class="org.sysu.renNameService.entity.RenRuntimerecordEntity"/>
         <mapping class="org.sysu.renNameService.entity.RenRolemapEntity"/>
+        <mapping class="org.sysu.renNameService.entity.RenRolemapArchivedEntity"/>
     </session-factory>
 </hibernate-configuration>
