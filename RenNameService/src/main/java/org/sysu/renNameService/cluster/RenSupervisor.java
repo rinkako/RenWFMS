@@ -5,7 +5,7 @@ import java.util.Date;
 /**
  * RenSupervisor
  */
-public class RenSupervisor {
+final class RenSupervisor {
     private Date lastUpdateTimestamp;
 
     private String supervisorToken;

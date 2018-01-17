@@ -7,7 +7,7 @@ import java.util.Date;
  * All requests sent to Name service engine will be packaged
  * by this class instance before being processed.
  */
-public class NameServiceTransaction {
+public final class NameServiceTransaction {
     /**
      * Transaction unique id.
      */
@@ -17,6 +17,11 @@ public class NameServiceTransaction {
      * Transaction type.
      */
     private TransactionType type;
+
+    /**
+     * Transaction request invoker global id.
+     */
+    private String requestInvoker;
 
     /**
      * Transaction create timestamp.
@@ -73,5 +78,13 @@ public class NameServiceTransaction {
 
     public void setEntityContext(Object entityContext) {
         this.entityContext = entityContext;
+    }
+
+    public String getRequestInvoker() {
+        return requestInvoker;
+    }
+
+    public void setRequestInvoker(String requestInvoker) {
+        this.requestInvoker = requestInvoker;
     }
 }
