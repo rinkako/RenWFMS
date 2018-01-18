@@ -9,7 +9,7 @@ package org.sysu.renNameService.utility;
  * Date  : 2018/1/18
  * Usage : Static methods for name service logging.
  */
-final class LogUtil {
+public final class LogUtil {
     /**
      * @param msg
      * @param label

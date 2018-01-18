@@ -2,21 +2,10 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="388c6061-8899-47cb-8152-3b3371cb9ca0" name="Default" comment="">
-      <change beforePath="" afterPath="$PROJECT_DIR$/RenNameService/src/main/java/org/sysu/renNameService/utility/LogUtil.java" />
-      <change beforePath="" afterPath="$PROJECT_DIR$/RenNameService/src/main/java/org/sysu/renNameService/utility/TimestampUtil.java" />
-      <change beforePath="$PROJECT_DIR$/.idea/dictionaries/Rinkako.xml" afterPath="$PROJECT_DIR$/.idea/dictionaries/Rinkako.xml" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/RenNameService/src/main/java/org/sysu/renNameService/utility/HibernateUtil.java" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change beforePath="$PROJECT_DIR$/RenNameService/src/main/java/org/sysu/renNameService/GlobalConfigContext.java" afterPath="$PROJECT_DIR$/RenNameService/src/main/java/org/sysu/renNameService/GlobalConfigContext.java" />
-      <change beforePath="$PROJECT_DIR$/RenNameService/src/main/java/org/sysu/renNameService/RenNameServiceApp.java" afterPath="$PROJECT_DIR$/RenNameService/src/main/java/org/sysu/renNameService/RenNameServiceApp.java" />
-      <change beforePath="$PROJECT_DIR$/RenNameService/src/main/java/org/sysu/renNameService/cluster/RenSupervisor.java" afterPath="$PROJECT_DIR$/RenNameService/src/main/java/org/sysu/renNameService/cluster/RenSupervisor.java" />
-      <change beforePath="$PROJECT_DIR$/RenNameService/src/main/java/org/sysu/renNameService/roleMapping/CachedRoleMap.java" afterPath="$PROJECT_DIR$/RenNameService/src/main/java/org/sysu/renNameService/roleMapping/CachedRoleMap.java" />
-      <change beforePath="$PROJECT_DIR$/RenNameService/src/main/java/org/sysu/renNameService/roleMapping/RoleMapCachePool.java" afterPath="$PROJECT_DIR$/RenNameService/src/main/java/org/sysu/renNameService/roleMapping/RoleMapCachePool.java" />
       <change beforePath="$PROJECT_DIR$/RenNameService/src/main/java/org/sysu/renNameService/roleMapping/RoleMappingController.java" afterPath="$PROJECT_DIR$/RenNameService/src/main/java/org/sysu/renNameService/roleMapping/RoleMappingController.java" />
-      <change beforePath="$PROJECT_DIR$/RenNameService/src/main/java/org/sysu/renNameService/transaction/NTIsolationType.java" afterPath="$PROJECT_DIR$/RenNameService/src/main/java/org/sysu/renNameService/transaction/NTIsolationType.java" />
-      <change beforePath="$PROJECT_DIR$/RenNameService/src/main/java/org/sysu/renNameService/transaction/NTIsolationTypeConstants.java" afterPath="$PROJECT_DIR$/RenNameService/src/main/java/org/sysu/renNameService/transaction/NTIsolationTypeConstants.java" />
-      <change beforePath="$PROJECT_DIR$/RenNameService/src/main/java/org/sysu/renNameService/transaction/NameServiceTransaction.java" afterPath="$PROJECT_DIR$/RenNameService/src/main/java/org/sysu/renNameService/transaction/NameServiceTransaction.java" />
-      <change beforePath="$PROJECT_DIR$/RenNameService/src/main/java/org/sysu/renNameService/transaction/TransactionType.java" afterPath="$PROJECT_DIR$/RenNameService/src/main/java/org/sysu/renNameService/transaction/TransactionType.java" />
-      <change beforePath="$PROJECT_DIR$/RenNameService/src/main/java/org/sysu/renNameService/transaction/TransactionTypeConstants.java" afterPath="$PROJECT_DIR$/RenNameService/src/main/java/org/sysu/renNameService/transaction/TransactionTypeConstants.java" />
+      <change beforePath="$PROJECT_DIR$/RenNameService/src/main/java/org/sysu/renNameService/utility/LogUtil.java" afterPath="$PROJECT_DIR$/RenNameService/src/main/java/org/sysu/renNameService/utility/LogUtil.java" />
     </list>
     <ignored path="/output/" />
     <ignored path="$PROJECT_DIR$/ModelChecker/target/" />
@@ -56,7 +45,58 @@
     <favorites_list name="RenWFMS" />
   </component>
   <component name="FileEditorManager">
-    <leaf SIDE_TABS_SIZE_LIMIT_KEY="450" />
+    <leaf SIDE_TABS_SIZE_LIMIT_KEY="450">
+      <file leaf-file-name="RoleMappingController.java" pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/RenNameService/src/main/java/org/sysu/renNameService/roleMapping/RoleMappingController.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="495">
+              <caret line="72" column="31" lean-forward="true" selection-start-line="72" selection-start-column="31" selection-end-line="72" selection-end-column="31" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="HibernateUtil.java" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/RenNameService/src/main/java/org/sysu/renNameService/utility/HibernateUtil.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="374">
+              <caret line="17" column="7" lean-forward="false" selection-start-line="17" selection-start-column="7" selection-end-line="17" selection-end-column="7" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="LogUtil.java" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/RenNameService/src/main/java/org/sysu/renNameService/utility/LogUtil.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="242">
+              <caret line="11" column="7" lean-forward="false" selection-start-line="11" selection-start-column="7" selection-end-line="11" selection-end-column="7" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="TimestampUtil.java" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/RenNameService/src/main/java/org/sysu/renNameService/utility/TimestampUtil.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="286">
+              <caret line="13" column="13" lean-forward="false" selection-start-line="13" selection-start-column="13" selection-end-line="13" selection-end-column="13" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="RoleMapCachePool.java" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/RenNameService/src/main/java/org/sysu/renNameService/roleMapping/RoleMapCachePool.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="957">
+              <caret line="52" column="26" lean-forward="false" selection-start-line="52" selection-start-column="26" selection-end-line="52" selection-end-column="26" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+    </leaf>
   </component>
   <component name="FileTemplateManagerImpl">
     <option name="RECENT_TEMPLATES">
@@ -108,7 +148,6 @@
   <component name="IdeDocumentHistory">
     <option name="CHANGED_PATHS">
       <list>
-        <option value="$PROJECT_DIR$/COrgan/templates/usermanagement_edit.html" />
         <option value="$PROJECT_DIR$/COrgan/static/js/script.js" />
         <option value="$PROJECT_DIR$/COrgan/templates/login.html" />
         <option value="$PROJECT_DIR$/COrgan/templates/luminouslayout.html" />
@@ -146,19 +185,20 @@
         <option value="$PROJECT_DIR$/RenNameService/src/main/java/org/sysu/renNameService/transaction/NTIsolationType2.java" />
         <option value="$PROJECT_DIR$/RenNameService/src/main/java/org/sysu/renNameService/roleMapping/BusinessRoleMap.java" />
         <option value="$PROJECT_DIR$/RenResourceService/src/main/java/org/sysu/renResourcing/util/ett.java" />
-        <option value="$PROJECT_DIR$/RenNameService/src/main/java/org/sysu/renNameService/utility/LogUtil.java" />
         <option value="$PROJECT_DIR$/RenNameService/src/main/java/org/sysu/renNameService/utility/TimestampUtil.java" />
         <option value="$PROJECT_DIR$/RenNameService/src/main/java/org/sysu/renNameService/transaction/TransactionTypeConstants.java" />
         <option value="$PROJECT_DIR$/RenNameService/src/main/java/org/sysu/renNameService/transaction/NTIsolationTypeConstants.java" />
         <option value="$PROJECT_DIR$/RenNameService/src/main/java/org/sysu/renNameService/transaction/TransactionType.java" />
         <option value="$PROJECT_DIR$/RenNameService/src/main/java/org/sysu/renNameService/transaction/NTIsolationType.java" />
         <option value="$PROJECT_DIR$/RenNameService/src/main/java/org/sysu/renNameService/transaction/NameServiceTransaction.java" />
-        <option value="$PROJECT_DIR$/RenNameService/src/main/java/org/sysu/renNameService/roleMapping/RoleMappingController.java" />
         <option value="$PROJECT_DIR$/RenNameService/src/main/java/org/sysu/renNameService/roleMapping/RoleMapCachePool.java" />
         <option value="$PROJECT_DIR$/RenNameService/src/main/java/org/sysu/renNameService/roleMapping/CachedRoleMap.java" />
         <option value="$PROJECT_DIR$/RenNameService/src/main/java/org/sysu/renNameService/cluster/RenSupervisor.java" />
         <option value="$PROJECT_DIR$/RenNameService/src/main/java/org/sysu/renNameService/GlobalConfigContext.java" />
         <option value="$PROJECT_DIR$/RenNameService/src/main/java/org/sysu/renNameService/RenNameServiceApp.java" />
+        <option value="$PROJECT_DIR$/RenNameService/src/main/java/org/sysu/renNameService/utility/HibernateUtil.java" />
+        <option value="$PROJECT_DIR$/RenNameService/src/main/java/org/sysu/renNameService/utility/LogUtil.java" />
+        <option value="$PROJECT_DIR$/RenNameService/src/main/java/org/sysu/renNameService/roleMapping/RoleMappingController.java" />
       </list>
     </option>
   </component>
@@ -184,7 +224,7 @@
   </component>
   <component name="ProjectFrameBounds" extendedState="6">
     <option name="x" value="-7" />
-    <option name="width" value="1144" />
+    <option name="width" value="1057" />
     <option name="height" value="1047" />
   </component>
   <component name="ProjectInspectionProfilesVisibleTreeState">
@@ -295,6 +335,16 @@
               <item name="main" type="462c0819:PsiDirectoryNode" />
               <item name="java" type="462c0819:PsiDirectoryNode" />
               <item name="renNameService" type="462c0819:PsiDirectoryNode" />
+              <item name="entity" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="RenWFMS" type="b2602c69:ProjectViewProjectNode" />
+              <item name="RenWFMS" type="462c0819:PsiDirectoryNode" />
+              <item name="RenNameService" type="462c0819:PsiDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
+              <item name="main" type="462c0819:PsiDirectoryNode" />
+              <item name="java" type="462c0819:PsiDirectoryNode" />
+              <item name="renNameService" type="462c0819:PsiDirectoryNode" />
               <item name="roleMapping" type="462c0819:PsiDirectoryNode" />
             </path>
             <path>
@@ -316,6 +366,21 @@
               <item name="java" type="462c0819:PsiDirectoryNode" />
               <item name="renNameService" type="462c0819:PsiDirectoryNode" />
               <item name="utility" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="RenWFMS" type="b2602c69:ProjectViewProjectNode" />
+              <item name="RenWFMS" type="462c0819:PsiDirectoryNode" />
+              <item name="RenNameService" type="462c0819:PsiDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
+              <item name="test" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="RenWFMS" type="b2602c69:ProjectViewProjectNode" />
+              <item name="RenWFMS" type="462c0819:PsiDirectoryNode" />
+              <item name="RenNameService" type="462c0819:PsiDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
+              <item name="test" type="462c0819:PsiDirectoryNode" />
+              <item name="java" type="462c0819:PsiDirectoryNode" />
             </path>
           </expand>
           <select />
@@ -669,7 +734,7 @@
       <workItem from="1516100450235" duration="13222000" />
       <workItem from="1516158882403" duration="24783000" />
       <workItem from="1516205949398" duration="786000" />
-      <workItem from="1516245803598" duration="11366000" />
+      <workItem from="1516245803598" duration="23582000" />
     </task>
     <task id="LOCAL-00001" summary="position views">
       <created>1515663926015</created>
@@ -818,7 +883,14 @@
       <option name="project" value="LOCAL" />
       <updated>1516179774100</updated>
     </task>
-    <option name="localTasksCounter" value="22" />
+    <task id="LOCAL-00022" summary="NS header">
+      <created>1516261982538</created>
+      <option name="number" value="00022" />
+      <option name="presentableId" value="LOCAL-00022" />
+      <option name="project" value="LOCAL" />
+      <updated>1516261982538</updated>
+    </task>
+    <option name="localTasksCounter" value="23" />
     <servers />
   </component>
   <component name="TestHistory">
@@ -854,7 +926,7 @@
     </history-entry>
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="174020000" />
+    <option name="totallyTimeSpent" value="186236000" />
   </component>
   <component name="TodoView">
     <todo-panel id="selected-file">
@@ -867,6 +939,7 @@
   </component>
   <component name="ToolWindowManager">
     <frame x="-8" y="-8" width="1936" height="1056" extended-state="6" />
+    <editor active="true" />
     <layout>
       <window_info id="Palette" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.18933624" sideWeight="0.50416666" order="7" side_tool="true" content_ui="tabs" />
@@ -888,7 +961,7 @@
       <window_info id="Spring" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.3297062" sideWeight="0.5" order="9" side_tool="false" content_ui="tabs" />
       <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.3297062" sideWeight="0.5" order="11" side_tool="false" content_ui="tabs" />
       <window_info id="Persistence" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.11140725" sideWeight="0.42981502" order="10" side_tool="true" content_ui="tabs" x="818" y="240" width="305" height="942" />
-      <window_info id="Project" active="true" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.1652452" sideWeight="0.72687703" order="0" side_tool="false" content_ui="tabs" x="844" y="49" width="231" height="942" />
+      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.1652452" sideWeight="0.72687703" order="0" side_tool="false" content_ui="tabs" x="844" y="49" width="231" height="942" />
       <window_info id="Bean Validation" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="false" weight="0.32995737" sideWeight="0.4961915" order="6" side_tool="false" content_ui="tabs" />
       <window_info id="Web" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="false" weight="0.12313433" sideWeight="0.5125136" order="5" side_tool="true" content_ui="tabs" />
       <window_info id="SciView" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32995737" sideWeight="0.49183896" order="7" side_tool="false" content_ui="tabs" />
@@ -966,7 +1039,8 @@
     <MESSAGE value="COrgan GID for name service" />
     <MESSAGE value="Name service transaction prepare" />
     <MESSAGE value="role map cache" />
-    <option name="LAST_COMMIT_MESSAGE" value="role map cache" />
+    <MESSAGE value="NS header" />
+    <option name="LAST_COMMIT_MESSAGE" value="NS header" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -1010,64 +1084,6 @@
     <option name="FILTER_TARGETS" value="false" />
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/RenNameService/target/classes/org/sysu/renNameService/RenNameServiceApp.class">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="0">
-          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/BOEngine/src/main/java/org/sysu/workflow/env/AbstractSCXMLListener.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-115">
-          <caret line="15" column="22" lean-forward="false" selection-start-line="15" selection-start-column="22" selection-end-line="15" selection-end-column="22" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/BOEngine/pom.xml">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="726">
-          <caret line="33" column="0" lean-forward="false" selection-start-line="33" selection-start-column="0" selection-end-line="132" selection-end-column="19" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/RenNameService/pom.xml">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="88">
-          <caret line="7" column="16" lean-forward="false" selection-start-line="7" selection-start-column="16" selection-end-line="7" selection-end-column="16" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/ModelChecker/pom.xml">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="198">
-          <caret line="9" column="0" lean-forward="false" selection-start-line="9" selection-start-column="0" selection-end-line="20" selection-end-column="12" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="jar://$MAVEN_REPOSITORY$/junit/junit/4.11/junit-4.11-sources.jar!/org/junit/internal/runners/model/ReflectiveCallable.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="242">
-          <caret line="11" column="0" lean-forward="false" selection-start-line="11" selection-start-column="0" selection-end-line="11" selection-end-column="0" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="jar://$MAVEN_REPOSITORY$/junit/junit/4.11/junit-4.11-sources.jar!/org/junit/internal/runners/statements/InvokeMethod.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="352">
-          <caret line="16" column="0" lean-forward="false" selection-start-line="16" selection-start-column="0" selection-end-line="16" selection-end-column="0" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="jar://$MAVEN_REPOSITORY$/junit/junit/4.11/junit-4.11-sources.jar!/org/junit/internal/runners/statements/RunBefores.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="572">
-          <caret line="26" column="0" lean-forward="false" selection-start-line="26" selection-start-column="0" selection-end-line="26" selection-end-column="0" />
-        </state>
-      </provider>
-    </entry>
     <entry file="jar://$MAVEN_REPOSITORY$/junit/junit/4.11/junit-4.11-sources.jar!/org/junit/runners/BlockJUnit4ClassRunner.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="224">
@@ -1114,14 +1130,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="481">
           <caret line="168" column="34" lean-forward="false" selection-start-line="168" selection-start-column="34" selection-end-line="168" selection-end-column="34" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/RenNameService/src/test/java/RuntimeRecordTest.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="825">
-          <caret line="56" column="20" lean-forward="false" selection-start-line="56" selection-start-column="20" selection-end-line="56" selection-end-column="20" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -1311,14 +1319,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/RenNameService/src/main/java/org/sysu/renNameService/utility/LogUtil.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="110">
-          <caret line="5" column="0" lean-forward="true" selection-start-line="5" selection-start-column="0" selection-end-line="5" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/RenNameService/src/main/java/org/sysu/renNameService/transaction/NTIsolationTypeConstants.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="110">
@@ -1359,30 +1359,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/RenNameService/src/main/java/org/sysu/renNameService/roleMapping/RoleMappingController.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="198">
-          <caret line="9" column="20" lean-forward="false" selection-start-line="9" selection-start-column="20" selection-end-line="9" selection-end-column="20" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/RenNameService/src/main/java/org/sysu/renNameService/roleMapping/RoleMapCachePool.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="154">
-          <caret line="7" column="0" lean-forward="false" selection-start-line="7" selection-start-column="0" selection-end-line="12" selection-end-column="3" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/RenNameService/src/main/java/org/sysu/renNameService/roleMapping/CachedRoleMap.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="176">
-          <caret line="8" column="0" lean-forward="false" selection-start-line="8" selection-start-column="0" selection-end-line="12" selection-end-column="3" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/RenNameService/src/main/java/org/sysu/renNameService/cluster/RenSupervisor.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="396">
@@ -1399,18 +1375,122 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/RenNameService/src/main/java/org/sysu/renNameService/utility/TimestampUtil.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="154">
-          <caret line="7" column="0" lean-forward="true" selection-start-line="7" selection-start-column="0" selection-end-line="12" selection-end-column="3" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/RenNameService/src/main/java/org/sysu/renNameService/RenNameServiceApp.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="330">
           <caret line="15" column="1" lean-forward="true" selection-start-line="15" selection-start-column="1" selection-end-line="15" selection-end-column="1" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/RenNameService/src/main/java/org/sysu/renNameService/roleMapping/CachedRoleMap.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="374">
+          <caret line="17" column="22" lean-forward="false" selection-start-line="17" selection-start-column="22" selection-end-line="17" selection-end-column="22" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/RenNameService/src/test/java/RuntimeRecordTest.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="825">
+          <caret line="56" column="20" lean-forward="false" selection-start-line="56" selection-start-column="20" selection-end-line="56" selection-end-column="20" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="jar://C:/Program Files (x86)/Java/jdk1.8.0_144/src.zip!/java/lang/String.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="495">
+          <caret line="110" column="19" lean-forward="false" selection-start-line="110" selection-start-column="19" selection-end-line="110" selection-end-column="19" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="jar://$MAVEN_REPOSITORY$/org/hibernate/hibernate-core/4.3.6.Final/hibernate-core-4.3.6.Final.jar!/org/hibernate/Session.class">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="1326">
+          <caret line="184" column="27" lean-forward="false" selection-start-line="184" selection-start-column="26" selection-end-line="184" selection-end-column="27" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/RenNameService/src/main/java/org/sysu/renNameService/roleMapping/RoleMapCachePool.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="957">
+          <caret line="52" column="26" lean-forward="false" selection-start-line="52" selection-start-column="26" selection-end-line="52" selection-end-column="26" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/RenNameService/src/main/java/org/sysu/renNameService/utility/HibernateUtil.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="374">
+          <caret line="17" column="7" lean-forward="false" selection-start-line="17" selection-start-column="7" selection-end-line="17" selection-end-column="7" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/RenNameService/src/main/java/org/sysu/renNameService/utility/LogUtil.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="242">
+          <caret line="11" column="7" lean-forward="false" selection-start-line="11" selection-start-column="7" selection-end-line="11" selection-end-column="7" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/RenNameService/src/main/java/org/sysu/renNameService/utility/TimestampUtil.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="286">
+          <caret line="13" column="13" lean-forward="false" selection-start-line="13" selection-start-column="13" selection-end-line="13" selection-end-column="13" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="jar://$MAVEN_REPOSITORY$/org/hibernate/hibernate-core/4.3.6.Final/hibernate-core-4.3.6.Final.jar!/org/hibernate/Transaction.class">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="321">
+          <caret line="15" column="9" lean-forward="false" selection-start-line="15" selection-start-column="9" selection-end-line="15" selection-end-column="9" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="jar://$MAVEN_REPOSITORY$/org/hibernate/hibernate-core/4.3.6.Final/hibernate-core-4.3.6.Final.jar!/org/hibernate/engine/transaction/spi/AbstractTransactionImpl.class">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="280">
+          <caret line="33" column="28" lean-forward="false" selection-start-line="33" selection-start-column="28" selection-end-line="33" selection-end-column="28" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="jar://$MAVEN_REPOSITORY$/org/hibernate/hibernate-core/4.3.6.Final/hibernate-core-4.3.6.Final.jar!/org/hibernate/engine/transaction/internal/jdbc/JdbcTransaction.class">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="341">
+          <caret line="75" column="38" lean-forward="false" selection-start-line="75" selection-start-column="38" selection-end-line="75" selection-end-column="38" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="jar://$MAVEN_REPOSITORY$/mysql/mysql-connector-java/5.1.37/mysql-connector-java-5.1.37.jar!/com/mysql/jdbc/ConnectionImpl.class">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="99">
+          <caret line="1025" column="16" lean-forward="false" selection-start-line="1025" selection-start-column="16" selection-end-line="1025" selection-end-column="16" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="jar://C:/Program Files (x86)/Java/jdk1.8.0_144/src.zip!/java/sql/Connection.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="297">
+          <caret line="248" column="9" lean-forward="false" selection-start-line="248" selection-start-column="9" selection-end-line="248" selection-end-column="9" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/RenNameService/src/main/java/org/sysu/renNameService/roleMapping/RoleMappingController.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="495">
+          <caret line="72" column="31" lean-forward="true" selection-start-line="72" selection-start-column="31" selection-end-line="72" selection-end-column="31" />
           <folding />
         </state>
       </provider>

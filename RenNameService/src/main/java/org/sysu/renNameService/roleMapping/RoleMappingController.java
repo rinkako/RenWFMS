@@ -3,6 +3,12 @@
  * Rinkako, Arianna, Gordan. SYSU SDCS.
  */
 package org.sysu.renNameService.roleMapping;
+import org.hibernate.Session;
+import org.hibernate.Transaction;
+import org.sysu.renNameService.entity.RenRolemapEntity;
+import org.sysu.renNameService.utility.HibernateUtil;
+import org.sysu.renNameService.utility.LogUtil;
+
 import java.util.ArrayList;
 
 /**
@@ -11,7 +17,6 @@ import java.util.ArrayList;
  * Usage : All business role map service will be handled in this controller.
  */
 public final class RoleMappingController {
-
     // For Resource Service
 
     /**
@@ -50,7 +55,23 @@ public final class RoleMappingController {
      * @param rtid process rtid
      */
     public static void FinishRoleMapService(String rtid) {
-
+        // remove cache
+        RoleMapCachePool.Remove(rtid);
+        // remove relations in steady memory
+        Session session = HibernateUtil.OpenSession();
+        Transaction transaction = session.beginTransaction();
+        try {
+            // todo
+            transaction.commit();
+        }
+        catch (Exception ex) {
+            LogUtil.Log("When finish role map service, exception occured, " + ex.toString() + ", service rollback",
+                    RoleMappingController.class.getName(), LogUtil.LogLevelType.ERROR);
+            transaction.rollback();
+        }
+        finally {
+            HibernateUtil.CloseSession(session);
+        }
     }
 
     // For Master Control Panel
