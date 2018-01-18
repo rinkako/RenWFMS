@@ -1,9 +1,14 @@
+/*
+ * Project Ren @ 2018
+ * Rinkako, Arianna, Gordan. SYSU SDCS.
+ */
 package org.sysu.renNameService.cluster;
-
 import java.util.Date;
 
 /**
- * RenSupervisor
+ * Author: Rinkako
+ * Date  : 2018/1/15
+ * Usage :
  */
 final class RenSupervisor {
     private Date lastUpdateTimestamp;

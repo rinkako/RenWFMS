@@ -1,11 +1,15 @@
+/*
+ * Project Ren @ 2018
+ * Rinkako, Arianna, Gordan. SYSU SDCS.
+ */
 package org.sysu.renNameService.roleMapping;
-
 import java.util.Hashtable;
 
 /**
- * Business Role Mapping Cache Pool
- * This class is a static class for caching the role maps of running processes.
- * Only mapping transaction using `RepeatableRead` isolation type will be stored.
+ * Author: Rinkako
+ * Date  : 2018/1/16
+ * Usage : This class is a static class for caching the role maps of running processes.
+ *         Only mapping transaction using `RepeatableRead` isolation type will be stored.
  */
 final class RoleMapCachePool {
     /**

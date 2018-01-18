@@ -1,11 +1,15 @@
+/*
+ * Project Ren @ 2018
+ * Rinkako, Arianna, Gordan. SYSU SDCS.
+ */
 package org.sysu.renNameService.transaction;
-
 import java.util.Date;
 
 /**
- * Transaction data package
- * All requests sent to Name service engine will be packaged
- * by this class instance before being processed.
+ * Author: Rinkako
+ * Date  : 2018/1/17
+ * Usage : All requests sent to Name service engine will be packaged
+ *         by this class instance before being processed.
  */
 public final class NameServiceTransaction {
     /**

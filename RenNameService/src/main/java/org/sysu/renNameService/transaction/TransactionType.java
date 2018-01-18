@@ -1,7 +1,13 @@
+/*
+ * Project Ren @ 2018
+ * Rinkako, Arianna, Gordan. SYSU SDCS.
+ */
 package org.sysu.renNameService.transaction;
 
 /**
- * Enum: Name service transaction level
+ * Author: Rinkako
+ * Date  : 2018/1/17
+ * Usage : Enum of name service transaction level
  */
 enum TransactionType {
     Namespacing, BusinessRoleMapping
