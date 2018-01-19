@@ -1,7 +1,11 @@
 package org.sysu.renNameService.restful.controller;
 
+import org.hibernate.Session;
+import org.hibernate.SessionFactory;
+import org.hibernate.Transaction;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+import org.sysu.renNameService.entity.RenRolemapEntity;
 import org.sysu.renNameService.repository.RenRuntimerecordRepository;
 import org.sysu.renNameService.restful.dto.ReturnElement;
 import org.sysu.renNameService.restful.dto.ReturnModel;
@@ -47,6 +51,9 @@ public class RoleMappingController {
         rnModel.setReturnElement(returnElement);
         return rnModel;
     }
+
+    @Autowired
+    private SessionFactory sessionFactory;
 
     /**
      *

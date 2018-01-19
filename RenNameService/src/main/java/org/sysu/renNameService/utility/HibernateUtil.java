@@ -8,6 +8,9 @@ import org.hibernate.SessionFactory;
 import org.hibernate.cfg.Configuration;
 import org.hibernate.boot.registry.StandardServiceRegistry;
 import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
+import org.springframework.beans.factory.annotation.Autowired;
+
+import javax.persistence.EntityManagerFactory;
 
 /**
  * Author: Rinkako
@@ -15,15 +18,19 @@ import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
  * Usage : Common methods for hibernate.
  */
 public class HibernateUtil {
+
+    @Autowired
     private static SessionFactory sessionFactory;
     private static ThreadLocal session = new ThreadLocal();
 
+    /*
     static {
         Configuration config = new Configuration().configure();
         StandardServiceRegistryBuilder sb = new StandardServiceRegistryBuilder().applySettings(config.getProperties());
         StandardServiceRegistry ssr = sb.build();
         HibernateUtil.sessionFactory = config.buildSessionFactory(ssr);
     }
+    */
 
     /**
      * Get session factory, SessionFactory is thread safe.
