@@ -1,13 +1,17 @@
-package org.sysu.renResourcing.controller;
+package org.sysu.renResourcing.restful.controller;
 
 import org.springframework.web.bind.annotation.*;
-import org.sysu.renResourcing.dto.ReturnElement;
-import org.sysu.renResourcing.dto.ReturnModel;
-import org.sysu.renResourcing.dto.StatusCode;
+import org.sysu.renResourcing.restful.dto.DTOUtil;
+import org.sysu.renResourcing.restful.dto.ReturnElement;
+import org.sysu.renResourcing.restful.dto.ReturnModel;
+import org.sysu.renResourcing.restful.dto.StatusCode;
 import org.sysu.renResourcing.util.TimestampUtil;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /**
- * Author: gd
+ * Author: Gordan
  * Date  : 2017/12/14
  * Usage : Handle requests about workitem.
  */
@@ -42,13 +46,20 @@ public class WorkitemController {
      * @param token
      * @return
      */
-    @RequestMapping(value = "/getlist", produces = { "application/json", "application/xml"},
-            method = RequestMethod.POST)
+    @PostMapping(value = "/getlist", produces = { "application/json", "application/xml"})
     @ResponseBody
-    public ReturnModel GetWorkitemList(@RequestParam(value="token")String token) {
+    public ReturnModel GetWorkitemList(@RequestParam(value="token", required = false)String token) {
         ReturnModel rnModel = new ReturnModel();
 
         try {
+            // miss params
+            List<String> missingParams = new ArrayList<>();
+            if (token == null) missingParams.add("token");
+            if (missingParams.size() > 0) {
+                rnModel = DTOUtil.HandleMissingParameters(missingParams);
+                return rnModel;
+            }
+
             if (CheckToken()) {
                 rnModel.setCode(StatusCode.OK);
                 rnModel.setRs(TimestampUtil.GetTimeStamp() + " 0");
@@ -73,14 +84,22 @@ public class WorkitemController {
      * @param id
      * @return
      */
-    @RequestMapping(value = "/get", produces = { "application/json", "application/xml"},
-            method = RequestMethod.POST)
+    @PostMapping(value = "/get", produces = { "application/json", "application/xml"})
     @ResponseBody
-    public ReturnModel GetWorkitem(@RequestParam(value="token")String token,
-                              @RequestParam(value="id")String id) {
+    public ReturnModel GetWorkitem(@RequestParam(value="token", required = false)String token,
+                                   @RequestParam(value="id", required = false)String id) {
         ReturnModel rnModel = new ReturnModel();
 
         try {
+            // miss params
+            List<String> missingParams = new ArrayList<>();
+            if (token == null) missingParams.add("token");
+            if (id == null) missingParams.add("id");
+            if (missingParams.size() > 0) {
+                rnModel = DTOUtil.HandleMissingParameters(missingParams);
+                return rnModel;
+            }
+
             if (CheckToken()) {
                 rnModel.setCode(StatusCode.OK);
                 rnModel.setRs(TimestampUtil.GetTimeStamp() + " 0");
@@ -105,14 +124,22 @@ public class WorkitemController {
      * @param id
      * @return
      */
-    @RequestMapping(value = "/set", produces = { "application/json", "application/xml"},
-            method = RequestMethod.POST)
+    @PostMapping(value = "/set", produces = { "application/json", "application/xml"})
     @ResponseBody
-    public ReturnModel SetWorkitem(@RequestParam(value="token")String token,
-                              @RequestParam(value="id")String id) {
+    public ReturnModel SetWorkitem(@RequestParam(value="token", required = false)String token,
+                                   @RequestParam(value="id", required = false)String id) {
         ReturnModel rnModel = new ReturnModel();
 
         try {
+            // miss params
+            List<String> missingParams = new ArrayList<>();
+            if (token == null) missingParams.add("token");
+            if (id == null) missingParams.add("id");
+            if (missingParams.size() > 0) {
+                rnModel = DTOUtil.HandleMissingParameters(missingParams);
+                return rnModel;
+            }
+
             if (CheckToken()) {
                 rnModel.setCode(StatusCode.OK);
                 rnModel.setRs(TimestampUtil.GetTimeStamp() + " 0");
@@ -137,14 +164,22 @@ public class WorkitemController {
      * @param id
      * @return
      */
-    @RequestMapping(value = "/start", produces = { "application/json", "application/xml"},
-            method = RequestMethod.POST)
+    @PostMapping(value = "/start", produces = { "application/json", "application/xml"})
     @ResponseBody
-    public ReturnModel StartWorkitem(@RequestParam(value="token")String token,
-                              @RequestParam(value="id")String id) {
+    public ReturnModel StartWorkitem(@RequestParam(value="token", required = false)String token,
+                                     @RequestParam(value="id", required = false)String id) {
         ReturnModel rnModel = new ReturnModel();
 
         try {
+            // miss params
+            List<String> missingParams = new ArrayList<>();
+            if (token == null) missingParams.add("token");
+            if (id == null) missingParams.add("id");
+            if (missingParams.size() > 0) {
+                rnModel = DTOUtil.HandleMissingParameters(missingParams);
+                return rnModel;
+            }
+
             if (CheckToken()) {
                 rnModel.setCode(StatusCode.OK);
                 rnModel.setRs(TimestampUtil.GetTimeStamp() + " 0");
@@ -169,14 +204,22 @@ public class WorkitemController {
      * @param id
      * @return
      */
-    @RequestMapping(value = "/restart", produces = { "application/json", "application/xml"},
-            method = RequestMethod.POST)
+    @PostMapping(value = "/restart", produces = { "application/json", "application/xml"})
     @ResponseBody
-    public ReturnModel RestartWorkitem(@RequestParam(value="token")String token,
-                              @RequestParam(value="id")String id) {
+    public ReturnModel RestartWorkitem(@RequestParam(value="token", required = false)String token,
+                                       @RequestParam(value="id", required = false)String id) {
         ReturnModel rnModel = new ReturnModel();
 
         try {
+            // miss params
+            List<String> missingParams = new ArrayList<>();
+            if (token == null) missingParams.add("token");
+            if (id == null) missingParams.add("id");
+            if (missingParams.size() > 0) {
+                rnModel = DTOUtil.HandleMissingParameters(missingParams);
+                return rnModel;
+            }
+
             if (CheckToken()) {
                 rnModel.setCode(StatusCode.OK);
                 rnModel.setRs(TimestampUtil.GetTimeStamp() + " 0");
@@ -201,14 +244,22 @@ public class WorkitemController {
      * @param id
      * @return
      */
-    @RequestMapping(value = "/complete", produces = { "application/json", "application/xml"},
-            method = RequestMethod.POST)
+    @PostMapping(value = "/complete", produces = { "application/json", "application/xml"})
     @ResponseBody
-    public ReturnModel CompleteWorkitem(@RequestParam(value="token")String token,
-                              @RequestParam(value="id")String id) {
+    public ReturnModel CompleteWorkitem(@RequestParam(value="token", required = false)String token,
+                                        @RequestParam(value="id", required = false)String id) {
         ReturnModel rnModel = new ReturnModel();
 
         try {
+            // miss params
+            List<String> missingParams = new ArrayList<>();
+            if (token == null) missingParams.add("token");
+            if (id == null) missingParams.add("id");
+            if (missingParams.size() > 0) {
+                rnModel = DTOUtil.HandleMissingParameters(missingParams);
+                return rnModel;
+            }
+
             if (CheckToken()) {
                 rnModel.setCode(StatusCode.OK);
                 rnModel.setRs(TimestampUtil.GetTimeStamp() + " 0");
@@ -233,14 +284,22 @@ public class WorkitemController {
      * @param id
      * @return
      */
-    @RequestMapping(value = "/accept", produces = { "application/json", "application/xml"},
-            method = RequestMethod.POST)
+    @PostMapping(value = "/accept", produces = { "application/json", "application/xml"})
     @ResponseBody
-    public ReturnModel AcceptWorkitem(@RequestParam(value="token")String token,
-                              @RequestParam(value="id")String id) {
+    public ReturnModel AcceptWorkitem(@RequestParam(value="token", required = false)String token,
+                                      @RequestParam(value="id", required = false)String id) {
         ReturnModel rnModel = new ReturnModel();
 
         try {
+            // miss params
+            List<String> missingParams = new ArrayList<>();
+            if (token == null) missingParams.add("token");
+            if (id == null) missingParams.add("id");
+            if (missingParams.size() > 0) {
+                rnModel = DTOUtil.HandleMissingParameters(missingParams);
+                return rnModel;
+            }
+
             if (CheckToken()) {
                 rnModel.setCode(StatusCode.OK);
                 rnModel.setRs(TimestampUtil.GetTimeStamp() + " 0");
@@ -265,14 +324,22 @@ public class WorkitemController {
      * @param id
      * @return
      */
-    @RequestMapping(value = "/allocate", produces = { "application/json", "application/xml"},
-            method = RequestMethod.POST)
+    @PostMapping(value = "/allocate", produces = { "application/json", "application/xml"})
     @ResponseBody
-    public ReturnModel AllocateWorkitem(@RequestParam(value="token")String token,
-                              @RequestParam(value="id")String id) {
+    public ReturnModel AllocateWorkitem(@RequestParam(value="token", required = false)String token,
+                                        @RequestParam(value="id", required = false)String id) {
         ReturnModel rnModel = new ReturnModel();
 
         try {
+            // miss params
+            List<String> missingParams = new ArrayList<>();
+            if (token == null) missingParams.add("token");
+            if (id == null) missingParams.add("id");
+            if (missingParams.size() > 0) {
+                rnModel = DTOUtil.HandleMissingParameters(missingParams);
+                return rnModel;
+            }
+
             if (CheckToken()) {
                 rnModel.setCode(StatusCode.OK);
                 rnModel.setRs(TimestampUtil.GetTimeStamp() + " 0");
@@ -297,14 +364,22 @@ public class WorkitemController {
      * @param id
      * @return
      */
-    @RequestMapping(value = "/deallocate", produces = { "application/json", "application/xml"},
-            method = RequestMethod.POST)
+    @PostMapping(value = "/deallocate", produces = { "application/json", "application/xml"})
     @ResponseBody
-    public ReturnModel DeallocateWorktem(@RequestParam(value="token")String token,
-                              @RequestParam(value="id")String id) {
+    public ReturnModel DeallocateWorktem(@RequestParam(value="token", required = false)String token,
+                                         @RequestParam(value="id", required = false)String id) {
         ReturnModel rnModel = new ReturnModel();
 
         try {
+            // miss params
+            List<String> missingParams = new ArrayList<>();
+            if (token == null) missingParams.add("token");
+            if (id == null) missingParams.add("id");
+            if (missingParams.size() > 0) {
+                rnModel = DTOUtil.HandleMissingParameters(missingParams);
+                return rnModel;
+            }
+
             if (CheckToken()) {
                 rnModel.setCode(StatusCode.OK);
                 rnModel.setRs(TimestampUtil.GetTimeStamp() + " 0");
@@ -329,14 +404,22 @@ public class WorkitemController {
      * @param id
      * @return
      */
-    @RequestMapping(value = "/skip", produces = { "application/json", "application/xml"},
-            method = RequestMethod.POST)
+    @PostMapping(value = "/skip", produces = { "application/json", "application/xml"})
     @ResponseBody
-    public ReturnModel SkipWorkitem(@RequestParam(value="token")String token,
-                              @RequestParam(value="id")String id) {
+    public ReturnModel SkipWorkitem(@RequestParam(value="token", required = false)String token,
+                                    @RequestParam(value="id", required = false)String id) {
         ReturnModel rnModel = new ReturnModel();
 
         try {
+            // miss params
+            List<String> missingParams = new ArrayList<>();
+            if (token == null) missingParams.add("token");
+            if (id == null) missingParams.add("id");
+            if (missingParams.size() > 0) {
+                rnModel = DTOUtil.HandleMissingParameters(missingParams);
+                return rnModel;
+            }
+
             if (CheckToken()) {
                 rnModel.setCode(StatusCode.OK);
                 rnModel.setRs(TimestampUtil.GetTimeStamp() + " 0");
@@ -361,14 +444,22 @@ public class WorkitemController {
      * @param id
      * @return
      */
-    @RequestMapping(value = "/suspend", produces = { "application/json", "application/xml"},
-            method = RequestMethod.POST)
+    @PostMapping(value = "/suspend", produces = { "application/json", "application/xml"})
     @ResponseBody
-    public ReturnModel SuspendWorkitem(@RequestParam(value="token")String token,
-                              @RequestParam(value="id")String id) {
+    public ReturnModel SuspendWorkitem(@RequestParam(value="token", required = false)String token,
+                                       @RequestParam(value="id", required = false)String id) {
         ReturnModel rnModel = new ReturnModel();
 
         try {
+            // miss params
+            List<String> missingParams = new ArrayList<>();
+            if (token == null) missingParams.add("token");
+            if (id == null) missingParams.add("id");
+            if (missingParams.size() > 0) {
+                rnModel = DTOUtil.HandleMissingParameters(missingParams);
+                return rnModel;
+            }
+
             if (CheckToken()) {
                 rnModel.setCode(StatusCode.OK);
                 rnModel.setRs(TimestampUtil.GetTimeStamp() + " 0");
@@ -393,14 +484,22 @@ public class WorkitemController {
      * @param id
      * @return
      */
-    @RequestMapping(value = "/unsuspend", produces = { "application/json", "application/xml"},
-            method = RequestMethod.POST)
+    @PostMapping(value = "/unsuspend", produces = { "application/json", "application/xml"})
     @ResponseBody
-    public ReturnModel UnsuspendWorkitem(@RequestParam(value="token")String token,
-                              @RequestParam(value="id")String id) {
+    public ReturnModel UnsuspendWorkitem(@RequestParam(value="token", required = false)String token,
+                                         @RequestParam(value="id", required = false)String id) {
         ReturnModel rnModel = new ReturnModel();
 
         try {
+            // miss params
+            List<String> missingParams = new ArrayList<>();
+            if (token == null) missingParams.add("token");
+            if (id == null) missingParams.add("id");
+            if (missingParams.size() > 0) {
+                rnModel = DTOUtil.HandleMissingParameters(missingParams);
+                return rnModel;
+            }
+
             if (CheckToken()) {
                 rnModel.setCode(StatusCode.OK);
                 rnModel.setRs(TimestampUtil.GetTimeStamp() + " 0");
@@ -425,14 +524,22 @@ public class WorkitemController {
      * @param id
      * @return
      */
-    @RequestMapping(value = "/offer", produces = { "application/json", "application/xml"},
-            method = RequestMethod.POST)
+    @PostMapping(value = "/offer", produces = { "application/json", "application/xml"})
     @ResponseBody
-    public ReturnModel OfferWorkitem(@RequestParam(value="token")String token,
-                              @RequestParam(value="id")String id) {
+    public ReturnModel OfferWorkitem(@RequestParam(value="token", required = false)String token,
+                                     @RequestParam(value="id", required = false)String id) {
         ReturnModel rnModel = new ReturnModel();
 
         try {
+            // miss params
+            List<String> missingParams = new ArrayList<>();
+            if (token == null) missingParams.add("token");
+            if (id == null) missingParams.add("id");
+            if (missingParams.size() > 0) {
+                rnModel = DTOUtil.HandleMissingParameters(missingParams);
+                return rnModel;
+            }
+
             if (CheckToken()) {
                 rnModel.setCode(StatusCode.OK);
                 rnModel.setRs(TimestampUtil.GetTimeStamp() + " 0");
@@ -457,14 +564,22 @@ public class WorkitemController {
      * @param id
      * @return
      */
-    @RequestMapping(value = "/unoffer", produces = { "application/json", "application/xml"},
-            method = RequestMethod.POST)
+    @PostMapping(value = "/unoffer", produces = { "application/json", "application/xml"})
     @ResponseBody
-    public ReturnModel UnofferWorkitem(@RequestParam(value="token")String token,
-                              @RequestParam(value="id")String id) {
+    public ReturnModel UnofferWorkitem(@RequestParam(value="token", required = false)String token,
+                                       @RequestParam(value="id", required = false)String id) {
         ReturnModel rnModel = new ReturnModel();
 
         try {
+            // miss params
+            List<String> missingParams = new ArrayList<>();
+            if (token == null) missingParams.add("token");
+            if (id == null) missingParams.add("id");
+            if (missingParams.size() > 0) {
+                rnModel = DTOUtil.HandleMissingParameters(missingParams);
+                return rnModel;
+            }
+
             if (CheckToken()) {
                 rnModel.setCode(StatusCode.OK);
                 rnModel.setRs(TimestampUtil.GetTimeStamp() + " 0");

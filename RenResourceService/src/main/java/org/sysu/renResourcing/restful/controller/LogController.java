@@ -1,13 +1,17 @@
-package org.sysu.renResourcing.controller;
+package org.sysu.renResourcing.restful.controller;
 
 import org.springframework.web.bind.annotation.*;
-import org.sysu.renResourcing.dto.ReturnElement;
-import org.sysu.renResourcing.dto.ReturnModel;
-import org.sysu.renResourcing.dto.StatusCode;
+import org.sysu.renResourcing.restful.dto.DTOUtil;
+import org.sysu.renResourcing.restful.dto.ReturnElement;
+import org.sysu.renResourcing.restful.dto.ReturnModel;
+import org.sysu.renResourcing.restful.dto.StatusCode;
 import org.sysu.renResourcing.util.TimestampUtil;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /**
- * Author: gd
+ * Author: Gordan
  * Date  : 2017/12/14
  * Usage : Handle requests about log.
  */
@@ -43,14 +47,22 @@ public class LogController {
      * @param filter
      * @return
      */
-    @RequestMapping(value = "/get", produces = { "application/json", "application/xml"},
-            method = RequestMethod.POST)
+    @PostMapping(value = "/get", produces = { "application/json", "application/xml"})
     @ResponseBody
-    public ReturnModel GetLog(@RequestParam(value="token")String token,
-                               @RequestParam(value="filter")String filter) {
+    public ReturnModel GetLog(@RequestParam(value="token", required = false)String token,
+                              @RequestParam(value="filter", required = false)String filter) {
         ReturnModel rnModel = new ReturnModel();
 
         try {
+            // miss params
+            List<String> missingParams = new ArrayList<>();
+            if (token == null) missingParams.add("token");
+            if (filter == null) missingParams.add("filter");
+            if (missingParams.size() > 0) {
+                rnModel = DTOUtil.HandleMissingParameters(missingParams);
+                return rnModel;
+            }
+
             if (CheckToken()) {
                 rnModel.setCode(StatusCode.OK);
                 rnModel.setRs(TimestampUtil.GetTimeStamp() + " 0");
@@ -77,16 +89,26 @@ public class LogController {
      * @param timestamp
      * @return
      */
-    @RequestMapping(value = "/add", produces = { "application/json", "application/xml"},
-            method = RequestMethod.POST)
+    @PostMapping(value = "/add", produces = { "application/json", "application/xml"})
     @ResponseBody
-    public ReturnModel AddLog(@RequestParam(value="token")String token,
-                              @RequestParam(value="type")String type,
-                              @RequestParam(value="event")String event,
-                              @RequestParam(value="timestamp")String timestamp) {
+    public ReturnModel AddLog(@RequestParam(value="token", required = false)String token,
+                              @RequestParam(value="type", required = false)String type,
+                              @RequestParam(value="event", required = false)String event,
+                              @RequestParam(value="timestamp", required = false)String timestamp) {
         ReturnModel rnModel = new ReturnModel();
 
         try {
+            // miss params
+            List<String> missingParams = new ArrayList<>();
+            if (token == null) missingParams.add("token");
+            if (type == null) missingParams.add("type");
+            if (event == null) missingParams.add("event");
+            if (timestamp == null) missingParams.add("timestamp");
+            if (missingParams.size() > 0) {
+                rnModel = DTOUtil.HandleMissingParameters(missingParams);
+                return rnModel;
+            }
+
             if (CheckToken()) {
                 rnModel.setCode(StatusCode.OK);
                 rnModel.setRs(TimestampUtil.GetTimeStamp() + " 0");
@@ -111,14 +133,22 @@ public class LogController {
      * @param id
      * @return
      */
-    @RequestMapping(value = "/remove", produces = { "application/json", "application/xml"},
-            method = RequestMethod.POST)
+    @PostMapping(value = "/remove", produces = { "application/json", "application/xml"})
     @ResponseBody
-    public ReturnModel RemoveLog(@RequestParam(value="token")String token,
-                               @RequestParam(value="id")String id) {
+    public ReturnModel RemoveLog(@RequestParam(value="token", required = false)String token,
+                                 @RequestParam(value="id", required = false)String id) {
         ReturnModel rnModel = new ReturnModel();
 
         try {
+            // miss params
+            List<String> missingParams = new ArrayList<>();
+            if (token == null) missingParams.add("token");
+            if (id == null) missingParams.add("id");
+            if (missingParams.size() > 0) {
+                rnModel = DTOUtil.HandleMissingParameters(missingParams);
+                return rnModel;
+            }
+
             if (CheckToken()) {
                 rnModel.setCode(StatusCode.OK);
                 rnModel.setRs(TimestampUtil.GetTimeStamp() + " 0");
@@ -143,14 +173,22 @@ public class LogController {
      * @param filter
      * @return
      */
-    @RequestMapping(value = "/getworkitem", produces = { "application/json", "application/xml"},
-            method = RequestMethod.POST)
+    @PostMapping(value = "/getworkitem", produces = { "application/json", "application/xml"})
     @ResponseBody
-    public ReturnModel GetWorkitemLog(@RequestParam(value="token")String token,
-                               @RequestParam(value="filter")String filter) {
+    public ReturnModel GetWorkitemLog(@RequestParam(value="token", required = false)String token,
+                                      @RequestParam(value="filter", required = false)String filter) {
         ReturnModel rnModel = new ReturnModel();
 
         try {
+            // miss params
+            List<String> missingParams = new ArrayList<>();
+            if (token == null) missingParams.add("token");
+            if (filter == null) missingParams.add("filter");
+            if (missingParams.size() > 0) {
+                rnModel = DTOUtil.HandleMissingParameters(missingParams);
+                return rnModel;
+            }
+
             if (CheckToken()) {
                 rnModel.setCode(StatusCode.OK);
                 rnModel.setRs(TimestampUtil.GetTimeStamp() + " 0");
@@ -175,14 +213,22 @@ public class LogController {
      * @param filter
      * @return
      */
-    @RequestMapping(value = "/getengine", produces = { "application/json", "application/xml"},
-            method = RequestMethod.POST)
+    @PostMapping(value = "/getengine", produces = { "application/json", "application/xml"})
     @ResponseBody
-    public ReturnModel GetEngineLog(@RequestParam(value="token")String token,
-                               @RequestParam(value="filter")String filter) {
+    public ReturnModel GetEngineLog(@RequestParam(value="token", required = false)String token,
+                                    @RequestParam(value="filter", required = false)String filter) {
         ReturnModel rnModel = new ReturnModel();
 
         try {
+            // miss params
+            List<String> missingParams = new ArrayList<>();
+            if (token == null) missingParams.add("token");
+            if (filter == null) missingParams.add("filter");
+            if (missingParams.size() > 0) {
+                rnModel = DTOUtil.HandleMissingParameters(missingParams);
+                return rnModel;
+            }
+
             if (CheckToken()) {
                 rnModel.setCode(StatusCode.OK);
                 rnModel.setRs(TimestampUtil.GetTimeStamp() + " 0");
@@ -207,14 +253,22 @@ public class LogController {
      * @param id
      * @return
      */
-    @RequestMapping(value = "/getresource", produces = { "application/json", "application/xml"},
-            method = RequestMethod.POST)
+    @PostMapping(value = "/getresource", produces = { "application/json", "application/xml"})
     @ResponseBody
-    public ReturnModel GetResourceLog(@RequestParam(value="token")String token,
-                               @RequestParam(value="id")String id) {
+    public ReturnModel GetResourceLog(@RequestParam(value="token", required = false)String token,
+                                      @RequestParam(value="id", required = false)String id) {
         ReturnModel rnModel = new ReturnModel();
 
         try {
+            // miss params
+            List<String> missingParams = new ArrayList<>();
+            if (token == null) missingParams.add("token");
+            if (id == null) missingParams.add("id");
+            if (missingParams.size() > 0) {
+                rnModel = DTOUtil.HandleMissingParameters(missingParams);
+                return rnModel;
+            }
+
             if (CheckToken()) {
                 rnModel.setCode(StatusCode.OK);
                 rnModel.setRs(TimestampUtil.GetTimeStamp() + " 0");
@@ -239,14 +293,22 @@ public class LogController {
      * @param rsid
      * @return
      */
-    @RequestMapping(value = "/getscheduling", produces = { "application/json", "application/xml"},
-            method = RequestMethod.POST)
+    @PostMapping(value = "/getscheduling", produces = { "application/json", "application/xml"})
     @ResponseBody
-    public ReturnModel GetSchedulingLog(@RequestParam(value="token")String token,
-                               @RequestParam(value="rsid")String rsid) {
+    public ReturnModel GetSchedulingLog(@RequestParam(value="token", required = false)String token,
+                                        @RequestParam(value="rsid", required = false)String rsid) {
         ReturnModel rnModel = new ReturnModel();
 
         try {
+            // miss params
+            List<String> missingParams = new ArrayList<>();
+            if (token == null) missingParams.add("token");
+            if (rsid == null) missingParams.add("rsid");
+            if (missingParams.size() > 0) {
+                rnModel = DTOUtil.HandleMissingParameters(missingParams);
+                return rnModel;
+            }
+
             if (CheckToken()) {
                 rnModel.setCode(StatusCode.OK);
                 rnModel.setRs(TimestampUtil.GetTimeStamp() + " 0");
@@ -270,13 +332,20 @@ public class LogController {
      * @param token
      * @return
      */
-    @RequestMapping(value = "/flush", produces = { "application/json", "application/xml"},
-            method = RequestMethod.POST)
+    @PostMapping(value = "/flush", produces = { "application/json", "application/xml"})
     @ResponseBody
-    public ReturnModel FlushLog(@RequestParam(value="token")String token) {
+    public ReturnModel FlushLog(@RequestParam(value="token", required = false)String token) {
         ReturnModel rnModel = new ReturnModel();
 
         try {
+            // miss params
+            List<String> missingParams = new ArrayList<>();
+            if (token == null) missingParams.add("token");
+            if (missingParams.size() > 0) {
+                rnModel = DTOUtil.HandleMissingParameters(missingParams);
+                return rnModel;
+            }
+
             if (CheckToken()) {
                 rnModel.setCode(StatusCode.OK);
                 rnModel.setRs(TimestampUtil.GetTimeStamp() + " 0");
@@ -300,13 +369,20 @@ public class LogController {
      * @param token
      * @return
      */
-    @RequestMapping(value = "/sync", produces = { "application/json", "application/xml"},
-            method = RequestMethod.POST)
+    @PostMapping(value = "/sync", produces = { "application/json", "application/xml"})
     @ResponseBody
-    public ReturnModel SyncLog(@RequestParam(value="token")String token) {
+    public ReturnModel SyncLog(@RequestParam(value="token", required = false)String token) {
         ReturnModel rnModel = new ReturnModel();
 
         try {
+            // miss params
+            List<String> missingParams = new ArrayList<>();
+            if (token == null) missingParams.add("token");
+            if (missingParams.size() > 0) {
+                rnModel = DTOUtil.HandleMissingParameters(missingParams);
+                return rnModel;
+            }
+
             if (CheckToken()) {
                 rnModel.setCode(StatusCode.OK);
                 rnModel.setRs(TimestampUtil.GetTimeStamp() + " 0");

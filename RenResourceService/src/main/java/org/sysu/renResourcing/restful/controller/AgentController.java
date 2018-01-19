@@ -1,13 +1,18 @@
-package org.sysu.renResourcing.controller;
+package org.sysu.renResourcing.restful.controller;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
-import org.sysu.renResourcing.dto.ReturnElement;
-import org.sysu.renResourcing.dto.ReturnModel;
-import org.sysu.renResourcing.dto.StatusCode;
+import org.sysu.renResourcing.restful.dto.DTOUtil;
+import org.sysu.renResourcing.restful.dto.ReturnElement;
+import org.sysu.renResourcing.restful.dto.ReturnModel;
+import org.sysu.renResourcing.restful.dto.StatusCode;
 import org.sysu.renResourcing.util.TimestampUtil;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /**
- * Author: gd
+ * Author: Gordan
  * Date  : 2017/12/14
  * Usage : Handle requests about agent resource management.
  */
@@ -44,14 +49,23 @@ public class AgentController {
      * @param id
      * @return
      */
-    @RequestMapping(value = "/get", produces = { "application/json", "application/xml"},
-            method = RequestMethod.POST)
+    @PostMapping(value = "/get", produces = { "application/json", "application/xml"})
     @ResponseBody
-    public ReturnModel GetAgent(@RequestParam(value="token")String token,
-                                @RequestParam(value="id")String id) {
+    public ReturnModel GetAgent(@RequestParam(value="token", required = false)String token,
+                                @RequestParam(value="id", required = false)String id) {
         ReturnModel rnModel = new ReturnModel();
 
+
         try {
+            // miss params
+            List<String> missingParams = new ArrayList<>();
+            if (token == null) missingParams.add("token");
+            if (id == null) missingParams.add("id");
+            if (missingParams.size() > 0) {
+                rnModel = DTOUtil.HandleMissingParameters(missingParams);
+                return rnModel;
+            }
+
             if (CheckToken()) {
                 rnModel.setCode(StatusCode.OK);
                 rnModel.setRs(TimestampUtil.GetTimeStamp() + " 0");
@@ -79,17 +93,28 @@ public class AgentController {
      * @param location
      * @return
      */
-    @RequestMapping(value = "/set", produces = { "application/json", "application/xml"},
-            method = RequestMethod.POST)
+    @PostMapping(value = "/set", produces = { "application/json", "application/xml"})
     @ResponseBody
-    public ReturnModel SetAgent(@RequestParam(value="token")String token,
-                                @RequestParam(value="id")String id,
-                                @RequestParam(value="name")String name,
-                                @RequestParam(value="note")String note,
-                                @RequestParam(value="location")String location) {
+    public ReturnModel SetAgent(@RequestParam(value="token", required = false)String token,
+                                @RequestParam(value="id", required = false)String id,
+                                @RequestParam(value="name", required = false)String name,
+                                @RequestParam(value="note", required = false)String note,
+                                @RequestParam(value="location", required = false)String location) {
         ReturnModel rnModel = new ReturnModel();
 
         try {
+            // miss params
+            List<String> missingParams = new ArrayList<>();
+            if (token == null) missingParams.add("token");
+            if (id == null) missingParams.add("id");
+            if (name == null) missingParams.add("name");
+            if (note == null) missingParams.add("note");
+            if (location == null) missingParams.add("location");
+            if (missingParams.size() > 0) {
+                rnModel = DTOUtil.HandleMissingParameters(missingParams);
+                return rnModel;
+            }
+
             if (CheckToken()) {
                 rnModel.setCode(StatusCode.OK);
                 rnModel.setRs(TimestampUtil.GetTimeStamp() + " 0");
@@ -114,14 +139,22 @@ public class AgentController {
      * @param id
      * @return
      */
-    @RequestMapping(value = "/contain", produces = { "application/json", "application/xml"},
-            method = RequestMethod.POST)
+    @PostMapping(value = "/contain", produces = { "application/json", "application/xml"})
     @ResponseBody
-    public ReturnModel ContainAgent(@RequestParam(value="token")String token,
-                                @RequestParam(value="id")String id) {
+    public ReturnModel ContainAgent(@RequestParam(value="token", required = false)String token,
+                                    @RequestParam(value="id", required = false)String id) {
         ReturnModel rnModel = new ReturnModel();
 
         try {
+            // miss params
+            List<String> missingParams = new ArrayList<>();
+            if (token == null) missingParams.add("token");
+            if (id == null) missingParams.add("id");
+            if (missingParams.size() > 0) {
+                rnModel = DTOUtil.HandleMissingParameters(missingParams);
+                return rnModel;
+            }
+
             if (CheckToken()) {
                 rnModel.setCode(StatusCode.OK);
                 rnModel.setRs(TimestampUtil.GetTimeStamp() + " 0");
@@ -148,16 +181,26 @@ public class AgentController {
      * @param location
      * @return
      */
-    @RequestMapping(value = "/add", produces = { "application/json", "application/xml"},
-            method = RequestMethod.POST)
+    @PostMapping(value = "/add", produces = { "application/json", "application/xml"})
     @ResponseBody
-    public ReturnModel AddAgent(@RequestParam(value="token")String token,
-                                @RequestParam(value="name")String name,
-                                @RequestParam(value="note")String note,
-                                @RequestParam(value="location")String location) {
+    public ReturnModel AddAgent(@RequestParam(value="token", required = false)String token,
+                                @RequestParam(value="name", required = false)String name,
+                                @RequestParam(value="note", required = false)String note,
+                                @RequestParam(value="location", required = false)String location) {
         ReturnModel rnModel = new ReturnModel();
 
         try {
+            // miss params
+            List<String> missingParams = new ArrayList<>();
+            if (token == null) missingParams.add("token");
+            if (name == null) missingParams.add("name");
+            if (note == null) missingParams.add("note");
+            if (location == null) missingParams.add("location");
+            if (missingParams.size() > 0) {
+                rnModel = DTOUtil.HandleMissingParameters(missingParams);
+                return rnModel;
+            }
+
             if (CheckToken()) {
                 rnModel.setCode(StatusCode.OK);
                 rnModel.setRs(TimestampUtil.GetTimeStamp() + " 0");
@@ -182,14 +225,22 @@ public class AgentController {
      * @param id
      * @return
      */
-    @RequestMapping(value = "/remove", produces = { "application/json", "application/xml"},
-            method = RequestMethod.POST)
+    @PostMapping(value = "/remove", produces = { "application/json", "application/xml"})
     @ResponseBody
-    public ReturnModel RemoveAgent(@RequestParam(value="token")String token,
-                                @RequestParam(value="id")String id) {
+    public ReturnModel RemoveAgent(@RequestParam(value="token", required = false)String token,
+                                   @RequestParam(value="id", required = false)String id) {
         ReturnModel rnModel = new ReturnModel();
 
         try {
+            // miss params
+            List<String> missingParams = new ArrayList<>();
+            if (token == null) missingParams.add("token");
+            if (id == null) missingParams.add("id");
+            if (missingParams.size() > 0) {
+                rnModel = DTOUtil.HandleMissingParameters(missingParams);
+                return rnModel;
+            }
+
             if (CheckToken()) {
                 rnModel.setCode(StatusCode.OK);
                 rnModel.setRs(TimestampUtil.GetTimeStamp() + " 0");
@@ -215,15 +266,24 @@ public class AgentController {
      * @param role
      * @return
      */
-    @RequestMapping(value = "/addrole", produces = { "application/json", "application/xml"},
-            method = RequestMethod.POST)
+    @PostMapping(value = "/addrole", produces = { "application/json", "application/xml"})
     @ResponseBody
-    public ReturnModel AddAgentRole(@RequestParam(value="token")String token,
-                                    @RequestParam(value="id")String id,
-                                    @RequestParam(value="role")String role) {
+    public ReturnModel AddAgentRole(@RequestParam(value="token", required = false)String token,
+                                    @RequestParam(value="id", required = false)String id,
+                                    @RequestParam(value="role", required = false)String role) {
         ReturnModel rnModel = new ReturnModel();
 
         try {
+            // miss params
+            List<String> missingParams = new ArrayList<>();
+            if (token == null) missingParams.add("token");
+            if (id == null) missingParams.add("id");
+            if (role == null) missingParams.add("role");
+            if (missingParams.size() > 0) {
+                rnModel = DTOUtil.HandleMissingParameters(missingParams);
+                return rnModel;
+            }
+
             if (CheckToken()) {
                 rnModel.setCode(StatusCode.OK);
                 rnModel.setRs(TimestampUtil.GetTimeStamp() + " 0");
@@ -249,15 +309,24 @@ public class AgentController {
      * @param role
      * @return
      */
-    @RequestMapping(value = "/removerole", produces = { "application/json", "application/xml"},
-            method = RequestMethod.POST)
+    @PostMapping(value = "/removerole", produces = { "application/json", "application/xml"})
     @ResponseBody
-    public ReturnModel RemoveAgentRole(@RequestParam(value="token")String token,
-                                       @RequestParam(value="id")String id,
-                                       @RequestParam(value="role")String role) {
+    public ReturnModel RemoveAgentRole(@RequestParam(value="token", required = false)String token,
+                                       @RequestParam(value="id", required = false)String id,
+                                       @RequestParam(value="role", required = false)String role) {
         ReturnModel rnModel = new ReturnModel();
 
         try {
+            // miss params
+            List<String> missingParams = new ArrayList<>();
+            if (token == null) missingParams.add("token");
+            if (id == null) missingParams.add("id");
+            if (role == null) missingParams.add("role");
+            if (missingParams.size() > 0) {
+                rnModel = DTOUtil.HandleMissingParameters(missingParams);
+                return rnModel;
+            }
+
             if (CheckToken()) {
                 rnModel.setCode(StatusCode.OK);
                 rnModel.setRs(TimestampUtil.GetTimeStamp() + " 0");

@@ -1,9 +1,9 @@
-package org.sysu.renResourcing.dto;
+package org.sysu.renResourcing.restful.dto;
 
 import javax.xml.bind.annotation.XmlElement;
 
 /**
- * Author: gd
+ * Author: Gordan
  * Date  : 2017/12/14
  * Usage : Class ReturnElement is used to encapsulate the real data which returned.
  */

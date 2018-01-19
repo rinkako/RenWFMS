@@ -1,13 +1,17 @@
-package org.sysu.renResourcing.controller;
+package org.sysu.renResourcing.restful.controller;
 
 import org.springframework.web.bind.annotation.*;
-import org.sysu.renResourcing.dto.ReturnElement;
-import org.sysu.renResourcing.dto.ReturnModel;
-import org.sysu.renResourcing.dto.StatusCode;
+import org.sysu.renResourcing.restful.dto.DTOUtil;
+import org.sysu.renResourcing.restful.dto.ReturnElement;
+import org.sysu.renResourcing.restful.dto.ReturnModel;
+import org.sysu.renResourcing.restful.dto.StatusCode;
 import org.sysu.renResourcing.util.TimestampUtil;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /**
- * Author: gd
+ * Author: Gordan
  * Date  : 2017/12/14
  * Usage : Handle requests about resource management.
  */
@@ -44,14 +48,22 @@ public class ResourceController {
      * @param id
      * @return
      */
-    @RequestMapping(value = "/get", produces = { "application/json", "application/xml"},
-            method = RequestMethod.POST)
+    @PostMapping(value = "/get", produces = { "application/json", "application/xml"})
     @ResponseBody
-    public ReturnModel GetResource(@RequestParam(value="token")String token,
-                               @RequestParam(value="id")String id) {
+    public ReturnModel GetResource(@RequestParam(value="token", required = false)String token,
+                                   @RequestParam(value="id", required = false)String id) {
         ReturnModel rnModel = new ReturnModel();
 
         try {
+            // miss params
+            List<String> missingParams = new ArrayList<>();
+            if (token == null) missingParams.add("token");
+            if (id == null) missingParams.add("id");
+            if (missingParams.size() > 0) {
+                rnModel = DTOUtil.HandleMissingParameters(missingParams);
+                return rnModel;
+            }
+
             if (CheckToken()) {
                 rnModel.setCode(StatusCode.OK);
                 rnModel.setRs(TimestampUtil.GetTimeStamp() + " 0");
@@ -77,15 +89,24 @@ public class ResourceController {
      * @param description
      * @return
      */
-    @RequestMapping(value = "/set", produces = { "application/json", "application/xml"},
-            method = RequestMethod.POST)
+    @PostMapping(value = "/set", produces = { "application/json", "application/xml"})
     @ResponseBody
-    public ReturnModel SetResource(@RequestParam(value="token")String token,
-                                   @RequestParam(value="id")String id,
-                                   @RequestParam(value="description")String description) {
+    public ReturnModel SetResource(@RequestParam(value="token", required = false)String token,
+                                   @RequestParam(value="id", required = false)String id,
+                                   @RequestParam(value="description", required = false)String description) {
         ReturnModel rnModel = new ReturnModel();
 
         try {
+            // miss params
+            List<String> missingParams = new ArrayList<>();
+            if (token == null) missingParams.add("token");
+            if (id == null) missingParams.add("id");
+            if (description == null) missingParams.add("description");
+            if (missingParams.size() > 0) {
+                rnModel = DTOUtil.HandleMissingParameters(missingParams);
+                return rnModel;
+            }
+
             if (CheckToken()) {
                 rnModel.setCode(StatusCode.OK);
                 rnModel.setRs(TimestampUtil.GetTimeStamp() + " 0");
@@ -110,14 +131,22 @@ public class ResourceController {
      * @param id
      * @return
      */
-    @RequestMapping(value = "/contain", produces = { "application/json", "application/xml"},
-            method = RequestMethod.POST)
+    @PostMapping(value = "/contain", produces = { "application/json", "application/xml"})
     @ResponseBody
-    public ReturnModel ContainResource(@RequestParam(value="token")String token,
-                                   @RequestParam(value="id")String id) {
+    public ReturnModel ContainResource(@RequestParam(value="token", required = false)String token,
+                                       @RequestParam(value="id", required = false)String id) {
         ReturnModel rnModel = new ReturnModel();
 
         try {
+            // miss params
+            List<String> missingParams = new ArrayList<>();
+            if (token == null) missingParams.add("token");
+            if (id == null) missingParams.add("id");
+            if (missingParams.size() > 0) {
+                rnModel = DTOUtil.HandleMissingParameters(missingParams);
+                return rnModel;
+            }
+
             if (CheckToken()) {
                 rnModel.setCode(StatusCode.OK);
                 rnModel.setRs(TimestampUtil.GetTimeStamp() + " 0");
@@ -142,14 +171,22 @@ public class ResourceController {
      * @param description
      * @return
      */
-    @RequestMapping(value = "/add", produces = { "application/json", "application/xml"},
-            method = RequestMethod.POST)
+    @PostMapping(value = "/add", produces = { "application/json", "application/xml"})
     @ResponseBody
-    public ReturnModel AddResource(@RequestParam(value="token")String token,
-                                   @RequestParam(value="description")String description) {
+    public ReturnModel AddResource(@RequestParam(value="token", required = false)String token,
+                                   @RequestParam(value="description", required = false)String description) {
         ReturnModel rnModel = new ReturnModel();
 
         try {
+            // miss params
+            List<String> missingParams = new ArrayList<>();
+            if (token == null) missingParams.add("token");
+            if (description == null) missingParams.add("description");
+            if (missingParams.size() > 0) {
+                rnModel = DTOUtil.HandleMissingParameters(missingParams);
+                return rnModel;
+            }
+
             if (CheckToken()) {
                 rnModel.setCode(StatusCode.OK);
                 rnModel.setRs(TimestampUtil.GetTimeStamp() + " 0");
@@ -174,14 +211,22 @@ public class ResourceController {
      * @param id
      * @return
      */
-    @RequestMapping(value = "/remove", produces = { "application/json", "application/xml"},
-            method = RequestMethod.POST)
+    @PostMapping(value = "/remove", produces = { "application/json", "application/xml"})
     @ResponseBody
-    public ReturnModel RemoveResource(@RequestParam(value="token")String token,
-                                   @RequestParam(value="id")String id) {
+    public ReturnModel RemoveResource(@RequestParam(value="token", required = false)String token,
+                                      @RequestParam(value="id", required = false)String id) {
         ReturnModel rnModel = new ReturnModel();
 
         try {
+            // miss params
+            List<String> missingParams = new ArrayList<>();
+            if (token == null) missingParams.add("token");
+            if (id == null) missingParams.add("id");
+            if (missingParams.size() > 0) {
+                rnModel = DTOUtil.HandleMissingParameters(missingParams);
+                return rnModel;
+            }
+
             if (CheckToken()) {
                 rnModel.setCode(StatusCode.OK);
                 rnModel.setRs(TimestampUtil.GetTimeStamp() + " 0");

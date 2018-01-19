@@ -2,7 +2,7 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/.idea/RenResourceService.iml" filepath="$PROJECT_DIR$/.idea/RenResourceService.iml" />
+      <module fileurl="file://$PROJECT_DIR$/RenResourceService.iml" filepath="$PROJECT_DIR$/RenResourceService.iml" />
     </modules>
   </component>
 </project>

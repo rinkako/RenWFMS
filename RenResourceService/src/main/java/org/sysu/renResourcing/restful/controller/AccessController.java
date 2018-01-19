@@ -1,13 +1,17 @@
-package org.sysu.renResourcing.controller;
+package org.sysu.renResourcing.restful.controller;
 
 import org.springframework.web.bind.annotation.*;
-import org.sysu.renResourcing.dto.ReturnElement;
-import org.sysu.renResourcing.dto.ReturnModel;
-import org.sysu.renResourcing.dto.StatusCode;
+import org.sysu.renResourcing.restful.dto.DTOUtil;
+import org.sysu.renResourcing.restful.dto.ReturnElement;
+import org.sysu.renResourcing.restful.dto.ReturnModel;
+import org.sysu.renResourcing.restful.dto.StatusCode;
 import org.sysu.renResourcing.util.TimestampUtil;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /**
- * Author: gd
+ * Author: Gordan
  * Date  : 2017/12/14
  * Usage : Handle requests about access control.
  */
@@ -60,13 +64,21 @@ public class AccessController {
      * @param password
      * @return
      */
-    @RequestMapping(value = "/connect", produces = {"application/json", "application/xml"},
-            method = RequestMethod.POST)
+    @PostMapping(value = "/connect", produces = {"application/json", "application/xml"})
     @ResponseBody
-    public ReturnModel Connect(@RequestParam(value="username")String username,
-                                   @RequestParam(value="password")String password) {
+    public ReturnModel Connect(@RequestParam(value="username", required = false)String username,
+                               @RequestParam(value="password", required = false)String password) {
         ReturnModel rnModel = new ReturnModel();
         try {
+            // miss params
+            List<String> missingParams = new ArrayList<>();
+            if (username == null) missingParams.add("username");
+            if (password == null) missingParams.add("password");
+            if (missingParams.size() > 0) {
+                rnModel = DTOUtil.HandleMissingParameters(missingParams);
+                return rnModel;
+            }
+
             rnModel.setCode(StatusCode.OK);
             rnModel.setRs(TimestampUtil.GetTimeStamp() + " 0");
             ReturnElement returnElement = new ReturnElement();
@@ -84,13 +96,20 @@ public class AccessController {
      * @param token
      * @return
      */
-    @RequestMapping(value = "/disconnect", produces = { "application/json", "application/xml"},
-            method = RequestMethod.POST)
+    @PostMapping(value = "/disconnect", produces = { "application/json", "application/xml"})
     @ResponseBody
-    public ReturnModel DisConnect(@RequestParam(value="token")String token) {
+    public ReturnModel DisConnect(@RequestParam(value="token", required = false)String token) {
         ReturnModel rnModel = new ReturnModel();
 
         try {
+            // miss params
+            List<String> missingParams = new ArrayList<>();
+            if (token == null) missingParams.add("token");
+            if (missingParams.size() > 0) {
+                rnModel = DTOUtil.HandleMissingParameters(missingParams);
+                return rnModel;
+            }
+
             if (CheckToken()) {
                 rnModel.setCode(StatusCode.OK);
                 rnModel.setRs(TimestampUtil.GetTimeStamp() + " 0");
@@ -114,13 +133,20 @@ public class AccessController {
      * @param token
      * @return
      */
-    @RequestMapping(value = "/check", produces = { "application/json", "application/xml"},
-            method = RequestMethod.POST)
+    @PostMapping(value = "/check", produces = { "application/json", "application/xml"})
     @ResponseBody
-    public ReturnModel Check(@RequestParam(value="token")String token) {
+    public ReturnModel Check(@RequestParam(value="token", required = false)String token) {
         ReturnModel rnModel = new ReturnModel();
 
         try {
+            // miss params
+            List<String> missingParams = new ArrayList<>();
+            if (token == null) missingParams.add("token");
+            if (missingParams.size() > 0) {
+                rnModel = DTOUtil.HandleMissingParameters(missingParams);
+                return rnModel;
+            }
+
             if (CheckToken()) {
                 rnModel.setCode(StatusCode.OK);
                 rnModel.setRs(TimestampUtil.GetTimeStamp() + " 0");
@@ -144,13 +170,20 @@ public class AccessController {
      * @param token
      * @return
      */
-    @RequestMapping(value = "/checkadmin", produces = { "application/json", "application/xml"},
-            method = RequestMethod.POST)
+    @PostMapping(value = "/checkadmin", produces = { "application/json", "application/xml"})
     @ResponseBody
-    public ReturnModel CheckAdmin(@RequestParam(value="token")String token) {
+    public ReturnModel CheckAdmin(@RequestParam(value="token", required = false)String token) {
         ReturnModel rnModel = new ReturnModel();
 
         try {
+            // miss params
+            List<String> missingParams = new ArrayList<>();
+            if (token == null) missingParams.add("token");
+            if (missingParams.size() > 0) {
+                rnModel = DTOUtil.HandleMissingParameters(missingParams);
+                return rnModel;
+            }
+
             if (CheckToken()) {
                 rnModel.setCode(StatusCode.OK);
                 rnModel.setRs(TimestampUtil.GetTimeStamp() + " 0");
@@ -177,16 +210,26 @@ public class AccessController {
      * @param isadmin
      * @return
      */
-    @RequestMapping(value = "/user/add", produces = { "application/json", "application/xml"},
-            method = RequestMethod.POST)
+    @PostMapping(value = "/user/add", produces = { "application/json", "application/xml"})
     @ResponseBody
-    public ReturnModel AddUser(@RequestParam(value="token")String token,
-                               @RequestParam(value="username")String username,
-                               @RequestParam(value="password")String password,
-                               @RequestParam(value="isadmin")String isadmin) {
+    public ReturnModel AddUser(@RequestParam(value="token", required = false)String token,
+                               @RequestParam(value="username", required = false)String username,
+                               @RequestParam(value="password", required = false)String password,
+                               @RequestParam(value="isadmin", required = false)String isadmin) {
         ReturnModel rnModel = new ReturnModel();
 
         try {
+            // miss params
+            List<String> missingParams = new ArrayList<>();
+            if (token == null) missingParams.add("token");
+            if (username == null) missingParams.add("username");
+            if (password == null) missingParams.add("password");
+            if (isadmin == null) missingParams.add("isadmin");
+            if (missingParams.size() > 0) {
+                rnModel = DTOUtil.HandleMissingParameters(missingParams);
+                return rnModel;
+            }
+
             if (CheckToken()) {
                 rnModel.setCode(StatusCode.OK);
                 rnModel.setRs(TimestampUtil.GetTimeStamp() + " 0");
@@ -211,14 +254,22 @@ public class AccessController {
      * @param username
      * @return
      */
-    @RequestMapping(value = "/user/remove", produces = { "application/json", "application/xml"},
-            method = RequestMethod.POST)
+    @PostMapping(value = "/user/remove", produces = { "application/json", "application/xml"})
     @ResponseBody
-    public ReturnModel RemoveUser(@RequestParam(value="token")String token,
-                               @RequestParam(value="username")String username) {
+    public ReturnModel RemoveUser(@RequestParam(value="token", required = false)String token,
+                                  @RequestParam(value="username", required = false)String username) {
         ReturnModel rnModel = new ReturnModel();
 
         try {
+            // miss params
+            List<String> missingParams = new ArrayList<>();
+            if (token == null) missingParams.add("token");
+            if (username == null) missingParams.add("username");
+            if (missingParams.size() > 0) {
+                rnModel = DTOUtil.HandleMissingParameters(missingParams);
+                return rnModel;
+            }
+
             if (CheckToken()) {
                 rnModel.setCode(StatusCode.OK);
                 rnModel.setRs(TimestampUtil.GetTimeStamp() + " 0");
@@ -243,14 +294,22 @@ public class AccessController {
      * @param username
      * @return
      */
-    @RequestMapping(value = "/user/get", produces = { "application/json", "application/xml"},
-            method = RequestMethod.POST)
+    @PostMapping(value = "/user/get", produces = { "application/json", "application/xml"})
     @ResponseBody
-    public ReturnModel GetUser(@RequestParam(value="token")String token,
-                                  @RequestParam(value="username")String username) {
+    public ReturnModel GetUser(@RequestParam(value="token", required = false)String token,
+                               @RequestParam(value="username", required = false)String username) {
         ReturnModel rnModel = new ReturnModel();
 
         try {
+            // miss params
+            List<String> missingParams = new ArrayList<>();
+            if (token == null) missingParams.add("token");
+            if (username == null) missingParams.add("username");
+            if (missingParams.size() > 0) {
+                rnModel = DTOUtil.HandleMissingParameters(missingParams);
+                return rnModel;
+            }
+
             if (CheckToken()) {
                 rnModel.setCode(StatusCode.OK);
                 rnModel.setRs(TimestampUtil.GetTimeStamp() + " 0");
@@ -277,16 +336,26 @@ public class AccessController {
      * @param isAdmin
      * @return
      */
-    @RequestMapping(value = "/user/set", produces = { "application/json", "application/xml"},
-            method = RequestMethod.POST)
+    @PostMapping(value = "/user/set", produces = { "application/json", "application/xml"})
     @ResponseBody
-    public ReturnModel SetUser(@RequestParam(value="token")String token,
-                               @RequestParam(value="username")String username,
-                               @RequestParam(value="password")String password,
-                               @RequestParam(value="isAdmin")String isAdmin) {
+    public ReturnModel SetUser(@RequestParam(value="token", required = false)String token,
+                               @RequestParam(value="username", required = false)String username,
+                               @RequestParam(value="password", required = false)String password,
+                               @RequestParam(value="isAdmin", required = false)String isAdmin) {
         ReturnModel rnModel = new ReturnModel();
 
         try {
+            // miss params
+            List<String> missingParams = new ArrayList<>();
+            if (token == null) missingParams.add("token");
+            if (username == null) missingParams.add("username");
+            if (password == null) missingParams.add("password");
+            if (isAdmin == null) missingParams.add("isAdmin");
+            if (missingParams.size() > 0) {
+                rnModel = DTOUtil.HandleMissingParameters(missingParams);
+                return rnModel;
+            }
+
             if (CheckToken()) {
                 rnModel.setCode(StatusCode.OK);
                 rnModel.setRs(TimestampUtil.GetTimeStamp() + " 0");

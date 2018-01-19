@@ -1,11 +1,11 @@
-package org.sysu.renResourcing.dto;
+package org.sysu.renResourcing.restful.dto;
 
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 import java.io.Serializable;
 
 /**
- * Author: gd
+ * Author: Gordan
  * Date  : 2017/12/14
  * Usage : A data model which encapsulated to return.
  */

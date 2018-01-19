@@ -1,13 +1,17 @@
-package org.sysu.renResourcing.controller;
+package org.sysu.renResourcing.restful.controller;
 
 import org.springframework.web.bind.annotation.*;
-import org.sysu.renResourcing.dto.ReturnElement;
-import org.sysu.renResourcing.dto.ReturnModel;
-import org.sysu.renResourcing.dto.StatusCode;
+import org.sysu.renResourcing.restful.dto.DTOUtil;
+import org.sysu.renResourcing.restful.dto.ReturnElement;
+import org.sysu.renResourcing.restful.dto.ReturnModel;
+import org.sysu.renResourcing.restful.dto.StatusCode;
 import org.sysu.renResourcing.util.TimestampUtil;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /**
- * Author: gd
+ * Author: Gordan
  * Date  : 2017/12/14
  * Usage : Handle requests about work queue.
  */
@@ -44,14 +48,22 @@ public class WorkQueueController {
      * @param worker
      * @return
      */
-    @RequestMapping(value = "/get", produces = { "application/json", "application/xml"},
-            method = RequestMethod.POST)
+    @PostMapping(value = "/get", produces = { "application/json", "application/xml"})
     @ResponseBody
-    public ReturnModel GetWorkQueue(@RequestParam(value="token")String token,
-                                    @RequestParam(value="worker")String worker) {
+    public ReturnModel GetWorkQueue(@RequestParam(value="token", required = false)String token,
+                                    @RequestParam(value="worker", required = false)String worker) {
         ReturnModel rnModel = new ReturnModel();
 
         try {
+            // miss params
+            List<String> missingParams = new ArrayList<>();
+            if (token == null) missingParams.add("token");
+            if (worker == null) missingParams.add("worker");
+            if (missingParams.size() > 0) {
+                rnModel = DTOUtil.HandleMissingParameters(missingParams);
+                return rnModel;
+            }
+
             if (CheckToken()) {
                 rnModel.setCode(StatusCode.OK);
                 rnModel.setRs(TimestampUtil.GetTimeStamp() + " 0");
@@ -76,14 +88,22 @@ public class WorkQueueController {
      * @param worker
      * @return
      */
-    @RequestMapping(value = "/clear", produces = { "application/json", "application/xml"},
-            method = RequestMethod.POST)
+    @PostMapping(value = "/clear", produces = { "application/json", "application/xml"})
     @ResponseBody
-    public ReturnModel ClearWorkQueue(@RequestParam(value="token")String token,
-                                       @RequestParam(value="worker")String worker) {
+    public ReturnModel ClearWorkQueue(@RequestParam(value="token", required = false)String token,
+                                      @RequestParam(value="worker", required = false)String worker) {
         ReturnModel rnModel = new ReturnModel();
 
         try {
+            // miss params
+            List<String> missingParams = new ArrayList<>();
+            if (token == null) missingParams.add("token");
+            if (worker == null) missingParams.add("worker");
+            if (missingParams.size() > 0) {
+                rnModel = DTOUtil.HandleMissingParameters(missingParams);
+                return rnModel;
+            }
+
             if (CheckToken()) {
                 rnModel.setCode(StatusCode.OK);
                 rnModel.setRs(TimestampUtil.GetTimeStamp() + " 0");
@@ -107,13 +127,20 @@ public class WorkQueueController {
      * @param token
      * @return
      */
-    @RequestMapping(value = "/getadmin", produces = { "application/json", "application/xml"},
-            method = RequestMethod.POST)
+    @PostMapping(value = "/getadmin", produces = { "application/json", "application/xml"})
     @ResponseBody
-    public ReturnModel GetWorkQueue(@RequestParam(value="token")String token) {
+    public ReturnModel GetWorkQueue(@RequestParam(value="token", required = false)String token) {
         ReturnModel rnModel = new ReturnModel();
 
         try {
+            // miss params
+            List<String> missingParams = new ArrayList<>();
+            if (token == null) missingParams.add("token");
+            if (missingParams.size() > 0) {
+                rnModel = DTOUtil.HandleMissingParameters(missingParams);
+                return rnModel;
+            }
+
             if (CheckToken()) {
                 rnModel.setCode(StatusCode.OK);
                 rnModel.setRs(TimestampUtil.GetTimeStamp() + " 0");
@@ -137,13 +164,20 @@ public class WorkQueueController {
      * @param token
      * @return
      */
-    @RequestMapping(value = "/clearadmin", produces = { "application/json", "application/xml"},
-            method = RequestMethod.POST)
+    @PostMapping(value = "/clearadmin", produces = { "application/json", "application/xml"})
     @ResponseBody
-    public ReturnModel ClearWorkQueue(@RequestParam(value="token")String token) {
+    public ReturnModel ClearWorkQueue(@RequestParam(value="token", required = false)String token) {
         ReturnModel rnModel = new ReturnModel();
 
         try {
+            // miss params
+            List<String> missingParams = new ArrayList<>();
+            if (token == null) missingParams.add("token");
+            if (missingParams.size() > 0) {
+                rnModel = DTOUtil.HandleMissingParameters(missingParams);
+                return rnModel;
+            }
+
             if (CheckToken()) {
                 rnModel.setCode(StatusCode.OK);
                 rnModel.setRs(TimestampUtil.GetTimeStamp() + " 0");

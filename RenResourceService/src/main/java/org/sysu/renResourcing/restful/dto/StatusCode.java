@@ -1,9 +1,9 @@
-package org.sysu.renResourcing.dto;
+package org.sysu.renResourcing.restful.dto;
 
 import java.io.Serializable;
 
 /**
- * Author: gd
+ * Author: Gordan
  * Date  : 2017/12/14
  * Usage : The status code used to represent the result of the request.
  */

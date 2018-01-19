@@ -1,13 +1,17 @@
-package org.sysu.renResourcing.controller;
+package org.sysu.renResourcing.restful.controller;
 
 import org.springframework.web.bind.annotation.*;
-import org.sysu.renResourcing.dto.ReturnElement;
-import org.sysu.renResourcing.dto.ReturnModel;
-import org.sysu.renResourcing.dto.StatusCode;
+import org.sysu.renResourcing.restful.dto.DTOUtil;
+import org.sysu.renResourcing.restful.dto.ReturnElement;
+import org.sysu.renResourcing.restful.dto.ReturnModel;
+import org.sysu.renResourcing.restful.dto.StatusCode;
 import org.sysu.renResourcing.util.TimestampUtil;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /**
- * Author: gd
+ * Author: Gordan
  * Date  : 2017/12/14
  * Usage : Handle requests about the cluster.
  */
@@ -45,15 +49,24 @@ public class ClusterController {
      * @param timestamp
      * @return
      */
-    @RequestMapping(value = "/doki", produces = { "application/json", "application/xml"},
-            method = RequestMethod.POST)
+    @PostMapping(value = "/doki", produces = { "application/json", "application/xml"})
     @ResponseBody
-    public ReturnModel Diki(@RequestParam(value="token")String token,
-                            @RequestParam(value="from")String from,
-                            @RequestParam(value="timestamp")String timestamp) {
+    public ReturnModel Diki(@RequestParam(value="token", required = false)String token,
+                            @RequestParam(value="from", required = false)String from,
+                            @RequestParam(value="timestamp", required = false)String timestamp) {
         ReturnModel rnModel = new ReturnModel();
 
         try {
+            // miss params
+            List<String> missingParams = new ArrayList<>();
+            if (token == null) missingParams.add("token");
+            if (from == null) missingParams.add("from");
+            if (timestamp == null) missingParams.add("timestamp");
+            if (missingParams.size() > 0) {
+                rnModel = DTOUtil.HandleMissingParameters(missingParams);
+                return rnModel;
+            }
+
             if (CheckToken()) {
                 rnModel.setCode(StatusCode.OK);
                 rnModel.setRs(TimestampUtil.GetTimeStamp() + " 0");
@@ -79,15 +92,24 @@ public class ClusterController {
      * @param timestamp
      * @return
      */
-    @RequestMapping(value = "/sync", produces = { "application/json", "application/xml"},
-            method = RequestMethod.POST)
+    @PostMapping(value = "/sync", produces = { "application/json", "application/xml"})
     @ResponseBody
-    public ReturnModel Sync(@RequestParam(value="token")String token,
-                            @RequestParam(value="from")String from,
-                            @RequestParam(value="timestamp")String timestamp) {
+    public ReturnModel Sync(@RequestParam(value="token", required = false)String token,
+                            @RequestParam(value="from", required = false)String from,
+                            @RequestParam(value="timestamp", required = false)String timestamp) {
         ReturnModel rnModel = new ReturnModel();
 
         try {
+            // miss params
+            List<String> missingParams = new ArrayList<>();
+            if (token == null) missingParams.add("token");
+            if (from == null) missingParams.add("from");
+            if (timestamp == null) missingParams.add("timestamp");
+            if (missingParams.size() > 0) {
+                rnModel = DTOUtil.HandleMissingParameters(missingParams);
+                return rnModel;
+            }
+
             if (CheckToken()) {
                 rnModel.setCode(StatusCode.OK);
                 rnModel.setRs(TimestampUtil.GetTimeStamp() + " 0");
@@ -111,19 +133,29 @@ public class ClusterController {
      * @param token
      * @param from
      * @param to
-     * @param timastamp
+     * @param timestamp
      * @return
      */
-    @RequestMapping(value = "/delegate", produces = { "application/json", "application/xml"},
-            method = RequestMethod.POST)
+    @PostMapping(value = "/delegate", produces = { "application/json", "application/xml"})
     @ResponseBody
-    public ReturnModel Delegate(@RequestParam(value="token")String token,
-                                @RequestParam(value="from")String from,
-                                @RequestParam(value="to")String to,
-                                @RequestParam(value="timastamp")String timastamp) {
+    public ReturnModel Delegate(@RequestParam(value="token", required = false)String token,
+                                @RequestParam(value="from", required = false)String from,
+                                @RequestParam(value="to", required = false)String to,
+                                @RequestParam(value="timestamp", required = false)String timestamp) {
         ReturnModel rnModel = new ReturnModel();
 
         try {
+            // miss params
+            List<String> missingParams = new ArrayList<>();
+            if (token == null) missingParams.add("token");
+            if (from == null) missingParams.add("from");
+            if (to == null) missingParams.add("to");
+            if (timestamp == null) missingParams.add("timestamp");
+            if (missingParams.size() > 0) {
+                rnModel = DTOUtil.HandleMissingParameters(missingParams);
+                return rnModel;
+            }
+
             if (CheckToken()) {
                 rnModel.setCode(StatusCode.OK);
                 rnModel.setRs(TimestampUtil.GetTimeStamp() + " 0");
@@ -148,14 +180,22 @@ public class ClusterController {
      * @param to
      * @return
      */
-    @RequestMapping(value = "/flush", produces = { "application/json", "application/xml"},
-            method = RequestMethod.POST)
+    @PostMapping(value = "/flush", produces = { "application/json", "application/xml"})
     @ResponseBody
-    public ReturnModel Flush(@RequestParam(value="token")String token,
-                             @RequestParam(value="to")String to) {
+    public ReturnModel Flush(@RequestParam(value="token", required = false)String token,
+                             @RequestParam(value="to", required = false)String to) {
         ReturnModel rnModel = new ReturnModel();
 
         try {
+            // miss params
+            List<String> missingParams = new ArrayList<>();
+            if (token == null) missingParams.add("token");
+            if (to == null) missingParams.add("to");
+            if (missingParams.size() > 0) {
+                rnModel = DTOUtil.HandleMissingParameters(missingParams);
+                return rnModel;
+            }
+
             if (CheckToken()) {
                 rnModel.setCode(StatusCode.OK);
                 rnModel.setRs(TimestampUtil.GetTimeStamp() + " 0");
@@ -180,14 +220,22 @@ public class ClusterController {
      * @param to
      * @return
      */
-    @RequestMapping(value = "/fin", produces = { "application/json", "application/xml"},
-            method = RequestMethod.POST)
+    @PostMapping(value = "/fin", produces = { "application/json", "application/xml"})
     @ResponseBody
-    public ReturnModel Fin(@RequestParam(value="token")String token,
-                           @RequestParam(value="to")String to) {
+    public ReturnModel Fin(@RequestParam(value="token", required = false)String token,
+                           @RequestParam(value="to", required = false)String to) {
         ReturnModel rnModel = new ReturnModel();
 
         try {
+            // miss params
+            List<String> missingParams = new ArrayList<>();
+            if (token == null) missingParams.add("token");
+            if (to == null) missingParams.add("to");
+            if (missingParams.size() > 0) {
+                rnModel = DTOUtil.HandleMissingParameters(missingParams);
+                return rnModel;
+            }
+
             if (CheckToken()) {
                 rnModel.setCode(StatusCode.OK);
                 rnModel.setRs(TimestampUtil.GetTimeStamp() + " 0");
