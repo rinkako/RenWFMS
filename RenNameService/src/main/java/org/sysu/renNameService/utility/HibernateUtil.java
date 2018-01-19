@@ -8,70 +8,53 @@ import org.hibernate.SessionFactory;
 import org.hibernate.cfg.Configuration;
 import org.hibernate.boot.registry.StandardServiceRegistry;
 import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
-import java.util.HashSet;
 
 /**
  * Author: Rinkako
  * Date  : 2018/1/18
  * Usage : Common methods for hibernate.
  */
-public final class HibernateUtil {
+public class HibernateUtil {
+    private static SessionFactory sessionFactory;
+    private static ThreadLocal session = new ThreadLocal();
+
     static {
         Configuration config = new Configuration().configure();
         StandardServiceRegistryBuilder sb = new StandardServiceRegistryBuilder().applySettings(config.getProperties());
         StandardServiceRegistry ssr = sb.build();
-        sessionFactory = config.buildSessionFactory(ssr);
+        HibernateUtil.sessionFactory = config.buildSessionFactory(ssr);
     }
-
-    /**
-     * Thread safe session factory
-     */
-    private static SessionFactory sessionFactory;
-
-    /**
-     * Maintain active session
-     */
-    private static HashSet<Session> activeSessionSet;
 
     /**
      * Get session factory, SessionFactory is thread safe.
      * @return session factory instance
      */
-    public static synchronized SessionFactory GetSessionFactory() {
+    private static SessionFactory GetSessionFactory() {
         return HibernateUtil.sessionFactory;
     }
 
     /**
-     * Open a new session for hibernate and this session should be closed by caller.
+     * Get session for hibernate in this thread.
      * @return hibernate session instance
      */
-    public static synchronized Session OpenSession() {
-        Session retSession = HibernateUtil.sessionFactory.openSession();
-        HibernateUtil.activeSessionSet.add(retSession);
-        return retSession;
+    @SuppressWarnings("unchecked")
+    public static Session GetLocalThreadSession() {
+        Session s = (Session) session.get();
+        if (s == null) {
+            s = HibernateUtil.GetSessionFactory().getCurrentSession();
+            HibernateUtil.session.set(s);
+        }
+        return s;
     }
 
     /**
-     * Close a active session.
-     * @param session hibernate session
+     * Close active session in this thread.
      */
-    public static synchronized void CloseSession(Session session) {
-        if (null != session) {
-            session.close();
-            HibernateUtil.activeSessionSet.remove(session);
+    @SuppressWarnings("unchecked")
+    public static void CloseSession() {
+        Session s = (Session) session.get();
+        if (s != null) {
+            session.set(null);
         }
-    }
-
-    /**
-     * Dispose all remaining session.
-     * @return remaining session count
-     */
-    public static synchronized int DisposeAllRemainSession() {
-        int retCount = HibernateUtil.activeSessionSet.size();
-        for (Session s: HibernateUtil.activeSessionSet) {
-            s.close();
-        }
-        HibernateUtil.activeSessionSet.clear();
-        return retCount;
     }
 }
