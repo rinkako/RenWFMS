@@ -6,12 +6,13 @@ import org.hibernate.Transaction;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import org.sysu.renNameService.entity.RenRolemapEntity;
-import org.sysu.renNameService.repository.RenRuntimerecordRepository;
 import org.sysu.renNameService.restful.dto.ReturnElement;
 import org.sysu.renNameService.restful.dto.ReturnModel;
 import org.sysu.renNameService.restful.dto.StatusCode;
+import org.sysu.renNameService.roleMapping.RoleMappingService;
 import org.sysu.renNameService.utility.TimestampUtil;
 
+import javax.transaction.Transactional;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -51,9 +52,6 @@ public class RoleMappingController {
         rnModel.setReturnElement(returnElement);
         return rnModel;
     }
-
-    @Autowired
-    private SessionFactory sessionFactory;
 
     /**
      *
@@ -161,9 +159,10 @@ public class RoleMappingController {
      */
     @PostMapping(value = "/fin", produces = {"application/json", "application/xml"})
     @ResponseBody
+    @Transactional
     public ReturnModel FinishRoleMapService(@RequestParam(value="rtid", required = false)String rtid) {
         ReturnModel rnModel = new ReturnModel();
-        try {
+//        try {
             // miss params
             List<String> missingParams = new ArrayList<>();
             if (rtid == null) missingParams.add("rtid");
@@ -172,14 +171,19 @@ public class RoleMappingController {
                 return rnModel;
             }
 
+
+            RoleMappingService.FinishRoleMapService("AA1");
+
+
+
             rnModel.setCode(StatusCode.OK);
             rnModel.setRs(TimestampUtil.GetTimeStamp() + " 0");
             ReturnElement returnElement = new ReturnElement();
             returnElement.setData("FinishRoleMapService");
             rnModel.setReturnElement(returnElement);
-        } catch (Exception e) {
-            rnModel = ExceptionHandlerFunction(e.getClass().getName());
-        }
+//        } catch (Exception e) {
+//            rnModel = ExceptionHandlerFunction(e.getClass().getName());
+//        }
 
         return rnModel;
     }

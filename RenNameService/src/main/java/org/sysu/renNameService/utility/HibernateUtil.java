@@ -9,19 +9,25 @@ import org.hibernate.cfg.Configuration;
 import org.hibernate.boot.registry.StandardServiceRegistry;
 import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
-import javax.persistence.EntityManagerFactory;
+import javax.annotation.PostConstruct;
 
 /**
  * Author: Rinkako
  * Date  : 2018/1/18
  * Usage : Common methods for hibernate.
  */
+@Component
 public class HibernateUtil {
 
-    @Autowired
     private static SessionFactory sessionFactory;
     private static ThreadLocal session = new ThreadLocal();
+
+    @Autowired(required = true)
+    public HibernateUtil(SessionFactory sessionFactory) {
+        HibernateUtil.sessionFactory = sessionFactory;
+    }
 
     /*
     static {

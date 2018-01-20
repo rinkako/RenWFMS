@@ -10,16 +10,16 @@ import org.sysu.renNameService.entity.RenRolemapEntity;
 import org.sysu.renNameService.utility.HibernateUtil;
 import org.sysu.renNameService.utility.LogUtil;
 
+import javax.transaction.Transactional;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
 /**
  * Author: Rinkako
  * Date  : 2018/1/16
  * Usage : All business role map service will be handled in this controller.
  */
-public final class RoleMappingController {
+public final class RoleMappingService {
     // For Resource Service
 
     /**
@@ -67,15 +67,15 @@ public final class RoleMappingController {
         try {
             List qRet = session.createQuery(String.format("from RenRolemapEntity where rtid = '%s'", rtid)).list();
             for (Object rre : qRet) {
-                RenRolemapArchivedEntity rrae = RoleMappingController.AchieveRoleMap((RenRolemapEntity) rre);
+                RenRolemapArchivedEntity rrae = RoleMappingService.AchieveRoleMap((RenRolemapEntity) rre);
                 session.save(rrae);
                 session.delete(rre);
             }
             transaction.commit();
         }
         catch (Exception ex) {
-            LogUtil.Log("When finish role map service, exception occured, " + ex.toString() + ", service rollback",
-                    RoleMappingController.class.getName(), LogUtil.LogLevelType.ERROR);
+            LogUtil.Log("When finish role map service, exception occurred, " + ex.toString() + ", service rollback",
+                    RoleMappingService.class.getName(), LogUtil.LogLevelType.ERROR);
             transaction.rollback();
         }
     }
@@ -106,9 +106,5 @@ public final class RoleMappingController {
         rrae.setDataVersion(rre.getDataVersion());
         rrae.setTransactionIsolation(rre.getTransactionIsolation());
         return rrae;
-    }
-
-    public static void main(String[] args) {
-        RoleMappingController.FinishRoleMapService("AA1");
     }
 }
