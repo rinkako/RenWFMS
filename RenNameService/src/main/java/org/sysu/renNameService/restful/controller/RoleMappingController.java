@@ -6,10 +6,10 @@ import org.hibernate.Transaction;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import org.sysu.renNameService.entity.RenRolemapEntity;
-import org.sysu.renNameService.repository.RenRuntimerecordRepository;
 import org.sysu.renNameService.restful.dto.ReturnElement;
 import org.sysu.renNameService.restful.dto.ReturnModel;
 import org.sysu.renNameService.restful.dto.StatusCode;
+import org.sysu.renNameService.roleMapping.RoleMappingService;
 import org.sysu.renNameService.utility.TimestampUtil;
 
 import java.util.ArrayList;
@@ -171,6 +171,11 @@ public class RoleMappingController {
                 rnModel = HandleMissingParameters(missingParams);
                 return rnModel;
             }
+
+
+            RoleMappingService.FinishRoleMapService("AA1");
+
+
 
             rnModel.setCode(StatusCode.OK);
             rnModel.setRs(TimestampUtil.GetTimeStamp() + " 0");

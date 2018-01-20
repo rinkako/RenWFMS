@@ -11,11 +11,9 @@ import org.springframework.boot.autoconfigure.domain.EntityScan;
 import org.springframework.boot.context.embedded.ConfigurableEmbeddedServletContainer;
 import org.springframework.boot.context.embedded.EmbeddedServletContainerCustomizer;
 import org.springframework.context.annotation.Bean;
-import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 import org.springframework.orm.jpa.vendor.HibernateJpaSessionFactoryBean;
 
 @SpringBootApplication
-@EnableJpaRepositories(basePackages = "org.sysu.renNameService.repository")
 @EntityScan(basePackages = "org.sysu.renNameService.entity")
 public class RenNameServiceApplication implements EmbeddedServletContainerCustomizer {
 
