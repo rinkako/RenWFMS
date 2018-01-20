@@ -65,7 +65,7 @@ public class EngineBridge {
      * @param payload 附加在事件上的包装
      * @throws ModelException
      */
-    public void SendEventAndTrigger(String executorId, String eventName, Object payload) throws ModelException {
+    public void SendEventAndTrigger(String executorId, String eventName, Object payload) {
         TriggerEvent tevt = new TriggerEvent(eventName, TriggerEvent.SIGNAL_EVENT, payload);
         try {
             if (this.executorMap.containsKey(executorId)) {

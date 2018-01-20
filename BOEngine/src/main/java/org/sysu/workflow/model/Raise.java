@@ -52,7 +52,7 @@ public class Raise extends Action {
      * {@inheritDoc}
      */
     @Override
-    public void execute(ActionExecutionContext exctx) throws ModelException, SCXMLExpressionException {
+    public void execute(ActionExecutionContext exctx) {
 
         if (exctx.getAppLog().isDebugEnabled()) {
             exctx.getAppLog().debug("<raise>: Adding event '" + event + "' to list of derived events.");

@@ -48,8 +48,7 @@ public class SCXMLSystemContext implements Context, Serializable {
      * The set of protected system variables names
      */
     private static final Set<String> PROTECTED_NAMES = new HashSet<String>(Arrays.asList(
-            new String[]{EVENT_KEY, SESSIONID_KEY, SCXML_NAME_KEY, IOPROCESSORS_KEY, X_KEY, INITIATORID_KEY}
-    ));
+            EVENT_KEY, SESSIONID_KEY, SCXML_NAME_KEY, IOPROCESSORS_KEY, X_KEY, INITIATORID_KEY));
 
     /**
      * The wrapped system context

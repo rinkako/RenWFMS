@@ -14,8 +14,8 @@ import java.sql.*;
 public class DBUtils {
 
     private static SessionFactory sessionFactory = null;
-    private static Configuration cfg = new Configuration().configure();;
-    private static ServiceRegistry serviceRegistry = serviceRegistry = new StandardServiceRegistryBuilder().applySettings(cfg.getProperties()).build();;
+    private static Configuration cfg = new Configuration().configure();
+    private static ServiceRegistry serviceRegistry = serviceRegistry = new StandardServiceRegistryBuilder().applySettings(cfg.getProperties()).build();
 
     public static SessionFactory  getSessionFactory(){
 

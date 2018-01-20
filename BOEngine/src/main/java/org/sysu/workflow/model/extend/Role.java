@@ -43,7 +43,7 @@ public class Role extends Action implements Serializable {
     }
 
     @Override
-    public void execute(ActionExecutionContext exctx) throws ModelException, SCXMLExpressionException {
+    public void execute(ActionExecutionContext exctx) {
 
     }
 }

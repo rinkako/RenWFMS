@@ -38,8 +38,7 @@ public class SimpleXMLReporter implements XMLReporter, Serializable {
      * @see XMLReporter#report(String, String, Object, Location)
      */
     public void report(final String message, final String errorType, final Object relatedInformation,
-                       final Location location)
-            throws XMLStreamException {
+                       final Location location) {
         if (log.isWarnEnabled()) {
             log.warn("[" + errorType + "] " + message + " (" + relatedInformation + ") at " + location);
         }

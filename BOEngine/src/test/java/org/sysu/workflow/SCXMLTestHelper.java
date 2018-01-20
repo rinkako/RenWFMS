@@ -117,7 +117,7 @@ public class SCXMLTestHelper {
         return exec.getSCInstance().lookupContext((EnterableState) tt);
     }
 
-    public static void assertState(SCXMLExecutor exec, String expectedStateId) throws Exception {
+    public static void assertState(SCXMLExecutor exec, String expectedStateId) {
         Set<EnterableState> currentStates = exec.getStatus().getStates();
         Assert.assertEquals("Expected 1 simple (leaf) state with id '"
                         + expectedStateId + "' but found " + currentStates.size() + " states instead.",

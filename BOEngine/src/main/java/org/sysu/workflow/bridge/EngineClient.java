@@ -170,7 +170,7 @@ public class EngineClient {
                 if (result.length() > 0) result.append("&");
                 result.append(param)
                         .append("=")
-                        .append(this.urlEncode(value));
+                        .append(urlEncode(value));
             }
         }
         return result.toString();

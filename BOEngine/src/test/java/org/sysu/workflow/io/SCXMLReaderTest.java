@@ -86,7 +86,12 @@ public class SCXMLReaderTest {
 
         InheritableContext inheritableContext = scxml.getInheritedContext();
         Tasks tasks = inheritableContext.getInheritedTasks();
+        System.out.println("guest order的可继承上下文的tasks");
         for(Task task:tasks.getTaskList()){
+            System.out.println(task.getName()+":"+task.getId());
+        }
+        System.out.println("guest order本身的tasks");
+        for(Task task:scxml.getTasks().getTaskList()){
             System.out.println(task.getName()+":"+task.getId());
         }
         Evaluator evaluator = new JexlEvaluator();
@@ -132,7 +137,7 @@ public class SCXMLReaderTest {
 
 
     @Test
-    public void testExecutor() throws Exception {
+    public void testExecutor() {
 /*
         URL url = SCXMLTestHelper.getResource("crowdsourcingTest.xml");
         SCXML scxml = new SCXMLReader().read(url);

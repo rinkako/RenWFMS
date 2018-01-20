@@ -312,11 +312,8 @@ public class JSBindings implements Bindings {
      * @return true if a global bindings (i.e. nashorn Global instance) was ever set by the script engine
      */
     protected boolean hasGlobalBindings() {
-        if (bindings.containsKey(NASHORN_GLOBAL)) {
-            return true;
-        }
+        return bindings.containsKey(NASHORN_GLOBAL);
 
-        return false;
     }
 
     /**

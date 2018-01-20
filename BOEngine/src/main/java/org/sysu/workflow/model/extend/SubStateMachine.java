@@ -97,7 +97,7 @@ public class SubStateMachine extends NamelistHolder implements PathResolverHolde
      * @throws SCXMLExpressionException
      */
     @Override
-    public void execute(ActionExecutionContext exctx) throws ModelException, SCXMLExpressionException {
+    public void execute(ActionExecutionContext exctx) {
         try {
             EnterableState parentState = getParentEnterableState();
             Context ctx = exctx.getContext(parentState);

@@ -100,7 +100,7 @@ public class SubProcess extends Action implements Serializable {
      * @throws ModelException
      * @throws SCXMLExpressionException
      */
-    public void execute(ActionExecutionContext exctx) throws ModelException, SCXMLExpressionException{
+    public void execute(ActionExecutionContext exctx) {
 
     }
 }

@@ -141,7 +141,7 @@ public class JSEvaluator implements Evaluator {
             Object ret = engine.eval(jsExpression, jsBindings);
 
             // copy global bindings attributes to context, so callers may get access to the evaluated variables.
-            copyGlobalBindingsToContext(jsBindings, (JSContext) effectiveContext);
+            copyGlobalBindingsToContext(jsBindings, effectiveContext);
 
             return ret;
 

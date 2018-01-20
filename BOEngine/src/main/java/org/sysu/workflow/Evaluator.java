@@ -51,7 +51,7 @@ public interface Evaluator {
 
         private final String value;
 
-        private AssignType(String value) {
+        AssignType(String value) {
             this.value = value;
         }
 

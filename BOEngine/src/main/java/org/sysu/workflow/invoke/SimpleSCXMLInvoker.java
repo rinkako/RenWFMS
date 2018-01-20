@@ -136,8 +136,7 @@ public class SimpleSCXMLInvoker implements Invoker, Serializable {
      * {@inheritDoc}.
      */
 
-    public void parentEvent(final TriggerEvent evt)
-            throws InvokerException {
+    public void parentEvent(final TriggerEvent evt) {
         if (cancelled) {
             return; // no further processing should take place
         }
@@ -153,8 +152,7 @@ public class SimpleSCXMLInvoker implements Invoker, Serializable {
      * {@inheritDoc}.
      */
 
-    public void cancel()
-            throws InvokerException {
+    public void cancel() {
         cancelled = true;
         executor.addEvent(new TriggerEvent("cancel.invoke." + parentStateId, TriggerEvent.CANCEL_EVENT));
     }

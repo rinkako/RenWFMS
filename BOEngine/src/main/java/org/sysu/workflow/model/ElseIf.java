@@ -49,7 +49,7 @@ public class ElseIf extends Action {
      * {@inheritDoc}
      */
     @Override
-    public void execute(ActionExecutionContext exctx) throws ModelException, SCXMLExpressionException {
+    public void execute(ActionExecutionContext exctx) {
         // nothing to do, the <if> container will take care of this
     }
 

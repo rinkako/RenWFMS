@@ -166,8 +166,7 @@ public class XPathEvaluator implements Evaluator, Serializable {
     /**
      * @see Evaluator#evalScript(Context, String)
      */
-    public Object evalScript(Context ctx, String script)
-            throws SCXMLExpressionException {
+    public Object evalScript(Context ctx, String script) {
         throw new UnsupportedOperationException("Scripts are not supported by the XPathEvaluator");
     }
 
@@ -328,7 +327,7 @@ public class XPathEvaluator implements Evaluator, Serializable {
 
 
     @SuppressWarnings("unchecked")
-    protected JXPathContext getContext(final Context ctx) throws SCXMLExpressionException {
+    protected JXPathContext getContext(final Context ctx) {
         JXPathContext context = JXPathContext.newContext(jxpathContext, new EffectiveContextMap(ctx));
         context.setVariables(new ContextVariables(ctx));
         Map<String, String> namespaces = (Map<String, String>) ctx.get(Context.NAMESPACES_KEY);

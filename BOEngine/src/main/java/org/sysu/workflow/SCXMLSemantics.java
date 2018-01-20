@@ -173,5 +173,5 @@ public interface SCXMLSemantics {
      * @param errRep ErrorReporter to report detailed error info if needed
      * @return true if a given state configuration is legal, false otherwise
      */
-    public boolean isLegalConfiguration(final Set<EnterableState> states, final ErrorReporter errRep);
+    boolean isLegalConfiguration(final Set<EnterableState> states, final ErrorReporter errRep);
 }

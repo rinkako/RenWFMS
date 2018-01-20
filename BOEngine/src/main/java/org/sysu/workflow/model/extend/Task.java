@@ -183,7 +183,7 @@ public class Task extends Action implements Serializable {
      * @param exctx 动作的上下文
      */
     @Override
-    public void execute(ActionExecutionContext exctx) throws ModelException, SCXMLExpressionException {
+    public void execute(ActionExecutionContext exctx) {
 
     }
 }

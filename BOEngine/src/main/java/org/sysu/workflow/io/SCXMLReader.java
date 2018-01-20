@@ -873,7 +873,7 @@ public final class SCXMLReader {
      */
     private static void readFinal(final XMLStreamReader reader, final Configuration configuration, final SCXML scxml,
                                   final State parent)
-            throws XMLStreamException, ModelException, IOException {
+            throws XMLStreamException, ModelException {
 
         Final end = new Final();
         end.setId(readOrGeneratedTransitionTargetId(reader, scxml, ELEM_FINAL));
@@ -933,7 +933,7 @@ public final class SCXMLReader {
      */
     private static void readTransitionalStateSrc(final Configuration configuration, final String src,
                                                  final TransitionalState ts)
-            throws IOException, ModelException, XMLStreamException {
+            throws ModelException {
 
         // Check for URI fragment
         String[] fragments = src.split("#", 2);

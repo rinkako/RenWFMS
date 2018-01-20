@@ -67,7 +67,7 @@ public class Resources extends ParamsContainer implements Serializable {
      * @throws SCXMLExpressionException
      */
     @Override
-    public void execute(ActionExecutionContext exctx) throws ModelException, SCXMLExpressionException {
+    public void execute(ActionExecutionContext exctx) {
 
     }
 }

@@ -79,7 +79,7 @@ public class YAWLAdapter extends EngineClient implements IRouterAdapter {
         try {
             Map<String, String> params = prepareParamMap("connect", null);
             params.put("userid", username);
-            params.put("password", this.encrypt(password, null));
+            params.put("password", encrypt(password, null));
             outResult.append(executeGet(_serviceURI, params));
             return true;
         }

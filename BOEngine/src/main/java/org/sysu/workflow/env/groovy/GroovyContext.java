@@ -126,7 +126,7 @@ public class GroovyContext extends SimpleContext {
         if (evaluator != null) {
             this.vars = (Map<String, Object>)
                     new ObjectInputStream(new ByteArrayInputStream(bytes)) {
-                        protected Class resolveClass(ObjectStreamClass osc) throws IOException, ClassNotFoundException {
+                        protected Class resolveClass(ObjectStreamClass osc) throws ClassNotFoundException {
                             return Class.forName(osc.getName(), true, evaluator.getGroovyClassLoader());
                         }
                     }.readObject();

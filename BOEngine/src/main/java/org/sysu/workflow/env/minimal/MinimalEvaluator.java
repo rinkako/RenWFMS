@@ -45,12 +45,12 @@ public class MinimalEvaluator implements Evaluator, Serializable {
     }
 
 
-    public Object eval(final Context ctx, final String expr) throws SCXMLExpressionException {
+    public Object eval(final Context ctx, final String expr) {
         return expr;
     }
 
 
-    public Boolean evalCond(final Context ctx, final String expr) throws SCXMLExpressionException {
+    public Boolean evalCond(final Context ctx, final String expr) {
         // only support the "In(stateId)" predicate
         String predicate = expr != null ? expr.trim() : "";
         if (predicate.startsWith("In(") && predicate.endsWith(")")) {
@@ -61,17 +61,17 @@ public class MinimalEvaluator implements Evaluator, Serializable {
     }
 
 
-    public Object evalLocation(final Context ctx, final String expr) throws SCXMLExpressionException {
+    public Object evalLocation(final Context ctx, final String expr) {
         return expr;
     }
 
 
-    public void evalAssign(final Context ctx, final String location, final Object data, final AssignType type, final String attr) throws SCXMLExpressionException {
+    public void evalAssign(final Context ctx, final String location, final Object data, final AssignType type, final String attr) {
         throw new UnsupportedOperationException("Assign expressions are not supported by the \"null\" datamodel");
     }
 
 
-    public Object evalScript(final Context ctx, final String script) throws SCXMLExpressionException {
+    public Object evalScript(final Context ctx, final String script) {
         throw new UnsupportedOperationException("Scripts are not supported by the \"null\" datamodel");
     }
 
