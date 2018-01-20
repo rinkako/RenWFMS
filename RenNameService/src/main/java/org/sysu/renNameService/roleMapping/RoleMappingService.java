@@ -10,6 +10,7 @@ import org.sysu.renNameService.entity.RenRolemapEntity;
 import org.sysu.renNameService.utility.HibernateUtil;
 import org.sysu.renNameService.utility.LogUtil;
 
+import javax.transaction.Transactional;
 import java.util.ArrayList;
 import java.util.List;
 
