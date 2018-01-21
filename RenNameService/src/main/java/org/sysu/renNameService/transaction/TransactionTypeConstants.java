@@ -1,6 +1,6 @@
 /*
  * Project Ren @ 2018
- * Rinkako, Arianna, Gordan. SYSU SDCS.
+ * Rinkako, Ariana, Gordan. SYSU SDCS.
  */
 package org.sysu.renNameService.transaction;
 

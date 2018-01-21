@@ -1,17 +1,13 @@
 /*
  * Project Ren @ 2018
- * Rinkako, Arianna, Gordan. SYSU SDCS.
+ * Rinkako, Ariana, Gordan. SYSU SDCS.
  */
 package org.sysu.renNameService.utility;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
-import org.hibernate.cfg.Configuration;
-import org.hibernate.boot.registry.StandardServiceRegistry;
-import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import javax.annotation.PostConstruct;
 
 /**
  * Author: Rinkako
@@ -20,23 +16,25 @@ import javax.annotation.PostConstruct;
  */
 @Component
 public class HibernateUtil {
-
+    /**
+     * Hibernate session factory instance, thread safe.
+     */
     private static SessionFactory sessionFactory;
+
+
+    /**
+     * session object in thread local, thread safe.
+     */
     private static ThreadLocal session = new ThreadLocal();
 
+    /**
+     * Construct hibernate util, binding session factory.
+     * @param sessionFactory session factory instance
+     */
     @Autowired(required = true)
     public HibernateUtil(SessionFactory sessionFactory) {
         HibernateUtil.sessionFactory = sessionFactory;
     }
-
-    /*
-    static {
-        Configuration config = new Configuration().configure();
-        StandardServiceRegistryBuilder sb = new StandardServiceRegistryBuilder().applySettings(config.getProperties());
-        StandardServiceRegistry ssr = sb.build();
-        HibernateUtil.sessionFactory = config.buildSessionFactory(ssr);
-    }
-    */
 
     /**
      * Get session factory, SessionFactory is thread safe.
@@ -62,6 +60,7 @@ public class HibernateUtil {
 
     /**
      * Close active session in this thread.
+     * In normal situation, this method should not be called.
      */
     @SuppressWarnings("unchecked")
     public static void CloseSession() {

@@ -1,5 +1,8 @@
+/*
+ * Project Ren @ 2018
+ * Rinkako, Ariana, Gordan. SYSU SDCS.
+ */
 package org.sysu.renNameService.restful.dto;
-
 import javax.xml.bind.annotation.XmlElement;
 
 /**

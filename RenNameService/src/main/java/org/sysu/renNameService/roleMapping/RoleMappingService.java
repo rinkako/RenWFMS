@@ -1,6 +1,6 @@
 /*
  * Project Ren @ 2018
- * Rinkako, Arianna, Gordan. SYSU SDCS.
+ * Rinkako, Ariana, Gordan. SYSU SDCS.
  */
 package org.sysu.renNameService.roleMapping;
 import org.hibernate.Session;
@@ -9,8 +9,6 @@ import org.sysu.renNameService.entity.RenRolemapArchivedEntity;
 import org.sysu.renNameService.entity.RenRolemapEntity;
 import org.sysu.renNameService.utility.HibernateUtil;
 import org.sysu.renNameService.utility.LogUtil;
-
-import javax.transaction.Transactional;
 import java.util.ArrayList;
 import java.util.List;
 

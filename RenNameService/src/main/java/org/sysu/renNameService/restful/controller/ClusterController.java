@@ -1,11 +1,13 @@
+/*
+ * Project Ren @ 2018
+ * Rinkako, Ariana, Gordan. SYSU SDCS.
+ */
 package org.sysu.renNameService.restful.controller;
-
 import org.springframework.web.bind.annotation.*;
 import org.sysu.renNameService.restful.dto.ReturnElement;
 import org.sysu.renNameService.restful.dto.ReturnModel;
 import org.sysu.renNameService.restful.dto.StatusCode;
 import org.sysu.renNameService.utility.TimestampUtil;
-
 import java.util.ArrayList;
 import java.util.List;
 

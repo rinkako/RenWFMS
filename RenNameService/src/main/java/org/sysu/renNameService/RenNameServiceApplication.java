@@ -1,10 +1,8 @@
-package org.sysu.renNameService;
-
-/**
- * Author: Gordan
- * Date  : 2018/1/19
- * Usage : Ren Name Service Entry Point.
+/*
+ * Project Ren @ 2018
+ * Rinkako, Ariana, Gordan. SYSU SDCS.
  */
+package org.sysu.renNameService;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.autoconfigure.domain.EntityScan;
@@ -14,6 +12,11 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.orm.jpa.vendor.HibernateJpaSessionFactoryBean;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 
+/**
+ * Author: Gordan
+ * Date  : 2018/1/19
+ * Usage : Ren Name Service Entry Point.
+ */
 @SpringBootApplication
 @EnableTransactionManagement
 @EntityScan(basePackages = "org.sysu.renNameService.entity")

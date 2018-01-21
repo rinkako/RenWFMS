@@ -1,5 +1,8 @@
+/*
+ * Project Ren @ 2018
+ * Rinkako, Ariana, Gordan. SYSU SDCS.
+ */
 package org.sysu.renNameService.restful.dto;
-
 import java.io.Serializable;
 
 /**
@@ -16,5 +19,4 @@ public enum StatusCode implements Serializable {
     Exception,
     // Token is unauthorized
     Unauthorized
-
 }
