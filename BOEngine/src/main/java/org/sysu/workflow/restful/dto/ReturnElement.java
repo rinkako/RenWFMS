@@ -1,11 +1,11 @@
-package org.sysu.renNameService.restful.dto;
+package org.sysu.workflow.restful.dto;
 
 import javax.xml.bind.annotation.XmlElement;
 
 /**
- * Author: Gordan
- * Date  : 2018/1/19
- * Usage : Class ReturnElement is used to encapsulate the real data which is returned.
+ * Author: Ariana
+ * Date  : 2018/1/21
+ * Usage : Class ReturnElement is used to encapsulate the real data which returned.
  */
 public class ReturnElement {
     /**

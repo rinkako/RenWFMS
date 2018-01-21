@@ -79,10 +79,10 @@ public class Call extends NamelistHolder implements Serializable {
         EnterableState parentState = getParentEnterableState();
         Context ctx = exctx.getContext(parentState);
         ctx.setLocal(getNamespacesKey(), getNamespaces());
-        Map<String, Object> payloadDataMap = new LinkedHashMap<String,Object>();
+        Map<String, Object> payloadDataMap = new LinkedHashMap();
         addParamsToPayload(exctx, payloadDataMap);
 
-
+        //获取当前BO实例的tasks列表
         Tasks tasks = scxmlExecContext.getSCXMLExecutor().getStateMachine().getTasks();
         if (tasks != null) {
             List<Task> taskList = tasks.getTaskList();

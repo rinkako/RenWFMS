@@ -7,7 +7,10 @@ import org.sysu.workflow.model.extend.Task;
 import org.sysu.workflow.model.extend.Tasks;
 
 import java.util.List;
-
+/**
+ * Business Object Inheritable Context
+ * This class is used to generate InheritableContext of the BO for the runtime.
+ */
 public class InheritableContext {
 
     private Datamodel InheritedDatamodel;
