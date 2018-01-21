@@ -9,13 +9,17 @@ import org.sysu.renNameService.entity.RenRolemapArchivedEntity;
 import org.sysu.renNameService.entity.RenRolemapEntity;
 import org.sysu.renNameService.utility.HibernateUtil;
 import org.sysu.renNameService.utility.LogUtil;
+
+import java.util.AbstractMap;
 import java.util.ArrayList;
 import java.util.List;
+
+import static org.sysu.renNameService.roleMapping.RoleMapParser.Parse;
 
 /**
  * Author: Rinkako
  * Date  : 2018/1/16
- * Usage : All business role map service will be handled in this controller.
+ * Usage : All business role map service will be handled in this service module.
  */
 public final class RoleMappingService {
     // For Resource Service
@@ -83,10 +87,13 @@ public final class RoleMappingService {
     /**
      * Register role map service for a specific process runtime.
      * @param rtid process rtid
-     * @param registerJSON register parameter json string
+     * @param descriptor register parameter descriptor string
      */
-    public static void RegisterRoleMapService(String rtid, String registerJSON) {
-
+    public static void RegisterRoleMapService(String rtid, String descriptor) {
+        ArrayList<AbstractMap.SimpleEntry<String, String>> parsedList = RoleMapParser.Parse(descriptor);
+        for (AbstractMap.SimpleEntry<String, String> kvp : parsedList) {
+            // todo
+        }
     }
 
     /**
