@@ -6,8 +6,6 @@ package org.sysu.renNameService.utility;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.sysu.renNameService.roleMapping.RoleMappingService;
 
-import java.util.ArrayList;
-
 /**
  * Author: Rinkako
  * Date  : 2018/1/22

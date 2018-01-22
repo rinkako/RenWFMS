@@ -13,9 +13,7 @@ import org.springframework.orm.jpa.vendor.HibernateJpaSessionFactoryBean;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 
 /**
- * Author: Gordan
- * Date  : 2018/1/19
- * Usage : Ren Name Service Entry Point.
+ * Ren Name Service Entry Point.
  */
 @SpringBootApplication
 @EnableTransactionManagement
