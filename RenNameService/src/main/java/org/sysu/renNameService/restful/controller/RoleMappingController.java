@@ -3,17 +3,13 @@
  * Rinkako, Ariana, Gordan. SYSU SDCS.
  */
 package org.sysu.renNameService.restful.controller;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import org.hibernate.Session;
-import org.hibernate.SessionFactory;
-import org.hibernate.Transaction;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import org.sysu.renNameService.entity.RenRolemapEntity;
 import org.sysu.renNameService.restful.dto.ReturnElement;
 import org.sysu.renNameService.restful.dto.ReturnModel;
 import org.sysu.renNameService.restful.dto.StatusCode;
 import org.sysu.renNameService.roleMapping.RoleMappingService;
+import org.sysu.renNameService.utility.SerializationUtil;
 import org.sysu.renNameService.utility.TimestampUtil;
 import javax.transaction.Transactional;
 import java.util.ArrayList;
@@ -174,10 +170,7 @@ public class RoleMappingController {
                 return rnModel;
             }
 
-
             RoleMappingService.FinishRoleMapService("AA1");
-
-
 
             rnModel.setCode(StatusCode.OK);
             rnModel.setRs(TimestampUtil.GetTimeStamp() + " 0");
@@ -211,8 +204,7 @@ public class RoleMappingController {
             }
 
             ArrayList<RenRolemapEntity> involves = RoleMappingService.GetInvolvedResource(rtid);
-            ObjectMapper mapper = new ObjectMapper();
-            String jsonifyInvolves = mapper.writeValueAsString(involves);
+            String jsonifyInvolves = SerializationUtil.JsonSerilization(involves);
 
             rnModel.setCode(StatusCode.OK);
             rnModel.setRs(TimestampUtil.GetTimeStamp() + " 0");
