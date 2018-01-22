@@ -28,15 +28,6 @@ final class RoleMapCachePool {
     }
 
     /**
-     * Check if a rtid is already in cached.
-     * @param rtid process rtid
-     * @return Whether key exist
-     */
-    public static Boolean Contains(String rtid) {
-        return RoleMapCachePool.cachePool.get(rtid) == null;
-    }
-
-    /**
      * Retrieve a cached role map.
      * @param rtid process rtid
      * @return Cached role map package instance, null if not exist

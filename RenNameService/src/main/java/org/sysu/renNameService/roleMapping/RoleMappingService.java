@@ -13,8 +13,7 @@ import org.sysu.renNameService.utility.LogUtil;
 import java.util.AbstractMap;
 import java.util.ArrayList;
 import java.util.List;
-
-import static org.sysu.renNameService.roleMapping.RoleMapParser.Parse;
+import java.util.UUID;
 
 /**
  * Author: Rinkako
@@ -40,7 +39,41 @@ public final class RoleMappingService {
      * @return ArrayList of Worker global id string
      */
     public static ArrayList<String> GetWorkerByBusinessRole(String rtid, String bRoleName) {
-        return null;
+        ArrayList<String> retList = new ArrayList<>();
+        CachedRoleMap crm = RoleMapCachePool.Retrieve(rtid);
+        // from steady
+        if (crm == null) {
+            crm = new CachedRoleMap();
+            Session session = HibernateUtil.GetLocalThreadSession();
+            Transaction transaction = session.beginTransaction();
+            try {
+                List qRet = session.createQuery(String.format("FROM RenRolemapEntity WHERE rtid = '%s' AND broleName = '%s'", rtid, bRoleName)).list();
+                for (Object rre : qRet) {
+                    RenRolemapEntity rreObj = (RenRolemapEntity) rre;
+                    retList.add(rreObj.getMappedGid());
+                    crm.addCacheItem(rreObj);
+                }
+                transaction.commit();
+                if (qRet.size() > 0) {
+                    crm.setOrganDataVersion(((RenRolemapEntity) qRet.get(0)).getDataVersion());
+                }
+                RoleMapCachePool.Add(rtid, crm);
+            }
+            catch (Exception ex) {
+                LogUtil.Log("When get worker by business role, exception occurred, " + ex.toString() + ", service rollback",
+                        RoleMappingService.class.getName(), LogUtil.LogLevelType.ERROR);
+                transaction.rollback();
+                throw ex;
+            }
+        }
+        // from cache
+        else {
+            ArrayList<RenRolemapEntity> cachedList = crm.getCacheListByBRole(bRoleName);
+            for (RenRolemapEntity rre : cachedList) {
+                retList.add(rre.getMappedGid());
+            }
+        }
+        return retList;
     }
 
     /**
@@ -50,7 +83,41 @@ public final class RoleMappingService {
      * @return ArrayList of business role name string
      */
     public static ArrayList<String> GetBusinessRoleByGlobalId(String rtid, String globalId) {
-        return null;
+        ArrayList<String> retList = new ArrayList<>();
+        CachedRoleMap crm = RoleMapCachePool.Retrieve(rtid);
+        // from steady
+        if (crm == null) {
+            crm = new CachedRoleMap();
+            Session session = HibernateUtil.GetLocalThreadSession();
+            Transaction transaction = session.beginTransaction();
+            try {
+                List qRet = session.createQuery(String.format("FROM RenRolemapEntity WHERE rtid = '%s' AND mappedGid = '%s'", rtid, globalId)).list();
+                for (Object rre : qRet) {
+                    RenRolemapEntity rreObj = (RenRolemapEntity) rre;
+                    retList.add(rreObj.getBroleName());
+                    crm.addCacheItem(rreObj);
+                }
+                transaction.commit();
+                if (qRet.size() > 0) {
+                    crm.setOrganDataVersion(((RenRolemapEntity) qRet.get(0)).getDataVersion());
+                }
+                RoleMapCachePool.Add(rtid, crm);
+            }
+            catch (Exception ex) {
+                LogUtil.Log("When get business role by gid, exception occurred, " + ex.toString() + ", service rollback",
+                        RoleMappingService.class.getName(), LogUtil.LogLevelType.ERROR);
+                transaction.rollback();
+                throw ex;
+            }
+        }
+        // from cache
+        else {
+            ArrayList<RenRolemapEntity> cachedList = crm.getCacheListByGid(globalId);
+            for (RenRolemapEntity rre : cachedList) {
+                retList.add(rre.getBroleName());
+            }
+        }
+        return retList;
     }
 
     // For BO Engine
@@ -59,7 +126,6 @@ public final class RoleMappingService {
      * Finish role mapping service and dispose cache.
      * @param rtid process rtid
      */
-    @SuppressWarnings("unchecked")
     public static void FinishRoleMapService(String rtid) {
         // remove cache
         RoleMapCachePool.Remove(rtid);
@@ -67,7 +133,7 @@ public final class RoleMappingService {
         Session session = HibernateUtil.GetLocalThreadSession();
         Transaction transaction = session.beginTransaction();
         try {
-            List qRet = session.createQuery(String.format("from RenRolemapEntity where rtid = '%s'", rtid)).list();
+            List qRet = session.createQuery(String.format("FROM RenRolemapEntity WHERE rtid = '%s'", rtid)).list();
             for (Object rre : qRet) {
                 RenRolemapArchivedEntity rrae = RoleMappingService.AchieveRoleMap((RenRolemapEntity) rre);
                 session.save(rrae);
@@ -79,6 +145,7 @@ public final class RoleMappingService {
             LogUtil.Log("When finish role map service, exception occurred, " + ex.toString() + ", service rollback",
                     RoleMappingService.class.getName(), LogUtil.LogLevelType.ERROR);
             transaction.rollback();
+            throw ex;
         }
     }
 
@@ -89,10 +156,38 @@ public final class RoleMappingService {
      * @param rtid process rtid
      * @param descriptor register parameter descriptor string
      */
-    public static void RegisterRoleMapService(String rtid, String descriptor) {
+    public static void RegisterRoleMapService(String rtid, String organGid, String dataVersion, int isolationType, String descriptor) {
         ArrayList<AbstractMap.SimpleEntry<String, String>> parsedList = RoleMapParser.Parse(descriptor);
+        // create cache map
+        CachedRoleMap crm = new CachedRoleMap();
+        crm.setOrganDataVersion(dataVersion);
         for (AbstractMap.SimpleEntry<String, String> kvp : parsedList) {
-            // todo
+            RenRolemapEntity rre = new RenRolemapEntity();
+            String generateUUID = String.format("RoleMap_%s", UUID.randomUUID());
+            rre.setMapId(generateUUID);
+            rre.setRtid(rtid);
+            rre.setBroleName(kvp.getKey());
+            rre.setCorganGid(organGid);
+            rre.setMappedGid(kvp.getValue());
+            rre.setDataVersion(dataVersion);
+            rre.setTransactionIsolation(isolationType);
+            crm.addCacheItem(rre);
+        }
+        // save to steady
+        List<RenRolemapEntity> rreList = crm.getCacheList();
+        Session session = HibernateUtil.GetLocalThreadSession();
+        Transaction transaction = session.beginTransaction();
+        try {
+            for (RenRolemapEntity t : rreList) {
+                session.save(t);
+            }
+            transaction.commit();
+        }
+        catch (Exception ex) {
+            LogUtil.Log("When register role map service, exception occurred, " + ex.toString() + ", service rollback",
+                    RoleMappingService.class.getName(), LogUtil.LogLevelType.ERROR);
+            transaction.rollback();
+            throw ex;
         }
     }
 

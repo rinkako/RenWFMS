@@ -36,8 +36,38 @@ final class CachedRoleMap {
      * Get the cached role maps.
      * @return ArrayList of cached RenRolemapEntity instances
      */
-    public ArrayList<RenRolemapEntity> getList() {
+    public ArrayList<RenRolemapEntity> getCacheList() {
         return this.cacheList;
+    }
+
+    /**
+     * Get the cached specific business role maps.
+     * @param bRole business role name
+     * @return ArrayList of cached RenRolemapEntity instances with a specific business role
+     */
+    public ArrayList<RenRolemapEntity> getCacheListByBRole(String bRole) {
+        ArrayList<RenRolemapEntity> retList = new ArrayList<>();
+        for (RenRolemapEntity rre : this.cacheList) {
+            if (rre.getBroleName().equals(bRole)) {
+                retList.add(rre);
+            }
+        }
+        return retList;
+    }
+
+    /**
+     * Get the cached specific mapped gid role maps.
+     * @param gid global id
+     * @return ArrayList of cached RenRolemapEntity instances with a specific global id
+     */
+    public ArrayList<RenRolemapEntity> getCacheListByGid(String gid) {
+        ArrayList<RenRolemapEntity> retList = new ArrayList<>();
+        for (RenRolemapEntity rre : this.cacheList) {
+            if (rre.getMappedGid().equals(gid)) {
+                retList.add(rre);
+            }
+        }
+        return retList;
     }
 
     // Getters and Setters
