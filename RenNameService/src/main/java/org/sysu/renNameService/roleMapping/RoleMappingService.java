@@ -9,7 +9,6 @@ import org.sysu.renNameService.entity.RenRolemapArchivedEntity;
 import org.sysu.renNameService.entity.RenRolemapEntity;
 import org.sysu.renNameService.utility.HibernateUtil;
 import org.sysu.renNameService.utility.LogUtil;
-
 import java.util.AbstractMap;
 import java.util.ArrayList;
 import java.util.List;
@@ -28,8 +27,29 @@ public final class RoleMappingService {
      * @param rtid process rtid
      * @return String of COrgan response JSON
      */
-    public static String GetInvolvedResource(String rtid) {
-        return null;
+    @SuppressWarnings("unchecked")
+    public static ArrayList<RenRolemapEntity> GetInvolvedResource(String rtid) {
+        CachedRoleMap crm = RoleMapCachePool.Retrieve(rtid);
+        // from steady
+        if (crm == null) {
+            Session session = HibernateUtil.GetLocalThreadSession();
+            Transaction transaction = session.beginTransaction();
+            try {
+                List<RenRolemapEntity> qRet = session.createQuery(String.format("FROM RenRolemapEntity WHERE rtid = '%s'", rtid)).list();
+                transaction.commit();
+                return (ArrayList<RenRolemapEntity>) qRet;
+            }
+            catch (Exception ex) {
+                LogUtil.Log("When get worker by business role, exception occurred, " + ex.toString() + ", service rollback",
+                        RoleMappingService.class.getName(), LogUtil.LogLevelType.ERROR);
+                transaction.rollback();
+                throw ex;
+            }
+        }
+        // from cache
+        else {
+            return crm.getCacheList();
+        }
     }
 
     /**

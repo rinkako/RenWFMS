@@ -3,6 +3,7 @@
  * Rinkako, Ariana, Gordan. SYSU SDCS.
  */
 package org.sysu.renNameService.restful.controller;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
@@ -61,7 +62,7 @@ public class RoleMappingController {
      * @param brole
      * @return Get worker's id by his business role.
      */
-    @GetMapping(value = "/getWorkerByBRole", produces = {"application/json", "application/xml"})
+    @RequestMapping(value = "/getWorkerByBRole", produces = {"application/json", "application/xml"})
     @ResponseBody
     public ReturnModel GetWorkerByBusinessRole(@RequestParam(value="rtid", required = false)String rtid,
                                                @RequestParam(value="brole", required = false)String brole) {
@@ -94,7 +95,7 @@ public class RoleMappingController {
      * @param gid
      * @return
      */
-    @GetMapping(value = "/getBRoleByWorker", produces = {"application/json", "application/xml"})
+    @RequestMapping(value = "/getBRoleByWorker", produces = {"application/json", "application/xml"})
     @ResponseBody
     public ReturnModel GetBusinessRoleByGlobalId(@RequestParam(value="rtid", required = false)String rtid,
                                                  @RequestParam(value="gid", required = false)String gid) {
@@ -127,7 +128,7 @@ public class RoleMappingController {
      * @param map
      * @return
      */
-    @PostMapping(value = "/register", produces = {"application/json", "application/xml"})
+    @RequestMapping(value = "/register", produces = {"application/json", "application/xml"})
     @ResponseBody
     public ReturnModel RegisterRoleMapService(@RequestParam(value="rtid", required = false)String rtid,
                                               @RequestParam(value="map", required = false)String map) {
@@ -159,7 +160,7 @@ public class RoleMappingController {
      * @param rtid
      * @return
      */
-    @PostMapping(value = "/fin", produces = {"application/json", "application/xml"})
+    @RequestMapping(value = "/fin", produces = {"application/json", "application/xml"})
     @ResponseBody
     @Transactional
     public ReturnModel FinishRoleMapService(@RequestParam(value="rtid", required = false)String rtid) {
@@ -195,8 +196,9 @@ public class RoleMappingController {
      * @param rtid
      * @return
      */
-    @GetMapping(value = "/getInvolved", produces = {"application/json", "application/xml"})
+    @RequestMapping(value = "/getInvolved", produces = {"application/json", "application/xml"})
     @ResponseBody
+    @Transactional
     public ReturnModel GetInvolvedResource(@RequestParam(value="rtid", required = false)String rtid) {
         ReturnModel rnModel = new ReturnModel();
         try {
@@ -208,10 +210,14 @@ public class RoleMappingController {
                 return rnModel;
             }
 
+            ArrayList<RenRolemapEntity> involves = RoleMappingService.GetInvolvedResource(rtid);
+            ObjectMapper mapper = new ObjectMapper();
+            String jsonifyInvolves = mapper.writeValueAsString(involves);
+
             rnModel.setCode(StatusCode.OK);
             rnModel.setRs(TimestampUtil.GetTimeStamp() + " 0");
             ReturnElement returnElement = new ReturnElement();
-            returnElement.setData("GetInvolvedResource");
+            returnElement.setData(jsonifyInvolves);
             rnModel.setReturnElement(returnElement);
         } catch (Exception e) {
             rnModel = ExceptionHandlerFunction(e.getClass().getName());
