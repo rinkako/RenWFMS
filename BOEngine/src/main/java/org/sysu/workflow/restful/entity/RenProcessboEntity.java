@@ -20,7 +20,7 @@ public class RenProcessboEntity {
     }
 
     @Basic
-    @Column(name = "process_id", nullable = false, length = 64)
+    @Column(name = "pid", nullable = false, length = 64)
     public String getProcessId() {
         return processId;
     }
@@ -30,7 +30,7 @@ public class RenProcessboEntity {
     }
 
     @Basic
-    @Column(name = "bo_id", nullable = true, length = 64)
+    @Column(name = "boid", nullable = true, length = 64)
     public String getBoId() {
         return boId;
     }

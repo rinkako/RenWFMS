@@ -4,7 +4,6 @@ import org.hibernate.Session;
 import org.hibernate.Transaction;
 import org.sysu.workflow.Context;
 import org.sysu.workflow.Evaluator;
-import org.sysu.workflow.EvaluatorFactory;
 import org.sysu.workflow.SCXMLExecutor;
 import org.sysu.workflow.env.MulitStateMachineDispatcher;
 import org.sysu.workflow.env.SimpleErrorReporter;
@@ -18,7 +17,6 @@ import org.sysu.workflow.restful.utility.LogUtil;
 
 import java.io.ByteArrayInputStream;
 import java.io.InputStream;
-import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -26,31 +24,29 @@ import java.util.List;
  * Date  : 2018/1/22
  * Usage : All xml document parse service will be handled in this service module.
  */
-public final class ReadXMLService {
+public final class LaunchProcessService {
     /**
      * obtain xml document from database according to the process id and root bo id, and then read it
      * @param pid process id
      * @param roid root BO id
      */
-    public static void ReadXML(String pid, String roid) {
+    public static void LaunchProcess(String pid, String roid) {
         Session session = HibernateUtil.GetLocalThreadSession();
         Transaction transaction = session.beginTransaction();
         try {
             //根据process id从db中找到该process关联的bo(可能是多个)
-            List pbResult = session.createQuery(String.format("FROM RenProcessboEntity WHERE process_id = '%s'", pid)).list();
-//            List<String> boidList = new ArrayList<String>();
+            List pbResult = session.createQuery(String.format("FROM RenProcessboEntity WHERE pid = '%s'", pid)).list();
             for (Object pb : pbResult) {
                 RenProcessboEntity renProcessboEntity = (RenProcessboEntity) pb;
                 String boid = renProcessboEntity.getBoId();
-                System.out.println(boid);
-                //根据root bo id找到root bo的content
+                //根据bo id找到root bo的content
                 if(boid.equals(roid)) {
                     List boResult = session.createQuery(String.format("FROM RenBoEntity WHERE boid = '%s'", boid)).list();
                     for (Object bo : boResult) {
                         RenBoEntity boEntity = (RenBoEntity) bo;
                         String boContent = boEntity.getBoContent();
                         //read bo content and then go it
-                        ReadXMLService.executeBO(boContent);
+                        LaunchProcessService.executeBO(boContent);
                         break;
                     }
                     break;
@@ -60,7 +56,7 @@ public final class ReadXMLService {
         } catch (Exception e) {
             e.printStackTrace();
             LogUtil.Log("When read bo content by pid and roid, exception occurred, " + e.toString() + ", service rollback",
-                    ReadXMLService.class.getName(), LogUtil.LogLevelType.ERROR);
+                    LaunchProcessService.class.getName(), LogUtil.LogLevelType.ERROR);
             transaction.rollback();
         }
     }

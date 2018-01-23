@@ -1,7 +1,7 @@
 package org.sysu.workflow.restful.controller;
 
 import org.springframework.web.bind.annotation.*;
-import org.sysu.workflow.restful.service.ReadXMLService;
+import org.sysu.workflow.restful.service.LaunchProcessService;
 import org.sysu.workflow.restful.utility.TimestampUtil;
 import org.sysu.workflow.restful.dto.ReturnElement;
 import org.sysu.workflow.restful.dto.ReturnModel;
@@ -17,7 +17,7 @@ import java.util.List;
  * Usage : Handle requests from other modules.
  */
 @RestController
-@RequestMapping("/engine")
+@RequestMapping("/boengine")
 public class EngineController {
     /**
      * read xml document from database according to the file name, and then go it
@@ -25,10 +25,10 @@ public class EngineController {
      * @param roid root BO id
      * @return
      */
-    @RequestMapping(value = "/read", produces = {"application/json", "application/xml"})
+    @RequestMapping(value = "/launch", produces = {"application/json", "application/xml"})
     @ResponseBody
     @Transactional
-    public ReturnModel ReadXML(@RequestParam(value = "pid", required = false) String pid,
+    public ReturnModel LaunchProcess(@RequestParam(value = "pid", required = false) String pid,
                                @RequestParam(value = "roid", required = false) String roid) {
         ReturnModel rnModel = new ReturnModel();
         try{
@@ -40,13 +40,13 @@ public class EngineController {
                 rnModel = ExcepetionHandler.HandleMissingParameters(missingParams);
                 return rnModel;
             }
-            //logic(haven't test)
-            ReadXMLService.ReadXML(pid, roid);
+            //logic
+            LaunchProcessService.LaunchProcess(pid, roid);
             //return
             rnModel.setCode(StatusCode.OK);
             rnModel.setRs(TimestampUtil.GetTimeStamp() + " 0");
             ReturnElement returnElement = new ReturnElement();
-            returnElement.setData("ReadXML");
+            returnElement.setData("LaunchProcess");
             rnModel.setReturnElement(returnElement);
         }catch (Exception e){
             rnModel = ExcepetionHandler.HandleException(e.getClass().getName());
