@@ -95,12 +95,13 @@ public final class LogUtil {
     public static synchronized void FlushLog() {
         LogUtil.readWriteLock.writeLock().lock();
         if (LogUtil.logBuffer.size() == 0) {
+            LogUtil.readWriteLock.writeLock().unlock();
             return;
         }
         Session session = HibernateUtil.GetLocalThreadSession();
         Transaction transaction = session.beginTransaction();
         try {
-            LogMessagePackage lmp = null;
+            LogMessagePackage lmp;
             while ((lmp = LogUtil.logBuffer.poll()) != null) {
                 transaction.begin();
                 RenNslogEntity rnle = new RenNslogEntity();
@@ -113,7 +114,7 @@ public final class LogUtil {
             transaction.commit();
         }
         catch (Exception ex) {
-            LogUtil.Echo("Flush log exception: " + ex, LogUtil.class.getName(), LogLevelType.ERROR);
+            LogUtil.Echo("Flush log exception, " + ex, LogUtil.class.getName(), LogLevelType.ERROR);
             transaction.rollback();
         }
         finally {

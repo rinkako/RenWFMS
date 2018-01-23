@@ -3,12 +3,12 @@
  * Rinkako, Ariana, Gordan. SYSU SDCS.
  */
 package org.sysu.renNameService.entity;
-
 import javax.persistence.*;
 import java.sql.Timestamp;
 import java.util.Objects;
 
 /**
+ * Author: Rinkako
  * Date  : 2018/1/23
  * Usage :
  */

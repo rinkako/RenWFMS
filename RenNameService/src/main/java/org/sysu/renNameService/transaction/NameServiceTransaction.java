@@ -3,7 +3,8 @@
  * Rinkako, Ariana, Gordan. SYSU SDCS.
  */
 package org.sysu.renNameService.transaction;
-import java.util.Date;
+import org.sysu.renNameService.entity.RenNsTransactionEntity;
+import java.util.Hashtable;
 
 /**
  * Author: Rinkako
@@ -12,83 +13,39 @@ import java.util.Date;
  *         by this class instance before being processed.
  */
 public final class NameServiceTransaction {
-    /**
-     * Transaction unique id.
-     */
-    private String transactionId;
 
     /**
-     * Transaction type.
+     * Add parameter key value to parameter dictionary.
+     * @param key param key
+     * @param value param value
      */
-    private TransactionType type;
+    public void AddParameter(String key, Object value) {
+        this.parameterDictionary.put(key, value);
+    }
 
     /**
-     * Transaction request invoker global id.
+     * Get transaction parameter dictionary.
+     * @return a HashTable for request parameters.
      */
-    private String requestInvoker;
+    public Hashtable<String, Object> getParameterDictionary() {
+        return parameterDictionary;
+    }
 
     /**
-     * Transaction create timestamp.
+     * Get transaction persist context.
+     * @return {@see RenNsTransactionEntity} instance.
      */
-    private Date acceptTimestamp;
+    public RenNsTransactionEntity getTransactionContext() {
+        return transactionContext;
+    }
 
     /**
-     * Transaction begin to process timestamp.
+     * Service request parameters.
      */
-    private Date scheduledTimestamp;
+    private Hashtable<String, Object> parameterDictionary = new Hashtable<>();
 
     /**
-     * Service context of this transaction.
+     * Transaction context for persistence.
      */
-    private Object entityContext;
-
-    // Getters and Setters
-
-    public String getTransactionId() {
-        return transactionId;
-    }
-
-    public void setTransactionId(String transactionId) {
-        this.transactionId = transactionId;
-    }
-
-    public TransactionType getType() {
-        return type;
-    }
-
-    public void setType(TransactionType type) {
-        this.type = type;
-    }
-
-    public Date getAcceptTimestamp() {
-        return acceptTimestamp;
-    }
-
-    public void setAcceptTimestamp(Date acceptTimestamp) {
-        this.acceptTimestamp = acceptTimestamp;
-    }
-
-    public Date getScheduledTimestamp() {
-        return scheduledTimestamp;
-    }
-
-    public void setScheduledTimestamp(Date scheduledTimestamp) {
-        this.scheduledTimestamp = scheduledTimestamp;
-    }
-
-    public Object getEntityContext() {
-        return entityContext;
-    }
-
-    public void setEntityContext(Object entityContext) {
-        this.entityContext = entityContext;
-    }
-
-    public String getRequestInvoker() {
-        return requestInvoker;
-    }
-
-    public void setRequestInvoker(String requestInvoker) {
-        this.requestInvoker = requestInvoker;
-    }
+    private RenNsTransactionEntity transactionContext = new RenNsTransactionEntity();
 }

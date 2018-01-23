@@ -1,9 +1,17 @@
+/*
+ * Project Ren @ 2018
+ * Rinkako, Ariana, Gordan. SYSU SDCS.
+ */
 package org.sysu.renNameService.entity;
-
 import javax.persistence.*;
 import java.sql.Timestamp;
 import java.util.Objects;
 
+/**
+ * Author: Rinkako
+ * Date  : 2018/1/21
+ * Usage :
+ */
 @Entity
 @Table(name = "ren_runtimerecord", schema = "rennameservice")
 public class RenRuntimerecordEntity {
