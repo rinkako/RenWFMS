@@ -8,22 +8,14 @@
     <session-factory>
         <property name="connection.driver_class">com.mysql.jdbc.Driver</property>
         <property name="connection.url">jdbc:mysql://localhost:3306/rennameservice</property>
+        <property name="connection.username">root</property>
+        <property name="connection.password">43420024</property>
         <property name="connection.pool_size">1</property>
-        <property name="dialect">org.hibernate.dialect.MySQLDialect</property>
+        <property name="dialect">org.hibernate.dialect.MySQL5Dialect</property>
         <property name="current_session_context_class">thread</property>
         <property name="show_sql">true</property>
         <property name="format_sql">true</property>
         <property name="hibernate.event.merge.entity_copy_observer">allow</property>
-
-
-        <mapping class="org.sysu.workflow.entity.GroupEntity"/>
-        <mapping class="org.sysu.workflow.entity.UserEntity"/>
-        <mapping class="org.sysu.workflow.entity.UserWorkItemEntity"/>
-        <mapping class="org.sysu.workflow.entity.GroupWorkItemEntity"/>
-        <mapping class="org.sysu.workflow.entity.ProcessInstanceEntity"/>
-        <mapping class="org.sysu.workflow.entity.FormEntity"/>
-        <mapping class="org.sysu.workflow.entity.FormItemEntity"/>
-        <mapping class="org.sysu.renNameService.entity.RenNslogEntity"/>
 
     </session-factory>
 

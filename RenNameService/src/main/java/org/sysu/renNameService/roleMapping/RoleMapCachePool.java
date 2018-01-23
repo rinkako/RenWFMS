@@ -23,7 +23,7 @@ final class RoleMapCachePool {
      * @param roleMap role map package
      * @return Whether replace exist item
      */
-    public static Boolean Add(String rtid, CachedRoleMap roleMap) {
+    public synchronized static Boolean Add(String rtid, CachedRoleMap roleMap) {
         return RoleMapCachePool.cachePool.put(rtid, roleMap) != null;
     }
 
@@ -32,7 +32,7 @@ final class RoleMapCachePool {
      * @param rtid process rtid
      * @return Cached role map package instance, null if not exist
      */
-    public static CachedRoleMap Retrieve(String rtid) {
+    public synchronized static CachedRoleMap Retrieve(String rtid) {
         return RoleMapCachePool.cachePool.get(rtid);
     }
 
@@ -41,14 +41,14 @@ final class RoleMapCachePool {
      * @param rtid process rtid
      * @return Whether key exist before being removed
      */
-    public static Boolean Remove(String rtid) {
+    public synchronized static Boolean Remove(String rtid) {
         return RoleMapCachePool.cachePool.remove(rtid) != null;
     }
 
     /**
      * Remove all cached role maps.
      */
-    public static void Clear() {
+    public synchronized static void Clear() {
         RoleMapCachePool.cachePool.clear();
     }
 }

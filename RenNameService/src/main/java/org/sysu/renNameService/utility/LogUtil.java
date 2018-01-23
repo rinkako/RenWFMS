@@ -4,6 +4,11 @@
  */
 package org.sysu.renNameService.utility;
 
+import org.hibernate.Session;
+import org.hibernate.Transaction;
+import org.sysu.renNameService.entity.RenNslogEntity;
+import java.sql.Timestamp;
+
 /**
  * Author: Rinkako
  * Date  : 2018/1/18
@@ -46,7 +51,38 @@ public final class LogUtil {
      * @param level message level
      */
     public static void Log(String msg, String label, LogLevelType level) {
+        LogUtil.ActualLog(msg, label, level, 0);
+    }
+
+    /**
+     * Write log to steady.
+     * @param msg message text
+     * @param label message label
+     * @param level message level
+     * @param depth exception depth
+     */
+    private static void ActualLog(String msg, String label, LogLevelType level, int depth) {
         LogUtil.Echo(msg, label, level);
+        if (depth > 1) {
+            return;
+        }
+        Session session = HibernateUtil.GetLocalThreadSession();
+        Transaction transaction = session.beginTransaction();
+        try {
+            transaction.begin();
+            RenNslogEntity rnle = new RenNslogEntity();
+            rnle.setLabel(label);
+            rnle.setLevel(level.name());
+            rnle.setMessage(msg);
+            rnle.setTimestamp(new Timestamp(System.currentTimeMillis()));
+            session.save(rnle);
+            transaction.commit();
+        }
+        catch (Exception ex) {
+            transaction.rollback();
+            LogUtil.ActualLog("When logging, exception occurred" + ex, LogUtil.class.getName(),
+                    LogLevelType.ERROR, depth + 1);
+        }
     }
 
     /**
