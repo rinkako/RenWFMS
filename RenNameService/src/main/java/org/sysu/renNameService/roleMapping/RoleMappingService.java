@@ -41,7 +41,7 @@ public final class RoleMappingService {
             }
             catch (Exception ex) {
                 LogUtil.Log("When get worker by business role, exception occurred, " + ex.toString() + ", service rollback",
-                        RoleMappingService.class.getName(), LogUtil.LogLevelType.ERROR);
+                        RoleMappingService.class.getName(), LogUtil.LogLevelType.ERROR, rtid);
                 transaction.rollback();
                 throw ex;
             }
@@ -81,7 +81,7 @@ public final class RoleMappingService {
             }
             catch (Exception ex) {
                 LogUtil.Log("When get worker by business role, exception occurred, " + ex.toString() + ", service rollback",
-                        RoleMappingService.class.getName(), LogUtil.LogLevelType.ERROR);
+                        RoleMappingService.class.getName(), LogUtil.LogLevelType.ERROR, rtid);
                 transaction.rollback();
                 throw ex;
             }
@@ -125,7 +125,7 @@ public final class RoleMappingService {
             }
             catch (Exception ex) {
                 LogUtil.Log("When get business role by gid, exception occurred, " + ex.toString() + ", service rollback",
-                        RoleMappingService.class.getName(), LogUtil.LogLevelType.ERROR);
+                        RoleMappingService.class.getName(), LogUtil.LogLevelType.ERROR, rtid);
                 transaction.rollback();
                 throw ex;
             }
@@ -163,7 +163,7 @@ public final class RoleMappingService {
         }
         catch (Exception ex) {
             LogUtil.Log("When finish role map service, exception occurred, " + ex.toString() + ", service rollback",
-                    RoleMappingService.class.getName(), LogUtil.LogLevelType.ERROR);
+                    RoleMappingService.class.getName(), LogUtil.LogLevelType.ERROR, rtid);
             transaction.rollback();
             throw ex;
         }
@@ -205,7 +205,7 @@ public final class RoleMappingService {
         }
         catch (Exception ex) {
             LogUtil.Log("When register role map service, exception occurred, " + ex.toString() + ", service rollback",
-                    RoleMappingService.class.getName(), LogUtil.LogLevelType.ERROR);
+                    RoleMappingService.class.getName(), LogUtil.LogLevelType.ERROR, rtid);
             transaction.rollback();
             throw ex;
         }

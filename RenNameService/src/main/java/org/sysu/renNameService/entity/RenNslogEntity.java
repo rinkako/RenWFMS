@@ -13,13 +13,14 @@ import java.util.Objects;
  * Usage :
  */
 @Entity
-@Table(name = "ren_nslog", schema = "rennameservice")
+@Table(name = "ren_nslog", schema = "rennameservice", catalog = "")
 public class RenNslogEntity {
     private int id;
     private String label;
     private String level;
     private String message;
     private Timestamp timestamp;
+    private String rtid;
 
     @Id
     @Column(name = "id", nullable = false)
@@ -69,6 +70,16 @@ public class RenNslogEntity {
 
     public void setTimestamp(Timestamp timestamp) {
         this.timestamp = timestamp;
+    }
+
+    @Basic
+    @Column(name = "rtid", nullable = true, length = 64)
+    public String getRtid() {
+        return rtid;
+    }
+
+    public void setRtid(String rtid) {
+        this.rtid = rtid;
     }
 
     @Override
