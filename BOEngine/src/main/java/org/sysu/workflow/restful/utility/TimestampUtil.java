@@ -1,4 +1,4 @@
-package org.sysu.workflow.utility;
+package org.sysu.workflow.restful.utility;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
