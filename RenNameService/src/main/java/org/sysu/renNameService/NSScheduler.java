@@ -82,8 +82,7 @@ public class NSScheduler implements Observer {
         LogUtil.Log(String.format("NSTransaction is scheduled to execute: %s", nst.getTransactionContext().getNsid()),
                 NSScheduler.class.getName(), nst.getTransactionContext().getRtid());
         nst.getTransactionContext().setScheduledTimestamp(new Timestamp(System.currentTimeMillis()));
-        NSExecutor executor = new NSExecutor();
-        executor.addObserver(this);
+        NSExecutor executor = new NSExecutor(this);
         this.executingSetLock.lock();
         this.ExecutingTransactionSet.add(nst);
         this.executingSetLock.unlock();

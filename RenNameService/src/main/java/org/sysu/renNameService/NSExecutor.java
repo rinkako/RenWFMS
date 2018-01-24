@@ -19,6 +19,7 @@ import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.Hashtable;
 import java.util.Observable;
+import java.util.Observer;
 
 /**
  * Author: Rinkako
@@ -26,6 +27,13 @@ import java.util.Observable;
  * Usage : This class is used to actually process a transaction.
  */
 public class NSExecutor extends Observable {
+    /**
+     * Create a new name service transaction executor.
+     * @param executorObserver executor supervisor
+     */
+    NSExecutor(Observer executorObserver) {
+        this.addObserver(executorObserver);
+    }
 
     /**
      * Execute name service transaction synchronously.
@@ -46,18 +54,23 @@ public class NSExecutor extends Observable {
                         case "getWorkerByBRole":
                             ArrayList<String> bRoles = RoleMappingService.GetWorkerByBusinessRole(rtid, (String) args.get("brole"));
                             retStr = SerializationUtil.JsonSerilization(bRoles, rtid);
+                            break;
                         case "getBRoleByWorker":
                             ArrayList<String> gidList = RoleMappingService.GetBusinessRoleByGlobalId(rtid, (String) args.get("gid"));
                             retStr = SerializationUtil.JsonSerilization(gidList, rtid);
+                            break;
                         case "register":
                             RoleMappingService.RegisterRoleMapService(rtid, (String) args.get("organGid"), (String) args.get("dataVersion"), Integer.valueOf((String) args.get("isolationType")), (String) args.get("map"));
                             retStr = "OK";
+                            break;
                         case "fin":
                             RoleMappingService.FinishRoleMapService(rtid);
                             retStr = "OK";
+                            break;
                         case "getInvolved":
                             ArrayList<RenRolemapEntity> involves = RoleMappingService.GetInvolvedResource(rtid);
                             retStr = SerializationUtil.JsonSerilization(involves, rtid);
+                            break;
                     }
                     // write success info to db
                     Session session = HibernateUtil.GetLocalThreadSession();
