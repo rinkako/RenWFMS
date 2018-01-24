@@ -21,7 +21,7 @@ public class BOInheritHandler {
         if (deliver == null || baseName == null || baseName.length() <= 0) {
             return null;
         }
-        Stack<SCXML> inheritObjectStack = new Stack();
+        Stack<SCXML> inheritObjectStack = new Stack<SCXML>();
         BOInheritHandler.RecursiveInheritHandler(baseName, inheritObjectStack);
         InheritableContext inheritor = new InheritableContext();
         BOInheritHandler.GenerateInheritableContext(inheritor, inheritObjectStack);

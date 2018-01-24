@@ -85,13 +85,16 @@ public class RoleMappingController {
                 return rnModel;
             }
             // logic
-            ArrayList<String> bRoles = RoleMappingService.GetWorkerByBusinessRole(rtid, brole);
-            String jsonifyBRoles = SerializationUtil.JsonSerilization(bRoles, rtid);
+            HashMap<String, String> args = new HashMap<>();
+            args.put("rtid", rtid);
+            args.put("brole", brole);
+            NameServiceTransaction t = TransactionCreator.Create(TransactionType.BusinessRoleMapping, "getWorkerByBRole", args);
+            String jsonifyResult = (String) RoleMappingController.scheduler.Schedule(t);
             // return
             rnModel.setCode(StatusCode.OK);
             rnModel.setRs(TimestampUtil.GetTimeStamp() + " 0");
             ReturnElement returnElement = new ReturnElement();
-            returnElement.setData(jsonifyBRoles);
+            returnElement.setData(jsonifyResult);
             rnModel.setReturnElement(returnElement);
         } catch (Exception e) {
             rnModel = ExceptionHandlerFunction(e.getClass().getName());
@@ -120,13 +123,16 @@ public class RoleMappingController {
                 return rnModel;
             }
             // logic
-            ArrayList<String> gidList = RoleMappingService.GetBusinessRoleByGlobalId(rtid, gid);
-            String jsonifyList = SerializationUtil.JsonSerilization(gidList, rtid);
+            HashMap<String, String> args = new HashMap<>();
+            args.put("rtid", rtid);
+            args.put("gid", gid);
+            NameServiceTransaction t = TransactionCreator.Create(TransactionType.BusinessRoleMapping, "getBRoleByWorker", args);
+            String jsonifyResult = (String) RoleMappingController.scheduler.Schedule(t);
             // return
             rnModel.setCode(StatusCode.OK);
             rnModel.setRs(TimestampUtil.GetTimeStamp() + " 0");
             ReturnElement returnElement = new ReturnElement();
-            returnElement.setData(jsonifyList);
+            returnElement.setData(jsonifyResult);
             rnModel.setReturnElement(returnElement);
         } catch (Exception e) {
             rnModel = ExceptionHandlerFunction(e.getClass().getName());
@@ -156,21 +162,28 @@ public class RoleMappingController {
             // miss params
             List<String> missingParams = new ArrayList<>();
             if (rtid == null) missingParams.add("rtid");
-            if (map == null) missingParams.add("organgid");
-            if (map == null) missingParams.add("dataversion");
-            if (map == null) missingParams.add("isolationtype");
+            if (organGid == null) missingParams.add("organgid");
+            if (dataVersion == null) missingParams.add("dataversion");
+            if (isolationType == null) missingParams.add("isolationtype");
             if (map == null) missingParams.add("map");
             if (missingParams.size() > 0) {
                 rnModel = HandleMissingParameters(missingParams);
                 return rnModel;
             }
             // logic
-            RoleMappingService.RegisterRoleMapService(rtid, organGid, dataVersion, Integer.valueOf(isolationType), map);
+            HashMap<String, String> args = new HashMap<>();
+            args.put("rtid", rtid);
+            args.put("organGid", organGid);
+            args.put("dataVersion", dataVersion);
+            args.put("isolationType", isolationType);
+            args.put("map", map);
+            NameServiceTransaction t = TransactionCreator.Create(TransactionType.BusinessRoleMapping, "register", args);
+            String jsonifyResult = (String) RoleMappingController.scheduler.Schedule(t);
             // return
             rnModel.setCode(StatusCode.OK);
             rnModel.setRs(TimestampUtil.GetTimeStamp() + " 0");
             ReturnElement returnElement = new ReturnElement();
-            returnElement.setData("OK");
+            returnElement.setData(jsonifyResult);
             rnModel.setReturnElement(returnElement);
         } catch (Exception e) {
             rnModel = ExceptionHandlerFunction(e.getClass().getName());
@@ -197,12 +210,15 @@ public class RoleMappingController {
                 return rnModel;
             }
             // logic
-            RoleMappingService.FinishRoleMapService(rtid);
+            HashMap<String, String> args = new HashMap<>();
+            args.put("rtid", rtid);
+            NameServiceTransaction t = TransactionCreator.Create(TransactionType.BusinessRoleMapping, "fin", args);
+            String jsonifyResult = (String) RoleMappingController.scheduler.Schedule(t);
             // return
             rnModel.setCode(StatusCode.OK);
             rnModel.setRs(TimestampUtil.GetTimeStamp() + " 0");
             ReturnElement returnElement = new ReturnElement();
-            returnElement.setData("OK");
+            returnElement.setData(jsonifyResult);
             rnModel.setReturnElement(returnElement);
         } catch (Exception e) {
             rnModel = ExceptionHandlerFunction(e.getClass().getName());
@@ -232,12 +248,12 @@ public class RoleMappingController {
             HashMap<String, String> args = new HashMap<>();
             args.put("rtid", rtid);
             NameServiceTransaction t = TransactionCreator.Create(TransactionType.BusinessRoleMapping, "getInvolved", args);
-            String jsonifyInvolves = (String) RoleMappingController.scheduler.Schedule(t);
+            String jsonifyResult = (String) RoleMappingController.scheduler.Schedule(t);
             // return
             rnModel.setCode(StatusCode.OK);
             rnModel.setRs(TimestampUtil.GetTimeStamp() + " 0");
             ReturnElement returnElement = new ReturnElement();
-            returnElement.setData(jsonifyInvolves);
+            returnElement.setData(jsonifyResult);
             rnModel.setReturnElement(returnElement);
         } catch (Exception e) {
             rnModel = ExceptionHandlerFunction(e.getClass().getName());
