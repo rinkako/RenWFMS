@@ -9,6 +9,7 @@ package org.sysu.renNameService.transaction;
  * Date  : 2018/1/17
  * Usage : Enum of name service transaction isolation level
  */
-enum NTIsolationType {
-    RepeatableRead, ReadCommitted
+public enum NTIsolationType {
+    RepeatableRead,
+    ReadCommitted
 }

@@ -13,7 +13,7 @@ import java.util.Objects;
  * Usage :
  */
 @Entity
-@Table(name = "ren_ns_transaction", schema = "rennameservice", catalog = "")
+@Table(name = "ren_ns_transaction", schema = "rennameservice")
 public class RenNsTransactionEntity {
     private String nsid;
     private Integer type;
@@ -22,6 +22,8 @@ public class RenNsTransactionEntity {
     private Timestamp scheduledTimestamp;
     private String context;
     private Timestamp finishTimestamp;
+    private int priority;
+    private String rtid;
 
     @Id
     @Column(name = "nsid", nullable = false, length = 64)
@@ -91,6 +93,26 @@ public class RenNsTransactionEntity {
 
     public void setFinishTimestamp(Timestamp finishTimestamp) {
         this.finishTimestamp = finishTimestamp;
+    }
+
+    @Basic
+    @Column(name = "priority", nullable = false)
+    public int getPriority() {
+        return priority;
+    }
+
+    public void setPriority(int priority) {
+        this.priority = priority;
+    }
+
+    @Basic
+    @Column(name = "rtid", nullable = true, length = 64)
+    public String getRtid() {
+        return rtid;
+    }
+
+    public void setRtid(String rtid) {
+        this.rtid = rtid;
     }
 
     @Override

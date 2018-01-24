@@ -6,10 +6,11 @@ package org.sysu.renNameService.transaction;
 
 /**
  * Author: Rinkako
- * Date  : 2018/1/17
- * Usage : Enum of name service transaction level
+ * Date  : 2018/1/24
+ * Usage :
  */
-public enum TransactionType {
-    Namespacing,
-    BusinessRoleMapping
+public enum ConcurrentControlType {
+    None,
+    StandaloneControl,
+    GlobalControl
 }

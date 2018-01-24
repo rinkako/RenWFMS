@@ -12,7 +12,7 @@ import java.util.Hashtable;
  * Usage : All requests sent to Name service engine will be packaged
  *         by this class instance before being processed.
  */
-public final class NameServiceTransaction {
+public final class NameServiceTransaction implements Comparable {
 
     /**
      * Add parameter key value to parameter dictionary.
@@ -37,6 +37,14 @@ public final class NameServiceTransaction {
      */
     public RenNsTransactionEntity getTransactionContext() {
         return transactionContext;
+    }
+
+    @Override
+    public int compareTo(Object arg) {
+        NameServiceTransaction otherTrans = (NameServiceTransaction)arg;
+        int otherPriority = otherTrans.getTransactionContext().getPriority();
+        int myPriority = this.transactionContext.getPriority();
+        return Integer.compare(myPriority, otherPriority);
     }
 
     /**
