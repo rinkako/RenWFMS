@@ -10,6 +10,15 @@ import org.sysu.renNameService.transaction.ConcurrentControlType;
  */
 public final class GlobalConfigContext {
     /**
+     * Transaction action key in argument dict.
+     */
+    public static final String TRANSACTION_ACTION_KEY = "?action";
+
+    public static final String TRANSACTION_EXECUTOR_SUCCESS = "success";
+
+    public static final String TRANSACTION_EXECUTOR_FAILED = "fail";
+
+    /**
      * Size for log buffer.
      */
     public static final int LOG_BUFFER_SIZE = 10;
@@ -17,10 +26,10 @@ public final class GlobalConfigContext {
     /**
      * Size of scheduler concurrent executing transaction.
      */
-    public static int SCHEDULER_MAX_EXECUTING_TRANSACTION = 100;
+    public static int CONCURRENT_MAX_EXECUTING_TRANSACTION = 100;
 
     /**
-     * Is concurrent controll is enabled.
+     * Is concurrent control is enabled.
      */
     public static ConcurrentControlType CONCURRENT_CONTROL_TYPE = ConcurrentControlType.None;
 }

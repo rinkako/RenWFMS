@@ -3,6 +3,7 @@
  * Rinkako, Ariana, Gordan. SYSU SDCS.
  */
 package org.sysu.renNameService.entity;
+
 import javax.persistence.*;
 import java.sql.Timestamp;
 import java.util.Objects;
@@ -17,13 +18,13 @@ import java.util.Objects;
 public class RenNsTransactionEntity {
     private String nsid;
     private Integer type;
-    private String requestInvoker;
-    private Timestamp acceptTimestamp;
-    private Timestamp scheduledTimestamp;
-    private String context;
-    private Timestamp finishTimestamp;
-    private int priority;
     private String rtid;
+    private int priority;
+    private String context;
+    private Timestamp acceptTimestamp;
+    private Timestamp finishTimestamp;
+    private String requestInvoker;
+    private Timestamp scheduledTimestamp;
 
     @Id
     @Column(name = "nsid", nullable = false, length = 64)
@@ -46,53 +47,13 @@ public class RenNsTransactionEntity {
     }
 
     @Basic
-    @Column(name = "requestInvoker", nullable = true, length = 64)
-    public String getRequestInvoker() {
-        return requestInvoker;
+    @Column(name = "rtid", nullable = true, length = 64)
+    public String getRtid() {
+        return rtid;
     }
 
-    public void setRequestInvoker(String requestInvoker) {
-        this.requestInvoker = requestInvoker;
-    }
-
-    @Basic
-    @Column(name = "acceptTimestamp", nullable = true)
-    public Timestamp getAcceptTimestamp() {
-        return acceptTimestamp;
-    }
-
-    public void setAcceptTimestamp(Timestamp acceptTimestamp) {
-        this.acceptTimestamp = acceptTimestamp;
-    }
-
-    @Basic
-    @Column(name = "scheduledTimestamp", nullable = true)
-    public Timestamp getScheduledTimestamp() {
-        return scheduledTimestamp;
-    }
-
-    public void setScheduledTimestamp(Timestamp scheduledTimestamp) {
-        this.scheduledTimestamp = scheduledTimestamp;
-    }
-
-    @Basic
-    @Column(name = "context", nullable = true, length = -1)
-    public String getContext() {
-        return context;
-    }
-
-    public void setContext(String context) {
-        this.context = context;
-    }
-
-    @Basic
-    @Column(name = "finishTimestamp", nullable = true)
-    public Timestamp getFinishTimestamp() {
-        return finishTimestamp;
-    }
-
-    public void setFinishTimestamp(Timestamp finishTimestamp) {
-        this.finishTimestamp = finishTimestamp;
+    public void setRtid(String rtid) {
+        this.rtid = rtid;
     }
 
     @Basic
@@ -106,13 +67,53 @@ public class RenNsTransactionEntity {
     }
 
     @Basic
-    @Column(name = "rtid", nullable = true, length = 64)
-    public String getRtid() {
-        return rtid;
+    @Column(name = "context", nullable = true, length = -1)
+    public String getContext() {
+        return context;
     }
 
-    public void setRtid(String rtid) {
-        this.rtid = rtid;
+    public void setContext(String context) {
+        this.context = context;
+    }
+
+    @Basic
+    @Column(name = "accept_timestamp", nullable = true)
+    public Timestamp getAcceptTimestamp() {
+        return acceptTimestamp;
+    }
+
+    public void setAcceptTimestamp(Timestamp acceptTimestamp) {
+        this.acceptTimestamp = acceptTimestamp;
+    }
+
+    @Basic
+    @Column(name = "finish_timestamp", nullable = true)
+    public Timestamp getFinishTimestamp() {
+        return finishTimestamp;
+    }
+
+    public void setFinishTimestamp(Timestamp finishTimestamp) {
+        this.finishTimestamp = finishTimestamp;
+    }
+
+    @Basic
+    @Column(name = "request_invoker", nullable = true, length = 64)
+    public String getRequestInvoker() {
+        return requestInvoker;
+    }
+
+    public void setRequestInvoker(String requestInvoker) {
+        this.requestInvoker = requestInvoker;
+    }
+
+    @Basic
+    @Column(name = "scheduled_timestamp", nullable = true)
+    public Timestamp getScheduledTimestamp() {
+        return scheduledTimestamp;
+    }
+
+    public void setScheduledTimestamp(Timestamp scheduledTimestamp) {
+        this.scheduledTimestamp = scheduledTimestamp;
     }
 
     @Override
@@ -120,17 +121,20 @@ public class RenNsTransactionEntity {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         RenNsTransactionEntity that = (RenNsTransactionEntity) o;
-        return Objects.equals(nsid, that.nsid) &&
+        return priority == that.priority &&
+                Objects.equals(nsid, that.nsid) &&
                 Objects.equals(type, that.type) &&
-                Objects.equals(requestInvoker, that.requestInvoker) &&
+                Objects.equals(rtid, that.rtid) &&
+                Objects.equals(context, that.context) &&
                 Objects.equals(acceptTimestamp, that.acceptTimestamp) &&
-                Objects.equals(scheduledTimestamp, that.scheduledTimestamp) &&
-                Objects.equals(context, that.context);
+                Objects.equals(finishTimestamp, that.finishTimestamp) &&
+                Objects.equals(requestInvoker, that.requestInvoker) &&
+                Objects.equals(scheduledTimestamp, that.scheduledTimestamp);
     }
 
     @Override
     public int hashCode() {
 
-        return Objects.hash(nsid, type, requestInvoker, acceptTimestamp, scheduledTimestamp, context);
+        return Objects.hash(nsid, type, rtid, priority, context, acceptTimestamp, finishTimestamp, requestInvoker, scheduledTimestamp);
     }
 }

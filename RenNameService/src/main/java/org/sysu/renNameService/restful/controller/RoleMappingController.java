@@ -4,15 +4,21 @@
  */
 package org.sysu.renNameService.restful.controller;
 import org.springframework.web.bind.annotation.*;
+import org.sysu.renNameService.NSScheduler;
 import org.sysu.renNameService.entity.RenRolemapEntity;
 import org.sysu.renNameService.restful.dto.ReturnElement;
 import org.sysu.renNameService.restful.dto.ReturnModel;
 import org.sysu.renNameService.restful.dto.StatusCode;
 import org.sysu.renNameService.roleMapping.RoleMappingService;
+import org.sysu.renNameService.transaction.NameServiceTransaction;
+import org.sysu.renNameService.transaction.TransactionCreator;
+import org.sysu.renNameService.transaction.TransactionType;
 import org.sysu.renNameService.utility.SerializationUtil;
 import org.sysu.renNameService.utility.TimestampUtil;
 import javax.transaction.Transactional;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Hashtable;
 import java.util.List;
 
 /**
@@ -80,7 +86,7 @@ public class RoleMappingController {
             }
             // logic
             ArrayList<String> bRoles = RoleMappingService.GetWorkerByBusinessRole(rtid, brole);
-            String jsonifyBRoles = SerializationUtil.JsonSerilization(bRoles);
+            String jsonifyBRoles = SerializationUtil.JsonSerilization(bRoles, rtid);
             // return
             rnModel.setCode(StatusCode.OK);
             rnModel.setRs(TimestampUtil.GetTimeStamp() + " 0");
@@ -115,7 +121,7 @@ public class RoleMappingController {
             }
             // logic
             ArrayList<String> gidList = RoleMappingService.GetBusinessRoleByGlobalId(rtid, gid);
-            String jsonifyList = SerializationUtil.JsonSerilization(gidList);
+            String jsonifyList = SerializationUtil.JsonSerilization(gidList, rtid);
             // return
             rnModel.setCode(StatusCode.OK);
             rnModel.setRs(TimestampUtil.GetTimeStamp() + " 0");
@@ -164,7 +170,7 @@ public class RoleMappingController {
             rnModel.setCode(StatusCode.OK);
             rnModel.setRs(TimestampUtil.GetTimeStamp() + " 0");
             ReturnElement returnElement = new ReturnElement();
-            returnElement.setData("RegisterRoleMapService");
+            returnElement.setData("OK");
             rnModel.setReturnElement(returnElement);
         } catch (Exception e) {
             rnModel = ExceptionHandlerFunction(e.getClass().getName());
@@ -196,7 +202,7 @@ public class RoleMappingController {
             rnModel.setCode(StatusCode.OK);
             rnModel.setRs(TimestampUtil.GetTimeStamp() + " 0");
             ReturnElement returnElement = new ReturnElement();
-            returnElement.setData("FinishRoleMapService");
+            returnElement.setData("OK");
             rnModel.setReturnElement(returnElement);
         } catch (Exception e) {
             rnModel = ExceptionHandlerFunction(e.getClass().getName());
@@ -223,8 +229,10 @@ public class RoleMappingController {
                 return rnModel;
             }
             // logic
-            ArrayList<RenRolemapEntity> involves = RoleMappingService.GetInvolvedResource(rtid);
-            String jsonifyInvolves = SerializationUtil.JsonSerilization(involves);
+            HashMap<String, String> args = new HashMap<>();
+            args.put("rtid", rtid);
+            NameServiceTransaction t = TransactionCreator.Create(TransactionType.BusinessRoleMapping, "getInvolved", args);
+            String jsonifyInvolves = (String) RoleMappingController.scheduler.Schedule(t);
             // return
             rnModel.setCode(StatusCode.OK);
             rnModel.setRs(TimestampUtil.GetTimeStamp() + " 0");
@@ -237,4 +245,9 @@ public class RoleMappingController {
 
         return rnModel;
     }
+
+    /**
+     * Transaction scheduler.
+     */
+    private static NSScheduler scheduler = NSScheduler.GetInstance();
 }

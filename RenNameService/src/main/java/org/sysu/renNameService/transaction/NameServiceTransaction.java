@@ -4,7 +4,9 @@
  */
 package org.sysu.renNameService.transaction;
 import org.sysu.renNameService.entity.RenNsTransactionEntity;
+
 import java.util.Hashtable;
+import java.util.Map;
 
 /**
  * Author: Rinkako
@@ -13,7 +15,6 @@ import java.util.Hashtable;
  *         by this class instance before being processed.
  */
 public final class NameServiceTransaction implements Comparable {
-
     /**
      * Add parameter key value to parameter dictionary.
      * @param key param key
@@ -21,6 +22,15 @@ public final class NameServiceTransaction implements Comparable {
      */
     public void AddParameter(String key, Object value) {
         this.parameterDictionary.put(key, value);
+    }
+
+    /**
+     * Add parameter key value to parameter dictionary.
+     * @param kvps param key value dictionary
+     */
+    @SuppressWarnings("unchecked")
+    public void AddParameter(Map kvps) {
+        this.parameterDictionary.putAll(kvps);
     }
 
     /**
