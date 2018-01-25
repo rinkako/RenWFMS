@@ -12,10 +12,10 @@
                     <Button Name="Button_Step1_Open" Content="Open" HorizontalAlignment="Left" FontSize="12" Margin="10,48,0,0" VerticalAlignment="Top" Width="116" Click="Button_Step1_Open_OnClick"/>
                     <TextBox Name="TextBox_Step1_Open" Text="" IsReadOnly="True" HorizontalAlignment="Left" VerticalContentAlignment="Center" Height="30" Margin="140,48,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="596"/>
                     <GroupBox Header="流程中包含的Business Object" HorizontalAlignment="Left" Height="200" Margin="10,96,0,0" VerticalAlignment="Top" Width="726">
-                        <ListBox HorizontalAlignment="Left" Width="716" Margin="0,0,-2,0"/>
+                        <ListBox Name="ListBox_Step1_BO" HorizontalAlignment="Left" Width="716" Margin="0,0,-2,0" MouseDoubleClick="ListBox_Step1_BO_MouseDoubleClick"/>
                     </GroupBox>
                     <Button Content="Next >" HorizontalAlignment="Left" FontSize="12" Margin="620,301,0,0" VerticalAlignment="Top" Width="116"/>
-                    <ComboBox HorizontalAlignment="Left" Margin="155,305,0,0" VerticalAlignment="Top" Width="309"/>
+                    <ComboBox Name="ComboBox_Step1_MainBO" HorizontalAlignment="Left" Margin="155,305,0,0" VerticalAlignment="Top" Width="309"/>
                     <Label Content="入口Business Object：" HorizontalAlignment="Left" Margin="10,305,0,0" VerticalAlignment="Top" Height="26" Width="140"/>
                     <ComboBox Name="ComboBox_Step1_Processes" HorizontalAlignment="Left" Margin="596,17,0,0" VerticalAlignment="Top" Width="140" SelectedIndex="0" SelectionChanged="ComboBox_SelectionChanged">
                         <Label Content="&lt;从本地导入&gt;"/>

@@ -63,10 +63,36 @@ namespace RenMasterPanel
             {
                 this.TextBox_Step1_Open.Text = fd.SelectedPath;
                 MPController.LoadProcessFromDirectory(this.TextBox_Step1_Open.Text);
+                var boList = MPController.GetBOList();
+                this.ComboBox_Step1_MainBO.Items.Clear();
+                this.ListBox_Step1_BO.Items.Clear();
+                if (boList != null)
+                {
+                    foreach (var boName in boList)
+                    {
+                        this.ComboBox_Step1_MainBO.Items.Add(boName);
+                        this.ListBox_Step1_BO.Items.Add(boName);
+                    }
+                    if (this.ComboBox_Step1_MainBO.Items.Count > 0)
+                    {
+                        this.ComboBox_Step1_MainBO.SelectedIndex = 0;
+                    }
+                }
             }
             else
             {
                 return;
+            }
+        }
+
+        private void ListBox_Step1_BO_MouseDoubleClick(object sender, MouseButtonEventArgs e)
+        {
+            var idx = this.ListBox_Step1_BO.SelectedIndex;
+            if (idx != -1)
+            {
+                var boName = this.ListBox_Step1_BO.Items[idx].ToString();
+                var pf = new Forms.TextPreviewForm(boName, MPController.GetBOContent(boName));
+                pf.ShowDialog();
             }
         }
     }

@@ -61,9 +61,16 @@
     </ApplicationDefinition>
     <Compile Include="Controller\TransactionPackage.cs" />
     <Compile Include="Controller\MPController.cs" />
+    <Compile Include="Forms\TextPreviewForm.xaml.cs">
+      <DependentUpon>TextPreviewForm.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Util\IOUtil.cs" />
     <Compile Include="Util\LogUtil.cs" />
     <Compile Include="Util\NetClient.cs" />
+    <Page Include="Forms\TextPreviewForm.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
