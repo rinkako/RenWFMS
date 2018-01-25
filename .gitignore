@@ -192,3 +192,4 @@ RenResourceService/target/generated-test-sources/
 /RenMasterPanel/RenMasterPanel/bin/
 /RenMasterPanel/RenMasterPanel/obj/
 /RenMasterPanel/packages/
+/RenMasterPanel/.vs/RenMasterPanel/v15/Server/sqlite3/db.lock

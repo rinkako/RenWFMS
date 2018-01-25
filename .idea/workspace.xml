@@ -2,26 +2,8 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="388c6061-8899-47cb-8152-3b3371cb9ca0" name="Default" comment="">
-      <change beforePath="" afterPath="$PROJECT_DIR$/RenMasterPanel/.vs/RenMasterPanel/v15/.suo" />
-      <change beforePath="" afterPath="$PROJECT_DIR$/RenMasterPanel/.vs/RenMasterPanel/v15/Server/sqlite3/storage.ide" />
-      <change beforePath="" afterPath="$PROJECT_DIR$/RenMasterPanel/.vs/RenMasterPanel/v15/Server/sqlite3/storage.ide-shm" />
-      <change beforePath="" afterPath="$PROJECT_DIR$/RenMasterPanel/.vs/RenMasterPanel/v15/Server/sqlite3/storage.ide-wal" />
-      <change beforePath="" afterPath="$PROJECT_DIR$/RenMasterPanel/RenMasterPanel.sln" />
-      <change beforePath="" afterPath="$PROJECT_DIR$/RenMasterPanel/RenMasterPanel/App.xaml" />
-      <change beforePath="" afterPath="$PROJECT_DIR$/RenMasterPanel/RenMasterPanel/App.xaml.cs" />
-      <change beforePath="" afterPath="$PROJECT_DIR$/RenMasterPanel/RenMasterPanel/MahApps.Metro.dll" />
-      <change beforePath="" afterPath="$PROJECT_DIR$/RenMasterPanel/RenMasterPanel/MahApps.Metro.xml" />
-      <change beforePath="" afterPath="$PROJECT_DIR$/RenMasterPanel/RenMasterPanel/MainWindow.xaml" />
-      <change beforePath="" afterPath="$PROJECT_DIR$/RenMasterPanel/RenMasterPanel/MainWindow.xaml.cs" />
-      <change beforePath="" afterPath="$PROJECT_DIR$/RenMasterPanel/RenMasterPanel/Properties/AssemblyInfo.cs" />
-      <change beforePath="" afterPath="$PROJECT_DIR$/RenMasterPanel/RenMasterPanel/Properties/Resources.Designer.cs" />
-      <change beforePath="" afterPath="$PROJECT_DIR$/RenMasterPanel/RenMasterPanel/Properties/Resources.resx" />
-      <change beforePath="" afterPath="$PROJECT_DIR$/RenMasterPanel/RenMasterPanel/Properties/Settings.Designer.cs" />
-      <change beforePath="" afterPath="$PROJECT_DIR$/RenMasterPanel/RenMasterPanel/Properties/Settings.settings" />
-      <change beforePath="" afterPath="$PROJECT_DIR$/RenMasterPanel/RenMasterPanel/RenMasterPanel.csproj" />
-      <change beforePath="" afterPath="$PROJECT_DIR$/RenMasterPanel/RenMasterPanel/packages.config" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/.gitattributes" />
       <change beforePath="$PROJECT_DIR$/.gitignore" afterPath="$PROJECT_DIR$/.gitignore" />
-      <change beforePath="$PROJECT_DIR$/.idea/RenWFMS.iml" afterPath="$PROJECT_DIR$/.idea/RenWFMS.iml" />
       <change beforePath="$PROJECT_DIR$/.idea/dataSources.xml" afterPath="" />
       <change beforePath="$PROJECT_DIR$/.idea/dataSources/a7b575bc-615c-4e4b-b284-5a8ee1b4bb96.xml" afterPath="" />
       <change beforePath="$PROJECT_DIR$/.idea/dictionaries/Rinkako.xml" afterPath="" />
@@ -99,7 +81,18 @@
       <change beforePath="$PROJECT_DIR$/.idea/uiDesigner.xml" afterPath="" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="" />
       <change beforePath="$PROJECT_DIR$/BOEngine/lib/commons-codec-1.5.jar" afterPath="" />
+      <change beforePath="$PROJECT_DIR$/BOEngine/src/main/resources/hibernate.cfg.xml" afterPath="$PROJECT_DIR$/BOEngine/src/main/resources/hibernate.cfg.xml" />
       <change beforePath="$PROJECT_DIR$/COrgan/COrgan.iml" afterPath="" />
+      <change beforePath="$PROJECT_DIR$/RenMasterPanel/.vs/RenMasterPanel/v15/.suo" afterPath="$PROJECT_DIR$/RenMasterPanel/.vs/RenMasterPanel/v15/.suo" />
+      <change beforePath="$PROJECT_DIR$/RenMasterPanel/.vs/RenMasterPanel/v15/Server/sqlite3/storage.ide" afterPath="$PROJECT_DIR$/RenMasterPanel/.vs/RenMasterPanel/v15/Server/sqlite3/storage.ide" />
+      <change beforePath="$PROJECT_DIR$/RenMasterPanel/.vs/RenMasterPanel/v15/Server/sqlite3/storage.ide-shm" afterPath="" />
+      <change beforePath="$PROJECT_DIR$/RenMasterPanel/.vs/RenMasterPanel/v15/Server/sqlite3/storage.ide-wal" afterPath="" />
+      <change beforePath="$PROJECT_DIR$/RenMasterPanel/RenMasterPanel/MainWindow.xaml" afterPath="$PROJECT_DIR$/RenMasterPanel/RenMasterPanel/MainWindow.xaml" />
+      <change beforePath="$PROJECT_DIR$/RenMasterPanel/RenMasterPanel/MainWindow.xaml.cs" afterPath="$PROJECT_DIR$/RenMasterPanel/RenMasterPanel/MainWindow.xaml.cs" />
+      <change beforePath="$PROJECT_DIR$/RenMasterPanel/RenMasterPanel/RenMasterPanel.csproj" afterPath="$PROJECT_DIR$/RenMasterPanel/RenMasterPanel/RenMasterPanel.csproj" />
+      <change beforePath="$PROJECT_DIR$/RenNameService/RenNameService.iml" afterPath="$PROJECT_DIR$/RenNameService/RenNameService.iml" />
+      <change beforePath="$PROJECT_DIR$/RenNameService/src/main/resources/application.properties" afterPath="$PROJECT_DIR$/RenNameService/src/main/resources/application.properties" />
+      <change beforePath="$PROJECT_DIR$/RenNameService/src/main/resources/hibernate.cfg.xml" afterPath="$PROJECT_DIR$/RenNameService/src/main/resources/hibernate.cfg.xml" />
       <change beforePath="$PROJECT_DIR$/RenResourceService/target/classes/application.properties" afterPath="" />
       <change beforePath="$PROJECT_DIR$/RenResourceService/target/test-classes/org/sysu/renResourcing/RenResourceServiceApplicationTests.class" afterPath="" />
     </list>
@@ -129,35 +122,24 @@
     <option name="SHOW_TABLE_DETAILS" value="true" />
     <option name="SHOW_EMPTY_GROUPS" value="false" />
     <option name="AUTO_SCROLL_FROM_SOURCE" value="false" />
-    <expand />
+    <expand>
+      <path>
+        <item name="Database" type="3277223f:DatabaseStructure$DbRootGroup" />
+        <item name="WFMS/Hibernate" type="feb32156:DbDataSourceImpl" />
+      </path>
+      <path>
+        <item name="Database" type="3277223f:DatabaseStructure$DbRootGroup" />
+        <item name="WFMS/Hibernate" type="feb32156:DbDataSourceImpl" />
+        <item name="schemas" type="d4e8921:DatabaseStructure$FamilyGroup" />
+      </path>
+    </expand>
     <select />
   </component>
   <component name="FavoritesManager">
     <favorites_list name="RenWFMS" />
   </component>
   <component name="FileEditorManager">
-    <leaf SIDE_TABS_SIZE_LIMIT_KEY="450">
-      <file leaf-file-name="NSExecutor.java" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/RenNameService/src/main/java/org/sysu/renNameService/NSExecutor.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="0">
-              <caret line="38" column="19" lean-forward="false" selection-start-line="38" selection-start-column="19" selection-end-line="38" selection-end-column="19" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="CGateway.py" pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/COrgan/CGateway.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="22">
-              <caret line="181" column="0" lean-forward="false" selection-start-line="180" selection-start-column="0" selection-end-line="181" selection-end-column="0" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-    </leaf>
+    <leaf SIDE_TABS_SIZE_LIMIT_KEY="450" />
   </component>
   <component name="FileTemplateManagerImpl">
     <option name="RECENT_TEMPLATES">
@@ -213,7 +195,6 @@
   <component name="IdeDocumentHistory">
     <option name="CHANGED_PATHS">
       <list>
-        <option value="$PROJECT_DIR$/COrgan/GlobalConfigContext.py" />
         <option value="$PROJECT_DIR$/COrgan/CController.py" />
         <option value="$PROJECT_DIR$/COrgan/templates/configpage.html" />
         <option value="$PROJECT_DIR$/RenNameService/src/main/java/org/sysu/renNameService/transaction/NameTransactionType.java" />
@@ -238,8 +219,6 @@
         <option value="$PROJECT_DIR$/RenNameService/src/main/java/org/sysu/renNameService/utility/TimestampUtil.java" />
         <option value="$PROJECT_DIR$/RenNameService/src/main/java/org/sysu/renNameService/RenNameServiceApplication.java" />
         <option value="$PROJECT_DIR$/RenNameService/src/main/java/org/sysu/renNameService/roleMapping/RoleMapCachePool.java" />
-        <option value="$PROJECT_DIR$/RenNameService/src/main/resources/hibernate.cfg.xml" />
-        <option value="$PROJECT_DIR$/RenNameService/src/main/resources/application.properties" />
         <option value="$PROJECT_DIR$/RenNameService/src/main/java/org/sysu/renNameService/roleMapping/RoleMappingService.java" />
         <option value="$PROJECT_DIR$/RenNameService/src/main/java/org/sysu/renNameService/utility/LogMessagePackage.java" />
         <option value="$PROJECT_DIR$/RenNameService/src/main/java/org/sysu/renNameService/utility/LogUtil.java" />
@@ -264,6 +243,9 @@
         <option value="$PROJECT_DIR$/RenNameService/src/main/java/org/sysu/renNameService/NSScheduler.java" />
         <option value="$PROJECT_DIR$/RenNameService/src/main/java/org/sysu/renNameService/NSExecutor.java" />
         <option value="$PROJECT_DIR$/.gitignore" />
+        <option value="$PROJECT_DIR$/BOEngine/src/main/resources/hibernate.cfg.xml" />
+        <option value="$PROJECT_DIR$/RenNameService/src/main/resources/hibernate.cfg.xml" />
+        <option value="$PROJECT_DIR$/RenNameService/src/main/resources/application.properties" />
       </list>
     </option>
   </component>
@@ -344,6 +326,8 @@
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
+      <pane id="Scope" />
+      <pane id="PackagesPane" />
       <pane id="ProjectPane">
         <subPane>
           <expand>
@@ -355,9 +339,7 @@
           <select />
         </subPane>
       </pane>
-      <pane id="Scope" />
       <pane id="Scratches" />
-      <pane id="PackagesPane" />
       <pane id="AndroidView" />
     </panes>
   </component>
@@ -367,7 +349,7 @@
     <property name="project.structure.proportion" value="0.15" />
     <property name="project.structure.side.proportion" value="0.2" />
     <property name="settings.editor.selected.configurable" value="fileTemplates" />
-    <property name="SearchEverywhereHistoryKey" value="debug&#9;ACTION&#9;ActivateDebugToolWindow&#10;persi&#9;ACTION&#9;ActivatePersistenceToolWindow&#10;maven&#9;ACTION&#9;ActivateMavenProjectsToolWindow&#10;pro&#9;ACTION&#9;ActivateProjectToolWindow&#10;mav&#9;ACTION&#9;ActivateMavenProjectsToolWindow&#10;mave&#9;ACTION&#9;ActivateMavenProjectsToolWindow&#10;data&#9;ACTION&#9;ActivateDatabaseToolWindow&#10;per&#9;ACTION&#9;ActivatePersistenceToolWindow&#10;persis&#9;ACTION&#9;ActivatePersistenceToolWindow&#10;zho&#9;PSI&#9;JAVA://org.springframework.boot.autoconfigure.solr.SolrProperties#setZkHost" />
+    <property name="SearchEverywhereHistoryKey" value="datasource&#9;ACTION&#9;DatabaseView.AddDataSourceHere&#10;debug&#9;ACTION&#9;ActivateDebugToolWindow&#10;persi&#9;ACTION&#9;ActivatePersistenceToolWindow&#10;maven&#9;ACTION&#9;ActivateMavenProjectsToolWindow&#10;pro&#9;ACTION&#9;ActivateProjectToolWindow&#10;mav&#9;ACTION&#9;ActivateMavenProjectsToolWindow&#10;mave&#9;ACTION&#9;ActivateMavenProjectsToolWindow&#10;data&#9;ACTION&#9;ActivateDatabaseToolWindow&#10;per&#9;ACTION&#9;ActivatePersistenceToolWindow&#10;persis&#9;ACTION&#9;ActivatePersistenceToolWindow&#10;zho&#9;PSI&#9;JAVA://org.springframework.boot.autoconfigure.solr.SolrProperties#setZkHost" />
     <property name="WebServerToolWindowFactoryState" value="false" />
     <property name="aspect.path.notification.shown" value="true" />
     <property name="add_unversioned_files" value="$PROJECT_DIR$/COrgan/static/js/script.js&#10;true" />
@@ -742,7 +724,8 @@
       <workItem from="1516764491869" duration="32112000" />
       <workItem from="1516809751356" duration="1224000" />
       <workItem from="1516814981761" duration="47000" />
-      <workItem from="1516852842895" duration="3483000" />
+      <workItem from="1516852842895" duration="6678000" />
+      <workItem from="1516867532527" duration="3597000" />
     </task>
     <task id="LOCAL-00001" summary="position views">
       <created>1515663926015</created>
@@ -1017,7 +1000,14 @@
       <option name="project" value="LOCAL" />
       <updated>1516804718101</updated>
     </task>
-    <option name="localTasksCounter" value="40" />
+    <task id="LOCAL-00040" summary="Control panel demo prepare">
+      <created>1516860990225</created>
+      <option name="number" value="00040" />
+      <option name="presentableId" value="LOCAL-00040" />
+      <option name="project" value="LOCAL" />
+      <updated>1516860990225</updated>
+    </task>
+    <option name="localTasksCounter" value="41" />
     <servers />
   </component>
   <component name="TestHistory">
@@ -1053,7 +1043,7 @@
     </history-entry>
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="303868000" />
+    <option name="totallyTimeSpent" value="310660000" />
   </component>
   <component name="TodoView">
     <todo-panel id="selected-file">
@@ -1069,26 +1059,27 @@
     <layout>
       <window_info id="Palette" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.24265505" sideWeight="0.5042644" order="7" side_tool="true" content_ui="tabs" />
-      <window_info id="Maven Projects" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.15511727" sideWeight="0.28726876" order="8" side_tool="true" content_ui="tabs" x="687" y="90" width="329" height="942" />
+      <window_info id="Maven Projects" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.15511727" sideWeight="0.2954876" order="8" side_tool="true" content_ui="tabs" x="687" y="90" width="329" height="942" />
       <window_info id="Capture Tool" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Designer" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
-      <window_info id="Database" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.06769723" sideWeight="0.7236126" order="4" side_tool="false" content_ui="tabs" />
+      <window_info id="Database" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.12526652" sideWeight="0.7161572" order="4" side_tool="false" content_ui="tabs" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="false" weight="0.25" sideWeight="0.4874864" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Ant Build" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="false" weight="0.25" sideWeight="0.4961915" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="UI Designer" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
       <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.28291622" sideWeight="0.49791667" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.3297062" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
+      <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.24265505" sideWeight="0.49573562" order="8" side_tool="false" content_ui="tabs" />
       <window_info id="Palette&#9;" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="9" side_tool="false" content_ui="tabs" />
       <window_info id="Image Layers" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Java Enterprise" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="false" weight="0.3297062" sideWeight="0.5" order="10" side_tool="false" content_ui="tabs" />
       <window_info id="Capture Analysis" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
-      <window_info id="Run Dashboard" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25244832" sideWeight="0.4936034" order="13" side_tool="false" content_ui="tabs" />
+      <window_info id="Run Dashboard" active="true" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.25244832" sideWeight="0.4936034" order="13" side_tool="false" content_ui="tabs" />
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32861805" sideWeight="0.4978678" order="12" side_tool="false" content_ui="tabs" />
       <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.27312297" sideWeight="0.49583334" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Spring" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.3297062" sideWeight="0.5" order="9" side_tool="false" content_ui="tabs" />
       <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.3297062" sideWeight="0.5" order="11" side_tool="false" content_ui="tabs" />
-      <window_info id="Persistence" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.06769723" sideWeight="0.27638736" order="10" side_tool="true" content_ui="tabs" x="818" y="240" width="305" height="942" />
-      <window_info id="Project" active="true" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.15511727" sideWeight="0.71273124" order="0" side_tool="false" content_ui="tabs" x="844" y="49" width="231" height="942" />
+      <window_info id="Persistence" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.12526652" sideWeight="0.2838428" order="10" side_tool="true" content_ui="tabs" x="818" y="240" width="305" height="942" />
+      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.15511727" sideWeight="0.70451236" order="0" side_tool="false" content_ui="tabs" x="844" y="49" width="231" height="942" />
       <window_info id="Bean Validation" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="false" weight="0.32995737" sideWeight="0.4961915" order="6" side_tool="false" content_ui="tabs" />
       <window_info id="Web" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="false" weight="0.12313433" sideWeight="0.5125136" order="5" side_tool="true" content_ui="tabs" />
       <window_info id="SciView" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32995737" sideWeight="0.4874864" order="7" side_tool="false" content_ui="tabs" />
@@ -1098,7 +1089,6 @@
       <window_info id="Message" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Commander" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Hierarchy" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.075" sideWeight="0.5" order="2" side_tool="false" content_ui="combo" />
-      <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.24265505" sideWeight="0.49573562" order="8" side_tool="false" content_ui="tabs" />
       <window_info id="Documentation" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32995737" sideWeight="0.4961915" order="11" side_tool="false" content_ui="tabs" x="0" y="0" width="434" height="856" />
       <window_info id="Inspection" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
       <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32861805" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
@@ -1146,7 +1136,6 @@
     <option name="myLimit" value="2678400000" />
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="Change Mapping Service to Name Service, using Java" />
     <MESSAGE value="Hibernate architecture for Name Service" />
     <MESSAGE value="rebase ns" />
     <MESSAGE value="rolemap entity" />
@@ -1171,7 +1160,8 @@
     <MESSAGE value="executor and scheduler architecture" />
     <MESSAGE value="change router service direct call to scheduler" />
     <MESSAGE value="add executor ctor" />
-    <option name="LAST_COMMIT_MESSAGE" value="add executor ctor" />
+    <MESSAGE value="Control panel demo prepare" />
+    <option name="LAST_COMMIT_MESSAGE" value="Control panel demo prepare" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -1224,77 +1214,6 @@
     <option name="FILTER_TARGETS" value="false" />
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/RenNameService/src/main/java/org/sysu/renNameService/roleMapping/RoleMapCachePool.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="616">
-          <caret line="28" column="0" lean-forward="false" selection-start-line="28" selection-start-column="0" selection-end-line="28" selection-end-column="0" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/RenNameService/src/main/java/org/sysu/renNameService/roleMapping/CachedRoleMap.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-484">
-          <caret line="8" column="3" lean-forward="false" selection-start-line="8" selection-start-column="3" selection-end-line="9" selection-end-column="18" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/RenNameService/src/main/resources/hibernate.cfg.xml">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="352">
-          <caret line="16" column="34" lean-forward="false" selection-start-line="16" selection-start-column="24" selection-end-line="16" selection-end-column="34" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/RenNameService/src/main/resources/application.properties">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="198">
-          <caret line="9" column="69" lean-forward="false" selection-start-line="9" selection-start-column="69" selection-end-line="9" selection-end-column="69" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/RenNameService/src/main/java/org/sysu/renNameService/cluster/RenSupervisor.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="198">
-          <caret line="9" column="20" lean-forward="true" selection-start-line="9" selection-start-column="20" selection-end-line="9" selection-end-column="20" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/RenNameService/src/main/java/org/sysu/renNameService/utility/LogMessagePackage.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="440">
-          <caret line="20" column="4" lean-forward="false" selection-start-line="20" selection-start-column="4" selection-end-line="20" selection-end-column="4" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/BOEngine/src/main/java/org/sysu/workflow/restful/entity/RenBoEntity.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="132">
-          <caret line="6" column="13" lean-forward="false" selection-start-line="6" selection-start-column="13" selection-end-line="6" selection-end-column="13" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/BOEngine/src/main/java/org/sysu/workflow/restful/utility/TimestampUtil.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="220">
-          <caret line="10" column="13" lean-forward="false" selection-start-line="10" selection-start-column="13" selection-end-line="10" selection-end-column="13" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/BOEngine/src/main/java/org/sysu/workflow/restful/utility/LogUtil.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-297">
-          <caret line="7" column="19" lean-forward="false" selection-start-line="7" selection-start-column="19" selection-end-line="7" selection-end-column="19" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/BOEngine/src/main/java/org/sysu/workflow/restful/service/LaunchProcessService.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1144">
-          <caret line="76" column="36" lean-forward="false" selection-start-line="76" selection-start-column="36" selection-end-line="76" selection-end-column="36" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/RenNameService/src/main/java/org/sysu/renNameService/roleMapping/RoleMappingService.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="613">
@@ -1539,6 +1458,27 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/RenNameService/src/main/java/org/sysu/renNameService/NSScheduler.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="66">
+          <caret line="28" column="30" lean-forward="false" selection-start-line="28" selection-start-column="30" selection-end-line="28" selection-end-column="30" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/.gitignore">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="0">
+          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/COrgan/CGateway.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="154">
+          <caret line="187" column="16" lean-forward="false" selection-start-line="187" selection-start-column="16" selection-end-line="187" selection-end-column="16" />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/RenNameService/src/main/java/org/sysu/renNameService/NSExecutor.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="0">
@@ -1547,15 +1487,60 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/RenNameService/src/main/java/org/sysu/renNameService/NSScheduler.java">
+    <entry file="file://$PROJECT_DIR$/.gitattributes">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="66">
-          <caret line="28" column="30" lean-forward="false" selection-start-line="28" selection-start-column="30" selection-end-line="28" selection-end-column="30" />
+        <state relative-caret-position="-163">
+          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/BOEngine/src/main/resources/hibernate.cfg.xml">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="176">
+          <caret line="8" column="53" lean-forward="false" selection-start-line="8" selection-start-column="53" selection-end-line="8" selection-end-column="53" />
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/.gitignore">
+    <entry file="file://$APPLICATION_CONFIG_DIR$/consoles/db/f3d0f3f0-e798-4951-bfc6-f8c23d5223bb/console.sql">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="0">
+          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$APPLICATION_CONFIG_DIR$/consoles/db/7c64dd37-5598-4013-ac1e-8276453b0dbe/console.sql">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="0">
+          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/BOEngine/src/main/java/org/sysu/workflow/restful/entity/RenBoEntity.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="0">
+          <caret line="12" column="11" lean-forward="false" selection-start-line="12" selection-start-column="11" selection-end-line="12" selection-end-column="11" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/BOEngine/src/main/java/org/sysu/workflow/restful/entity/RenProcessboEntity.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="88">
+          <caret line="4" column="7" lean-forward="false" selection-start-line="4" selection-start-column="7" selection-end-line="4" selection-end-column="7" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/BOEngine/src/main/java/org/sysu/workflow/restful/entity/RenProcessEntity.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="132">
+          <caret line="6" column="13" lean-forward="false" selection-start-line="6" selection-start-column="13" selection-end-line="6" selection-end-column="13" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$APPLICATION_CONFIG_DIR$/consoles/db/f29ef154-f838-4669-9496-bffe1ff00276/console.sql">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="0">
           <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
@@ -1563,10 +1548,18 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/COrgan/CGateway.py">
+    <entry file="file://$PROJECT_DIR$/RenNameService/src/main/resources/hibernate.cfg.xml">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="22">
-          <caret line="181" column="0" lean-forward="false" selection-start-line="180" selection-start-column="0" selection-end-line="181" selection-end-column="0" />
+        <state relative-caret-position="242">
+          <caret line="11" column="53" lean-forward="false" selection-start-line="11" selection-start-column="53" selection-end-line="11" selection-end-column="53" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/RenNameService/src/main/resources/application.properties">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="198">
+          <caret line="9" column="72" lean-forward="false" selection-start-line="9" selection-start-column="72" selection-end-line="9" selection-end-column="72" />
           <folding />
         </state>
       </provider>
