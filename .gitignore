@@ -189,3 +189,6 @@ RenResourceService/target/generated-test-sources/
 /venv/
 /.idea/workspace.xml
 /COrgan/COrgan.iml
+/RenMasterPanel/RenMasterPanel/bin/
+/RenMasterPanel/RenMasterPanel/obj/
+/RenMasterPanel/packages/

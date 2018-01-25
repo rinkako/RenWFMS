@@ -1,0 +1,27 @@
+﻿<controls:MetroWindow x:Class="RenMasterPanel.MainWindow"
+                      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                      xmlns:controls="http://metro.mahapps.com/winfx/xaml/controls"
+                      Title="MainWindow"
+                      Height="400" Width="752" ResizeMode="CanMinimize">
+    <Grid>
+        <controls:MetroAnimatedSingleRowTabControl x:Name="tabControl" controls:TabControlHelper.Transition="Left" controls:TabControlHelper.IsUnderlined="True">
+            <TabItem Header="       管理流程       " controls:ControlsHelper.HeaderFontSize="22">
+                <Grid Name="Grid_Step1">
+                </Grid>
+            </TabItem>
+            <TabItem Header="       角色映射       " controls:ControlsHelper.HeaderFontSize="22">
+                <Grid Name="Grid_Step2">
+                </Grid>
+            </TabItem>
+            <TabItem Header="       创建事务       " controls:ControlsHelper.HeaderFontSize="22">
+                <Grid Name="Grid_Step3">
+                </Grid>
+            </TabItem>
+            <TabItem Header="         确认         " controls:ControlsHelper.HeaderFontSize="22">
+                <Grid Name="Grid_Step4">
+                </Grid>
+            </TabItem>
+        </controls:MetroAnimatedSingleRowTabControl>
+    </Grid>
+</controls:MetroWindow>
