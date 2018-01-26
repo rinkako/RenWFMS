@@ -6,6 +6,7 @@ package org.sysu.renNameService;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
 import org.sysu.renNameService.entity.RenNsTransactionEntity;
+import org.sysu.renNameService.entity.RenProcessEntity;
 import org.sysu.renNameService.entity.RenRolemapEntity;
 import org.sysu.renNameService.nameSpacing.NameSpacingService;
 import org.sysu.renNameService.roleMapping.RoleMappingService;
@@ -24,7 +25,7 @@ import java.util.Observer;
 /**
  * Author: Rinkako
  * Date  : 2018/1/24
- * Usage : This class is used to actually process a transaction.
+ * Usage : This class actually handle a specific transaction.
  */
 public class NSExecutor extends Observable {
     /**
@@ -55,11 +56,11 @@ public class NSExecutor extends Observable {
                     switch (act) {
                         case "getWorkerByBRole":
                             ArrayList<String> bRoles = RoleMappingService.GetWorkerByBusinessRole(rtid, (String) args.get("brole"));
-                            retStr = SerializationUtil.JsonSerilization(bRoles, rtid);
+                            retStr = SerializationUtil.JsonSerialization(bRoles, rtid);
                             break;
                         case "getBRoleByWorker":
                             ArrayList<String> gidList = RoleMappingService.GetBusinessRoleByGlobalId(rtid, (String) args.get("gid"));
-                            retStr = SerializationUtil.JsonSerilization(gidList, rtid);
+                            retStr = SerializationUtil.JsonSerialization(gidList, rtid);
                             break;
                         case "register":
                             RoleMappingService.RegisterRoleMapService(rtid, (String) args.get("organGid"), (String) args.get("dataVersion"), Integer.valueOf((String) args.get("isolationType")), (String) args.get("map"));
@@ -71,7 +72,7 @@ public class NSExecutor extends Observable {
                             break;
                         case "getInvolved":
                             ArrayList<RenRolemapEntity> involves = RoleMappingService.GetInvolvedResource(rtid);
-                            retStr = SerializationUtil.JsonSerilization(involves, rtid);
+                            retStr = SerializationUtil.JsonSerialization(involves, rtid);
                             break;
                     }
                     // prepare execution result
@@ -86,6 +87,24 @@ public class NSExecutor extends Observable {
                     switch (nsAct) {
                         case "generateRtid":
                             retStr = NameSpacingService.GenerateRTID();
+                            break;
+                        case "createProcess":
+                            retStr = NameSpacingService.CreateProcess((String) args.get("renid"), (String) args.get("name"), (String) args.get("mainbo"));
+                            break;
+                        case "uploadBO":
+                            retStr = NameSpacingService.UploadBOContent((String) args.get("pid"), (String) args.get("name"), (String) args.get("content"));
+                            break;
+                        case "getProcessByRenId":
+                            ArrayList<RenProcessEntity> processByRenList = NameSpacingService.GetProcessByRenId((String) args.get("renid"));
+                            retStr = SerializationUtil.JsonSerialization(processByRenList, "");
+                            break;
+                        case "getProcessBONameList":
+                            ArrayList<Object> processBOList = NameSpacingService.GetProcessBONameList((String) args.get("pid"));
+                            retStr = SerializationUtil.JsonSerialization(processBOList, "");
+                            break;
+                        case "containProcess":
+                            boolean containProcessFlag = NameSpacingService.ContainProcess((String) args.get("renid"), (String) args.get("processName"));
+                            retStr = SerializationUtil.JsonSerialization(containProcessFlag, "");
                             break;
                     }
                     // prepare execution result
@@ -110,7 +129,7 @@ public class NSExecutor extends Observable {
                 dbTrans.rollback();
                 throw dbEx;
             }
-            // bubble notification to scheduler or tracker
+            // bubble notification to scheduler or tracker which supervise this executor
             this.setChanged();
             this.notifyObservers(execResult);
             return retStr;

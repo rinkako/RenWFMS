@@ -17,7 +17,7 @@ public class SerializationUtil {
      * @param serializable object to be converted to json
      * @return json string
      */
-    public static String JsonSerilization(Object serializable, String rtid) {
+    public static String JsonSerialization(Object serializable, String rtid) {
         try {
             ObjectMapper mapper = new ObjectMapper();
             return mapper.writeValueAsString(serializable);
