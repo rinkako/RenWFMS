@@ -22,6 +22,7 @@ import java.util.Hashtable;
 import java.util.List;
 
 /**
+ * Author: Rinkako
  * Date  : 2018/1/19
  * Usage : Handle requests about business role and worker mappings.
  */

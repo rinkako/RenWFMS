@@ -100,23 +100,36 @@ public class NSScheduler implements Observer {
     @Override
     @SuppressWarnings("unchecked")
     public void update(Observable o, Object arg) {
-        Hashtable<String, Object> result = null;
         if (arg != null) {
-            result = (Hashtable<String, Object>) arg;
-            if (result.get("execType").equals(TransactionType.BusinessRoleMapping.name())) {
-                NameServiceTransaction nst = (NameServiceTransaction) result.get("context");
-                if (result.get("execCode").equals(GlobalConfigContext.TRANSACTION_EXECUTOR_SUCCESS)) {
-                    LogUtil.Log(String.format("NSTransaction is finished: %s (%s)", result.get("nsid"), result.get("action")),
-                            NSScheduler.class.getName(), (String) result.get("rtid"));
-                }
-                else {
-                    LogUtil.Log(String.format("NSTransaction is failed: %s (%s)", result.get("nsid"), result.get("action")),
-                            NSScheduler.class.getName(), (String) result.get("rtid"));
-                }
-                this.executingSetLock.lock();
-                this.ExecutingTransactionSet.remove(nst);
-                this.executingSetLock.unlock();
+            Hashtable<String, Object> result = (Hashtable<String, Object>) arg;
+            String execType = (String) result.get("execType");
+            NameServiceTransaction transaction = (NameServiceTransaction) result.get("context");
+            switch (execType) {
+                case "BusinessRoleMapping":
+                    if (result.get("execCode").equals(GlobalConfigContext.TRANSACTION_EXECUTOR_SUCCESS)) {
+                        LogUtil.Log(String.format("RoleMap NSTransaction is finished: %s (%s)", result.get("nsid"), result.get("action")),
+                                NSScheduler.class.getName(), (String) result.get("rtid"));
+                    }
+                    else {
+                        LogUtil.Log(String.format("RoleMap NSTransaction is failed: %s (%s)", result.get("nsid"), result.get("action")),
+                                NSScheduler.class.getName(), (String) result.get("rtid"));
+                    }
+                    break;
+                case "Namespacing":
+                    String ns_nsid = (String) result.get("nsid");
+                    if (result.get("execCode").equals(GlobalConfigContext.TRANSACTION_EXECUTOR_SUCCESS)) {
+                        LogUtil.Log(String.format("NameSpacing NSTransaction is finished: %s (%s)", ns_nsid == null ? "" : ns_nsid, result.get("action")),
+                                NSScheduler.class.getName(), (String) result.get("rtid"));
+                    }
+                    else {
+                        LogUtil.Log(String.format("NameSpacing NSTransaction is failed: %s (%s)", ns_nsid == null ? "" : ns_nsid, result.get("action")),
+                                NSScheduler.class.getName(), (String) result.get("rtid"));
+                    }
+                    break;
             }
+            this.executingSetLock.lock();
+            this.ExecutingTransactionSet.remove(transaction);
+            this.executingSetLock.unlock();
         }
     }
 

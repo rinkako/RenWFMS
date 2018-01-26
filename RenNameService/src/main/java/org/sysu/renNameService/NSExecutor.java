@@ -7,13 +7,13 @@ import org.hibernate.Session;
 import org.hibernate.Transaction;
 import org.sysu.renNameService.entity.RenNsTransactionEntity;
 import org.sysu.renNameService.entity.RenRolemapEntity;
+import org.sysu.renNameService.nameSpacing.NameSpacingService;
 import org.sysu.renNameService.roleMapping.RoleMappingService;
 import org.sysu.renNameService.transaction.NameServiceTransaction;
 import org.sysu.renNameService.transaction.TransactionType;
 import org.sysu.renNameService.utility.HibernateUtil;
 import org.sysu.renNameService.utility.LogUtil;
 import org.sysu.renNameService.utility.SerializationUtil;
-import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 
 import java.sql.Timestamp;
 import java.util.ArrayList;
@@ -44,12 +44,13 @@ public class NSExecutor extends Observable {
         RenNsTransactionEntity context = nst.getTransactionContext();
         try {
             TransactionType tType = TransactionType.values()[context.getType()];
+            Hashtable<String, Object> execResult = new Hashtable<>();
+            String act = (String) nst.getParameterDictionary().get(GlobalConfigContext.TRANSACTION_ACTION_KEY);
+            String retStr = null;
             switch (tType) {
                 case BusinessRoleMapping:
-                    String act = (String) nst.getParameterDictionary().get(GlobalConfigContext.TRANSACTION_ACTION_KEY);
                     Hashtable<String, Object> args = nst.getParameterDictionary();
                     String rtid = (String) args.get("rtid");
-                    String retStr = null;
                     switch (act) {
                         case "getWorkerByBRole":
                             ArrayList<String> bRoles = RoleMappingService.GetWorkerByBusinessRole(rtid, (String) args.get("brole"));
@@ -72,38 +73,50 @@ public class NSExecutor extends Observable {
                             retStr = SerializationUtil.JsonSerilization(involves, rtid);
                             break;
                     }
-                    // write success info to db
-                    Session session = HibernateUtil.GetLocalThreadSession();
-                    Transaction dbTrans = session.beginTransaction();
-                    try {
-                        context.setFinishTimestamp(new Timestamp(System.currentTimeMillis()));
-                        session.update(context);
-                        dbTrans.commit();
-                    }
-                    catch (Exception dbEx) {
-                        dbTrans.rollback();
-                        throw dbEx;
-                    }
                     // prepare execution result
-                    Hashtable<String, Object> execResult = new Hashtable<>();
                     execResult.put("execCode", GlobalConfigContext.TRANSACTION_EXECUTOR_SUCCESS);
                     execResult.put("execType", TransactionType.BusinessRoleMapping.name());
                     execResult.put("context", nst);
-                    execResult.put("rtid", rtid);
                     execResult.put("nsid", context.getNsid());
                     execResult.put("action", act);
-                    this.setChanged();
-                    this.notifyObservers(execResult);
-                    return retStr;
+                    execResult.put("rtid", rtid);
                 case Namespacing:
-                    throw new NotImplementedException();
+                    String nsAct = (String) nst.getParameterDictionary().get(GlobalConfigContext.TRANSACTION_ACTION_KEY);
+                    Hashtable<String, Object> nsArgs = nst.getParameterDictionary();
+                    switch (nsAct) {
+                        case "generateRtid":
+                            retStr = NameSpacingService.GenerateRTID();
+                            break;
+                    }
+                    // prepare execution result
+                    execResult.put("execCode", GlobalConfigContext.TRANSACTION_EXECUTOR_SUCCESS);
+                    execResult.put("execType", TransactionType.Namespacing.name());
+                    execResult.put("context", nst);
+                    execResult.put("nsid", context.getNsid());
+                    execResult.put("action", act);
                 default:
                     LogUtil.Log("Execute sync failed, wrong type code", NSExecutor.class.getName(),
                             LogUtil.LogLevelType.WARNNING, context.getRtid());
             }
+            // write success info to db
+            Session session = HibernateUtil.GetLocalThreadSession();
+            Transaction dbTrans = session.beginTransaction();
+            try {
+                context.setFinishTimestamp(new Timestamp(System.currentTimeMillis()));
+                session.update(context);
+                dbTrans.commit();
+            }
+            catch (Exception dbEx) {
+                dbTrans.rollback();
+                throw dbEx;
+            }
+            // bubble notification to scheduler or tracker
+            this.setChanged();
+            this.notifyObservers(execResult);
+            return retStr;
         }
         catch (Exception ex) {
-            LogUtil.Log("Execute sync failed, " + ex, NSExecutor.class.getName(),
+            LogUtil.Log("Executor Exception Occurred, " + ex, NSExecutor.class.getName(),
                     LogUtil.LogLevelType.ERROR, context.getRtid());
         }
         return null;
