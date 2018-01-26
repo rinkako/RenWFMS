@@ -45,11 +45,12 @@ public class NSExecutor extends Observable {
         try {
             TransactionType tType = TransactionType.values()[context.getType()];
             Hashtable<String, Object> execResult = new Hashtable<>();
-            String act = (String) nst.getParameterDictionary().get(GlobalConfigContext.TRANSACTION_ACTION_KEY);
+            String act = (String) nst.getParameterDictionary().get(GlobalContext.TRANSACTION_ACTION_KEY);
+            Hashtable<String, Object> args = nst.getParameterDictionary();
             String retStr = null;
             switch (tType) {
                 case BusinessRoleMapping:
-                    Hashtable<String, Object> args = nst.getParameterDictionary();
+
                     String rtid = (String) args.get("rtid");
                     switch (act) {
                         case "getWorkerByBRole":
@@ -74,22 +75,21 @@ public class NSExecutor extends Observable {
                             break;
                     }
                     // prepare execution result
-                    execResult.put("execCode", GlobalConfigContext.TRANSACTION_EXECUTOR_SUCCESS);
+                    execResult.put("execCode", GlobalContext.TRANSACTION_EXECUTOR_SUCCESS);
                     execResult.put("execType", TransactionType.BusinessRoleMapping.name());
                     execResult.put("context", nst);
                     execResult.put("nsid", context.getNsid());
                     execResult.put("action", act);
                     execResult.put("rtid", rtid);
                 case Namespacing:
-                    String nsAct = (String) nst.getParameterDictionary().get(GlobalConfigContext.TRANSACTION_ACTION_KEY);
-                    Hashtable<String, Object> nsArgs = nst.getParameterDictionary();
+                    String nsAct = (String) nst.getParameterDictionary().get(GlobalContext.TRANSACTION_ACTION_KEY);
                     switch (nsAct) {
                         case "generateRtid":
                             retStr = NameSpacingService.GenerateRTID();
                             break;
                     }
                     // prepare execution result
-                    execResult.put("execCode", GlobalConfigContext.TRANSACTION_EXECUTOR_SUCCESS);
+                    execResult.put("execCode", GlobalContext.TRANSACTION_EXECUTOR_SUCCESS);
                     execResult.put("execType", TransactionType.Namespacing.name());
                     execResult.put("context", nst);
                     execResult.put("nsid", context.getNsid());

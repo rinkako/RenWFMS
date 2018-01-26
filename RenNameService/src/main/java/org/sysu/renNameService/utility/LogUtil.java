@@ -5,7 +5,7 @@
 package org.sysu.renNameService.utility;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
-import org.sysu.renNameService.GlobalConfigContext;
+import org.sysu.renNameService.GlobalContext;
 import org.sysu.renNameService.entity.RenNslogEntity;
 import java.sql.Timestamp;
 import java.util.concurrent.ConcurrentLinkedQueue;
@@ -81,7 +81,7 @@ public final class LogUtil {
                     LogLevelType.ERROR, rtid, depth + 1);
         }
         finally {
-            boolean flushFlag = LogUtil.logBuffer.size() >= GlobalConfigContext.LOG_BUFFER_SIZE;
+            boolean flushFlag = LogUtil.logBuffer.size() >= GlobalContext.LOG_BUFFER_SIZE;
             LogUtil.readWriteLock.readLock().unlock();
             if (flushFlag) {
                 LogUtil.FlushLog();

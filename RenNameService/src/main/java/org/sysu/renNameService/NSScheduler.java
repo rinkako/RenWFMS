@@ -4,7 +4,6 @@
  */
 package org.sysu.renNameService;
 import org.sysu.renNameService.transaction.NameServiceTransaction;
-import org.sysu.renNameService.transaction.TransactionType;
 import org.sysu.renNameService.utility.LogUtil;
 import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 
@@ -35,7 +34,7 @@ public class NSScheduler implements Observer {
      * @param nst NameServiceTransaction instance
      */
     public Object Schedule(NameServiceTransaction nst) {
-        switch (GlobalConfigContext.CONCURRENT_CONTROL_TYPE) {
+        switch (GlobalContext.CONCURRENT_CONTROL_TYPE) {
             case None:
                 return this.LaunchTransactionDirectly(nst);
             case StandaloneControl:
@@ -55,7 +54,7 @@ public class NSScheduler implements Observer {
      */
     private synchronized void HandlePendingTransaction() {
         this.executingSetLock.lock();
-        while (this.ExecutingTransactionSet.size() < GlobalConfigContext.CONCURRENT_MAX_EXECUTING_TRANSACTION) {
+        while (this.ExecutingTransactionSet.size() < GlobalContext.CONCURRENT_MAX_EXECUTING_TRANSACTION) {
             if (this.TransactionQueue.isEmpty()) {
                 return;
             }
@@ -106,7 +105,7 @@ public class NSScheduler implements Observer {
             NameServiceTransaction transaction = (NameServiceTransaction) result.get("context");
             switch (execType) {
                 case "BusinessRoleMapping":
-                    if (result.get("execCode").equals(GlobalConfigContext.TRANSACTION_EXECUTOR_SUCCESS)) {
+                    if (result.get("execCode").equals(GlobalContext.TRANSACTION_EXECUTOR_SUCCESS)) {
                         LogUtil.Log(String.format("RoleMap NSTransaction is finished: %s (%s)", result.get("nsid"), result.get("action")),
                                 NSScheduler.class.getName(), (String) result.get("rtid"));
                     }
@@ -117,7 +116,7 @@ public class NSScheduler implements Observer {
                     break;
                 case "Namespacing":
                     String ns_nsid = (String) result.get("nsid");
-                    if (result.get("execCode").equals(GlobalConfigContext.TRANSACTION_EXECUTOR_SUCCESS)) {
+                    if (result.get("execCode").equals(GlobalContext.TRANSACTION_EXECUTOR_SUCCESS)) {
                         LogUtil.Log(String.format("NameSpacing NSTransaction is finished: %s (%s)", ns_nsid == null ? "" : ns_nsid, result.get("action")),
                                 NSScheduler.class.getName(), (String) result.get("rtid"));
                     }

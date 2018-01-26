@@ -20,9 +20,9 @@ public class ReturnModel implements Serializable {
     private StatusCode code;
 
     /**
-     * timestamp and the ID of resource
+     * timestamp and the ID of micro-service instance
      */
-    private String rs;
+    private String ns;
 
     /**
      * element to return
@@ -39,12 +39,12 @@ public class ReturnModel implements Serializable {
     }
 
     @XmlElement
-    public String getRs() {
-        return rs;
+    public String getNs() {
+        return ns;
     }
 
-    public void setRs(String rs) {
-        this.rs = rs;
+    public void setNs(String rs) {
+        this.ns = rs;
     }
 
     @XmlElement(name = "return")

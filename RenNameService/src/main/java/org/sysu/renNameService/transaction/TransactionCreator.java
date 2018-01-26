@@ -5,7 +5,7 @@
 package org.sysu.renNameService.transaction;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
-import org.sysu.renNameService.GlobalConfigContext;
+import org.sysu.renNameService.GlobalContext;
 import org.sysu.renNameService.entity.RenNsTransactionEntity;
 import org.sysu.renNameService.utility.HibernateUtil;
 import org.sysu.renNameService.utility.LogUtil;
@@ -34,7 +34,7 @@ public class TransactionCreator {
         String rtid = args.get("rtid");
         NameServiceTransaction nst = new NameServiceTransaction();
         nst.AddParameter(args);
-        nst.AddParameter(GlobalConfigContext.TRANSACTION_ACTION_KEY, action);
+        nst.AddParameter(GlobalContext.TRANSACTION_ACTION_KEY, action);
         RenNsTransactionEntity rnte = nst.getTransactionContext();
         rnte.setAcceptTimestamp(new Timestamp(System.currentTimeMillis()));
         rnte.setNsid(nsid);

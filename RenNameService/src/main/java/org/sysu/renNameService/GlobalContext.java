@@ -4,18 +4,30 @@
  */
 package org.sysu.renNameService;
 import org.sysu.renNameService.transaction.ConcurrentControlType;
+import java.util.UUID;
 
 /**
- * Usage : This class is used to store runtime config context, usually readonly.
+ * Usage : This class is used to store runtime context.
  */
-public final class GlobalConfigContext {
+public final class GlobalContext {
+    /**
+     * Name service micro-service global id.
+     */
+    public static String NAME_SERVICE_GLOBAL_ID = UUID.randomUUID().toString();
+
     /**
      * Transaction action key in argument dict.
      */
     public static final String TRANSACTION_ACTION_KEY = "?action";
 
+    /**
+     * Transaction executor success flag string.
+     */
     public static final String TRANSACTION_EXECUTOR_SUCCESS = "success";
 
+    /**
+     * Transaction executor fail flag string.
+     */
     public static final String TRANSACTION_EXECUTOR_FAILED = "fail";
 
     /**
