@@ -3,17 +3,18 @@
  * Rinkako, Ariana, Gordan. SYSU SDCS.
  */
 package org.sysu.renNameService.entity;
+
 import javax.persistence.*;
 import java.sql.Timestamp;
 import java.util.Objects;
 
 /**
  * Author: Rinkako
- * Date  : 2018/1/21
+ * Date  : 2018/1/27
  * Usage :
  */
 @Entity
-@Table(name = "ren_runtimerecord", schema = "renboengine", catalog = "")
+@Table(name = "ren_runtimerecord", schema = "renboengine")
 public class RenRuntimerecordEntity {
     private String rtid;
     private String processId;
@@ -28,7 +29,6 @@ public class RenRuntimerecordEntity {
     private String resourcingId;
     private String resourceBinding;
     private Integer resourceBindingType;
-    private String launchRenid;
 
     @Id
     @Column(name = "rtid", nullable = false, length = 64)
@@ -184,15 +184,5 @@ public class RenRuntimerecordEntity {
     public int hashCode() {
 
         return Objects.hash(rtid, processId, processName, sessionId, launchAuthorityId, launchTimestamp, launchFrom, launchType, tag, interpreterId, resourcingId, resourceBinding, resourceBindingType);
-    }
-
-    @Basic
-    @Column(name = "launch_renid", nullable = true, length = 64)
-    public String getLaunchRenid() {
-        return launchRenid;
-    }
-
-    public void setLaunchRenid(String launchRenid) {
-        this.launchRenid = launchRenid;
     }
 }

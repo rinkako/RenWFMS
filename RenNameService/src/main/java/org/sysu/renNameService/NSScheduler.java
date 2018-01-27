@@ -93,7 +93,7 @@ public class NSScheduler implements Observer {
      * application calls an <tt>Observable</tt> object's
      * <code>notifyObservers</code> method to have all the object's
      * observers notified of the change.
-     * @param o   the observable object.
+     * @param o the observable object.
      * @param arg an argument passed to the <code>notifyObservers</code>
      */
     @Override
@@ -153,7 +153,7 @@ public class NSScheduler implements Observer {
     private ReentrantLock executingSetLock = new ReentrantLock();
 
     /**
-     * Scheduler unique instance.
+     * Scheduler global unique instance.
      */
     private static final NSScheduler syncObject = new NSScheduler();
 }

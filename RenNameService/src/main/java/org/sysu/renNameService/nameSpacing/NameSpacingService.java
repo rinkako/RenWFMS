@@ -8,6 +8,7 @@ import org.hibernate.Session;
 import org.hibernate.Transaction;
 import org.sysu.renNameService.entity.RenBoEntity;
 import org.sysu.renNameService.entity.RenProcessEntity;
+import org.sysu.renNameService.entity.RenRuntimerecordEntity;
 import org.sysu.renNameService.utility.HibernateUtil;
 import org.sysu.renNameService.utility.LogUtil;
 
@@ -165,6 +166,50 @@ public class NameSpacingService {
         }
         catch (Exception ex) {
             LogUtil.Log("Get BO entity but exception occurred, service rollback, " + ex, NameSpacingService.class.getName(), LogUtil.LogLevelType.ERROR, rtid);
+            transaction.rollback();
+        }
+        return null;
+    }
+
+    /**
+     * Submit a process launch request.
+     * @param pid process id to be launched
+     * @param rtid prepared rtid
+     * @param from launch platform
+     * @param renid ren user id
+     * @param authoritySession service authority session id
+     * @param bindingType resource binding type
+     * @param binding resource binding source, only useful when static XML binding
+     * @return Runtime record package
+     */
+    public static RenRuntimerecordEntity SubmitLaunchProcess(String pid,
+                                                             String rtid,
+                                                             String from,
+                                                             String renid,
+                                                             String authoritySession,
+                                                             Integer bindingType,
+                                                             String binding) {
+        Session session = HibernateUtil.GetLocalThreadSession();
+        Transaction transaction = session.beginTransaction();
+        try {
+            RenProcessEntity rpe = session.get(RenProcessEntity.class, pid);
+            RenRuntimerecordEntity rrte = new RenRuntimerecordEntity();
+            rrte.setRtid(rtid);
+            rrte.setLaunchFrom(from);
+            rrte.setLaunchAuthorityId(renid);
+            rrte.setSessionId(authoritySession);
+            rrte.setProcessId(pid);
+            rrte.setProcessName(rpe.getProcessName());
+            rrte.setResourceBindingType(bindingType);
+            rrte.setResourceBinding(binding);
+            rrte.setLaunchTimestamp(new Timestamp(System.currentTimeMillis()));
+            session.save(rrte);
+            transaction.commit();
+            // todo: send request to BOEngine to launch here
+            return rrte;
+        }
+        catch (Exception ex) {
+            LogUtil.Log(String.format("Submit launch process but exception occurred(pid: %s), service rollback, %s", pid, ex), NameSpacingService.class.getName(), LogUtil.LogLevelType.ERROR, rtid);
             transaction.rollback();
         }
         return null;
