@@ -149,4 +149,24 @@ public class NameSpacingService {
         }
         return false;
     }
+
+    /**
+     * Get a BO entity by its id.
+     * @param boid BO unique id
+     * @return {@code RenBoEntity} instance
+     */
+    public static RenBoEntity GetBO(String boid, String rtid) {
+        Session session = HibernateUtil.GetLocalThreadSession();
+        Transaction transaction = session.beginTransaction();
+        try {
+            RenBoEntity rbe = session.get(RenBoEntity.class, boid);
+            transaction.commit();
+            return rbe;
+        }
+        catch (Exception ex) {
+            LogUtil.Log("Get BO entity but exception occurred, service rollback, " + ex, NameSpacingService.class.getName(), LogUtil.LogLevelType.ERROR, rtid);
+            transaction.rollback();
+        }
+        return null;
+    }
 }

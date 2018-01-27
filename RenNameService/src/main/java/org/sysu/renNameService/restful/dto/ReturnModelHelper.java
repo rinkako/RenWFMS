@@ -22,7 +22,7 @@ public class ReturnModelHelper {
      * @param code status code enum
      * @param retStr execution return data
      */
-    public static void WrapResponse(ReturnModel rnModel, StatusCode code, String retStr) {
+    public static void StandardResponse(ReturnModel rnModel, StatusCode code, String retStr) {
         rnModel.setCode(code);
         rnModel.setNs(String.format("%s %s", TimestampUtil.GetTimeStamp(), GlobalContext.NAME_SERVICE_GLOBAL_ID));
         ReturnElement returnElement = new ReturnElement();
@@ -35,8 +35,7 @@ public class ReturnModelHelper {
      * @param exception exception descriptor
      * @return response package
      */
-    public static ReturnModel ExceptionResponse(String exception) {
-        ReturnModel rnModel = new ReturnModel();
+    public static ReturnModel ExceptionResponse(ReturnModel rnModel, String exception) {
         rnModel.setCode(StatusCode.Exception);
         rnModel.setNs(TimestampUtil.GetTimeStamp() + " 0");
         ReturnElement returnElement = new ReturnElement();

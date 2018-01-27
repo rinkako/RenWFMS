@@ -6,6 +6,7 @@ package org.sysu.renNameService.restful.controller;
 import org.springframework.web.bind.annotation.*;
 import org.sysu.renNameService.restful.dto.ReturnElement;
 import org.sysu.renNameService.restful.dto.ReturnModel;
+import org.sysu.renNameService.restful.dto.ReturnModelHelper;
 import org.sysu.renNameService.restful.dto.StatusCode;
 import org.sysu.renNameService.utility.TimestampUtil;
 import java.util.ArrayList;
@@ -20,34 +21,6 @@ import java.util.List;
 @RestController
 @RequestMapping("/cluster")
 public class ClusterController {
-
-    // Todo
-    public ReturnModel ExceptionHandlerFunction(String exception) {
-        ReturnModel rnModel = new ReturnModel();
-        rnModel.setCode(StatusCode.Exception);
-        rnModel.setNs(TimestampUtil.GetTimeStamp() + " 0");
-
-        ReturnElement returnElement = new ReturnElement();
-        returnElement.setMessage(exception);
-        rnModel.setReturnElement(returnElement);
-
-        return rnModel;
-    }
-
-    public ReturnModel HandleMissingParameters(List<String> params) {
-        ReturnModel rnModel = new ReturnModel();
-        rnModel.setCode(StatusCode.Fail);
-        rnModel.setNs(TimestampUtil.GetTimeStamp() + " 0");
-        ReturnElement returnElement = new ReturnElement();
-        StringBuffer sb = new StringBuffer();
-        sb.append("miss parameters:");
-        for (String s : params) {
-            sb.append(s+" ");
-        }
-        returnElement.setMessage(sb.toString());
-        rnModel.setReturnElement(returnElement);
-        return rnModel;
-    }
 
     /**
      * Doki
@@ -69,8 +42,7 @@ public class ClusterController {
             if (timestamp == null) missingParams.add("timestamp");
             if (tag == null) missingParams.add("tag");
             if (missingParams.size() > 0) {
-                rnModel = HandleMissingParameters(missingParams);
-                return rnModel;
+                return ReturnModelHelper.MissingParametersResponse(missingParams);
             }
 
             rnModel.setCode(StatusCode.OK);
@@ -79,7 +51,7 @@ public class ClusterController {
             returnElement.setData("Doki");
             rnModel.setReturnElement(returnElement);
         } catch (Exception e) {
-            rnModel = ExceptionHandlerFunction(e.getClass().getName());
+            ReturnModelHelper.ExceptionResponse(rnModel, e.getClass().getName());
         }
 
         return rnModel;
@@ -105,8 +77,7 @@ public class ClusterController {
             if (timestamp == null) missingParams.add("timestamp");
             if (tag == null) missingParams.add("tag");
             if (missingParams.size() > 0) {
-                rnModel = HandleMissingParameters(missingParams);
-                return rnModel;
+                return ReturnModelHelper.MissingParametersResponse(missingParams);
             }
 
             rnModel.setCode(StatusCode.OK);
@@ -115,7 +86,7 @@ public class ClusterController {
             returnElement.setData("Sync");
             rnModel.setReturnElement(returnElement);
         } catch (Exception e) {
-            rnModel = ExceptionHandlerFunction(e.getClass().getName());
+            ReturnModelHelper.ExceptionResponse(rnModel, e.getClass().getName());
         }
 
         return rnModel;
@@ -137,8 +108,7 @@ public class ClusterController {
             List<String> missingParams = new ArrayList<>();
             if (from == null) missingParams.add("from");
             if (missingParams.size() > 0) {
-                rnModel = HandleMissingParameters(missingParams);
-                return rnModel;
+                return ReturnModelHelper.MissingParametersResponse(missingParams);
             }
 
             rnModel.setCode(StatusCode.OK);
@@ -147,7 +117,7 @@ public class ClusterController {
             returnElement.setData("Flush");
             rnModel.setReturnElement(returnElement);
         } catch (Exception e) {
-            rnModel = ExceptionHandlerFunction(e.getClass().getName());
+            ReturnModelHelper.ExceptionResponse(rnModel, e.getClass().getName());
         }
 
         return rnModel;
@@ -169,8 +139,7 @@ public class ClusterController {
             List<String> missingParams = new ArrayList<>();
             if (from == null) missingParams.add("from");
             if (missingParams.size() > 0) {
-                rnModel = HandleMissingParameters(missingParams);
-                return rnModel;
+                return ReturnModelHelper.MissingParametersResponse(missingParams);
             }
 
             rnModel.setCode(StatusCode.OK);
@@ -179,7 +148,7 @@ public class ClusterController {
             returnElement.setData("Fin");
             rnModel.setReturnElement(returnElement);
         } catch (Exception e) {
-            rnModel = ExceptionHandlerFunction(e.getClass().getName());
+            ReturnModelHelper.ExceptionResponse(rnModel, e.getClass().getName());
         }
 
         return rnModel;

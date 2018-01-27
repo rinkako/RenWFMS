@@ -5,6 +5,7 @@
 package org.sysu.renNameService;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
+import org.sysu.renNameService.entity.RenBoEntity;
 import org.sysu.renNameService.entity.RenNsTransactionEntity;
 import org.sysu.renNameService.entity.RenProcessEntity;
 import org.sysu.renNameService.entity.RenRolemapEntity;
@@ -105,6 +106,10 @@ public class NSExecutor extends Observable {
                         case "containProcess":
                             boolean containProcessFlag = NameSpacingService.ContainProcess((String) args.get("renid"), (String) args.get("processName"));
                             retStr = SerializationUtil.JsonSerialization(containProcessFlag, "");
+                            break;
+                        case "getBO":
+                            RenBoEntity getBoEntity = NameSpacingService.GetBO((String) args.get("boid"), (String) args.get("rtid"));
+                            retStr = SerializationUtil.JsonSerialization(getBoEntity, "");
                             break;
                     }
                     // prepare execution result

@@ -26,8 +26,8 @@ import java.util.List;
 public class RoleMappingController {
     /**
      * Get worker's id by his business role.
-     * @param rtid process rtid
-     * @param brole business role name
+     * @param rtid process rtid (required)
+     * @param brole business role name (required)
      * @return response package
      */
     @RequestMapping(value = "/getWorkerByBRole", produces = {"application/json", "application/xml"})
@@ -41,8 +41,7 @@ public class RoleMappingController {
             if (rtid == null) missingParams.add("rtid");
             if (brole == null) missingParams.add("brole");
             if (missingParams.size() > 0) {
-                rnModel = ReturnModelHelper.MissingParametersResponse(missingParams);
-                return rnModel;
+                return ReturnModelHelper.MissingParametersResponse(missingParams);
             }
             // logic
             HashMap<String, String> args = new HashMap<>();
@@ -51,17 +50,17 @@ public class RoleMappingController {
             NameServiceTransaction t = TransactionCreator.Create(TransactionType.BusinessRoleMapping, "getWorkerByBRole", args);
             String jsonifyResult = (String) RoleMappingController.scheduler.Schedule(t);
             // return
-            ReturnModelHelper.WrapResponse(rnModel, StatusCode.OK, jsonifyResult);
+            ReturnModelHelper.StandardResponse(rnModel, StatusCode.OK, jsonifyResult);
         } catch (Exception e) {
-            rnModel = ReturnModelHelper.ExceptionResponse(e.getClass().getName());
+            ReturnModelHelper.ExceptionResponse(rnModel, e.getClass().getName());
         }
         return rnModel;
     }
 
     /**
      * Get business role by the worker's id.
-     * @param rtid process rtid
-     * @param gid worker global id
+     * @param rtid process rtid (required)
+     * @param gid worker global id (required)
      * @return response package
      */
     @RequestMapping(value = "/getBRoleByWorker", produces = {"application/json", "application/xml"})
@@ -75,8 +74,7 @@ public class RoleMappingController {
             if (rtid == null) missingParams.add("rtid");
             if (gid == null) missingParams.add("gid");
             if (missingParams.size() > 0) {
-                rnModel = ReturnModelHelper.MissingParametersResponse(missingParams);
-                return rnModel;
+                return ReturnModelHelper.MissingParametersResponse(missingParams);
             }
             // logic
             HashMap<String, String> args = new HashMap<>();
@@ -85,9 +83,9 @@ public class RoleMappingController {
             NameServiceTransaction t = TransactionCreator.Create(TransactionType.BusinessRoleMapping, "getBRoleByWorker", args);
             String jsonifyResult = (String) RoleMappingController.scheduler.Schedule(t);
             // return
-            ReturnModelHelper.WrapResponse(rnModel, StatusCode.OK, jsonifyResult);
+            ReturnModelHelper.StandardResponse(rnModel, StatusCode.OK, jsonifyResult);
         } catch (Exception e) {
-            rnModel = ReturnModelHelper.ExceptionResponse(e.getClass().getName());
+            ReturnModelHelper.ExceptionResponse(rnModel, e.getClass().getName());
         }
         return rnModel;
     }
@@ -95,11 +93,11 @@ public class RoleMappingController {
 
     /**
      * Register a mapping to RoleMap Service.
-     * @param rtid process rtid
-     * @param organGid organization global id
-     * @param dataVersion organization data version
-     * @param isolationType organization data isolation type
-     * @param map map descriptor
+     * @param rtid process rtid (required)
+     * @param organGid organization global id (required)
+     * @param dataVersion organization data version (required)
+     * @param isolationType organization data isolation type (required)
+     * @param map map descriptor (required)
      * @return response package
      */
     @RequestMapping(value = "/register", produces = {"application/json", "application/xml"})
@@ -119,8 +117,7 @@ public class RoleMappingController {
             if (isolationType == null) missingParams.add("isolationtype");
             if (map == null) missingParams.add("map");
             if (missingParams.size() > 0) {
-                rnModel = ReturnModelHelper.MissingParametersResponse(missingParams);
-                return rnModel;
+                return ReturnModelHelper.MissingParametersResponse(missingParams);
             }
             // logic
             HashMap<String, String> args = new HashMap<>();
@@ -132,16 +129,16 @@ public class RoleMappingController {
             NameServiceTransaction t = TransactionCreator.Create(TransactionType.BusinessRoleMapping, "register", args);
             String jsonifyResult = (String) RoleMappingController.scheduler.Schedule(t);
             // return
-            ReturnModelHelper.WrapResponse(rnModel, StatusCode.OK, jsonifyResult);
+            ReturnModelHelper.StandardResponse(rnModel, StatusCode.OK, jsonifyResult);
         } catch (Exception e) {
-            rnModel = ReturnModelHelper.ExceptionResponse(e.getClass().getName());
+            ReturnModelHelper.ExceptionResponse(rnModel, e.getClass().getName());
         }
         return rnModel;
     }
 
     /**
      * Finish a process and delete cache.
-     * @param rtid process rtid
+     * @param rtid process rtid (required)
      * @return response package
      */
     @RequestMapping(value = "/fin", produces = {"application/json", "application/xml"})
@@ -154,8 +151,7 @@ public class RoleMappingController {
             List<String> missingParams = new ArrayList<>();
             if (rtid == null) missingParams.add("rtid");
             if (missingParams.size() > 0) {
-                rnModel = ReturnModelHelper.MissingParametersResponse(missingParams);
-                return rnModel;
+                return ReturnModelHelper.MissingParametersResponse(missingParams);
             }
             // logic
             HashMap<String, String> args = new HashMap<>();
@@ -163,16 +159,16 @@ public class RoleMappingController {
             NameServiceTransaction t = TransactionCreator.Create(TransactionType.BusinessRoleMapping, "fin", args);
             String jsonifyResult = (String) RoleMappingController.scheduler.Schedule(t);
             // return
-            ReturnModelHelper.WrapResponse(rnModel, StatusCode.OK, jsonifyResult);
+            ReturnModelHelper.StandardResponse(rnModel, StatusCode.OK, jsonifyResult);
         } catch (Exception e) {
-            rnModel = ReturnModelHelper.ExceptionResponse(e.getClass().getName());
+            ReturnModelHelper.ExceptionResponse(rnModel, e.getClass().getName());
         }
         return rnModel;
     }
 
     /**
      * Get all resources involved in a process.
-     * @param rtid process rtid
+     * @param rtid process rtid (required)
      * @return response package
      */
     @RequestMapping(value = "/getInvolved", produces = {"application/json", "application/xml"})
@@ -185,8 +181,7 @@ public class RoleMappingController {
             List<String> missingParams = new ArrayList<>();
             if (rtid == null) missingParams.add("rtid");
             if (missingParams.size() > 0) {
-                rnModel = ReturnModelHelper.MissingParametersResponse(missingParams);
-                return rnModel;
+                return ReturnModelHelper.MissingParametersResponse(missingParams);
             }
             // logic
             HashMap<String, String> args = new HashMap<>();
@@ -194,9 +189,9 @@ public class RoleMappingController {
             NameServiceTransaction t = TransactionCreator.Create(TransactionType.BusinessRoleMapping, "getInvolved", args);
             String jsonifyResult = (String) RoleMappingController.scheduler.Schedule(t);
             // return
-            ReturnModelHelper.WrapResponse(rnModel, StatusCode.OK, jsonifyResult);
+            ReturnModelHelper.StandardResponse(rnModel, StatusCode.OK, jsonifyResult);
         } catch (Exception e) {
-            rnModel = ReturnModelHelper.ExceptionResponse(e.getClass().getName());
+            ReturnModelHelper.ExceptionResponse(rnModel, e.getClass().getName());
         }
         return rnModel;
     }
