@@ -44,4 +44,14 @@ public final class GlobalContext {
      * Is concurrent control is enabled.
      */
     public static ConcurrentControlType CONCURRENT_CONTROL_TYPE = ConcurrentControlType.None;
+
+    /**
+     * Salt for authority encryption.
+     */
+    public static final String AUTHORITY_SALT = "bab53e0679c74ren8148b75ea2a7db4e";
+
+    /**
+     * Service URL for BO Engine Serialization BO.
+     */
+    public static final String URL_BOENGINE_SERIALIZEBO = "http://localhost:10232/boengine/serializeBO";
 }

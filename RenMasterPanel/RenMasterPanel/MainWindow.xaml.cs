@@ -34,11 +34,15 @@ namespace RenMasterPanel
             //NetClient.FetchString(url_get, out string outstr);
             //Console.WriteLine(outstr);
 
-            string url_post = "http://localhost:10234/rolemap/getInvolved";
-            var dict = new Dictionary<String, String>();
-            dict.Add("rtid", "AA1");
-            NetClient.PostData(url_post, dict, out string postRes);
-            Console.WriteLine(postRes);
+            //string url_post = "http://localhost:10234/rolemap/getInvolved";
+            //var dict = new Dictionary<String, String>();
+            //dict.Add("rtid", "AA1");
+            //NetClient.PostData(url_post, dict, out string postRes);
+            //Console.WriteLine(postRes);
+
+            var args = new Dictionary<String, String> {{"renid", "testren"}};
+            NetClient.PostData(GlobalContext.URL_GetProcessByRenId, args, out var fetched);
+            
         }
 
         private void ComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)

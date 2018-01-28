@@ -17,11 +17,11 @@
                     <Button Content="Next >" HorizontalAlignment="Left" FontSize="12" Margin="620,301,0,0" VerticalAlignment="Top" Width="116"/>
                     <ComboBox Name="ComboBox_Step1_MainBO" HorizontalAlignment="Left" Margin="155,305,0,0" VerticalAlignment="Top" Width="309"/>
                     <Label Content="入口Business Object：" HorizontalAlignment="Left" Margin="10,305,0,0" VerticalAlignment="Top" Height="26" Width="140"/>
-                    <ComboBox Name="ComboBox_Step1_Processes" HorizontalAlignment="Left" Margin="596,17,0,0" VerticalAlignment="Top" Width="140" SelectedIndex="0" SelectionChanged="ComboBox_SelectionChanged">
+                    <ComboBox Name="ComboBox_Step1_Processes" HorizontalAlignment="Left" Margin="469,17,0,0" VerticalAlignment="Top" Width="267" SelectedIndex="0" SelectionChanged="ComboBox_SelectionChanged">
                         <Label Content="&lt;从本地导入&gt;"/>
                         <Label Content="test"/>
                     </ComboBox>
-                    <Button Content="DEBUG" HorizontalAlignment="Left" Margin="487,16,0,0" VerticalAlignment="Top" Width="75" Click="ButtonBase_OnClick"/>
+                    <Button Content="Refresh" HorizontalAlignment="Left" Margin="389,17,0,0" VerticalAlignment="Top" Width="75" Click="ButtonBase_OnClick" Height="26"/>
                 </Grid>
             </TabItem>
             <TabItem Header="       角色映射       " controls:ControlsHelper.HeaderFontSize="22">

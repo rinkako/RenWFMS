@@ -6,14 +6,18 @@ package org.sysu.renNameService.nameSpacing;
 
 import org.hibernate.Session;
 import org.hibernate.Transaction;
+import org.sysu.renNameService.GlobalContext;
 import org.sysu.renNameService.entity.RenBoEntity;
 import org.sysu.renNameService.entity.RenProcessEntity;
 import org.sysu.renNameService.entity.RenRuntimerecordEntity;
 import org.sysu.renNameService.utility.HibernateUtil;
+import org.sysu.renNameService.utility.HttpClientUtil;
 import org.sysu.renNameService.utility.LogUtil;
 
 import java.sql.Timestamp;
+import java.util.AbstractMap;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.UUID;
 
 /**
@@ -60,13 +64,13 @@ public class NameSpacingService {
     }
 
     /**
-     * Upload a BO for a specific process
+     * Upload a BO for a specific process.
      * @param pid belong to pid
      * @param name BO name
      * @param content BO content string
-     * @return boid
+     * @return pair of boid - involved business role names string
      */
-    public static String UploadBOContent(String pid, String name, String content) {
+    public static AbstractMap.SimpleEntry<String, String> UploadBOContent(String pid, String name, String content) {
         Session session = HibernateUtil.GetLocalThreadSession();
         Transaction transaction = session.beginTransaction();
         try {
@@ -77,15 +81,18 @@ public class NameSpacingService {
             rbe.setBoName(name);
             rbe.setBoContent(content);
             session.save(rbe);
+            // send to engine for get business role
+            HashMap<String, String> args = new HashMap<>();
+            args.put("boidlist", boid);
+            String involveBRs = HttpClientUtil.SendPost(GlobalContext.URL_BOENGINE_SERIALIZEBO, args, "");
             transaction.commit();
-            // todo send to engine for get business role
-            return boid;
+            return new AbstractMap.SimpleEntry<>(boid, involveBRs);
         }
         catch (Exception ex) {
             LogUtil.Log("Upload BO but exception occurred, service rollback, " + ex, NameSpacingService.class.getName(), LogUtil.LogLevelType.ERROR, "");
             transaction.rollback();
         }
-        return "";
+        return null;
     }
 
     /**
