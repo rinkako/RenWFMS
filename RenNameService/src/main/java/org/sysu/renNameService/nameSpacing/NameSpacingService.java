@@ -78,6 +78,7 @@ public class NameSpacingService {
             rbe.setBoContent(content);
             session.save(rbe);
             transaction.commit();
+            // todo send to engine for get business role
             return boid;
         }
         catch (Exception ex) {

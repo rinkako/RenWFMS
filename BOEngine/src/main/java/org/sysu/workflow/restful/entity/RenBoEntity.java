@@ -1,13 +1,26 @@
+/*
+ * Project Ren @ 2018
+ * Rinkako, Ariana, Gordan. SYSU SDCS.
+ */
 package org.sysu.workflow.restful.entity;
 
 import javax.persistence.*;
 
+/**
+ * Author: Rinkako
+ * Date  : 2018/1/28
+ * Usage :
+ */
 @Entity
 @Table(name = "ren_bo", schema = "renboengine")
 public class RenBoEntity {
     private String boid;
     private String boName;
+    private String pid;
+    private int state;
     private String boContent;
+    private String serialized;
+    private String broles;
 
     @Id
     @Column(name = "boid", nullable = false, length = 64)
@@ -30,6 +43,26 @@ public class RenBoEntity {
     }
 
     @Basic
+    @Column(name = "pid", nullable = false, length = 64)
+    public String getPid() {
+        return pid;
+    }
+
+    public void setPid(String pid) {
+        this.pid = pid;
+    }
+
+    @Basic
+    @Column(name = "state", nullable = false)
+    public int getState() {
+        return state;
+    }
+
+    public void setState(int state) {
+        this.state = state;
+    }
+
+    @Basic
     @Column(name = "bo_content", nullable = true, length = -1)
     public String getBoContent() {
         return boContent;
@@ -39,6 +72,26 @@ public class RenBoEntity {
         this.boContent = boContent;
     }
 
+    @Basic
+    @Column(name = "serialized", nullable = true, length = -1)
+    public String getSerialized() {
+        return serialized;
+    }
+
+    public void setSerialized(String serialized) {
+        this.serialized = serialized;
+    }
+
+    @Basic
+    @Column(name = "broles", nullable = true, length = -1)
+    public String getBroles() {
+        return broles;
+    }
+
+    public void setBroles(String broles) {
+        this.broles = broles;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -46,9 +99,13 @@ public class RenBoEntity {
 
         RenBoEntity that = (RenBoEntity) o;
 
+        if (state != that.state) return false;
         if (boid != null ? !boid.equals(that.boid) : that.boid != null) return false;
         if (boName != null ? !boName.equals(that.boName) : that.boName != null) return false;
+        if (pid != null ? !pid.equals(that.pid) : that.pid != null) return false;
         if (boContent != null ? !boContent.equals(that.boContent) : that.boContent != null) return false;
+        if (serialized != null ? !serialized.equals(that.serialized) : that.serialized != null) return false;
+        if (broles != null ? !broles.equals(that.broles) : that.broles != null) return false;
 
         return true;
     }
@@ -57,7 +114,11 @@ public class RenBoEntity {
     public int hashCode() {
         int result = boid != null ? boid.hashCode() : 0;
         result = 31 * result + (boName != null ? boName.hashCode() : 0);
+        result = 31 * result + (pid != null ? pid.hashCode() : 0);
+        result = 31 * result + state;
         result = 31 * result + (boContent != null ? boContent.hashCode() : 0);
+        result = 31 * result + (serialized != null ? serialized.hashCode() : 0);
+        result = 31 * result + (broles != null ? broles.hashCode() : 0);
         return result;
     }
 }

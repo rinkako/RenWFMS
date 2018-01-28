@@ -4,7 +4,6 @@
  */
 package org.sysu.renNameService.utility;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import org.sysu.renNameService.roleMapping.RoleMappingService;
 
 /**
  * Author: Rinkako
@@ -24,7 +23,7 @@ public class SerializationUtil {
         }
         catch (Exception ex) {
             LogUtil.Log("When json serialization exception occurred, " + ex.toString(),
-                    RoleMappingService.class.getName(), LogUtil.LogLevelType.ERROR, rtid);
+                    SerializationUtil.class.getName(), LogUtil.LogLevelType.ERROR, rtid);
             return null;
         }
     }

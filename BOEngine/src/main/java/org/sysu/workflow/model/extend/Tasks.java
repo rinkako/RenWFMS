@@ -18,7 +18,7 @@ public class Tasks implements Serializable {
      * The set of &lt;task&gt; elements, parsed as Elements, that are
      * children of this &lt;tasks&gt; element.
      */
-    private List<Task> tasklist;
+    private ArrayList<Task> tasklist;
 
     /**
      * The set of &lt;subProcess&gt; elements, parsed as Elements, that are
@@ -40,7 +40,7 @@ public class Tasks implements Serializable {
      *
      * @return Returns the task.
      */
-    public final List<Task> getTaskList() {
+    public final ArrayList<Task> getTaskList() {
         return this.tasklist;
     }
 

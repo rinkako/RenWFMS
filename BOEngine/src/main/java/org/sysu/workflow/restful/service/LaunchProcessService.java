@@ -10,13 +10,17 @@ import org.sysu.workflow.env.SimpleErrorReporter;
 import org.sysu.workflow.env.jexl.JexlEvaluator;
 import org.sysu.workflow.io.SCXMLReader;
 import org.sysu.workflow.model.SCXML;
+import org.sysu.workflow.model.extend.Task;
 import org.sysu.workflow.restful.entity.RenBoEntity;
 import org.sysu.workflow.restful.entity.RenProcessboEntity;
 import org.sysu.workflow.restful.utility.HibernateUtil;
 import org.sysu.workflow.restful.utility.LogUtil;
+import org.sysu.workflow.restful.utility.SerializationUtil;
 
 import java.io.ByteArrayInputStream;
 import java.io.InputStream;
+import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 
 /**
@@ -46,7 +50,7 @@ public final class LaunchProcessService {
                         RenBoEntity boEntity = (RenBoEntity) bo;
                         String boContent = boEntity.getBoContent();
                         //read bo content and then go it
-                        LaunchProcessService.executeBO(boContent);
+                        LaunchProcessService.ExecuteBO(boContent);
                         break;
                     }
                     break;
@@ -65,15 +69,14 @@ public final class LaunchProcessService {
      * read bo content and go it
      * @param boContent
      */
-    public static void executeBO(String boContent){
-        InputStream inputStream = new ByteArrayInputStream(boContent.getBytes());
+    public static void ExecuteBO(String boContent) {
         Evaluator evaluator = new JexlEvaluator();
         SCXMLExecutor executor = new SCXMLExecutor(evaluator, new MulitStateMachineDispatcher(), new SimpleErrorReporter());
         try {
             //解析成SCXML对象
-            SCXML scxml = SCXMLReader.read(inputStream);
+            SCXML scxml = LaunchProcessService.ParseStringToSCXML(boContent);
             //启动状态机实例
-           //Evaluator evaluator = EvaluatorFactory.getEvaluator(scxml);
+            //Evaluator evaluator = EvaluatorFactory.getEvaluator(scxml);
             Context rootContext = evaluator.newContext(null);
             executor.setRootContext(rootContext);
             executor.setStateMachine(scxml);
@@ -81,5 +84,70 @@ public final class LaunchProcessService {
         } catch (Exception e) {
             e.printStackTrace();
         }
+    }
+
+    /**
+     * Serialize a list of BO by their id and return involved business role name.
+     * @param boidList BOs to be serialized
+     * @return HashSet of Involved business role name
+     */
+    public static HashSet<String> SerializeBO(String boidList) {
+        HashSet<String> retSet = new HashSet<String>();
+        Session session = HibernateUtil.GetLocalThreadSession();
+        Transaction transaction = session.beginTransaction();
+        try {
+            String[] boidItems = boidList.split(",");
+            for (String boid : boidItems) {
+                RenBoEntity rbe = session.get(RenBoEntity.class, boid);
+                assert rbe != null;
+                SCXML scxml = LaunchProcessService.ParseStringToSCXML(rbe.getBoContent());
+                if (scxml == null) {
+                    continue;
+                }
+                HashSet<String> oneInvolves = LaunchProcessService.GetInvolvedBusinessRole(scxml);
+                retSet.addAll(oneInvolves);
+                rbe.setBroles(SerializationUtil.JsonSerialization(oneInvolves, ""));
+                rbe.setSerialized(SerializationUtil.SerializationSCXMLToString(scxml));
+            }
+            transaction.commit();
+            return retSet;
+        }
+        catch (Exception ex) {
+            LogUtil.Log(String.format("When serialize BOList(%s), exception occurred, %s, service rollback", boidList, ex),
+                    LaunchProcessService.class.getName(), LogUtil.LogLevelType.ERROR);
+            transaction.rollback();
+        }
+        return retSet;
+    }
+
+    /**
+     * Interpret XML string to SCXML instance.
+     * @param boXMLContent BO XML string
+     * @return {@code SCXML} instance
+     */
+    private static SCXML ParseStringToSCXML(String boXMLContent) {
+        try {
+            InputStream inputStream = new ByteArrayInputStream(boXMLContent.getBytes());
+            return SCXMLReader.read(inputStream);
+        }
+        catch (Exception ex) {
+            LogUtil.Log(String.format("When read BO XML data, exception occurred, %s", ex),
+                    LaunchProcessService.class.getName(), LogUtil.LogLevelType.ERROR);
+        }
+        return null;
+    }
+
+    /**
+     * Get involved business role name of one BO.
+     * @param scxml BO {@code SCXML} instance.
+     * @return HashSet of involved business role name
+     */
+    private static HashSet<String> GetInvolvedBusinessRole(SCXML scxml) {
+        HashSet<String> retSet = new HashSet<String>();
+        ArrayList<Task> taskList = scxml.getTasks().getTaskList();
+        for (Task task : taskList) {
+            retSet.add(task.getBrole());
+        }
+        return retSet;
     }
 }

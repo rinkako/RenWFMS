@@ -20,6 +20,8 @@ public class RenBoEntity {
     private String boContent;
     private String pid;
     private int state;
+    private String serialized;
+    private String broles;
 
     @Id
     @Column(name = "boid", nullable = false, length = 64)
@@ -85,5 +87,25 @@ public class RenBoEntity {
     public int hashCode() {
 
         return Objects.hash(boid, boName, boContent);
+    }
+
+    @Basic
+    @Column(name = "serialized", nullable = true, length = -1)
+    public String getSerialized() {
+        return serialized;
+    }
+
+    public void setSerialized(String serialized) {
+        this.serialized = serialized;
+    }
+
+    @Basic
+    @Column(name = "broles", nullable = true, length = -1)
+    public String getBroles() {
+        return broles;
+    }
+
+    public void setBroles(String broles) {
+        this.broles = broles;
     }
 }

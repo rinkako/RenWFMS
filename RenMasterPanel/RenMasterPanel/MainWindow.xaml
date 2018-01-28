@@ -6,7 +6,7 @@
                       Height="400" Width="752" ResizeMode="CanMinimize">
     <Grid>
         <controls:MetroAnimatedSingleRowTabControl x:Name="tabControl" controls:TabControlHelper.Transition="Left" controls:TabControlHelper.IsUnderlined="True">
-            <TabItem Header="       导入流程       " controls:ControlsHelper.HeaderFontSize="22">
+            <TabItem Header="       选择流程       " controls:ControlsHelper.HeaderFontSize="22">
                 <Grid Name="Grid_Step1">
                     <Label Content="选择流程目录和入口BO" FontSize="18" HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top"/>
                     <Button Name="Button_Step1_Open" Content="Open" HorizontalAlignment="Left" FontSize="12" Margin="10,48,0,0" VerticalAlignment="Top" Width="116" Click="Button_Step1_Open_OnClick"/>
