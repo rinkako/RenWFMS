@@ -18,7 +18,7 @@ import org.junit.Test;
 import org.sysu.workflow.model.extend.Task;
 import org.sysu.workflow.model.extend.Tasks;
 
-import java.io.UnsupportedEncodingException;
+import java.io.*;
 import java.net.URL;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
@@ -74,9 +74,26 @@ public class SCXMLReaderTest {
 //        String str = "YAWL";
 //        String tt = encrypt(str);
 
+        long startTime=System.currentTimeMillis();
         URL url = SCXMLTestHelper.getResource("GuestOrder.xml");
         //URL url = new URL("file", "", "E:\\Documents\\GitProject\\BOOWorkflow\\BOWorkflow\\target\\classes\\GuestOrder.xml");
         SCXML scxml = new SCXMLReader().read(url);
+        long endTime=System.currentTimeMillis();
+        System.out.println("COST TIME： " + (endTime-startTime) + "ms");
+
+        startTime=System.currentTimeMillis();
+        ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
+        ObjectOutputStream out = new ObjectOutputStream(byteArrayOutputStream);
+        out.writeObject(scxml);
+        String deptString = byteArrayOutputStream.toString("ISO-8859-1");//必须是ISO-8859-1
+        System.out.println("COST TIME： " + (endTime-startTime) + "ms");
+
+        startTime=System.currentTimeMillis();
+        ByteArrayInputStream byteArrayInputStream = new ByteArrayInputStream(deptString.getBytes("ISO-8859-1"));
+        ObjectInputStream objectInputStream = new ObjectInputStream(byteArrayInputStream);
+        SCXML scxml2 = (SCXML) objectInputStream.readObject();
+        endTime=System.currentTimeMillis();
+        System.out.println("COST TIME： " + (endTime-startTime) + "ms");
 
         Datamodel dm = scxml.getDatamodel();
         System.out.println("guest order的data");

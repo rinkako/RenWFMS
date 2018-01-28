@@ -2,12 +2,91 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="388c6061-8899-47cb-8152-3b3371cb9ca0" name="Default" comment="">
-      <change beforePath="" afterPath="$PROJECT_DIR$/RenNameService/src/main/java/org/sysu/renNameService/utility/HttpClientUtil.java" />
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change beforePath="$PROJECT_DIR$/RenNameService/src/main/java/org/sysu/renNameService/NSScheduler.java" afterPath="$PROJECT_DIR$/RenNameService/src/main/java/org/sysu/renNameService/NSScheduler.java" />
-      <change beforePath="$PROJECT_DIR$/RenNameService/src/main/java/org/sysu/renNameService/entity/RenRuntimerecordEntity.java" afterPath="$PROJECT_DIR$/RenNameService/src/main/java/org/sysu/renNameService/entity/RenRuntimerecordEntity.java" />
-      <change beforePath="$PROJECT_DIR$/RenNameService/src/main/java/org/sysu/renNameService/nameSpacing/NameSpacingService.java" afterPath="$PROJECT_DIR$/RenNameService/src/main/java/org/sysu/renNameService/nameSpacing/NameSpacingService.java" />
-      <change beforePath="$PROJECT_DIR$/RenNameService/src/test/java/RuntimeRecordTest.java" afterPath="$PROJECT_DIR$/RenNameService/src/test/java/RuntimeRecordTest.java" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/RenNameService/src/main/java/org/sysu/renNameService/NSTracker.java" />
+      <change beforePath="$PROJECT_DIR$/.idea/dataSources.xml" afterPath="" />
+      <change beforePath="$PROJECT_DIR$/.idea/dataSources/a7b575bc-615c-4e4b-b284-5a8ee1b4bb96.xml" afterPath="" />
+      <change beforePath="$PROJECT_DIR$/.idea/dictionaries/Rinkako.xml" afterPath="" />
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/Maven__antlr_antlr_2_7_7.xml" afterPath="" />
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/Maven__ch_qos_logback_logback_classic_1_1_11.xml" afterPath="" />
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/Maven__ch_qos_logback_logback_core_1_1_11.xml" afterPath="" />
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/Maven__com_fasterxml_classmate_1_3_4.xml" afterPath="" />
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/Maven__com_fasterxml_jackson_core_jackson_annotations_2_8_0.xml" afterPath="" />
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/Maven__com_fasterxml_jackson_core_jackson_core_2_8_10.xml" afterPath="" />
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/Maven__com_fasterxml_jackson_core_jackson_databind_2_8_10.xml" afterPath="" />
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/Maven__com_jayway_jsonpath_json_path_2_2_0.xml" afterPath="" />
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/Maven__com_vaadin_external_google_android_json_0_0_20131108_vaadin1.xml" afterPath="" />
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/Maven__commons_beanutils_commons_beanutils_1_9_2.xml" afterPath="" />
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/Maven__commons_io_commons_io_2_4.xml" afterPath="" />
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/Maven__commons_jxpath_commons_jxpath_1_3.xml" afterPath="" />
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/Maven__commons_logging_commons_logging_1_1_3.xml" afterPath="" />
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/Maven__dom4j_dom4j_1_6_1.xml" afterPath="" />
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/Maven__javax_validation_validation_api_1_1_0_Final.xml" afterPath="" />
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/Maven__junit_junit_4_11.xml" afterPath="" />
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/Maven__junit_junit_4_12.xml" afterPath="" />
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/Maven__net_minidev_accessors_smart_1_1.xml" afterPath="" />
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/Maven__net_minidev_json_smart_2_2_1.xml" afterPath="" />
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/Maven__org_apache_commons_commons_jexl_2_1_1.xml" afterPath="" />
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/Maven__org_apache_tomcat_embed_tomcat_embed_core_8_5_23.xml" afterPath="" />
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/Maven__org_apache_tomcat_embed_tomcat_embed_el_8_5_23.xml" afterPath="" />
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/Maven__org_apache_tomcat_embed_tomcat_embed_websocket_8_5_23.xml" afterPath="" />
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/Maven__org_apache_tomcat_tomcat_annotations_api_8_5_23.xml" afterPath="" />
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/Maven__org_assertj_assertj_core_2_6_0.xml" afterPath="" />
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/Maven__org_codehaus_groovy_groovy_2_2_2.xml" afterPath="" />
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/Maven__org_hamcrest_hamcrest_core_1_3.xml" afterPath="" />
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/Maven__org_hamcrest_hamcrest_library_1_3.xml" afterPath="" />
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/Maven__org_hibernate_hibernate_core_4_3_6_Final.xml" afterPath="" />
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/Maven__org_hibernate_hibernate_validator_5_3_6_Final.xml" afterPath="" />
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/Maven__org_hibernate_javax_persistence_hibernate_jpa_2_1_api_1_0_0_Final.xml" afterPath="" />
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/Maven__org_jboss_logging_jboss_logging_3_3_1_Final.xml" afterPath="" />
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/Maven__org_mockito_mockito_core_1_10_19.xml" afterPath="" />
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/Maven__org_objenesis_objenesis_2_1.xml" afterPath="" />
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/Maven__org_ow2_asm_asm_4_1.xml" afterPath="" />
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/Maven__org_ow2_asm_asm_5_0_3.xml" afterPath="" />
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/Maven__org_ow2_asm_asm_analysis_4_1.xml" afterPath="" />
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/Maven__org_ow2_asm_asm_commons_4_1.xml" afterPath="" />
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/Maven__org_ow2_asm_asm_tree_4_1.xml" afterPath="" />
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/Maven__org_ow2_asm_asm_util_4_1.xml" afterPath="" />
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/Maven__org_skyscreamer_jsonassert_1_4_0.xml" afterPath="" />
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/Maven__org_slf4j_jcl_over_slf4j_1_7_25.xml" afterPath="" />
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/Maven__org_slf4j_jul_to_slf4j_1_7_25.xml" afterPath="" />
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/Maven__org_slf4j_log4j_over_slf4j_1_7_25.xml" afterPath="" />
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/Maven__org_slf4j_slf4j_api_1_7_25.xml" afterPath="" />
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/Maven__org_springframework_boot_spring_boot_1_5_9_RELEASE.xml" afterPath="" />
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/Maven__org_springframework_boot_spring_boot_autoconfigure_1_5_9_RELEASE.xml" afterPath="" />
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/Maven__org_springframework_boot_spring_boot_starter_1_5_9_RELEASE.xml" afterPath="" />
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/Maven__org_springframework_boot_spring_boot_starter_logging_1_5_9_RELEASE.xml" afterPath="" />
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/Maven__org_springframework_boot_spring_boot_starter_test_1_5_9_RELEASE.xml" afterPath="" />
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/Maven__org_springframework_boot_spring_boot_starter_tomcat_1_5_9_RELEASE.xml" afterPath="" />
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/Maven__org_springframework_boot_spring_boot_starter_web_1_5_9_RELEASE.xml" afterPath="" />
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/Maven__org_springframework_boot_spring_boot_test_1_5_9_RELEASE.xml" afterPath="" />
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/Maven__org_springframework_boot_spring_boot_test_autoconfigure_1_5_9_RELEASE.xml" afterPath="" />
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/Maven__org_springframework_spring_aop_4_3_13_RELEASE.xml" afterPath="" />
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/Maven__org_springframework_spring_beans_4_3_13_RELEASE.xml" afterPath="" />
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/Maven__org_springframework_spring_context_4_3_13_RELEASE.xml" afterPath="" />
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/Maven__org_springframework_spring_core_4_3_13_RELEASE.xml" afterPath="" />
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/Maven__org_springframework_spring_expression_4_3_13_RELEASE.xml" afterPath="" />
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/Maven__org_springframework_spring_test_4_3_13_RELEASE.xml" afterPath="" />
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/Maven__org_springframework_spring_web_4_3_13_RELEASE.xml" afterPath="" />
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/Maven__org_springframework_spring_webmvc_4_3_13_RELEASE.xml" afterPath="" />
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/Maven__org_yaml_snakeyaml_1_17.xml" afterPath="" />
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/Maven__xml_apis_xml_apis_1_0_b2.xml" afterPath="" />
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/Spring_4_3_13_RELEASE.xml" afterPath="" />
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/Spring_Batch_2_2_6.xml" afterPath="" />
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/Spring_Data_JPA_1_3_3.xml" afterPath="" />
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/Spring_MVC_4_3_13_RELEASE.xml" afterPath="" />
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/Spring_Security_3_2_5.xml" afterPath="" />
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/Spring_Web_Services_2_0_2.xml" afterPath="" />
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/Spring_Webflow_2_4_0.xml" afterPath="" />
+      <change beforePath="$PROJECT_DIR$/.idea/uiDesigner.xml" afterPath="" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="" />
+      <change beforePath="$PROJECT_DIR$/BOEngine/lib/commons-codec-1.5.jar" afterPath="" />
+      <change beforePath="$PROJECT_DIR$/BOEngine/src/main/java/org/sysu/workflow/bridge/InheritableContext.java" afterPath="$PROJECT_DIR$/BOEngine/src/main/java/org/sysu/workflow/bridge/InheritableContext.java" />
+      <change beforePath="$PROJECT_DIR$/BOEngine/src/test/java/org/sysu/workflow/io/SCXMLReaderTest.java" afterPath="$PROJECT_DIR$/BOEngine/src/test/java/org/sysu/workflow/io/SCXMLReaderTest.java" />
+      <change beforePath="$PROJECT_DIR$/COrgan/COrgan.iml" afterPath="" />
+      <change beforePath="$PROJECT_DIR$/RenNameService/src/main/java/org/sysu/renNameService/NSExecutor.java" afterPath="$PROJECT_DIR$/RenNameService/src/main/java/org/sysu/renNameService/NSExecutor.java" />
+      <change beforePath="$PROJECT_DIR$/RenNameService/src/main/java/org/sysu/renNameService/restful/controller/NameSpacingController.java" afterPath="$PROJECT_DIR$/RenNameService/src/main/java/org/sysu/renNameService/restful/controller/NameSpacingController.java" />
+      <change beforePath="$PROJECT_DIR$/RenResourceService/target/classes/application.properties" afterPath="" />
+      <change beforePath="$PROJECT_DIR$/RenResourceService/target/test-classes/org/sysu/renResourcing/RenResourceServiceApplicationTests.class" afterPath="" />
     </list>
     <ignored path="/output/" />
     <ignored path="$PROJECT_DIR$/ModelChecker/target/" />
@@ -51,28 +130,8 @@
       <file leaf-file-name="NameSpacingController.java" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/RenNameService/src/main/java/org/sysu/renNameService/restful/controller/NameSpacingController.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="4815">
-              <caret line="260" column="0" lean-forward="true" selection-start-line="260" selection-start-column="0" selection-end-line="260" selection-end-column="0" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="ReturnModelHelper.java" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/RenNameService/src/main/java/org/sysu/renNameService/restful/dto/ReturnModelHelper.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="297">
-              <caret line="24" column="36" lean-forward="true" selection-start-line="24" selection-start-column="36" selection-end-line="24" selection-end-column="36" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="RoleMappingController.java" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/RenNameService/src/main/java/org/sysu/renNameService/restful/controller/RoleMappingController.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="-3039">
-              <caret line="29" column="49" lean-forward="false" selection-start-line="29" selection-start-column="49" selection-end-line="29" selection-end-column="49" />
+            <state relative-caret-position="473">
+              <caret line="302" column="75" lean-forward="false" selection-start-line="302" selection-start-column="75" selection-end-line="302" selection-end-column="75" />
               <folding />
             </state>
           </provider>
@@ -81,48 +140,8 @@
       <file leaf-file-name="NameSpacingService.java" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/RenNameService/src/main/java/org/sysu/renNameService/nameSpacing/NameSpacingService.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="657">
-              <caret line="212" column="14" lean-forward="true" selection-start-line="212" selection-start-column="14" selection-end-line="212" selection-end-column="14" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="HttpClientUtil.java" pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/RenNameService/src/main/java/org/sysu/renNameService/utility/HttpClientUtil.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="605">
-              <caret line="100" column="28" lean-forward="true" selection-start-line="100" selection-start-column="28" selection-end-line="100" selection-end-column="28" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="RenRuntimerecordEntity.java" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/RenNameService/src/main/java/org/sysu/renNameService/entity/RenRuntimerecordEntity.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="88">
-              <caret line="16" column="57" lean-forward="false" selection-start-line="16" selection-start-column="57" selection-end-line="16" selection-end-column="57" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="NSScheduler.java" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/RenNameService/src/main/java/org/sysu/renNameService/NSScheduler.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="2134">
-              <caret line="97" column="7" lean-forward="true" selection-start-line="97" selection-start-column="7" selection-end-line="97" selection-end-column="7" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="RoleMappingService.java" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/RenNameService/src/main/java/org/sysu/renNameService/roleMapping/RoleMappingService.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="99">
-              <caret line="30" column="52" lean-forward="false" selection-start-line="30" selection-start-column="52" selection-end-line="30" selection-end-column="52" />
+            <state relative-caret-position="825">
+              <caret line="189" column="80" lean-forward="false" selection-start-line="189" selection-start-column="69" selection-end-line="189" selection-end-column="80" />
               <folding />
             </state>
           </provider>
@@ -131,8 +150,58 @@
       <file leaf-file-name="NSExecutor.java" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/RenNameService/src/main/java/org/sysu/renNameService/NSExecutor.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="594">
-              <caret line="109" column="35" lean-forward="false" selection-start-line="109" selection-start-column="35" selection-end-line="109" selection-end-column="35" />
+            <state relative-caret-position="924">
+              <caret line="42" column="43" lean-forward="false" selection-start-line="42" selection-start-column="43" selection-end-line="42" selection-end-column="43" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="NSTracker.java" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/RenNameService/src/main/java/org/sysu/renNameService/NSTracker.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="-1639">
+              <caret line="2" column="38" lean-forward="true" selection-start-line="2" selection-start-column="38" selection-end-line="2" selection-end-column="38" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="SCXMLReader.java" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/BOEngine/src/main/java/org/sysu/workflow/io/SCXMLReader.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="880">
+              <caret line="49" column="19" lean-forward="false" selection-start-line="49" selection-start-column="19" selection-end-line="49" selection-end-column="19" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="SCXML.java" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/BOEngine/src/main/java/org/sysu/workflow/model/SCXML.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="275">
+              <caret line="20" column="0" lean-forward="true" selection-start-line="20" selection-start-column="0" selection-end-line="20" selection-end-column="0" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="SCXMLReaderTest.java" pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/BOEngine/src/test/java/org/sysu/workflow/io/SCXMLReaderTest.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="577">
+              <caret line="97" column="44" lean-forward="true" selection-start-line="97" selection-start-column="44" selection-end-line="97" selection-end-column="44" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="InheritableContext.java" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/BOEngine/src/main/java/org/sysu/workflow/bridge/InheritableContext.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="-1659">
+              <caret line="19" column="52" lean-forward="false" selection-start-line="19" selection-start-column="52" selection-end-line="19" selection-end-column="52" />
               <folding />
             </state>
           </provider>
@@ -194,9 +263,6 @@
   <component name="IdeDocumentHistory">
     <option name="CHANGED_PATHS">
       <list>
-        <option value="$PROJECT_DIR$/RenNameService/src/main/java/org/sysu/renNameService/RenNameServiceApp.java" />
-        <option value="$PROJECT_DIR$/RenNameService/src/main/resource/hibernate.cfg.xml" />
-        <option value="$PROJECT_DIR$/RenNameService/src/main/java/org/sysu/renNameService/roleMapping/RoleMappingController.java" />
         <option value="$PROJECT_DIR$/RenNameService/src/main/java/org/sysu/renNameService/restful/dto/ReturnElement.java" />
         <option value="$PROJECT_DIR$/RenNameService/src/main/java/org/sysu/renNameService/restful/dto/StatusCode.java" />
         <option value="$PROJECT_DIR$/RenNameService/src/main/java/org/sysu/renNameService/cluster/RenSupervisor.java" />
@@ -236,15 +302,18 @@
         <option value="$PROJECT_DIR$/RenNameService/src/main/java/org/sysu/renNameService/entity/RenProcessEntity.java" />
         <option value="$PROJECT_DIR$/RenNameService/src/main/java/org/sysu/renNameService/entity/RenBoEntity.java" />
         <option value="$PROJECT_DIR$/RenNameService/src/main/java/org/sysu/renNameService/utility/SerializationUtil.java" />
-        <option value="$PROJECT_DIR$/RenNameService/src/main/java/org/sysu/renNameService/NSExecutor.java" />
         <option value="$PROJECT_DIR$/RenNameService/src/main/java/org/sysu/renNameService/restful/controller/ClusterController.java" />
         <option value="$PROJECT_DIR$/RenNameService/src/main/java/org/sysu/renNameService/restful/controller/RoleMappingController.java" />
-        <option value="$PROJECT_DIR$/RenNameService/src/main/java/org/sysu/renNameService/restful/controller/NameSpacingController.java" />
         <option value="$PROJECT_DIR$/RenNameService/src/main/java/org/sysu/renNameService/restful/dto/ReturnModelHelper.java" />
         <option value="$PROJECT_DIR$/RenNameService/src/main/java/org/sysu/renNameService/NSScheduler.java" />
         <option value="$PROJECT_DIR$/RenNameService/src/main/java/org/sysu/renNameService/entity/RenRuntimerecordEntity.java" />
         <option value="$PROJECT_DIR$/RenNameService/src/main/java/org/sysu/renNameService/nameSpacing/NameSpacingService.java" />
         <option value="$PROJECT_DIR$/RenNameService/src/main/java/org/sysu/renNameService/utility/HttpClientUtil.java" />
+        <option value="$PROJECT_DIR$/RenNameService/src/main/java/org/sysu/renNameService/NSExecutor.java" />
+        <option value="$PROJECT_DIR$/RenNameService/src/main/java/org/sysu/renNameService/restful/controller/NameSpacingController.java" />
+        <option value="$PROJECT_DIR$/RenNameService/src/main/java/org/sysu/renNameService/NSTracker.java" />
+        <option value="$PROJECT_DIR$/BOEngine/src/main/java/org/sysu/workflow/bridge/InheritableContext.java" />
+        <option value="$PROJECT_DIR$/BOEngine/src/test/java/org/sysu/workflow/io/SCXMLReaderTest.java" />
       </list>
     </option>
   </component>
@@ -325,10 +394,8 @@
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
-      <pane id="AndroidView" />
-      <pane id="PackagesPane" />
-      <pane id="Scope" />
       <pane id="Scratches" />
+      <pane id="AndroidView" />
       <pane id="ProjectPane">
         <subPane>
           <expand>
@@ -339,52 +406,88 @@
             <path>
               <item name="RenWFMS" type="b2602c69:ProjectViewProjectNode" />
               <item name="RenWFMS" type="462c0819:PsiDirectoryNode" />
-              <item name="RenNameService" type="462c0819:PsiDirectoryNode" />
+              <item name="BOEngine" type="462c0819:PsiDirectoryNode" />
             </path>
             <path>
               <item name="RenWFMS" type="b2602c69:ProjectViewProjectNode" />
               <item name="RenWFMS" type="462c0819:PsiDirectoryNode" />
-              <item name="RenNameService" type="462c0819:PsiDirectoryNode" />
+              <item name="BOEngine" type="462c0819:PsiDirectoryNode" />
               <item name="src" type="462c0819:PsiDirectoryNode" />
             </path>
             <path>
               <item name="RenWFMS" type="b2602c69:ProjectViewProjectNode" />
               <item name="RenWFMS" type="462c0819:PsiDirectoryNode" />
-              <item name="RenNameService" type="462c0819:PsiDirectoryNode" />
-              <item name="src" type="462c0819:PsiDirectoryNode" />
-              <item name="main" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="RenWFMS" type="b2602c69:ProjectViewProjectNode" />
-              <item name="RenWFMS" type="462c0819:PsiDirectoryNode" />
-              <item name="RenNameService" type="462c0819:PsiDirectoryNode" />
+              <item name="BOEngine" type="462c0819:PsiDirectoryNode" />
               <item name="src" type="462c0819:PsiDirectoryNode" />
               <item name="main" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="RenWFMS" type="b2602c69:ProjectViewProjectNode" />
+              <item name="RenWFMS" type="462c0819:PsiDirectoryNode" />
+              <item name="BOEngine" type="462c0819:PsiDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
+              <item name="main" type="462c0819:PsiDirectoryNode" />
+              <item name="java" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="RenWFMS" type="b2602c69:ProjectViewProjectNode" />
+              <item name="RenWFMS" type="462c0819:PsiDirectoryNode" />
+              <item name="BOEngine" type="462c0819:PsiDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
+              <item name="main" type="462c0819:PsiDirectoryNode" />
+              <item name="java" type="462c0819:PsiDirectoryNode" />
+              <item name="workflow" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="RenWFMS" type="b2602c69:ProjectViewProjectNode" />
+              <item name="RenWFMS" type="462c0819:PsiDirectoryNode" />
+              <item name="BOEngine" type="462c0819:PsiDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
+              <item name="main" type="462c0819:PsiDirectoryNode" />
+              <item name="java" type="462c0819:PsiDirectoryNode" />
+              <item name="workflow" type="462c0819:PsiDirectoryNode" />
+              <item name="bridge" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="RenWFMS" type="b2602c69:ProjectViewProjectNode" />
+              <item name="RenWFMS" type="462c0819:PsiDirectoryNode" />
+              <item name="BOEngine" type="462c0819:PsiDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
+              <item name="test" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="RenWFMS" type="b2602c69:ProjectViewProjectNode" />
+              <item name="RenWFMS" type="462c0819:PsiDirectoryNode" />
+              <item name="BOEngine" type="462c0819:PsiDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
+              <item name="test" type="462c0819:PsiDirectoryNode" />
               <item name="java" type="462c0819:PsiDirectoryNode" />
             </path>
             <path>
               <item name="RenWFMS" type="b2602c69:ProjectViewProjectNode" />
               <item name="RenWFMS" type="462c0819:PsiDirectoryNode" />
-              <item name="RenNameService" type="462c0819:PsiDirectoryNode" />
+              <item name="BOEngine" type="462c0819:PsiDirectoryNode" />
               <item name="src" type="462c0819:PsiDirectoryNode" />
-              <item name="main" type="462c0819:PsiDirectoryNode" />
+              <item name="test" type="462c0819:PsiDirectoryNode" />
               <item name="java" type="462c0819:PsiDirectoryNode" />
-              <item name="renNameService" type="462c0819:PsiDirectoryNode" />
+              <item name="workflow" type="462c0819:PsiDirectoryNode" />
             </path>
             <path>
               <item name="RenWFMS" type="b2602c69:ProjectViewProjectNode" />
               <item name="RenWFMS" type="462c0819:PsiDirectoryNode" />
-              <item name="RenNameService" type="462c0819:PsiDirectoryNode" />
+              <item name="BOEngine" type="462c0819:PsiDirectoryNode" />
               <item name="src" type="462c0819:PsiDirectoryNode" />
-              <item name="main" type="462c0819:PsiDirectoryNode" />
+              <item name="test" type="462c0819:PsiDirectoryNode" />
               <item name="java" type="462c0819:PsiDirectoryNode" />
-              <item name="renNameService" type="462c0819:PsiDirectoryNode" />
-              <item name="utility" type="462c0819:PsiDirectoryNode" />
+              <item name="workflow" type="462c0819:PsiDirectoryNode" />
+              <item name="io" type="462c0819:PsiDirectoryNode" />
             </path>
           </expand>
           <select />
         </subPane>
       </pane>
+      <pane id="Scope" />
+      <pane id="PackagesPane" />
     </panes>
   </component>
   <component name="PropertiesComponent">
@@ -449,7 +552,7 @@
     </option>
     <option name="contentProportion" value="0.296875" />
   </component>
-  <component name="RunManager" selected="Spring Boot.RenNameServiceApplication">
+  <component name="RunManager" selected="JUnit.SCXMLReaderTest.testSCXMLReader">
     <configuration default="true" type="Applet" factoryName="Applet">
       <option name="HTML_USED" value="false" />
       <option name="WIDTH" value="400" />
@@ -490,26 +593,6 @@
       <module name="" />
       <envs />
     </configuration>
-    <configuration name="RuntimeRecordTest" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
-      <extension name="coverage" enabled="false" merge="false" sample_coverage="true" runner="idea" />
-      <module name="RenNameService" />
-      <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="false" />
-      <option name="ALTERNATIVE_JRE_PATH" />
-      <option name="PACKAGE_NAME" value="" />
-      <option name="MAIN_CLASS_NAME" value="RuntimeRecordTest" />
-      <option name="METHOD_NAME" />
-      <option name="TEST_OBJECT" value="class" />
-      <option name="VM_PARAMETERS" value="-ea" />
-      <option name="PARAMETERS" />
-      <option name="WORKING_DIRECTORY" value="%MODULE_WORKING_DIR%" />
-      <option name="ENV_VARIABLES" />
-      <option name="PASS_PARENT_ENVS" value="true" />
-      <option name="TEST_SEARCH_SCOPE">
-        <value defaultName="singleModule" />
-      </option>
-      <envs />
-      <patterns />
-    </configuration>
     <configuration name="RuntimeRecordTest.delete" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
       <extension name="coverage" enabled="false" merge="false" sample_coverage="true" runner="idea" />
       <module name="RenNameService" />
@@ -538,6 +621,31 @@
       <option name="PACKAGE_NAME" value="" />
       <option name="MAIN_CLASS_NAME" value="RuntimeRecordTest" />
       <option name="METHOD_NAME" value="insert" />
+      <option name="TEST_OBJECT" value="method" />
+      <option name="VM_PARAMETERS" value="-ea" />
+      <option name="PARAMETERS" />
+      <option name="WORKING_DIRECTORY" value="%MODULE_WORKING_DIR%" />
+      <option name="ENV_VARIABLES" />
+      <option name="PASS_PARENT_ENVS" value="true" />
+      <option name="TEST_SEARCH_SCOPE">
+        <value defaultName="singleModule" />
+      </option>
+      <envs />
+      <patterns />
+    </configuration>
+    <configuration name="SCXMLReaderTest.testSCXMLReader" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+      <extension name="coverage" enabled="false" merge="false" sample_coverage="true" runner="idea">
+        <pattern>
+          <option name="PATTERN" value="org.sysu.workflow.io.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <module name="BOEngine" />
+      <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="false" />
+      <option name="ALTERNATIVE_JRE_PATH" />
+      <option name="PACKAGE_NAME" value="org.sysu.workflow.io" />
+      <option name="MAIN_CLASS_NAME" value="org.sysu.workflow.io.SCXMLReaderTest" />
+      <option name="METHOD_NAME" value="testSCXMLReader" />
       <option name="TEST_OBJECT" value="method" />
       <option name="VM_PARAMETERS" value="-ea" />
       <option name="PARAMETERS" />
@@ -713,19 +821,19 @@
       <item index="0" class="java.lang.String" itemvalue="Spring Boot.RenResourceServiceApplication" />
       <item index="1" class="java.lang.String" itemvalue="Spring Boot.RenNameServiceApplication" />
       <item index="2" class="java.lang.String" itemvalue="Spring Boot.BOEngineApplication" />
-      <item index="3" class="java.lang.String" itemvalue="JUnit.RuntimeRecordTest" />
-      <item index="4" class="java.lang.String" itemvalue="Python.COrganApp" />
-      <item index="5" class="java.lang.String" itemvalue="Application.RoleMappingService" />
-      <item index="6" class="java.lang.String" itemvalue="JUnit.RuntimeRecordTest.insert" />
-      <item index="7" class="java.lang.String" itemvalue="JUnit.RuntimeRecordTest.delete" />
+      <item index="3" class="java.lang.String" itemvalue="Python.COrganApp" />
+      <item index="4" class="java.lang.String" itemvalue="Application.RoleMappingService" />
+      <item index="5" class="java.lang.String" itemvalue="JUnit.RuntimeRecordTest.insert" />
+      <item index="6" class="java.lang.String" itemvalue="JUnit.RuntimeRecordTest.delete" />
+      <item index="7" class="java.lang.String" itemvalue="JUnit.SCXMLReaderTest.testSCXMLReader" />
     </list>
     <recent_temporary>
       <list size="5">
-        <item index="0" class="java.lang.String" itemvalue="Application.RoleMappingService" />
-        <item index="1" class="java.lang.String" itemvalue="JUnit.RuntimeRecordTest.delete" />
-        <item index="2" class="java.lang.String" itemvalue="JUnit.RuntimeRecordTest.insert" />
-        <item index="3" class="java.lang.String" itemvalue="Python.COrganApp" />
-        <item index="4" class="java.lang.String" itemvalue="JUnit.RuntimeRecordTest" />
+        <item index="0" class="java.lang.String" itemvalue="JUnit.SCXMLReaderTest.testSCXMLReader" />
+        <item index="1" class="java.lang.String" itemvalue="Application.RoleMappingService" />
+        <item index="2" class="java.lang.String" itemvalue="JUnit.RuntimeRecordTest.delete" />
+        <item index="3" class="java.lang.String" itemvalue="JUnit.RuntimeRecordTest.insert" />
+        <item index="4" class="java.lang.String" itemvalue="Python.COrganApp" />
       </list>
     </recent_temporary>
   </component>
@@ -772,7 +880,9 @@
       <workItem from="1516852842895" duration="6678000" />
       <workItem from="1516867532527" duration="5030000" />
       <workItem from="1516937954567" duration="27125000" />
-      <workItem from="1517024665709" duration="9577000" />
+      <workItem from="1517024665709" duration="12865000" />
+      <workItem from="1517056589166" duration="9875000" />
+      <workItem from="1517110899303" duration="2623000" />
     </task>
     <task id="LOCAL-00001" summary="position views">
       <created>1515663926015</created>
@@ -1096,28 +1206,17 @@
       <option name="project" value="LOCAL" />
       <updated>1517026443186</updated>
     </task>
-    <option name="localTasksCounter" value="47" />
+    <task id="LOCAL-00047" summary="request send client">
+      <created>1517036281907</created>
+      <option name="number" value="00047" />
+      <option name="presentableId" value="LOCAL-00047" />
+      <option name="project" value="LOCAL" />
+      <updated>1517036281907</updated>
+    </task>
+    <option name="localTasksCounter" value="48" />
     <servers />
   </component>
   <component name="TestHistory">
-    <history-entry file="RuntimeRecordTest - 2018.01.16 at 16h 37m 45s.xml">
-      <configuration name="RuntimeRecordTest" configurationId="JUnit" />
-    </history-entry>
-    <history-entry file="RuntimeRecordTest - 2018.01.16 at 16h 56m 15s.xml">
-      <configuration name="RuntimeRecordTest" configurationId="JUnit" />
-    </history-entry>
-    <history-entry file="RuntimeRecordTest_delete - 2018.01.16 at 16h 40m 13s.xml">
-      <configuration name="RuntimeRecordTest.delete" configurationId="JUnit" />
-    </history-entry>
-    <history-entry file="RuntimeRecordTest_delete - 2018.01.20 at 00h 43m 08s.xml">
-      <configuration name="RuntimeRecordTest.delete" configurationId="JUnit" />
-    </history-entry>
-    <history-entry file="RuntimeRecordTest_getById - 2018.01.16 at 16h 40m 04s.xml">
-      <configuration name="RuntimeRecordTest.getById" configurationId="JUnit" />
-    </history-entry>
-    <history-entry file="RuntimeRecordTest_insert - 2018.01.16 at 16h 35m 35s.xml">
-      <configuration name="RuntimeRecordTest.insert" configurationId="JUnit" />
-    </history-entry>
     <history-entry file="RuntimeRecordTest_insert - 2018.01.16 at 16h 35m 47s.xml">
       <configuration name="RuntimeRecordTest.insert" configurationId="JUnit" />
     </history-entry>
@@ -1130,9 +1229,27 @@
     <history-entry file="RuntimeRecordTest_update - 2018.01.16 at 16h 39m 48s.xml">
       <configuration name="RuntimeRecordTest.update" configurationId="JUnit" />
     </history-entry>
+    <history-entry file="SCXMLReaderTest_testSCXMLReader - 2018.01.28 at 13h 57m 37s.xml">
+      <configuration name="SCXMLReaderTest.testSCXMLReader" configurationId="JUnit" />
+    </history-entry>
+    <history-entry file="SCXMLReaderTest_testSCXMLReader - 2018.01.28 at 13h 58m 31s.xml">
+      <configuration name="SCXMLReaderTest.testSCXMLReader" configurationId="JUnit" />
+    </history-entry>
+    <history-entry file="SCXMLReaderTest_testSCXMLReader - 2018.01.28 at 14h 00m 17s.xml">
+      <configuration name="SCXMLReaderTest.testSCXMLReader" configurationId="JUnit" />
+    </history-entry>
+    <history-entry file="SCXMLReaderTest_testSCXMLReader - 2018.01.28 at 14h 03m 38s.xml">
+      <configuration name="SCXMLReaderTest.testSCXMLReader" configurationId="JUnit" />
+    </history-entry>
+    <history-entry file="SCXMLReaderTest_testSCXMLReader - 2018.01.28 at 14h 04m 27s.xml">
+      <configuration name="SCXMLReaderTest.testSCXMLReader" configurationId="JUnit" />
+    </history-entry>
+    <history-entry file="SCXMLReaderTest_testSCXMLReader - 2018.01.28 at 14h 04m 34s.xml">
+      <configuration name="SCXMLReaderTest.testSCXMLReader" configurationId="JUnit" />
+    </history-entry>
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="348795000" />
+    <option name="totallyTimeSpent" value="364581000" />
   </component>
   <component name="TodoView">
     <todo-panel id="selected-file">
@@ -1145,19 +1262,19 @@
   </component>
   <component name="ToolWindowManager">
     <frame x="-8" y="-8" width="1936" height="1056" extended-state="6" />
-    <editor active="true" />
     <layout>
       <window_info id="Palette" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.24265505" sideWeight="0.5042644" order="7" side_tool="true" content_ui="tabs" />
-      <window_info id="Maven Projects" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.14392324" sideWeight="0.30359086" order="8" side_tool="true" content_ui="tabs" x="687" y="90" width="329" height="942" />
+      <window_info id="Maven Projects" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.14392324" sideWeight="0.3171472" order="8" side_tool="true" content_ui="tabs" x="687" y="90" width="329" height="942" />
       <window_info id="Capture Tool" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Designer" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
-      <window_info id="Database" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.12526652" sideWeight="0.70511425" order="4" side_tool="false" content_ui="tabs" />
+      <window_info id="Database" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.12526652" sideWeight="0.69195753" order="4" side_tool="false" content_ui="tabs" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="false" weight="0.25" sideWeight="0.4874864" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Ant Build" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="false" weight="0.25" sideWeight="0.4961915" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="UI Designer" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
-      <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.28291622" sideWeight="0.49791667" order="3" side_tool="false" content_ui="tabs" />
+      <window_info id="Debug" active="true" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.28291622" sideWeight="0.49791667" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.3297062" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
+      <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.24265505" sideWeight="0.49573562" order="8" side_tool="false" content_ui="tabs" />
       <window_info id="Palette&#9;" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="9" side_tool="false" content_ui="tabs" />
       <window_info id="Image Layers" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Java Enterprise" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="false" weight="0.3297062" sideWeight="0.5" order="10" side_tool="false" content_ui="tabs" />
@@ -1167,8 +1284,8 @@
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32861805" sideWeight="0.4978678" order="12" side_tool="false" content_ui="tabs" />
       <window_info id="Spring" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.3297062" sideWeight="0.5" order="9" side_tool="false" content_ui="tabs" />
       <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.3297062" sideWeight="0.5" order="11" side_tool="false" content_ui="tabs" />
-      <window_info id="Persistence" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.12526652" sideWeight="0.29488575" order="10" side_tool="true" content_ui="tabs" x="818" y="240" width="305" height="942" />
-      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.14392324" sideWeight="0.69640917" order="0" side_tool="false" content_ui="tabs" x="844" y="49" width="231" height="942" />
+      <window_info id="Persistence" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.12526652" sideWeight="0.3080425" order="10" side_tool="true" content_ui="tabs" x="818" y="240" width="305" height="942" />
+      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.14392324" sideWeight="0.6828528" order="0" side_tool="false" content_ui="tabs" x="844" y="49" width="231" height="942" />
       <window_info id="Bean Validation" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="false" weight="0.32995737" sideWeight="0.4961915" order="6" side_tool="false" content_ui="tabs" />
       <window_info id="Web" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="false" weight="0.12313433" sideWeight="0.5125136" order="5" side_tool="true" content_ui="tabs" />
       <window_info id="SciView" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32995737" sideWeight="0.4874864" order="7" side_tool="false" content_ui="tabs" />
@@ -1178,7 +1295,6 @@
       <window_info id="Message" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Commander" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Hierarchy" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.075" sideWeight="0.5" order="2" side_tool="false" content_ui="combo" />
-      <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.24265505" sideWeight="0.49573562" order="8" side_tool="false" content_ui="tabs" />
       <window_info id="Documentation" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32995737" sideWeight="0.4961915" order="11" side_tool="false" content_ui="tabs" x="0" y="0" width="434" height="856" />
       <window_info id="Inspection" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
       <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32861805" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
@@ -1226,7 +1342,6 @@
     <option name="myLimit" value="2678400000" />
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="NS header" />
     <MESSAGE value="role map ctr update" />
     <MESSAGE value="merge" />
     <MESSAGE value="test hibernate" />
@@ -1251,7 +1366,8 @@
     <MESSAGE value="return model helper" />
     <MESSAGE value="lots of ns service impl" />
     <MESSAGE value="arrange router controller" />
-    <option name="LAST_COMMIT_MESSAGE" value="arrange router controller" />
+    <MESSAGE value="request send client" />
+    <option name="LAST_COMMIT_MESSAGE" value="request send client" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -1291,11 +1407,17 @@
           <properties />
           <option name="timeStamp" value="56" />
         </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/BOEngine/src/test/java/org/sysu/workflow/io/SCXMLReaderTest.java</url>
+          <line>97</line>
+          <properties />
+          <option name="timeStamp" value="58" />
+        </line-breakpoint>
       </breakpoints>
       <breakpoints-dialog>
         <breakpoints-dialog />
       </breakpoints-dialog>
-      <option name="time" value="57" />
+      <option name="time" value="59" />
     </breakpoint-manager>
     <watches-manager />
   </component>
@@ -1304,66 +1426,6 @@
     <option name="FILTER_TARGETS" value="false" />
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/RenResourceService/src/main/java/org/sysu/renResourcing/RMain.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="44">
-          <caret line="2" column="13" lean-forward="false" selection-start-line="2" selection-start-column="13" selection-end-line="2" selection-end-column="13" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/COrgan/COrganApp.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="22000">
-          <caret line="1000" column="40" lean-forward="false" selection-start-line="1000" selection-start-column="40" selection-end-line="1000" selection-end-column="40" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/RenNameService/src/main/java/org/sysu/renNameService/RenNameServiceApplication.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="330">
-          <caret line="15" column="3" lean-forward="false" selection-start-line="15" selection-start-column="3" selection-end-line="15" selection-end-column="3" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/RenResourceService/src/main/java/org/sysu/renResourcing/RenResourceServiceApplication.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="418">
-          <caret line="19" column="0" lean-forward="true" selection-start-line="19" selection-start-column="0" selection-end-line="19" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/RenNameService/src/main/java/org/sysu/renNameService/utility/LogUtil.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="495">
-          <caret line="44" column="23" lean-forward="false" selection-start-line="44" selection-start-column="23" selection-end-line="44" selection-end-column="23" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/RenNameService/src/main/java/org/sysu/renNameService/transaction/NTIsolationTypeConstants.java" />
-    <entry file="file://$PROJECT_DIR$/RenNameService/src/main/java/org/sysu/renNameService/transaction/NTIsolationType.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="264">
-          <caret line="12" column="19" lean-forward="false" selection-start-line="12" selection-start-column="19" selection-end-line="12" selection-end-column="19" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/RenNameService/src/main/java/org/sysu/renNameService/transaction/ConcurrentControlType.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="308">
-          <caret line="14" column="17" lean-forward="false" selection-start-line="14" selection-start-column="17" selection-end-line="14" selection-end-column="17" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="jar://$MAVEN_REPOSITORY$/org/hibernate/hibernate-core/5.0.12.Final/hibernate-core-5.0.12.Final.jar!/org/hibernate/internal/SessionImpl.class">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="203">
-          <caret line="529" column="17" lean-forward="false" selection-start-line="529" selection-start-column="17" selection-end-line="529" selection-end-column="17" />
-        </state>
-      </provider>
-    </entry>
     <entry file="jar://$MAVEN_REPOSITORY$/org/hibernate/hibernate-core/5.0.12.Final/hibernate-core-5.0.12.Final.jar!/org/hibernate/Session.class">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="220">
@@ -1380,20 +1442,6 @@
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/RenNameService/src/main/java/org/sysu/renNameService/pattern/NObserver.java" />
-    <entry file="file://$PROJECT_DIR$/RenNameService/src/main/java/org/sysu/renNameService/transaction/NameServiceTransaction.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="110">
-          <caret line="23" column="49" lean-forward="true" selection-start-line="23" selection-start-column="49" selection-end-line="23" selection-end-column="49" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/RenNameService/src/main/java/org/sysu/renNameService/entity/RenNsTransactionEntity.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="352">
-          <caret line="16" column="61" lean-forward="false" selection-start-line="16" selection-start-column="61" selection-end-line="16" selection-end-column="61" />
-        </state>
-      </provider>
-    </entry>
     <entry file="jar://C:/Program Files (x86)/Java/jdk1.8.0_144/src.zip!/java/util/Observable.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="220">
@@ -1527,7 +1575,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="264">
           <caret line="12" column="10" lean-forward="false" selection-start-line="12" selection-start-column="10" selection-end-line="12" selection-end-column="10" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -1535,7 +1582,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="792">
           <caret line="36" column="34" lean-forward="false" selection-start-line="36" selection-start-column="24" selection-end-line="36" selection-end-column="34" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -1551,7 +1597,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="1167">
           <caret line="54" column="16" lean-forward="false" selection-start-line="54" selection-start-column="16" selection-end-line="54" selection-end-column="16" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -1567,7 +1612,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="593">
           <caret line="129" column="0" lean-forward="false" selection-start-line="129" selection-start-column="0" selection-end-line="129" selection-end-column="0" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -1575,7 +1619,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="1584">
           <caret line="72" column="4" lean-forward="false" selection-start-line="72" selection-start-column="4" selection-end-line="72" selection-end-column="4" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -1587,27 +1630,10 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/RenNameService/src/main/java/org/sysu/renNameService/roleMapping/RoleMappingService.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="99">
-          <caret line="30" column="52" lean-forward="false" selection-start-line="30" selection-start-column="52" selection-end-line="30" selection-end-column="52" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/RenNameService/src/main/java/org/sysu/renNameService/NSExecutor.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="594">
-          <caret line="109" column="35" lean-forward="false" selection-start-line="109" selection-start-column="35" selection-end-line="109" selection-end-column="35" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/RenNameService/src/main/java/org/sysu/renNameService/restful/controller/ClusterController.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="638">
           <caret line="29" column="14" lean-forward="true" selection-start-line="29" selection-start-column="14" selection-end-line="29" selection-end-column="14" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -1615,7 +1641,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="-3039">
           <caret line="29" column="49" lean-forward="false" selection-start-line="29" selection-start-column="49" selection-end-line="29" selection-end-column="49" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -1627,42 +1652,137 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/RenNameService/src/main/java/org/sysu/renNameService/restful/controller/NameSpacingController.java">
+    <entry file="file://$PROJECT_DIR$/RenNameService/src/main/java/org/sysu/renNameService/entity/RenRuntimerecordEntity.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="4815">
-          <caret line="260" column="0" lean-forward="true" selection-start-line="260" selection-start-column="0" selection-end-line="260" selection-end-column="0" />
+        <state relative-caret-position="88">
+          <caret line="16" column="57" lean-forward="false" selection-start-line="16" selection-start-column="57" selection-end-line="16" selection-end-column="57" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/RenNameService/src/main/java/org/sysu/renNameService/utility/HttpClientUtil.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="1958">
+          <caret line="89" column="47" lean-forward="true" selection-start-line="89" selection-start-column="47" selection-end-line="89" selection-end-column="47" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/RenNameService/src/main/java/org/sysu/renNameService/roleMapping/RoleMappingService.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="99">
+          <caret line="30" column="52" lean-forward="false" selection-start-line="30" selection-start-column="52" selection-end-line="30" selection-end-column="52" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/RenNameService/src/main/java/org/sysu/renNameService/utility/HibernateUtil.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="1056">
+          <caret line="48" column="7" lean-forward="false" selection-start-line="48" selection-start-column="7" selection-end-line="48" selection-end-column="7" />
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/RenNameService/src/main/java/org/sysu/renNameService/NSScheduler.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="2134">
-          <caret line="97" column="7" lean-forward="true" selection-start-line="97" selection-start-column="7" selection-end-line="97" selection-end-column="7" />
+        <state relative-caret-position="1606">
+          <caret line="73" column="0" lean-forward="false" selection-start-line="73" selection-start-column="0" selection-end-line="73" selection-end-column="0" />
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/RenNameService/src/main/java/org/sysu/renNameService/entity/RenRuntimerecordEntity.java">
+    <entry file="file://$PROJECT_DIR$/RenNameService/src/main/java/org/sysu/renNameService/utility/NSTracker.java" />
+    <entry file="file://$PROJECT_DIR$/RenNameService/src/main/java/org/sysu/renNameService/entity/RenNsTransactionEntity.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="88">
-          <caret line="16" column="57" lean-forward="false" selection-start-line="16" selection-start-column="57" selection-end-line="16" selection-end-column="57" />
+        <state relative-caret-position="374">
+          <caret line="17" column="13" lean-forward="false" selection-start-line="17" selection-start-column="13" selection-end-line="17" selection-end-column="13" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/RenNameService/src/main/java/org/sysu/renNameService/transaction/NameServiceTransaction.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="352">
+          <caret line="16" column="19" lean-forward="false" selection-start-line="16" selection-start-column="19" selection-end-line="16" selection-end-column="19" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/RenNameService/src/main/java/org/sysu/renNameService/NSExecutor.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="924">
+          <caret line="42" column="43" lean-forward="false" selection-start-line="42" selection-start-column="43" selection-end-line="42" selection-end-column="43" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/RenNameService/src/main/java/org/sysu/renNameService/restful/controller/NameSpacingController.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="473">
+          <caret line="302" column="75" lean-forward="false" selection-start-line="302" selection-start-column="75" selection-end-line="302" selection-end-column="75" />
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/RenNameService/src/main/java/org/sysu/renNameService/nameSpacing/NameSpacingService.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="657">
-          <caret line="212" column="14" lean-forward="true" selection-start-line="212" selection-start-column="14" selection-end-line="212" selection-end-column="14" />
+        <state relative-caret-position="825">
+          <caret line="189" column="80" lean-forward="false" selection-start-line="189" selection-start-column="69" selection-end-line="189" selection-end-column="80" />
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/RenNameService/src/main/java/org/sysu/renNameService/utility/HttpClientUtil.java">
+    <entry file="file://$PROJECT_DIR$/RenNameService/src/main/java/org/sysu/renNameService/NSTracker.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="605">
-          <caret line="100" column="28" lean-forward="true" selection-start-line="100" selection-start-column="28" selection-end-line="100" selection-end-column="28" />
+        <state relative-caret-position="-1639">
+          <caret line="2" column="38" lean-forward="true" selection-start-line="2" selection-start-column="38" selection-end-line="2" selection-end-column="38" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/BOEngine/src/main/java/org/sysu/workflow/io/SCXMLReader.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="880">
+          <caret line="49" column="19" lean-forward="false" selection-start-line="49" selection-start-column="19" selection-end-line="49" selection-end-column="19" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="jar://$MAVEN_REPOSITORY$/junit/junit/4.11/junit-4.11-sources.jar!/org/junit/internal/runners/model/ReflectiveCallable.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="286">
+          <caret line="13" column="0" lean-forward="false" selection-start-line="13" selection-start-column="0" selection-end-line="13" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="jar://$MAVEN_REPOSITORY$/junit/junit/4.11/junit-4.11-sources.jar!/org/junit/runners/ParentRunner.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="277">
+          <caret line="276" column="0" lean-forward="false" selection-start-line="276" selection-start-column="0" selection-end-line="276" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/BOEngine/src/main/java/org/sysu/workflow/model/SCXML.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="275">
+          <caret line="20" column="0" lean-forward="true" selection-start-line="20" selection-start-column="0" selection-end-line="20" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/BOEngine/src/main/java/org/sysu/workflow/bridge/InheritableContext.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-1659">
+          <caret line="19" column="52" lean-forward="false" selection-start-line="19" selection-start-column="52" selection-end-line="19" selection-end-column="52" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/BOEngine/src/test/java/org/sysu/workflow/io/SCXMLReaderTest.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="577">
+          <caret line="97" column="44" lean-forward="true" selection-start-line="97" selection-start-column="44" selection-end-line="97" selection-end-column="44" />
           <folding />
         </state>
       </provider>

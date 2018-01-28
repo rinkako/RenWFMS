@@ -6,12 +6,18 @@ import org.sysu.workflow.model.extend.SubProcess;
 import org.sysu.workflow.model.extend.Task;
 import org.sysu.workflow.model.extend.Tasks;
 
+import java.io.Serializable;
 import java.util.List;
 /**
  * Business Object Inheritable Context
  * This class is used to generate InheritableContext of the BO for the runtime.
  */
-public class InheritableContext {
+public class InheritableContext implements Serializable {
+
+    /**
+     * Serial version UID.
+     */
+    private static final long serialVersionUID = 2L;
 
     private Datamodel InheritedDatamodel;
     private Tasks InheritedTasks;

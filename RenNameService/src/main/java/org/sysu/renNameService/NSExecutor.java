@@ -5,10 +5,7 @@
 package org.sysu.renNameService;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
-import org.sysu.renNameService.entity.RenBoEntity;
-import org.sysu.renNameService.entity.RenNsTransactionEntity;
-import org.sysu.renNameService.entity.RenProcessEntity;
-import org.sysu.renNameService.entity.RenRolemapEntity;
+import org.sysu.renNameService.entity.*;
 import org.sysu.renNameService.nameSpacing.NameSpacingService;
 import org.sysu.renNameService.roleMapping.RoleMappingService;
 import org.sysu.renNameService.transaction.NameServiceTransaction;
@@ -27,6 +24,7 @@ import java.util.Observer;
  * Author: Rinkako
  * Date  : 2018/1/24
  * Usage : This class actually handle a specific transaction.
+ *         An executor should be supervise by the main scheduler or a tracker.
  */
 public class NSExecutor extends Observable {
     /**
@@ -110,6 +108,10 @@ public class NSExecutor extends Observable {
                         case "getBO":
                             RenBoEntity getBoEntity = NameSpacingService.GetBO((String) args.get("boid"), (String) args.get("rtid"));
                             retStr = SerializationUtil.JsonSerialization(getBoEntity, "");
+                            break;
+                        case "SubmitLaunchProcess":
+                            RenRuntimerecordEntity submitLaunchProcessEntity = NameSpacingService.SubmitLaunchProcess((String) args.get("pid"), (String) args.get("rtid"), (String) args.get("from"), (String) args.get("renid"), (String) args.get("authoritySession"), (Integer) args.get("bindingType"), (String) args.get("binding"));
+                            retStr = SerializationUtil.JsonSerialization(submitLaunchProcessEntity, "");
                             break;
                     }
                     // prepare execution result

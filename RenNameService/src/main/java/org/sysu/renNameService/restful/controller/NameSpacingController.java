@@ -24,6 +24,7 @@ import java.util.List;
  * Usage : Handle requests about the name spacing service.
  */
 
+@SuppressWarnings("ConstantConditions")
 @RestController
 @RequestMapping("/ns")
 public class NameSpacingController {
@@ -244,6 +245,59 @@ public class NameSpacingController {
             args.put("boid", boid);
             args.put("rtid", rtid == null ? "" : rtid);  // rtid not exist for selecting process to launch
             NameServiceTransaction t = TransactionCreator.Create(TransactionType.Namespacing, "getBO", args);
+            String jsonifyResult = (String) NameSpacingController.scheduler.Schedule(t);
+            // return
+            ReturnModelHelper.StandardResponse(rnModel, StatusCode.OK, jsonifyResult);
+        } catch (Exception e) {
+            ReturnModelHelper.ExceptionResponse(rnModel, e.getClass().getName());
+        }
+        return rnModel;
+    }
+
+    /**
+     * Submit a request for launching a specific process.
+     * @param pid pid for process to be launched (required)
+     * @param rtid runtime record rtid (required)
+     * @param from launch from platform identifier (required)
+     * @param renid ren user id (required)
+     * @param authoritySession session id (required)
+     * @param bindingType resource binding type (required)
+     * @param binding resource binding data
+     * @return response package
+     */
+    @RequestMapping(value = "/submitLaunchProcess", produces = {"application/json", "application/xml"})
+    @ResponseBody
+    @Transactional
+    public ReturnModel SubmitLaunchProcess(@RequestParam(value="pid", required = false)String pid,
+                                           @RequestParam(value="rtid", required = false)String rtid,
+                                           @RequestParam(value="from", required = false)String from,
+                                           @RequestParam(value="renid", required = false)String renid,
+                                           @RequestParam(value="authoritySession", required = false)String authoritySession,
+                                           @RequestParam(value="bindingType", required = false)String bindingType,
+                                           @RequestParam(value="binding", required = false)String binding) {
+        ReturnModel rnModel = new ReturnModel();
+        try {
+            // miss params
+            List<String> missingParams = new ArrayList<>();
+            if (pid == null) missingParams.add("pid");
+            if (rtid == null) missingParams.add("rtid");
+            if (from == null) missingParams.add("from");
+            if (renid == null) missingParams.add("renid");
+            if (authoritySession == null) missingParams.add("authoritySession");
+            if (bindingType == null) missingParams.add("bindingType");
+            if (missingParams.size() > 0) {
+                return ReturnModelHelper.MissingParametersResponse(missingParams);
+            }
+            // logic
+            HashMap<String, String> args = new HashMap<>();
+            args.put("pid", pid);
+            args.put("rtid", rtid);
+            args.put("from", from);
+            args.put("renid", renid);
+            args.put("authoritySession", authoritySession);
+            args.put("bindingType", bindingType);
+            args.put("binding", binding == null ? "" : binding);  // binding not exist when using business role map service
+            NameServiceTransaction t = TransactionCreator.Create(TransactionType.Namespacing, "submitLaunchProcess", args);
             String jsonifyResult = (String) NameSpacingController.scheduler.Schedule(t);
             // return
             ReturnModelHelper.StandardResponse(rnModel, StatusCode.OK, jsonifyResult);
