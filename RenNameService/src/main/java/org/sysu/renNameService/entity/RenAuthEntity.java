@@ -14,26 +14,24 @@ import java.util.Objects;
  * Usage :
  */
 @Entity
-@Table(name = "ren_auth", schema = "renboengine")
+@Table(name = "ren_auth", schema = "renboengine", catalog = "")
 public class RenAuthEntity {
-    private int id;
     private String username;
     private String password;
     private Integer level;
     private Integer state;
     private Timestamp createtimestamp;
+    private String corganGateway;
+
+    public void setLevel(int level) {
+        this.level = level;
+    }
+
+    public void setState(int state) {
+        this.state = state;
+    }
 
     @Id
-    @Column(name = "id", nullable = false)
-    public int getId() {
-        return id;
-    }
-
-    public void setId(int id) {
-        this.id = id;
-    }
-
-    @Basic
     @Column(name = "username", nullable = false, length = 64)
     public String getUsername() {
         return username;
@@ -44,7 +42,7 @@ public class RenAuthEntity {
     }
 
     @Basic
-    @Column(name = "password", nullable = true, length = 128)
+    @Column(name = "password", nullable = false, length = 128)
     public String getPassword() {
         return password;
     }
@@ -54,7 +52,7 @@ public class RenAuthEntity {
     }
 
     @Basic
-    @Column(name = "level", nullable = true)
+    @Column(name = "level", nullable = false)
     public Integer getLevel() {
         return level;
     }
@@ -64,7 +62,7 @@ public class RenAuthEntity {
     }
 
     @Basic
-    @Column(name = "state", nullable = true)
+    @Column(name = "state", nullable = false)
     public Integer getState() {
         return state;
     }
@@ -88,8 +86,7 @@ public class RenAuthEntity {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         RenAuthEntity that = (RenAuthEntity) o;
-        return id == that.id &&
-                Objects.equals(username, that.username) &&
+        return Objects.equals(username, that.username) &&
                 Objects.equals(password, that.password) &&
                 Objects.equals(level, that.level) &&
                 Objects.equals(state, that.state) &&
@@ -99,6 +96,16 @@ public class RenAuthEntity {
     @Override
     public int hashCode() {
 
-        return Objects.hash(id, username, password, level, state, createtimestamp);
+        return Objects.hash(username, password, level, state, createtimestamp);
+    }
+
+    @Basic
+    @Column(name = "corgan_gateway", nullable = true, length = -1)
+    public String getCorganGateway() {
+        return corganGateway;
+    }
+
+    public void setCorganGateway(String corganGateway) {
+        this.corganGateway = corganGateway;
     }
 }

@@ -35,11 +35,25 @@ public class ReturnModelHelper {
      * @param exception exception descriptor
      * @return response package
      */
-    public static ReturnModel ExceptionResponse(ReturnModel rnModel, String exception) {
+    public static void ExceptionResponse(ReturnModel rnModel, String exception) {
         rnModel.setCode(StatusCode.Exception);
-        rnModel.setNs(TimestampUtil.GetTimeStamp() + " 0");
+        rnModel.setNs(String.format("%s %s", TimestampUtil.GetTimeStamp(), GlobalContext.NAME_SERVICE_GLOBAL_ID));
         ReturnElement returnElement = new ReturnElement();
         returnElement.setMessage(exception);
+        rnModel.setReturnElement(returnElement);
+    }
+
+    /**
+     * Router unauthorized service request handler.
+     * @param token unauthorized token
+     * @return response package
+     */
+    public static ReturnModel UnauthorizedResponse(String token) {
+        ReturnModel rnModel = new ReturnModel();
+        rnModel.setCode(StatusCode.Unauthorized);
+        rnModel.setNs(String.format("%s %s", TimestampUtil.GetTimeStamp(), GlobalContext.NAME_SERVICE_GLOBAL_ID));
+        ReturnElement returnElement = new ReturnElement();
+        returnElement.setMessage(token);
         rnModel.setReturnElement(returnElement);
         return rnModel;
     }
@@ -52,7 +66,7 @@ public class ReturnModelHelper {
     public static ReturnModel MissingParametersResponse(List<String> params) {
         ReturnModel rnModel = new ReturnModel();
         rnModel.setCode(StatusCode.Fail);
-        rnModel.setNs(TimestampUtil.GetTimeStamp() + " 0");
+        rnModel.setNs(String.format("%s %s", TimestampUtil.GetTimeStamp(), GlobalContext.NAME_SERVICE_GLOBAL_ID));
         ReturnElement returnElement = new ReturnElement();
         StringBuilder sb = new StringBuilder();
         sb.append("miss required parameters:");

@@ -2,12 +2,12 @@
  * Project Ren @ 2018
  * Rinkako, Ariana, Gordan. SYSU SDCS.
  */
-package org.sysu.renNameService;
+package org.sysu.renNameService.authorization;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
+import org.sysu.renNameService.GlobalContext;
 import org.sysu.renNameService.entity.RenAuthEntity;
 import org.sysu.renNameService.entity.RenSessionEntity;
-import org.sysu.renNameService.nameSpacing.NameSpacingService;
 import org.sysu.renNameService.utility.EncryptUtil;
 import org.sysu.renNameService.utility.HibernateUtil;
 import org.sysu.renNameService.utility.LogUtil;
@@ -19,7 +19,7 @@ import java.util.List;
  * Date  : 2018/1/28
  * Usage : This class maintaining authorization of service request token.
  */
-public class AuthManager {
+public class AuthTokenManager {
     /**
      * Request for a auth token by authorization user info.
      * @param username user unique id
@@ -45,7 +45,7 @@ public class AuthManager {
             // check if active session exist, ban it
             List<RenSessionEntity> oldRseList = session.createQuery(String.format("FROM RenSessionEntity WHERE username = '%s'", username)).list();
             for (RenSessionEntity rse : oldRseList) {
-                AuthManager.Destroy(rse.getToken());
+                AuthTokenManager.Destroy(rse.getToken());
             }
             // create new session
             String tokenId = String.format("AUTH_%s_%s", username, password);
@@ -64,7 +64,7 @@ public class AuthManager {
         }
         catch (Exception ex) {
             LogUtil.Log(String.format("Request for auth but exception occurred (%s), service rollback, %s", username, ex),
-                    NameSpacingService.class.getName(), LogUtil.LogLevelType.ERROR, "");
+                    AuthTokenManager.class.getName(), LogUtil.LogLevelType.ERROR, "");
             transaction.rollback();
             return "#exception_occurred";
         }
@@ -87,7 +87,7 @@ public class AuthManager {
         }
         catch (Exception ex) {
             LogUtil.Log(String.format("Destroy auth but exception occurred (%s), service rollback, %s", token, ex),
-                    NameSpacingService.class.getName(), LogUtil.LogLevelType.ERROR, "");
+                    AuthTokenManager.class.getName(), LogUtil.LogLevelType.ERROR, "");
             transaction.rollback();
         }
     }
@@ -111,7 +111,7 @@ public class AuthManager {
         }
         catch (Exception ex) {
             LogUtil.Log(String.format("Check auth validation but exception occurred (%s), service rollback, %s", token, ex),
-                    NameSpacingService.class.getName(), LogUtil.LogLevelType.ERROR, "");
+                    AuthTokenManager.class.getName(), LogUtil.LogLevelType.ERROR, "");
             transaction.rollback();
             retFlag = false;
         }
@@ -140,7 +140,7 @@ public class AuthManager {
         }
         catch (Exception ex) {
             LogUtil.Log(String.format("Check auth validation but exception occurred (%s), service rollback, %s", token, ex),
-                    NameSpacingService.class.getName(), LogUtil.LogLevelType.ERROR, "");
+                    AuthTokenManager.class.getName(), LogUtil.LogLevelType.ERROR, "");
             transaction.rollback();
             retVal = -1;
         }
