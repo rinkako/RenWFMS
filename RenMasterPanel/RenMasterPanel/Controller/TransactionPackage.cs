@@ -16,6 +16,6 @@ namespace RenMasterPanel.Controller
 
         public String StaticResourcesXML { get; set; } = null;
 
-        public List<KeyValuePair<String, String>> BOVector { get; } = new List<KeyValuePair<string, string>>();
+        public List<Dictionary<String, String>> BOVector { get; set; }
     }
 }

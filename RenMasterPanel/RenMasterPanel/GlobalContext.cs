@@ -11,6 +11,9 @@ namespace RenMasterPanel
         
         public static readonly string URL_GetProcessByRenId = "http://localhost:10234/ns/getProcessByRenId";
 
+        public static readonly string URL_GetProcessBOByPid = "http://localhost:10234/ns/getProcessBOList";
+
+        public static List<Dictionary<String, String>> Current_Ren_Process_List = null;
 
     }
 }

@@ -1,22 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
 using System.Windows.Forms;
 using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
 using MahApps.Metro.Controls;
 using RenMasterPanel.Controller;
 using RenMasterPanel.Util;
 
-namespace RenMasterPanel
+namespace RenMasterPanel.Forms
 {
     /// <summary>
     /// MainWindow.xaml 的交互逻辑
@@ -26,23 +18,17 @@ namespace RenMasterPanel
         public MainWindow()
         {
             InitializeComponent();
-
-
+            var processList = MPController.GetProcess();
+            GlobalContext.Current_Ren_Process_List = processList;
+            foreach (var process in processList)
+            {
+                this.ComboBox_Step1_Processes.Items.Add(process["processName"]);
+            }
 
         }
 
         private void ButtonBase_OnClick(object sender, RoutedEventArgs e)
         {
-            //string url_get = "http://localhost:10234/rolemap/getInvolved?rtid=AA1";
-            //NetClient.FetchString(url_get, out string outstr);
-            //Console.WriteLine(outstr);
-
-            //string url_post = "http://localhost:10234/rolemap/getInvolved";
-            //var dict = new Dictionary<String, String>();
-            //dict.Add("rtid", "AA1");
-            //NetClient.PostData(url_post, dict, out string postRes);
-            //Console.WriteLine(postRes);
-
             var args = new Dictionary<String, String> {{"renid", "testren"}};
             NetClient.PostData(GlobalContext.URL_GetProcessByRenId, args, out var fetched);
             
@@ -54,11 +40,29 @@ namespace RenMasterPanel
             {
                 this.Button_Step1_Open.Visibility = Visibility.Hidden;
                 this.TextBox_Step1_Open.Visibility = Visibility.Hidden;
+                var processEntity = GlobalContext.Current_Ren_Process_List[this.ComboBox_Step1_Processes.SelectedIndex - 1];
+                var boList = MPController.GetProcessBO(processEntity["pid"]);
+                this.ListBox_Step1_BO.Items.Clear();
+                this.ComboBox_Step1_MainBO.Items.Clear();
+                foreach (var bo in boList)
+                {
+                    var boName = bo["bo_name"];
+                    this.ListBox_Step1_BO.Items.Add(boName);
+                    this.ComboBox_Step1_MainBO.Items.Add(boName);
+                }
+                if (this.ComboBox_Step1_MainBO.Items.Count > 0)
+                {
+                    this.ComboBox_Step1_MainBO.SelectedIndex = 0;
+                }
+                MPController.CurrentTransaction.BOVector = boList;
             }
             else
             {
                 this.Button_Step1_Open.Visibility = Visibility.Visible;
                 this.TextBox_Step1_Open.Visibility = Visibility.Visible;
+                MPController.CurrentTransaction.BOVector = new List<Dictionary<string, string>>();
+                this.ListBox_Step1_BO.Items.Clear();
+                this.ComboBox_Step1_MainBO.Items.Clear();
             }
         }
 
@@ -98,7 +102,7 @@ namespace RenMasterPanel
             if (idx != -1)
             {
                 var boName = this.ListBox_Step1_BO.Items[idx].ToString();
-                var pf = new Forms.TextPreviewForm(boName, MPController.GetBOContent(boName));
+                var pf = new TextPreviewForm(boName, MPController.GetBOContent(boName));
                 pf.ShowDialog();
             }
         }

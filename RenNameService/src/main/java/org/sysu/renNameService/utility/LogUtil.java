@@ -8,6 +8,7 @@ import org.hibernate.Transaction;
 import org.sysu.renNameService.GlobalContext;
 import org.sysu.renNameService.entity.RenNslogEntity;
 import java.sql.Timestamp;
+import java.util.UUID;
 import java.util.concurrent.ConcurrentLinkedQueue;
 import java.util.concurrent.locks.ReentrantReadWriteLock;
 
@@ -105,6 +106,7 @@ public final class LogUtil {
             while ((lmp = LogUtil.logBuffer.poll()) != null) {
                 transaction.begin();
                 RenNslogEntity rnle = new RenNslogEntity();
+                rnle.setLogid(String.format("NsLog_%s", UUID.randomUUID()));
                 rnle.setLabel(lmp.Label);
                 rnle.setLevel(lmp.Level.name());
                 rnle.setMessage(lmp.Message);

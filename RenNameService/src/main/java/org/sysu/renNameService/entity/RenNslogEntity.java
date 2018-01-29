@@ -3,19 +3,20 @@
  * Rinkako, Ariana, Gordan. SYSU SDCS.
  */
 package org.sysu.renNameService.entity;
+
 import javax.persistence.*;
 import java.sql.Timestamp;
 import java.util.Objects;
 
 /**
  * Author: Rinkako
- * Date  : 2018/1/23
+ * Date  : 2018/1/30
  * Usage :
  */
 @Entity
-@Table(name = "ren_nslog", schema = "rennameservice", catalog = "")
+@Table(name = "ren_nslog", schema = "renboengine")
 public class RenNslogEntity {
-    private int id;
+    private String logid;
     private String label;
     private String level;
     private String message;
@@ -23,13 +24,13 @@ public class RenNslogEntity {
     private String rtid;
 
     @Id
-    @Column(name = "id", nullable = false)
-    public int getId() {
-        return id;
+    @Column(name = "logid", nullable = false, length = 64)
+    public String getLogid() {
+        return logid;
     }
 
-    public void setId(int id) {
-        this.id = id;
+    public void setLogid(String logid) {
+        this.logid = logid;
     }
 
     @Basic
@@ -87,16 +88,17 @@ public class RenNslogEntity {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         RenNslogEntity that = (RenNslogEntity) o;
-        return id == that.id &&
+        return Objects.equals(logid, that.logid) &&
                 Objects.equals(label, that.label) &&
                 Objects.equals(level, that.level) &&
                 Objects.equals(message, that.message) &&
-                Objects.equals(timestamp, that.timestamp);
+                Objects.equals(timestamp, that.timestamp) &&
+                Objects.equals(rtid, that.rtid);
     }
 
     @Override
     public int hashCode() {
 
-        return Objects.hash(id, label, level, message, timestamp);
+        return Objects.hash(logid, label, level, message, timestamp, rtid);
     }
 }

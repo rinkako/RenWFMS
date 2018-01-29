@@ -132,10 +132,10 @@ public class NameSpacingController {
      * @param pid process id (required)
      * @return response package
      */
-    @RequestMapping(value = "/getProcessBONameList", produces = {"application/json", "application/xml"})
+    @RequestMapping(value = "/getProcessBOList", produces = {"application/json", "application/xml"})
     @ResponseBody
     @Transactional
-    public ReturnModel GetProcessBONameList(@RequestParam(value="pid", required = false)String pid) {
+    public ReturnModel GetProcessBOList(@RequestParam(value="pid", required = false)String pid) {
         ReturnModel rnModel = new ReturnModel();
         try {
             // miss params
@@ -147,7 +147,7 @@ public class NameSpacingController {
             // logic
             HashMap<String, String> args = new HashMap<>();
             args.put("pid", pid);
-            NameServiceTransaction t = TransactionCreator.Create(TransactionType.Namespacing, "getProcessBONameList", args);
+            NameServiceTransaction t = TransactionCreator.Create(TransactionType.Namespacing, "getProcessBOList", args);
             String jsonifyResult = (String) NameSpacingController.scheduler.Schedule(t);
             // return
             ReturnModelHelper.StandardResponse(rnModel, StatusCode.OK, jsonifyResult);

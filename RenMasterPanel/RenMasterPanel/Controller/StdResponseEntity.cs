@@ -10,6 +10,12 @@ namespace RenMasterPanel.Controller
     {
         public string code;
         public string ns;
-        public object returnElement;
+        public ReturnElement returnElement;
+    }
+
+    internal sealed class ReturnElement
+    {
+        public string message;
+        public object data;
     }
 }

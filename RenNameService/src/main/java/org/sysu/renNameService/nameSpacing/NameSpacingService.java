@@ -105,7 +105,7 @@ public class NameSpacingService {
         Session session = HibernateUtil.GetLocalThreadSession();
         Transaction transaction = session.beginTransaction();
         try {
-            ArrayList<RenProcessEntity> qRet = (ArrayList<RenProcessEntity>) session.createQuery(String.format("FROM RenProcessEntity WHERE creator_renid = '%s' AND state = 0", renid)).list();
+            ArrayList<RenProcessEntity> qRet = (ArrayList<RenProcessEntity>) session.createQuery(String.format("FROM RenProcessEntity WHERE creatorRenid = '%s' AND state = 0", renid)).list();
             transaction.commit();
             return qRet;
         }
@@ -122,11 +122,11 @@ public class NameSpacingService {
      * @return a list of BO in the specific process
      */
     @SuppressWarnings("unchecked")
-    public static ArrayList<Object> GetProcessBONameList(String pid) {
+    public static ArrayList<Object> GetProcessBOList(String pid) {
         Session session = HibernateUtil.GetLocalThreadSession();
         Transaction transaction = session.beginTransaction();
         try {
-            ArrayList<Object> qRet = (ArrayList<Object>) session.createQuery(String.format("SELECT boid, bo_name FROM RenBoEntity WHERE pid = '%s'", pid)).list();
+            ArrayList<Object> qRet = (ArrayList<Object>) session.createQuery(String.format("SELECT boid, boName FROM RenBoEntity WHERE pid = '%s'", pid)).list();
             transaction.commit();
             return qRet;
         }
@@ -148,7 +148,7 @@ public class NameSpacingService {
         Session session = HibernateUtil.GetLocalThreadSession();
         Transaction transaction = session.beginTransaction();
         try {
-            ArrayList<RenProcessEntity> qRet = (ArrayList<RenProcessEntity>) session.createQuery(String.format("FROM RenProcessEntity WHERE creator_renid = '%s' AND process_name = '%s", renid, processName)).list();
+            ArrayList<RenProcessEntity> qRet = (ArrayList<RenProcessEntity>) session.createQuery(String.format("FROM RenProcessEntity WHERE creatorRenid = '%s' AND processName = '%s", renid, processName)).list();
             transaction.commit();
             return qRet.size() > 0;
         }

@@ -81,6 +81,7 @@ public class NSExecutor extends Observable {
                     execResult.put("nsid", context.getNsid());
                     execResult.put("action", act);
                     execResult.put("rtid", rtid);
+                    break;
                 case Namespacing:
                     String nsAct = (String) nst.getParameterDictionary().get(GlobalContext.TRANSACTION_ACTION_KEY);
                     switch (nsAct) {
@@ -97,8 +98,8 @@ public class NSExecutor extends Observable {
                             ArrayList<RenProcessEntity> processByRenList = NameSpacingService.GetProcessByRenId((String) args.get("renid"));
                             retStr = SerializationUtil.JsonSerialization(processByRenList, "");
                             break;
-                        case "getProcessBONameList":
-                            ArrayList<Object> processBOList = NameSpacingService.GetProcessBONameList((String) args.get("pid"));
+                        case "getProcessBOList":
+                            ArrayList<Object> processBOList = NameSpacingService.GetProcessBOList((String) args.get("pid"));
                             retStr = SerializationUtil.JsonSerialization(processBOList, "");
                             break;
                         case "containProcess":
@@ -120,9 +121,11 @@ public class NSExecutor extends Observable {
                     execResult.put("context", nst);
                     execResult.put("nsid", context.getNsid());
                     execResult.put("action", act);
+                    break;
                 default:
                     LogUtil.Log("Execute sync failed, wrong type code", NSExecutor.class.getName(),
                             LogUtil.LogLevelType.WARNING, context.getRtid());
+                    break;
             }
             // write success info to db
             Session session = HibernateUtil.GetLocalThreadSession();

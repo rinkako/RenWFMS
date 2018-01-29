@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Text;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using RenMasterPanel.Util;
@@ -50,7 +49,7 @@ namespace RenMasterPanel.Controller
                         sr.Close();
                         fs.Close();
                         var boName = fileInfo.Name.Substring(0, fileInfo.Name.Length - 4);
-                        MPController.CurrentTransaction.BOVector.Add(new KeyValuePair<string, string>(boName, content));
+                        MPController.CurrentTransaction.BOVector.Add(new Dictionary<string, string> {{"bo_name", boName}, {"bo_content", content }});
                     }
                 }
                 else
@@ -74,48 +73,64 @@ namespace RenMasterPanel.Controller
                     new Dictionary<string, string> {{"username", username}, {"password", password}},
                     out string retStr);
                 var response = JsonConvert.DeserializeObject<StdResponseEntity>(retStr);
-                var returnElement = (JObject) response.returnElement;
-                var retTokenFlag = returnElement.TryGetValue("data", out JToken retJToken);
-                var retToken = retJToken.ToString();
-                var successFlag = retTokenFlag && !retToken.StartsWith("#");
+                var retToken = ReturnDataHelper.DecodeString(response);
+                var successFlag = !retToken.StartsWith("#");
                 return new KeyValuePair<bool, string>(successFlag, successFlag ? retToken : "");
             }
             catch (Exception ex)
             {
-                LogUtils.LogLine("Login exception occurred" + ex, "MPController", LogLevel.Warning);
+                LogUtils.LogLine("Login exception occurred" + ex, "MPController", LogLevel.Error);
                 return new KeyValuePair<bool, string>(false, "");
             }
         }
 
         /// <summary>
-        /// 
+        /// Get processes of a ren user.
         /// </summary>
-        public static void GetProcess()
+        /// <returns>A list of dictionary of processes</returns>
+        public static List<Dictionary<String, String>> GetProcess()
         {
             try
             {
                 NetClient.PostData(GlobalContext.URL_GetProcessByRenId,
                     new Dictionary<string, string> { { "renid", MPController.CurrentTransaction.RenUsername } },
-                    out string retStr);
+                    out var retStr);
                 var response = JsonConvert.DeserializeObject<StdResponseEntity>(retStr);
-                var returnElement = (JObject)response.returnElement;
-                var retTokenFlag = returnElement.TryGetValue("data", out JToken retJToken);
-                var retToken = retJToken.ToString();
-                var successFlag = retTokenFlag && !retToken.StartsWith("#");
+                var processList = ReturnDataHelper.DecodeList(response);
+                return processList.Select(proc => ReturnDataHelper.DecodeDictionaryJToken(proc as JToken)).ToList();
             }
             catch (Exception ex)
             {
-                
+                LogUtils.LogLine("GetProcess exception occurred" + ex, "MPController", LogLevel.Error);
+                return null;
             }
         }
 
+        public static List<Dictionary<String, String>> GetProcessBO(string pid)
+        {
+            try
+            {
+                NetClient.PostData(GlobalContext.URL_GetProcessBOByPid,
+                    new Dictionary<string, string> { { "pid", pid } },
+                    out var retStr);
+                var response = JsonConvert.DeserializeObject<StdResponseEntity>(retStr);
+                var processList = ReturnDataHelper.DecodeList(response);
+                return processList.Select(proc => ReturnDataHelper.DecodeDictionaryJToken(proc as JToken)).ToList();
+            }
+            catch (Exception ex)
+            {
+                LogUtils.LogLine("GetProcessBO exception occurred" + ex, "MPController", LogLevel.Error);
+                return null;
+            }
+        }
+        
         /// <summary>
         /// Get the name list of BOs in current transaction binding process.
         /// </summary>
         /// <returns>List of BO name strings</returns>
         public static List<String> GetBOList()
         {
-            return MPController.CurrentTransaction.BOVector.Select(kvp => kvp.Key).ToList();
+            return MPController.CurrentTransaction.BOVector.Select(bo => bo["bo_name"]).ToList();
         }
 
         /// <summary>
@@ -125,7 +140,14 @@ namespace RenMasterPanel.Controller
         /// <returns>BO content string</returns>
         public static String GetBOContent(string name)
         {
-            return MPController.CurrentTransaction.BOVector.Find(t => t.Key == name).Value;
+            foreach (var bo in MPController.CurrentTransaction.BOVector)
+            {
+                if (bo["bo_name"] == name)
+                {
+                    return bo["bo_content"];
+                }
+            }
+            return String.Empty;
         }
     }
 }
