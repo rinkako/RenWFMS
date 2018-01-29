@@ -13,6 +13,7 @@ import org.sysu.renNameService.utility.HibernateUtil;
 import org.sysu.renNameService.utility.LogUtil;
 import java.sql.Timestamp;
 import java.util.List;
+import java.util.UUID;
 
 /**
  * Author: Rinkako
@@ -43,12 +44,15 @@ public class AuthTokenManager {
                 return "#password_invalid";
             }
             // check if active session exist, ban it
-            List<RenSessionEntity> oldRseList = session.createQuery(String.format("FROM RenSessionEntity WHERE username = '%s'", username)).list();
+            List<RenSessionEntity> oldRseList = session.createQuery(String.format("FROM RenSessionEntity WHERE username = '%s' AND destroy_timestamp = NULL", username)).list();
+            Timestamp currentTS = new Timestamp(System.currentTimeMillis());
             for (RenSessionEntity rse : oldRseList) {
-                AuthTokenManager.Destroy(rse.getToken());
+                if (rse.getUntilTimestamp().after(currentTS)) {
+                    rse.setDestroyTimestamp(currentTS);
+                }
             }
             // create new session
-            String tokenId = String.format("AUTH_%s_%s", username, password);
+            String tokenId = String.format("AUTH_%s_%s", username, UUID.randomUUID());
             RenSessionEntity rse = new RenSessionEntity();
             long createTs = System.currentTimeMillis();
             rse.setLevel(rae.getLevel());

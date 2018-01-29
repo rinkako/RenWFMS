@@ -259,6 +259,40 @@ public class AuthorizationController {
      * @param username user unique name
      * @return response package
      */
+    @PostMapping(value = "/contain", produces = {"application/json", "application/xml"})
+    @ResponseBody
+    @Transactional
+    public ReturnModel ContainAuthorization(@RequestParam(value="token", required = false)String token,
+                                            @RequestParam(value="username", required = false)String username) {
+        ReturnModel rnModel = new ReturnModel();
+        try {
+            // miss params
+            List<String> missingParams = new ArrayList<>();
+            if (token == null) missingParams.add("token");
+            if (username == null) missingParams.add("username");
+            if (missingParams.size() > 0) {
+                return ReturnModelHelper.MissingParametersResponse(missingParams);
+            }
+            // token check
+            if (!AuthorizationService.CheckValid(token)) {
+                return ReturnModelHelper.UnauthorizedResponse(token);
+            }
+            // logic
+            String jsonifyResult = SerializationUtil.JsonSerialization(AuthorizationService.ContainAuthorizationUser(username),"");
+            // return
+            ReturnModelHelper.StandardResponse(rnModel, StatusCode.OK, jsonifyResult);
+        } catch (Exception e) {
+            ReturnModelHelper.ExceptionResponse(rnModel, e.getClass().getName());
+        }
+        return rnModel;
+    }
+
+    /**
+     * Get authorization entity by its user name.
+     * @param token auth token
+     * @param username user unique name
+     * @return response package
+     */
     @PostMapping(value = "/get", produces = {"application/json", "application/xml"})
     @ResponseBody
     @Transactional

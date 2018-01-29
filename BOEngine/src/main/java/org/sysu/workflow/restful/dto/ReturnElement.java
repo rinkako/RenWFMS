@@ -9,11 +9,6 @@ import javax.xml.bind.annotation.XmlElement;
  */
 public class ReturnElement {
     /**
-     * a token for authentication
-     */
-    private String token;
-
-    /**
      * exception message
      */
     private String message;
@@ -24,15 +19,6 @@ public class ReturnElement {
     private String data;
 
     public ReturnElement() {
-    }
-
-    @XmlElement(required = false)
-    public String getToken() {
-        return token;
-    }
-
-    public void setToken(String token) {
-        this.token = token;
     }
 
     @XmlElement(required = false)
