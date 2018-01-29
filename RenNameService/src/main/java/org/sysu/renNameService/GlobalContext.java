@@ -33,7 +33,7 @@ public final class GlobalContext {
     /**
      * Size for log buffer.
      */
-    public static final int LOG_BUFFER_SIZE = 10;
+    public static final int LOG_BUFFER_SIZE = 0;
 
     /**
      * Size of scheduler concurrent executing transaction.

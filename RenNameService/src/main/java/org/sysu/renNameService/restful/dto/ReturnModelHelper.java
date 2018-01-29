@@ -5,6 +5,7 @@
 package org.sysu.renNameService.restful.dto;
 
 import org.sysu.renNameService.GlobalContext;
+import org.sysu.renNameService.utility.LogUtil;
 import org.sysu.renNameService.utility.TimestampUtil;
 
 import java.util.ArrayList;
@@ -55,6 +56,8 @@ public class ReturnModelHelper {
         ReturnElement returnElement = new ReturnElement();
         returnElement.setMessage(token);
         rnModel.setReturnElement(returnElement);
+        LogUtil.Log(String.format("Unauthorized service request (token:%s)", token),
+                ReturnModelHelper.class.getName(), LogUtil.LogLevelType.UNAUTHORIZED, "");
         return rnModel;
     }
 

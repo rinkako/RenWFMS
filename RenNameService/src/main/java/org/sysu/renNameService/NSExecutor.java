@@ -91,7 +91,7 @@ public class NSExecutor extends Observable {
                             retStr = NameSpacingService.CreateProcess((String) args.get("renid"), (String) args.get("name"), (String) args.get("mainbo"));
                             break;
                         case "uploadBO":
-                            retStr = NameSpacingService.UploadBOContent((String) args.get("pid"), (String) args.get("name"), (String) args.get("content"));
+                            retStr = SerializationUtil.JsonSerialization(NameSpacingService.UploadBOContent((String) args.get("pid"), (String) args.get("name"), (String) args.get("content")), "");
                             break;
                         case "getProcessByRenId":
                             ArrayList<RenProcessEntity> processByRenList = NameSpacingService.GetProcessByRenId((String) args.get("renid"));
@@ -122,7 +122,7 @@ public class NSExecutor extends Observable {
                     execResult.put("action", act);
                 default:
                     LogUtil.Log("Execute sync failed, wrong type code", NSExecutor.class.getName(),
-                            LogUtil.LogLevelType.WARNNING, context.getRtid());
+                            LogUtil.LogLevelType.WARNING, context.getRtid());
             }
             // write success info to db
             Session session = HibernateUtil.GetLocalThreadSession();

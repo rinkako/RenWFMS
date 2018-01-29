@@ -64,6 +64,7 @@
     <Compile Include="Forms\TextPreviewForm.xaml.cs">
       <DependentUpon>TextPreviewForm.xaml</DependentUpon>
     </Compile>
+    <Compile Include="GlobalContext.cs" />
     <Compile Include="Util\IOUtil.cs" />
     <Compile Include="Util\LogUtil.cs" />
     <Compile Include="Util\NetClient.cs" />

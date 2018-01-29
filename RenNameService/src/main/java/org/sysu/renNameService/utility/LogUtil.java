@@ -136,6 +136,6 @@ public final class LogUtil {
      * Enum: Log level type.
      */
     public enum LogLevelType {
-        INFO, WARNNING, ERROR, UNAUTHORIZED
+        INFO, WARNING, ERROR, UNAUTHORIZED
     }
 }

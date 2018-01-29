@@ -33,7 +33,7 @@ public class NSTracker extends Observable implements Runnable, Observer {
     public void ExecuteAsync(NameServiceTransaction nsTransaction) {
         if (nsTransaction == null) {
             LogUtil.Log("A null NSTransaction is scheduled to launch, tracker ignored.",
-                    NSTracker.class.getName(), LogUtil.LogLevelType.WARNNING, "");
+                    NSTracker.class.getName(), LogUtil.LogLevelType.WARNING, "");
             return;
         }
         this.context = nsTransaction;
