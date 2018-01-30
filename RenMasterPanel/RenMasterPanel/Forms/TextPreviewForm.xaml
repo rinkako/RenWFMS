@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:RenMasterPanel.Forms"
         mc:Ignorable="d"
-        Title="Text Preview" Height="400" Width="799">
+        Title="Text Preview" Height="400" Width="799" WindowStartupLocation="CenterScreen">
     <Grid>
         <Label Name="Label_PreviewTitle" Foreground="#FF00B9FF" VerticalContentAlignment="Center" FontSize="18" Content="Label" HorizontalAlignment="Left" Margin="10,0,0,0" VerticalAlignment="Top" Width="160" Height="30"/>
         <Rectangle HorizontalAlignment="Left" Height="2" Margin="0,30,0,0" VerticalAlignment="Top" Width="599" Fill="#FFD6D6D6"/>

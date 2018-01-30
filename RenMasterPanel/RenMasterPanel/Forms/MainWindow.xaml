@@ -1,39 +1,59 @@
-﻿<controls:MetroWindow x:Class="RenMasterPanel.Forms.MainWindow"
+﻿<controls:MetroWindow
                       xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
                       xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
                       xmlns:controls="http://metro.mahapps.com/winfx/xaml/controls"
+                      xmlns:System="clr-namespace:System;assembly=mscorlib" x:Class="RenMasterPanel.Forms.MainWindow"
                       Title="Master Panel"
-                      Height="400" Width="752" ResizeMode="CanMinimize">
+                      Height="400" Width="752" ResizeMode="CanMinimize" WindowStartupLocation="CenterScreen">
     <Grid>
-        <controls:MetroAnimatedSingleRowTabControl x:Name="tabControl" controls:TabControlHelper.Transition="Left" controls:TabControlHelper.IsUnderlined="True">
+        <controls:MetroAnimatedSingleRowTabControl SelectedIndex="1" x:Name="tabControl" controls:TabControlHelper.Transition="Left" controls:TabControlHelper.IsUnderlined="True">
             <TabItem Header="       选择流程       " controls:ControlsHelper.HeaderFontSize="22">
-                <Grid Name="Grid_Step1">
+                <Grid x:Name="Grid_Step1">
                     <Label Content="选择流程目录和入口BO" FontSize="18" HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top"/>
-                    <Button Name="Button_Step1_Open" Content="Open" HorizontalAlignment="Left" FontSize="12" Margin="10,48,0,0" VerticalAlignment="Top" Width="116" Click="Button_Step1_Open_OnClick"/>
-                    <TextBox Name="TextBox_Step1_Open" Text="" IsReadOnly="True" HorizontalAlignment="Left" VerticalContentAlignment="Center" Height="30" Margin="140,48,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="596"/>
+                    <Button x:Name="Button_Step1_Open" Content="Open" HorizontalAlignment="Left" FontSize="12" Margin="10,48,0,0" VerticalAlignment="Top" Width="116" Click="Button_Step1_Open_OnClick"/>
+                    <TextBox x:Name="TextBox_Step1_Open" Text="" IsReadOnly="True" HorizontalAlignment="Left" VerticalContentAlignment="Center" Height="30" Margin="140,48,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="596"/>
                     <GroupBox Header="流程中包含的Business Object" HorizontalAlignment="Left" Height="200" Margin="10,96,0,0" VerticalAlignment="Top" Width="726">
-                        <ListBox Name="ListBox_Step1_BO" HorizontalAlignment="Left" Width="716" Margin="0,0,-2,0" MouseDoubleClick="ListBox_Step1_BO_MouseDoubleClick"/>
+                        <ListBox x:Name="ListBox_Step1_BO" HorizontalAlignment="Left" Width="716" Margin="0,0,-2,0" MouseDoubleClick="ListBox_Step1_BO_MouseDoubleClick"/>
                     </GroupBox>
-                    <Button Content="Next >" HorizontalAlignment="Left" FontSize="12" Margin="620,301,0,0" VerticalAlignment="Top" Width="116" Click="Button_Step1_Next_OnClick"/>
-                    <ComboBox Name="ComboBox_Step1_MainBO" HorizontalAlignment="Left" Margin="155,305,0,0" VerticalAlignment="Top" Width="309"/>
+                    <Button Content="Next &gt;" HorizontalAlignment="Left" FontSize="12" Margin="620,301,0,0" VerticalAlignment="Top" Width="116" Click="Button_Step1_Next_OnClick"/>
+                    <ComboBox x:Name="ComboBox_Step1_MainBO" HorizontalAlignment="Left" Margin="155,305,0,0" VerticalAlignment="Top" Width="309"/>
                     <Label Content="入口Business Object：" HorizontalAlignment="Left" Margin="10,305,0,0" VerticalAlignment="Top" Height="26" Width="140"/>
-                    <ComboBox Name="ComboBox_Step1_Processes" HorizontalAlignment="Left" Margin="469,17,0,0" VerticalAlignment="Top" Width="267" SelectedIndex="0" SelectionChanged="ComboBox_SelectionChanged">
-                        &lt;从本地导入&gt;
+                    <ComboBox x:Name="ComboBox_Step1_Processes" HorizontalAlignment="Left" Margin="469,17,0,0" VerticalAlignment="Top" Width="267" SelectedIndex="0" SelectionChanged="ComboBox_SelectionChanged">
+                        <System:String>&lt;从本地导入&gt;</System:String>
                     </ComboBox>
                     <Button Content="Refresh" HorizontalAlignment="Left" Margin="389,17,0,0" VerticalAlignment="Top" Width="75" Click="ButtonBase_OnClick" Height="26"/>
                 </Grid>
             </TabItem>
             <TabItem Header="       角色映射       " controls:ControlsHelper.HeaderFontSize="22">
-                <Grid Name="Grid_Step2">
+                <Grid x:Name="Grid_Step2">
+                    <GroupBox Header="Mapping Preview" HorizontalAlignment="Left" Height="286" Margin="230,10,0,0" VerticalAlignment="Top" Width="506">
+                        <Grid>
+                            <ListBox BorderThickness="1" HorizontalAlignment="Left" Height="240" Margin="10,5,0,0" VerticalAlignment="Top" Width="220" BorderBrush="LightSkyBlue"/>
+                            <Label Content="→" FontSize="20" Foreground="Gray" HorizontalContentAlignment="Center" Margin="230,107,230,106"/>
+                            <ListBox BorderThickness="1" Height="240" Margin="0,5,10,0" VerticalAlignment="Top" BorderBrush="LightSkyBlue" HorizontalAlignment="Right" Width="220"/>
+                        </Grid>
+                    </GroupBox>
+                    <ComboBox HorizontalAlignment="Left" Margin="10,52,0,0" VerticalAlignment="Top" Width="206" SelectedIndex="0">
+                        <System:String>Using Business Role Mapping</System:String>
+                        <System:String>Using Resource.xml</System:String>
+                    </ComboBox>
+                    <Label Content="Resource Register Type" Foreground="Gray" HorizontalAlignment="Left" Margin="5,27,0,0" VerticalAlignment="Top"/>
+                    <Label Name="Label_Step2_Operations" Content="Operations" Foreground="Gray" HorizontalAlignment="Left" Margin="5,95,0,0" VerticalAlignment="Top"/>
+                    <Button Name="Button_Step2_ManageMap" Content="Manage Mappings" HorizontalAlignment="Left" Margin="10,125,0,0" VerticalAlignment="Top" Width="206" Click="Button_Step2_ManageMap_Click"/>
+                    <Button Name="Button_Step2_Load" Content="Load" HorizontalAlignment="Left" Margin="116,157,0,0" VerticalAlignment="Top" Width="100"/>
+                    <Button Name="Button_Step2_Save"  Content="Save" HorizontalAlignment="Left" Margin="10,157,0,0" VerticalAlignment="Top" Width="100"/>
+                    <Button Name="Button_Step2_Next" Content="Next &gt;" HorizontalAlignment="Left" FontSize="12" Margin="620,301,0,0" VerticalAlignment="Top" Width="116" Click="Button_Step1_Next_OnClick"/>
+                    <Label Name="Label_Step2_Preset" Content="Preset" Foreground="Gray" HorizontalAlignment="Left" Margin="5,206,0,0" VerticalAlignment="Top"/>
+                    <ComboBox Name="ComboBox_Step2_Preset" HorizontalAlignment="Left" Margin="10,231,0,0" VerticalAlignment="Top" Width="206" SelectedIndex="0">
+                    </ComboBox>
+
                 </Grid>
             </TabItem>
             <TabItem Header="       创建事务       " controls:ControlsHelper.HeaderFontSize="22">
-                <Grid Name="Grid_Step3">
-                </Grid>
+                <Grid x:Name="Grid_Step3"/>
             </TabItem>
             <TabItem Header="         确认         " controls:ControlsHelper.HeaderFontSize="22">
-                <Grid Name="Grid_Step4">
-                </Grid>
+                <Grid x:Name="Grid_Step4"/>
             </TabItem>
         </controls:MetroAnimatedSingleRowTabControl>
         <Rectangle Fill="Transparent" IsHitTestVisible="True" Height="40" VerticalAlignment="Top"/>

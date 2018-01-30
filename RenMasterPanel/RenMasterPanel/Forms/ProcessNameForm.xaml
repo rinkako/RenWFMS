@@ -6,7 +6,7 @@
         xmlns:local="clr-namespace:RenMasterPanel.Forms"
         xmlns:controls="http://metro.mahapps.com/winfx/xaml/controls"
         mc:Ignorable="d"
-        Title="Create Process" Height="180" Width="350" ResizeMode="NoResize">
+        Title="Create Process" Height="180" Width="350" ResizeMode="NoResize" WindowStartupLocation="CenterScreen">
     <Grid>
         <Label Foreground="#FF00B9FF" VerticalContentAlignment="Center" FontSize="18" Content="Process Name" HorizontalAlignment="Left" Margin="10,0,0,0" VerticalAlignment="Top" Width="160" Height="30"/>
         <Rectangle HorizontalAlignment="Left" Height="2" Margin="0,30,0,0" VerticalAlignment="Top" Width="280" Fill="#FFD6D6D6"/>

@@ -179,5 +179,10 @@ namespace RenMasterPanel.Forms
             }
             this.tabControl.SelectedIndex += 1;
         }
+
+        private void Button_Step2_ManageMap_Click(object sender, RoutedEventArgs e)
+        {
+            new ManageMappingForm().ShowDialog();
+        }
     }
 }

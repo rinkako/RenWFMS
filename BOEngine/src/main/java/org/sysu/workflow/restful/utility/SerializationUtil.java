@@ -58,9 +58,9 @@ public class SerializationUtil {
      * @param serializedSCXML string to be deserialized
      * @return {@code SCXML} instance.
      */
-    public static SCXML DeSerializationSCXML(String serializedSCXML) {
+    public static SCXML DeserializationSCXMLByByteArray(byte[] serializedSCXML) {
         try {
-            ByteArrayInputStream byteArrayInputStream = new ByteArrayInputStream(serializedSCXML.getBytes("ISO-8859-1"));
+            ByteArrayInputStream byteArrayInputStream = new ByteArrayInputStream(serializedSCXML);
             ObjectInputStream objectInputStream = new ObjectInputStream(byteArrayInputStream);
             return (SCXML) objectInputStream.readObject();
         }

@@ -69,6 +69,9 @@
     <Compile Include="Forms\LoginForm.xaml.cs">
       <DependentUpon>LoginForm.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Forms\ManageMappingForm.xaml.cs">
+      <DependentUpon>ManageMappingForm.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Forms\ProcessNameForm.xaml.cs">
       <DependentUpon>ProcessNameForm.xaml</DependentUpon>
     </Compile>
@@ -80,6 +83,10 @@
     <Compile Include="Util\LogUtil.cs" />
     <Compile Include="Util\NetClient.cs" />
     <Page Include="Forms\LoginForm.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Forms\ManageMappingForm.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
