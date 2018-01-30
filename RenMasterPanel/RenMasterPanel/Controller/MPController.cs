@@ -49,7 +49,11 @@ namespace RenMasterPanel.Controller
                         sr.Close();
                         fs.Close();
                         var boName = fileInfo.Name.Substring(0, fileInfo.Name.Length - 4);
-                        MPController.CurrentTransaction.BOVector.Add(new Dictionary<string, string> {{"bo_name", boName}, {"bo_content", content }});
+                        MPController.CurrentTransaction.BOVector.Add(new Dictionary<string, string>
+                        {
+                            { "bo_name", boName },
+                            { "bo_content", content }
+                        });
                     }
                 }
                 else
@@ -70,7 +74,11 @@ namespace RenMasterPanel.Controller
             try
             {
                 NetClient.PostData(GlobalContext.URL_Auth_Connect,
-                    new Dictionary<string, string> {{"username", username}, {"password", password}},
+                    new Dictionary<string, string>
+                    {
+                        { "username", username },
+                        { "password", password }
+                    },
                     out string retStr);
                 var response = JsonConvert.DeserializeObject<StdResponseEntity>(retStr);
                 var retToken = ReturnDataHelper.DecodeString(response);
@@ -79,7 +87,7 @@ namespace RenMasterPanel.Controller
             }
             catch (Exception ex)
             {
-                LogUtils.LogLine("Login exception occurred" + ex, "MPController", LogLevel.Error);
+                LogUtils.LogLine("LoginForm exception occurred" + ex, "MPController", LogLevel.Error);
                 return new KeyValuePair<bool, string>(false, "");
             }
         }
@@ -93,7 +101,11 @@ namespace RenMasterPanel.Controller
             try
             {
                 NetClient.PostData(GlobalContext.URL_GetProcessByRenId,
-                    new Dictionary<string, string> { { "renid", MPController.CurrentTransaction.RenUsername } },
+                    new Dictionary<string, string>
+                    {
+                        { "token", MPController.CurrentTransaction.AuthToken },
+                        { "renid", MPController.CurrentTransaction.RenUsername }
+                    },
                     out var retStr);
                 var response = JsonConvert.DeserializeObject<StdResponseEntity>(retStr);
                 var processList = ReturnDataHelper.DecodeList(response);
@@ -106,12 +118,21 @@ namespace RenMasterPanel.Controller
             }
         }
 
+        /// <summary>
+        /// Get BO of a process.
+        /// </summary>
+        /// <param name="pid">process pid</param>
+        /// <returns>A List of Dictonary of BO items</returns>
         public static List<Dictionary<String, String>> GetProcessBO(string pid)
         {
             try
             {
                 NetClient.PostData(GlobalContext.URL_GetProcessBOByPid,
-                    new Dictionary<string, string> { { "pid", pid } },
+                    new Dictionary<string, string>
+                    {
+                        { "token", MPController.CurrentTransaction.AuthToken },
+                        { "pid", pid }
+                    },
                     out var retStr);
                 var response = JsonConvert.DeserializeObject<StdResponseEntity>(retStr);
                 var processList = ReturnDataHelper.DecodeList(response);
@@ -123,7 +144,62 @@ namespace RenMasterPanel.Controller
                 return null;
             }
         }
-        
+
+        /// <summary>
+        /// Create a new process.
+        /// </summary>
+        /// <returns>Process pid</returns>
+        public static String CreateProcess(string processName, string mainBOName)
+        {
+            try
+            {
+                NetClient.PostData(GlobalContext.URL_CreateProcess,
+                    new Dictionary<string, string>
+                    {
+                        { "token", MPController.CurrentTransaction.AuthToken },
+                        { "renid", MPController.CurrentTransaction.RenUsername },
+                        { "name", processName },
+                        { "mainbo", mainBOName }
+                    },
+                    out var retStr);
+                var response = JsonConvert.DeserializeObject<StdResponseEntity>(retStr);
+                return ReturnDataHelper.DecodeString(response);
+            }
+            catch (Exception ex)
+            {
+                LogUtils.LogLine("CreateProcess exception occurred" + ex, "MPController", LogLevel.Error);
+                return null;
+            }
+        }
+
+        /// <summary>
+        /// Upload a BO.
+        /// </summary>
+        /// <param name="boName"></param>
+        /// <param name="content"></param>
+        /// <returns></returns>
+        public static Dictionary<String, String> UploadBO(string boName, string content)
+        {
+            try
+            {
+                NetClient.PostData(GlobalContext.URL_UploadBO, new Dictionary<string, string>
+                    {
+                        { "token", MPController.CurrentTransaction.AuthToken },
+                        { "pid", MPController.CurrentTransaction.ProcessPID },
+                        { "name", boName },
+                        { "content", content }
+                    },
+                    out var retStr);
+                var response = JsonConvert.DeserializeObject<StdResponseEntity>(retStr);
+                return ReturnDataHelper.DecodeDictionary(response);
+            }
+            catch (Exception ex)
+            {
+                LogUtils.LogLine("UploadBO exception occurred" + ex, "MPController", LogLevel.Error);
+                return null;
+            }
+        }
+
         /// <summary>
         /// Get the name list of BOs in current transaction binding process.
         /// </summary>

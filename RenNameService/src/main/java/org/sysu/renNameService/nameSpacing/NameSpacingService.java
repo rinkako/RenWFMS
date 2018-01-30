@@ -57,8 +57,8 @@ public class NameSpacingService {
             return pid;
         }
         catch (Exception ex) {
-            LogUtil.Log("Create process but exception occurred, service rollback, " + ex, NameSpacingService.class.getName(), LogUtil.LogLevelType.ERROR, "");
             transaction.rollback();
+            LogUtil.Log("Create process but exception occurred, service rollback, " + ex, NameSpacingService.class.getName(), LogUtil.LogLevelType.ERROR, "");
         }
         return "";
     }
@@ -73,6 +73,7 @@ public class NameSpacingService {
     public static AbstractMap.SimpleEntry<String, String> UploadBOContent(String pid, String name, String content) {
         Session session = HibernateUtil.GetLocalThreadSession();
         Transaction transaction = session.beginTransaction();
+        boolean cmtFlag = false;
         try {
             String boid = "BO_" + UUID.randomUUID().toString();
             RenBoEntity rbe = new RenBoEntity();
@@ -84,13 +85,18 @@ public class NameSpacingService {
             // send to engine for get business role
             HashMap<String, String> args = new HashMap<>();
             args.put("boidlist", boid);
-            String involveBRs = HttpClientUtil.SendPost(GlobalContext.URL_BOENGINE_SERIALIZEBO, args, "");
             transaction.commit();
+            cmtFlag = true;
+            String involveBRs = HttpClientUtil.SendPost(GlobalContext.URL_BOENGINE_SERIALIZEBO, args, "");
             return new AbstractMap.SimpleEntry<>(boid, involveBRs);
+            //return new AbstractMap.SimpleEntry<>(boid, "TEST_INVOLVED");
         }
         catch (Exception ex) {
-            LogUtil.Log("Upload BO but exception occurred, service rollback, " + ex, NameSpacingService.class.getName(), LogUtil.LogLevelType.ERROR, "");
-            transaction.rollback();
+            if (!cmtFlag) {
+                transaction.rollback();
+                LogUtil.Log("Upload BO but exception occurred, service rollback, " + ex, NameSpacingService.class.getName(), LogUtil.LogLevelType.ERROR, "");
+            }
+            LogUtil.Log("Upload BO but exception occurred, " + ex, NameSpacingService.class.getName(), LogUtil.LogLevelType.ERROR, "");
         }
         return null;
     }
@@ -110,8 +116,8 @@ public class NameSpacingService {
             return qRet;
         }
         catch (Exception ex) {
-            LogUtil.Log("Get Processes of Ren User but exception occurred, service rollback, " + ex, NameSpacingService.class.getName(), LogUtil.LogLevelType.ERROR, "");
             transaction.rollback();
+            LogUtil.Log("Get Processes of Ren User but exception occurred, service rollback, " + ex, NameSpacingService.class.getName(), LogUtil.LogLevelType.ERROR, "");
         }
         return null;
     }
@@ -131,8 +137,8 @@ public class NameSpacingService {
             return qRet;
         }
         catch (Exception ex) {
-            LogUtil.Log("Get BO in Process but exception occurred, service rollback, " + ex, NameSpacingService.class.getName(), LogUtil.LogLevelType.ERROR, "");
             transaction.rollback();
+            LogUtil.Log("Get BO in Process but exception occurred, service rollback, " + ex, NameSpacingService.class.getName(), LogUtil.LogLevelType.ERROR, "");
         }
         return null;
     }
@@ -153,8 +159,8 @@ public class NameSpacingService {
             return qRet.size() > 0;
         }
         catch (Exception ex) {
-            LogUtil.Log("Get BO in Process but exception occurred, service rollback, " + ex, NameSpacingService.class.getName(), LogUtil.LogLevelType.ERROR, "");
             transaction.rollback();
+            LogUtil.Log("Get BO in Process but exception occurred, service rollback, " + ex, NameSpacingService.class.getName(), LogUtil.LogLevelType.ERROR, "");
         }
         return false;
     }
@@ -173,8 +179,8 @@ public class NameSpacingService {
             return rbe;
         }
         catch (Exception ex) {
-            LogUtil.Log("Get BO entity but exception occurred, service rollback, " + ex, NameSpacingService.class.getName(), LogUtil.LogLevelType.ERROR, rtid);
             transaction.rollback();
+            LogUtil.Log("Get BO entity but exception occurred, service rollback, " + ex, NameSpacingService.class.getName(), LogUtil.LogLevelType.ERROR, rtid);
         }
         return null;
     }
@@ -217,8 +223,8 @@ public class NameSpacingService {
             return rrte;
         }
         catch (Exception ex) {
-            LogUtil.Log(String.format("Submit launch process but exception occurred(pid: %s), service rollback, %s", pid, ex), NameSpacingService.class.getName(), LogUtil.LogLevelType.ERROR, rtid);
             transaction.rollback();
+            LogUtil.Log(String.format("Submit launch process but exception occurred(pid: %s), service rollback, %s", pid, ex), NameSpacingService.class.getName(), LogUtil.LogLevelType.ERROR, rtid);
         }
         return null;
     }

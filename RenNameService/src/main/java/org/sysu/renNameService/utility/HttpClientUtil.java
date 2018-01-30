@@ -11,6 +11,7 @@ import java.io.OutputStreamWriter;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.net.URLConnection;
+import java.util.Iterator;
 import java.util.Map;
 
 /**
@@ -77,27 +78,30 @@ public class HttpClientUtil {
             connection.setInstanceFollowRedirects(true);
             connection.setRequestMethod("POST");
             connection.setRequestProperty("Accept", "application/json");
-            connection.setRequestProperty("Content-Type", "application/json");
+            connection.setRequestProperty("Content-Type", "application/x-www-form-urlencoded");
             connection.connect();
             OutputStreamWriter out = new OutputStreamWriter(connection.getOutputStream(), "UTF-8");
-            out.append(SerializationUtil.JsonSerialization(args, rtid));
+            StringBuilder sb = new StringBuilder();
+            for (Map.Entry entry : args.entrySet()) {
+                String key = (String) entry.getKey();
+                String val = (String) entry.getValue();
+                sb.append(key).append("=").append(val).append("&");
+            }
+            String paraStr = sb.toString().substring(0, sb.length() - 1);
+            out.append(paraStr);
             out.flush();
             out.close();
             int code = connection.getResponseCode();
             InputStream is = code == 200 ? connection.getInputStream() : connection.getErrorStream();
-            int length = connection.getContentLength();
-            if (length != -1) {
-                byte[] data = new byte[length];
-                byte[] temp = new byte[512];
-                int destPos = 0;
-                int readLen;
-                while ((readLen = is.read(temp)) > 0) {
-                    System.arraycopy(temp, 0, data, destPos, readLen);
-                    destPos += readLen;
-                }
-                return new String(data, "UTF-8");
+            BufferedReader in = new BufferedReader(new InputStreamReader(is, "utf8"));
+            String line;
+            StringBuilder result = new StringBuilder();
+            while ((line = in.readLine()) != null) {
+                result.append(line);
             }
-
+            out.close();
+            in.close();
+            return result.toString();
         } catch (Exception ex) {
             LogUtil.Log("Exception occur when send http post request, " + ex,
                     HttpClientUtil.class.getName(), LogUtil.LogLevelType.ERROR, rtid);

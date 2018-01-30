@@ -92,6 +92,7 @@ public final class LogUtil {
 
     /**
      * Flush buffered log to steady memory.
+     * THIS IS NOT A TRANSACTION.
      */
     public static synchronized void FlushLog() {
         LogUtil.readWriteLock.writeLock().lock();
@@ -100,11 +101,9 @@ public final class LogUtil {
             return;
         }
         Session session = HibernateUtil.GetLocalThreadSession();
-        Transaction transaction = session.beginTransaction();
         try {
             LogMessagePackage lmp;
             while ((lmp = LogUtil.logBuffer.poll()) != null) {
-                transaction.begin();
                 RenNslogEntity rnle = new RenNslogEntity();
                 rnle.setLogid(String.format("NsLog_%s", UUID.randomUUID()));
                 rnle.setLabel(lmp.Label);
@@ -113,11 +112,9 @@ public final class LogUtil {
                 rnle.setTimestamp(lmp.Timestamp);
                 session.save(rnle);
             }
-            transaction.commit();
         }
         catch (Exception ex) {
             LogUtil.Echo("Flush log exception, " + ex, LogUtil.class.getName(), LogLevelType.ERROR);
-            transaction.rollback();
         }
         finally {
             LogUtil.readWriteLock.writeLock().unlock();

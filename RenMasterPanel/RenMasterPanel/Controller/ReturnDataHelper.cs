@@ -35,6 +35,17 @@ namespace RenMasterPanel.Controller
         }
 
         /// <summary>
+        /// Decode a json string to a .NET dictionary data struct.
+        /// </summary>
+        /// <param name="response">string to be decoded</param>
+        /// <returns>Dictionary in .NET</returns>
+        public static Dictionary<String, String> DecodeDictionaryByString(string response)
+        {
+            var responseList = JsonConvert.DeserializeObject<JObject>(response);
+            return responseList.ToObject<Dictionary<String, String>>();
+        }
+
+        /// <summary>
         /// Decode a standard response to a .NET dictionary data struct.
         /// </summary>
         /// <param name="response">StdResponseEntity instance to be decoded</param>

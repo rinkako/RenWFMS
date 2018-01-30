@@ -16,11 +16,11 @@ using RenMasterPanel.Controller;
 namespace RenMasterPanel.Forms
 {
     /// <summary>
-    /// Login.xaml 的交互逻辑
+    /// LoginForm.xaml 的交互逻辑
     /// </summary>
-    public partial class Login : MetroWindow
+    public partial class LoginForm : MetroWindow
     {
-        public Login()
+        public LoginForm()
         {
             InitializeComponent();
         }

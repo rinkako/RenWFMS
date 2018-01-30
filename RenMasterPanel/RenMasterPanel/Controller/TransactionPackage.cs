@@ -16,6 +16,12 @@ namespace RenMasterPanel.Controller
 
         public String StaticResourcesXML { get; set; } = null;
 
-        public List<Dictionary<String, String>> BOVector { get; set; }
+        public String ProcessPID { get; set; } = null;
+
+        public String ProcessName { get; set; } = null;
+
+        public List<Dictionary<string, string>> BOVector { get; set; }
+
+        public HashSet<string> BusinessRoleList { get; set; } = new HashSet<string>();
     }
 }

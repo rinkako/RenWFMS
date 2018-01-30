@@ -6,6 +6,7 @@ package org.sysu.renNameService.restful.controller;
 
 import org.springframework.web.bind.annotation.*;
 import org.sysu.renNameService.NSScheduler;
+import org.sysu.renNameService.authorization.AuthorizationService;
 import org.sysu.renNameService.restful.dto.ReturnModel;
 import org.sysu.renNameService.restful.dto.ReturnModelHelper;
 import org.sysu.renNameService.restful.dto.StatusCode;
@@ -30,14 +31,25 @@ import java.util.List;
 public class NameSpacingController {
     /**
      * Generate a new RTID.
+     * @param token auth token
      * @return response package
      */
     @RequestMapping(value = "/generateRtid", produces = {"application/json", "application/xml"})
     @ResponseBody
     @Transactional
-    public ReturnModel GenerateRTID() {
+    public ReturnModel GenerateRTID(@RequestParam(value="token", required = false)String token) {
         ReturnModel rnModel = new ReturnModel();
         try {
+            // miss params
+            List<String> missingParams = new ArrayList<>();
+            if (token == null) missingParams.add("token");
+            if (missingParams.size() > 0) {
+                return ReturnModelHelper.MissingParametersResponse(missingParams);
+            }
+            // token check
+            if (!AuthorizationService.CheckValid(token)) {
+                return ReturnModelHelper.UnauthorizedResponse(token);
+            }
             // logic
             HashMap<String, String> args = new HashMap<>();
             NameServiceTransaction t = TransactionCreator.Create(TransactionType.Namespacing, "generateRtid", args);
@@ -53,6 +65,7 @@ public class NameSpacingController {
 
     /**
      * Create a new process for a ren user.
+     * @param token auth token
      * @param renid ren user id (required)
      * @param name process unique name (required)
      * @param mainbo main bo name (required)
@@ -61,18 +74,24 @@ public class NameSpacingController {
     @RequestMapping(value = "/createProcess", produces = {"application/json", "application/xml"})
     @ResponseBody
     @Transactional
-    public ReturnModel CreateProcess(@RequestParam(value="renid", required = false)String renid,
+    public ReturnModel CreateProcess(@RequestParam(value="token", required = false)String token,
+                                     @RequestParam(value="renid", required = false)String renid,
                                      @RequestParam(value="name", required = false)String name,
                                      @RequestParam(value="mainbo", required = false)String mainbo) {
         ReturnModel rnModel = new ReturnModel();
         try {
             // miss params
             List<String> missingParams = new ArrayList<>();
+            if (token == null) missingParams.add("token");
             if (renid == null) missingParams.add("renid");
             if (name == null) missingParams.add("name");
             if (mainbo == null) missingParams.add("mainbo");
             if (missingParams.size() > 0) {
                 return ReturnModelHelper.MissingParametersResponse(missingParams);
+            }
+            // token check
+            if (!AuthorizationService.CheckValid(token)) {
+                return ReturnModelHelper.UnauthorizedResponse(token);
             }
             // logic
             HashMap<String, String> args = new HashMap<>();
@@ -91,6 +110,7 @@ public class NameSpacingController {
 
     /**
      * Upload BO content for a process
+     * @param token auth token
      * @param pid belong to process pid (required)
      * @param name BO name (required)
      * @param content BO content (required)
@@ -99,18 +119,24 @@ public class NameSpacingController {
     @RequestMapping(value = "/uploadBO", produces = {"application/json", "application/xml"})
     @ResponseBody
     @Transactional
-    public ReturnModel UploadBO(@RequestParam(value="pid", required = false)String pid,
+    public ReturnModel UploadBO(@RequestParam(value="token", required = false)String token,
+                                @RequestParam(value="pid", required = false)String pid,
                                 @RequestParam(value="name", required = false)String name,
                                 @RequestParam(value="content", required = false)String content) {
         ReturnModel rnModel = new ReturnModel();
         try {
             // miss params
             List<String> missingParams = new ArrayList<>();
+            if (token == null) missingParams.add("token");
             if (pid == null) missingParams.add("pid");
             if (name == null) missingParams.add("name");
             if (content == null) missingParams.add("content");
             if (missingParams.size() > 0) {
                 return ReturnModelHelper.MissingParametersResponse(missingParams);
+            }
+            // token check
+            if (!AuthorizationService.CheckValid(token)) {
+                return ReturnModelHelper.UnauthorizedResponse(token);
             }
             // logic
             HashMap<String, String> args = new HashMap<>();
@@ -129,20 +155,27 @@ public class NameSpacingController {
 
     /**
      * Get BO name list of a specific process.
+     * @param token auth token
      * @param pid process id (required)
      * @return response package
      */
     @RequestMapping(value = "/getProcessBOList", produces = {"application/json", "application/xml"})
     @ResponseBody
     @Transactional
-    public ReturnModel GetProcessBOList(@RequestParam(value="pid", required = false)String pid) {
+    public ReturnModel GetProcessBOList(@RequestParam(value="token", required = false)String token,
+                                        @RequestParam(value="pid", required = false)String pid) {
         ReturnModel rnModel = new ReturnModel();
         try {
             // miss params
             List<String> missingParams = new ArrayList<>();
+            if (token == null) missingParams.add("token");
             if (pid == null) missingParams.add("pid");
             if (missingParams.size() > 0) {
                 return ReturnModelHelper.MissingParametersResponse(missingParams);
+            }
+            // token check
+            if (!AuthorizationService.CheckValid(token)) {
+                return ReturnModelHelper.UnauthorizedResponse(token);
             }
             // logic
             HashMap<String, String> args = new HashMap<>();
@@ -159,20 +192,27 @@ public class NameSpacingController {
 
     /**
      * Get process list of a specific ren user.
+     * @param token auth token
      * @param renid ren user id (required)
      * @return response package
      */
     @RequestMapping(value = "/getProcessByRenId", produces = {"application/json", "application/xml"})
     @ResponseBody
     @Transactional
-    public ReturnModel GetProcessByRenId(@RequestParam(value="renid", required = false)String renid) {
+    public ReturnModel GetProcessByRenId(@RequestParam(value="token", required = false)String token,
+                                         @RequestParam(value="renid", required = false)String renid) {
         ReturnModel rnModel = new ReturnModel();
         try {
             // miss params
             List<String> missingParams = new ArrayList<>();
+            if (token == null) missingParams.add("token");
             if (renid == null) missingParams.add("renid");
             if (missingParams.size() > 0) {
                 return ReturnModelHelper.MissingParametersResponse(missingParams);
+            }
+            // token check
+            if (!AuthorizationService.CheckValid(token)) {
+                return ReturnModelHelper.UnauthorizedResponse(token);
             }
             // logic
             HashMap<String, String> args = new HashMap<>();
@@ -189,6 +229,7 @@ public class NameSpacingController {
 
     /**
      * Check if a ren user already have a process named this.
+     * @param token auth token
      * @param renid ren user id (required)
      * @param processName process unique name to be checked (required)
      * @return response package
@@ -196,16 +237,22 @@ public class NameSpacingController {
     @RequestMapping(value = "/containProcess", produces = {"application/json", "application/xml"})
     @ResponseBody
     @Transactional
-    public ReturnModel ContainProcess(@RequestParam(value="renid", required = false)String renid,
+    public ReturnModel ContainProcess(@RequestParam(value="token", required = false)String token,
+                                      @RequestParam(value="renid", required = false)String renid,
                                       @RequestParam(value="processName", required = false)String processName) {
         ReturnModel rnModel = new ReturnModel();
         try {
             // miss params
             List<String> missingParams = new ArrayList<>();
+            if (token == null) missingParams.add("token");
             if (renid == null) missingParams.add("renid");
             if (processName == null) missingParams.add("processName");
             if (missingParams.size() > 0) {
                 return ReturnModelHelper.MissingParametersResponse(missingParams);
+            }
+            // token check
+            if (!AuthorizationService.CheckValid(token)) {
+                return ReturnModelHelper.UnauthorizedResponse(token);
             }
             // logic
             HashMap<String, String> args = new HashMap<>();
@@ -223,6 +270,7 @@ public class NameSpacingController {
 
     /**
      * Get a BO entity by its id.
+     * @param token auth token
      * @param boid bo unique id (required)
      * @param rtid process rtid
      * @return response package
@@ -230,15 +278,21 @@ public class NameSpacingController {
     @RequestMapping(value = "/getBO", produces = {"application/json", "application/xml"})
     @ResponseBody
     @Transactional
-    public ReturnModel GetBO(@RequestParam(value="boid", required = false)String boid,
+    public ReturnModel GetBO(@RequestParam(value="token", required = false)String token,
+                             @RequestParam(value="boid", required = false)String boid,
                              @RequestParam(value="rtid", required = false)String rtid) {
         ReturnModel rnModel = new ReturnModel();
         try {
             // miss params
             List<String> missingParams = new ArrayList<>();
+            if (token == null) missingParams.add("token");
             if (boid == null) missingParams.add("boid");
             if (missingParams.size() > 0) {
                 return ReturnModelHelper.MissingParametersResponse(missingParams);
+            }
+            // token check
+            if (!AuthorizationService.CheckValid(token)) {
+                return ReturnModelHelper.UnauthorizedResponse(token);
             }
             // logic
             HashMap<String, String> args = new HashMap<>();
@@ -256,6 +310,7 @@ public class NameSpacingController {
 
     /**
      * Submit a request for launching a specific process.
+     * @param token auth token
      * @param pid pid for process to be launched (required)
      * @param rtid runtime record rtid (required)
      * @param from launch from platform identifier (required)
@@ -268,7 +323,8 @@ public class NameSpacingController {
     @RequestMapping(value = "/submitLaunchProcess", produces = {"application/json", "application/xml"})
     @ResponseBody
     @Transactional
-    public ReturnModel SubmitLaunchProcess(@RequestParam(value="pid", required = false)String pid,
+    public ReturnModel SubmitLaunchProcess(@RequestParam(value="token", required = false)String token,
+                                           @RequestParam(value="pid", required = false)String pid,
                                            @RequestParam(value="rtid", required = false)String rtid,
                                            @RequestParam(value="from", required = false)String from,
                                            @RequestParam(value="renid", required = false)String renid,
@@ -279,6 +335,7 @@ public class NameSpacingController {
         try {
             // miss params
             List<String> missingParams = new ArrayList<>();
+            if (token == null) missingParams.add("token");
             if (pid == null) missingParams.add("pid");
             if (rtid == null) missingParams.add("rtid");
             if (from == null) missingParams.add("from");
@@ -287,6 +344,10 @@ public class NameSpacingController {
             if (bindingType == null) missingParams.add("bindingType");
             if (missingParams.size() > 0) {
                 return ReturnModelHelper.MissingParametersResponse(missingParams);
+            }
+            // token check
+            if (!AuthorizationService.CheckValid(token)) {
+                return ReturnModelHelper.UnauthorizedResponse(token);
             }
             // logic
             HashMap<String, String> args = new HashMap<>();

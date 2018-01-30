@@ -66,8 +66,11 @@
     <Compile Include="Controller\StdResponseEntity.cs" />
     <Compile Include="Controller\TransactionPackage.cs" />
     <Compile Include="Controller\MPController.cs" />
-    <Compile Include="Forms\Login.xaml.cs">
-      <DependentUpon>Login.xaml</DependentUpon>
+    <Compile Include="Forms\LoginForm.xaml.cs">
+      <DependentUpon>LoginForm.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\ProcessNameForm.xaml.cs">
+      <DependentUpon>ProcessNameForm.xaml</DependentUpon>
     </Compile>
     <Compile Include="Forms\TextPreviewForm.xaml.cs">
       <DependentUpon>TextPreviewForm.xaml</DependentUpon>
@@ -76,7 +79,11 @@
     <Compile Include="Util\IOUtil.cs" />
     <Compile Include="Util\LogUtil.cs" />
     <Compile Include="Util\NetClient.cs" />
-    <Page Include="Forms\Login.xaml">
+    <Page Include="Forms\LoginForm.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Forms\ProcessNameForm.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

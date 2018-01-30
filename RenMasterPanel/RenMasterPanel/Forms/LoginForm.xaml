@@ -1,4 +1,4 @@
-﻿<controls:MetroWindow x:Class="RenMasterPanel.Forms.Login"
+﻿<controls:MetroWindow x:Class="RenMasterPanel.Forms.LoginForm"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
@@ -6,7 +6,7 @@
         xmlns:local="clr-namespace:RenMasterPanel.Forms"
         xmlns:controls="http://metro.mahapps.com/winfx/xaml/controls"
         mc:Ignorable="d"
-        Title="Login" Height="220" Width="388" ResizeMode="NoResize" WindowStartupLocation="CenterScreen">
+        Title="LoginForm" Height="220" Width="388" ResizeMode="NoResize" WindowStartupLocation="CenterScreen">
     <Grid>
         <Label Content="Authorization" FontSize="22" HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top" Foreground="#FF00B9FF"/>
         <Rectangle HorizontalAlignment="Left" Height="2" Margin="0,45,0,0" VerticalAlignment="Top" Width="350" Fill="#FFD6D6D6"/>
