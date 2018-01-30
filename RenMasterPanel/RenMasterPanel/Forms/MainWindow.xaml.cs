@@ -56,6 +56,14 @@ namespace RenMasterPanel.Forms
                 if (this.ComboBox_Step1_MainBO.Items.Count > 0)
                 {
                     this.ComboBox_Step1_MainBO.SelectedIndex = 0;
+                    foreach (var item in this.ComboBox_Step1_MainBO.Items)
+                    {
+                        if (item.ToString() == processEntity["mainBo"])
+                        {
+                            this.ComboBox_Step1_MainBO.SelectedItem = item;
+                            break;
+                        }
+                    }
                 }
                 MPController.CurrentTransaction.BOVector = boList;
             }

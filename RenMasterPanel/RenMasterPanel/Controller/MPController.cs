@@ -109,7 +109,7 @@ namespace RenMasterPanel.Controller
                     out var retStr);
                 var response = JsonConvert.DeserializeObject<StdResponseEntity>(retStr);
                 var processList = ReturnDataHelper.DecodeList(response);
-                return processList.Select(proc => ReturnDataHelper.DecodeDictionaryJToken(proc as JToken)).ToList();
+                return processList.Select(proc => (Dictionary<String, String>) (proc as JObject).ToObject(typeof(Dictionary<String, String>))).ToList();
             }
             catch (Exception ex)
             {
@@ -135,8 +135,17 @@ namespace RenMasterPanel.Controller
                     },
                     out var retStr);
                 var response = JsonConvert.DeserializeObject<StdResponseEntity>(retStr);
-                var processList = ReturnDataHelper.DecodeList(response);
-                return processList.Select(proc => ReturnDataHelper.DecodeDictionaryJToken(proc as JToken)).ToList();
+                var boList = ReturnDataHelper.DecodeList(response);
+                var retList = new List<Dictionary<String, String>>();
+                foreach (var bo in boList)
+                {
+                    var boKVP = (List<String>) (bo as JArray).ToObject<List<String>>();
+                    var dict = new Dictionary<string, string>();
+                    dict.Add("boid", boKVP[0]);
+                    dict.Add("bo_name", boKVP[1]);
+                    retList.Add(dict);
+                }
+                return retList;
             }
             catch (Exception ex)
             {
