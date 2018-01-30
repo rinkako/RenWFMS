@@ -1046,6 +1046,15 @@ class CController:
         CController._connectModel.Remove(agent.GlobalId, capability.GlobalId)
         return True, True
 
+    @adminRequireWarp
+    def RetrieveAllConnection(self, session):
+        """
+        Remove a capability to an agent.
+        :param session: session id
+        :return: execution state tuple
+        """
+        return True, CController._connectModel.RetrieveAll()
+
     """
     COrgan Configuration 
     """

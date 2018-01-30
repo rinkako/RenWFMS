@@ -1,12 +1,12 @@
 <businessclass name="KitchenOrder" version="1.0" xmlns="http://www.w3.org/2005/07/scxml">
  <tasks>
-    <task id="produceDishes" brole="agent" name="produceDishesTask" event="produced">
+    <task id="produceDishes" brole="cook" name="produceDishesTask" event="produced">
     </task>
-    <task id="testQuality" brole="agent" name="testQualityTask" event="testCompleted">
+    <task id="testQuality" brole="cook" name="testQualityTask" event="testCompleted">
     </task>
-    <task id="deliver" brole="agent" name="deliverTask" event="delivered">
+    <task id="deliver" brole="waiter" name="deliverTask" event="delivered">
     </task>
-    <task id="archive" brole="agent" name="archiveTask" event="archived">
+    <task id="archive" brole="archiveAgent" name="archiveTask" event="archived">
     </task>
  </tasks>
  <state id="Initial">

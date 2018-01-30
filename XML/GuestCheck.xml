@@ -1,13 +1,13 @@
 <businessclass initial="Initial" name="GuestCheck" version="1.0" xmlns="http://www.w3.org/2005/07/scxml">
  <datamodel>
-  <data id="Count" expr="3"></data>
+  <data expr="1" id="Count"></data>
  </datamodel>
  <tasks>
-    <task id="calculate" brole="agent" name="calculateTask" event="calculated">
+    <task id="calculate" brole="paymentAgent" name="calculateTask" event="calculated">
     </task>
-    <task id="Payment" brole="agent" name="paymentTask" event="paid">
+    <task id="Payment" brole="paymentAgent" name="paymentTask" event="paid">
     </task>
-    <task id="archive" brole="agent" name="archiveTask" event="archived">
+    <task id="archive" brole="archiveAgent" name="archiveTask" event="archived">
     </task>
  </tasks>
  <state id="Initial">

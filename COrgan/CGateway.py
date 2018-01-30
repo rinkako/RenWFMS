@@ -426,3 +426,37 @@ class CGateway:
         if xFlag is not None:
             return xFlag
         return CGateway._SuccessResponse({'return': ret})
+
+    @staticmethod
+    def RetrieveAllEntity(**argd):
+        """
+        Restful API for getting all entities in the COrgan.
+        :param argd: request argument dictionary
+        :return: dumped json string
+        """
+        flag1, ret1 = CGateway.core.RetrieveAllHuman(argd["session"])
+        flag2, ret2 = CGateway.core.RetrieveAllAgent(argd["session"])
+        flag3, ret3 = CGateway.core.RetrieveAllGroup(argd["session"])
+        flag4, ret4 = CGateway.core.RetrieveAllPosition(argd["session"])
+        flag5, ret5 = CGateway.core.RetrieveAllCapabilities(argd["session"])
+        flag = flag1 & flag2 & flag3 & flag4 & flag5
+        pRet = ""
+        if ret1 == GCC.UNAUTHORIZED or ret2 == GCC.UNAUTHORIZED or ret3 == GCC.UNAUTHORIZED or ret4 == GCC.UNAUTHORIZED or ret5 == GCC.UNAUTHORIZED:
+            pRet = GCC.UNAUTHORIZED
+        xFlag = CGateway._HandleExceptionAndUnauthorized(flag, pRet, argd["session"])
+        if xFlag is not None:
+            return xFlag
+        return CGateway._SuccessResponse({'return': [ret1, ret2, ret3, ret4, ret5]})
+
+    @staticmethod
+    def RetrieveAllConnection(**argd):
+        """
+        Restful API for getting all connections in the COrgan.
+        :param argd: request argument dictionary
+        :return: dumped json string
+        """
+        flag, ret = CGateway.core.RetrieveAllConnection(argd["session"])
+        xFlag = CGateway._HandleExceptionAndUnauthorized(flag, ret, argd["session"])
+        if xFlag is not None:
+            return xFlag
+        return CGateway._SuccessResponse({'return': ret})
