@@ -43,6 +43,7 @@ namespace RenMasterPanel.Forms
             {
                 this.Button_Step1_Open.Visibility = Visibility.Hidden;
                 this.TextBox_Step1_Open.Visibility = Visibility.Hidden;
+                this.ComboBox_Step1_MainBO.IsEnabled = false;
                 var processEntity = GlobalContext.Current_Ren_Process_List[this.ComboBox_Step1_Processes.SelectedIndex - 1];
                 var boList = MPController.GetProcessBO(processEntity["pid"]);
                 this.ListBox_Step1_BO.Items.Clear();
@@ -71,6 +72,7 @@ namespace RenMasterPanel.Forms
             {
                 this.Button_Step1_Open.Visibility = Visibility.Visible;
                 this.TextBox_Step1_Open.Visibility = Visibility.Visible;
+                this.ComboBox_Step1_MainBO.IsEnabled = true;
                 MPController.CurrentTransaction.BOVector = new List<Dictionary<string, string>>();
                 this.ListBox_Step1_BO.Items.Clear();
                 this.ComboBox_Step1_MainBO.Items.Clear();
@@ -167,9 +169,15 @@ namespace RenMasterPanel.Forms
             }
             else  // exist process
             {
+                if (this.ComboBox_Step1_MainBO.Items.Count == 0)
+                {
+                    MessageBox.Show(@"There must be a Main BO");
+                    return;
+                }
                 MPController.CurrentTransaction.ProcessName = this.ComboBox_Step1_Processes.SelectedItem.ToString();
-                MPController.CurrentTransaction.ProcessPID = GlobalContext.Current_Ren_Process_List[1 + this.ComboBox_Step1_Processes.SelectedIndex]["pid"];
+                MPController.CurrentTransaction.ProcessPID = GlobalContext.Current_Ren_Process_List[this.ComboBox_Step1_Processes.SelectedIndex - 1]["pid"];
             }
+            this.tabControl.SelectedIndex += 1;
         }
     }
 }

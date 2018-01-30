@@ -5,11 +5,12 @@
 package org.sysu.renNameService.entity;
 
 import javax.persistence.*;
+import java.util.Arrays;
 import java.util.Objects;
 
 /**
  * Author: Rinkako
- * Date  : 2018/1/26
+ * Date  : 2018/1/30
  * Usage :
  */
 @Entity
@@ -17,10 +18,10 @@ import java.util.Objects;
 public class RenBoEntity {
     private String boid;
     private String boName;
-    private String boContent;
     private String pid;
     private int state;
-    private String serialized;
+    private String boContent;
+    private byte[] serialized;
     private String broles;
 
     @Id
@@ -44,16 +45,6 @@ public class RenBoEntity {
     }
 
     @Basic
-    @Column(name = "bo_content", nullable = true, length = -1)
-    public String getBoContent() {
-        return boContent;
-    }
-
-    public void setBoContent(String boContent) {
-        this.boContent = boContent;
-    }
-
-    @Basic
     @Column(name = "pid", nullable = false, length = 64)
     public String getPid() {
         return pid;
@@ -73,29 +64,23 @@ public class RenBoEntity {
         this.state = state;
     }
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        RenBoEntity that = (RenBoEntity) o;
-        return Objects.equals(boid, that.boid) &&
-                Objects.equals(boName, that.boName) &&
-                Objects.equals(boContent, that.boContent);
+    @Basic
+    @Column(name = "bo_content", nullable = true, length = -1)
+    public String getBoContent() {
+        return boContent;
     }
 
-    @Override
-    public int hashCode() {
-
-        return Objects.hash(boid, boName, boContent);
+    public void setBoContent(String boContent) {
+        this.boContent = boContent;
     }
 
     @Basic
-    @Column(name = "serialized", nullable = true, length = -1)
-    public String getSerialized() {
+    @Column(name = "serialized", nullable = true)
+    public byte[] getSerialized() {
         return serialized;
     }
 
-    public void setSerialized(String serialized) {
+    public void setSerialized(byte[] serialized) {
         this.serialized = serialized;
     }
 
@@ -107,5 +92,27 @@ public class RenBoEntity {
 
     public void setBroles(String broles) {
         this.broles = broles;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        RenBoEntity that = (RenBoEntity) o;
+        return state == that.state &&
+                Objects.equals(boid, that.boid) &&
+                Objects.equals(boName, that.boName) &&
+                Objects.equals(pid, that.pid) &&
+                Objects.equals(boContent, that.boContent) &&
+                Arrays.equals(serialized, that.serialized) &&
+                Objects.equals(broles, that.broles);
+    }
+
+    @Override
+    public int hashCode() {
+
+        int result = Objects.hash(boid, boName, pid, state, boContent, broles);
+        result = 31 * result + Arrays.hashCode(serialized);
+        return result;
     }
 }

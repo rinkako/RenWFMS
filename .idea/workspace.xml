@@ -3,10 +3,12 @@
   <component name="ChangeListManager">
     <list default="true" id="388c6061-8899-47cb-8152-3b3371cb9ca0" name="Default" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
+      <change beforePath="$PROJECT_DIR$/BOEngine/src/main/java/org/sysu/workflow/restful/entity/RenBoEntity.java" afterPath="$PROJECT_DIR$/BOEngine/src/main/java/org/sysu/workflow/restful/entity/RenBoEntity.java" />
+      <change beforePath="$PROJECT_DIR$/BOEngine/src/main/java/org/sysu/workflow/restful/service/LaunchProcessService.java" afterPath="$PROJECT_DIR$/BOEngine/src/main/java/org/sysu/workflow/restful/service/LaunchProcessService.java" />
+      <change beforePath="$PROJECT_DIR$/BOEngine/src/main/java/org/sysu/workflow/restful/utility/SerializationUtil.java" afterPath="$PROJECT_DIR$/BOEngine/src/main/java/org/sysu/workflow/restful/utility/SerializationUtil.java" />
       <change beforePath="$PROJECT_DIR$/RenMasterPanel/.vs/RenMasterPanel/v15/.suo" afterPath="$PROJECT_DIR$/RenMasterPanel/.vs/RenMasterPanel/v15/.suo" />
-      <change beforePath="$PROJECT_DIR$/RenMasterPanel/.vs/RenMasterPanel/v15/Server/sqlite3/storage.ide" afterPath="$PROJECT_DIR$/RenMasterPanel/.vs/RenMasterPanel/v15/Server/sqlite3/storage.ide" />
-      <change beforePath="$PROJECT_DIR$/RenMasterPanel/RenMasterPanel/Controller/MPController.cs" afterPath="$PROJECT_DIR$/RenMasterPanel/RenMasterPanel/Controller/MPController.cs" />
       <change beforePath="$PROJECT_DIR$/RenMasterPanel/RenMasterPanel/Forms/MainWindow.xaml.cs" afterPath="$PROJECT_DIR$/RenMasterPanel/RenMasterPanel/Forms/MainWindow.xaml.cs" />
+      <change beforePath="$PROJECT_DIR$/RenNameService/src/main/java/org/sysu/renNameService/entity/RenBoEntity.java" afterPath="$PROJECT_DIR$/RenNameService/src/main/java/org/sysu/renNameService/entity/RenBoEntity.java" />
     </list>
     <ignored path="/output/" />
     <ignored path="$PROJECT_DIR$/ModelChecker/target/" />
@@ -34,7 +36,23 @@
     <option name="SHOW_TABLE_DETAILS" value="true" />
     <option name="SHOW_EMPTY_GROUPS" value="false" />
     <option name="AUTO_SCROLL_FROM_SOURCE" value="false" />
-    <expand />
+    <expand>
+      <path>
+        <item name="Database" type="3277223f:DatabaseStructure$DbRootGroup" />
+        <item name="WFMS/Hibernate" type="feb32156:DbDataSourceImpl" />
+      </path>
+      <path>
+        <item name="Database" type="3277223f:DatabaseStructure$DbRootGroup" />
+        <item name="WFMS/Hibernate" type="feb32156:DbDataSourceImpl" />
+        <item name="schemas" type="d4e8921:DatabaseStructure$FamilyGroup" />
+      </path>
+      <path>
+        <item name="Database" type="3277223f:DatabaseStructure$DbRootGroup" />
+        <item name="WFMS/Hibernate" type="feb32156:DbDataSourceImpl" />
+        <item name="schemas" type="d4e8921:DatabaseStructure$FamilyGroup" />
+        <item name="renboengine: schema" type="c314c289:MysqlImplModel$Schema" />
+      </path>
+    </expand>
     <select />
   </component>
   <component name="FavoritesManager">
@@ -52,11 +70,21 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="NameSpacingService.java" pinned="false" current-in-tab="true">
+      <file leaf-file-name="NameSpacingService.java" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/RenNameService/src/main/java/org/sysu/renNameService/nameSpacing/NameSpacingService.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="234">
-              <caret line="130" column="47" lean-forward="true" selection-start-line="130" selection-start-column="47" selection-end-line="130" selection-end-column="47" />
+            <state relative-caret-position="344">
+              <caret line="135" column="33" lean-forward="true" selection-start-line="135" selection-start-column="33" selection-end-line="135" selection-end-column="33" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="RenBoEntity.java" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/RenNameService/src/main/java/org/sysu/renNameService/entity/RenBoEntity.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="1475">
+              <caret line="72" column="4" lean-forward="false" selection-start-line="72" selection-start-column="4" selection-end-line="72" selection-end-column="4" />
               <folding />
             </state>
           </provider>
@@ -74,11 +102,11 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="LaunchProcessService.java" pinned="false" current-in-tab="false">
+      <file leaf-file-name="LaunchProcessService.java" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/BOEngine/src/main/java/org/sysu/workflow/restful/service/LaunchProcessService.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="212">
-              <caret line="93" column="41" lean-forward="false" selection-start-line="93" selection-start-column="41" selection-end-line="93" selection-end-column="41" />
+            <state relative-caret-position="1745">
+              <caret line="153" column="0" lean-forward="true" selection-start-line="153" selection-start-column="0" selection-end-line="153" selection-end-column="0" />
               <folding>
                 <element signature="e#3902#3910#0" expanded="true" />
               </folding>
@@ -86,11 +114,11 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="RenBoEntity.java" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/BOEngine/src/main/java/org/sysu/workflow/restful/entity/RenBoEntity.java">
+      <file leaf-file-name="SerializationUtil.java" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/BOEngine/src/main/java/org/sysu/workflow/restful/utility/SerializationUtil.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="220">
-              <caret line="67" column="0" lean-forward="false" selection-start-line="67" selection-start-column="0" selection-end-line="67" selection-end-column="0" />
+            <state relative-caret-position="506">
+              <caret line="41" column="54" lean-forward="false" selection-start-line="41" selection-start-column="25" selection-end-line="41" selection-end-column="54" />
               <folding />
             </state>
           </provider>
@@ -198,11 +226,8 @@
         <option value="$PROJECT_DIR$/RenNameService/src/main/java/org/sysu/renNameService/NSTracker.java" />
         <option value="$PROJECT_DIR$/BOEngine/src/main/java/org/sysu/workflow/bridge/InheritableContext.java" />
         <option value="$PROJECT_DIR$/BOEngine/src/test/java/org/sysu/workflow/io/SCXMLReaderTest.java" />
-        <option value="$PROJECT_DIR$/BOEngine/src/main/java/org/sysu/workflow/restful/entity/RenBoEntity.java" />
         <option value="$PROJECT_DIR$/BOEngine/src/main/java/org/sysu/workflow/model/extend/Tasks.java" />
         <option value="$PROJECT_DIR$/RenNameService/src/main/java/org/sysu/renNameService/utility/SerializationUtil.java" />
-        <option value="$PROJECT_DIR$/BOEngine/src/main/java/org/sysu/workflow/restful/utility/SerializationUtil.java" />
-        <option value="$PROJECT_DIR$/BOEngine/src/main/java/org/sysu/workflow/restful/service/LaunchProcessService.java" />
         <option value="$PROJECT_DIR$/BOEngine/src/main/java/org/sysu/workflow/restful/controller/EngineController.java" />
         <option value="$PROJECT_DIR$/RenNameService/pom.xml" />
         <option value="$PROJECT_DIR$/RenNameService/src/main/java/org/sysu/renNameService/utility/EncryptUtil.java" />
@@ -226,6 +251,9 @@
         <option value="$PROJECT_DIR$/RenNameService/src/main/java/org/sysu/renNameService/utility/LogUtil.java" />
         <option value="$PROJECT_DIR$/RenNameService/src/main/java/org/sysu/renNameService/nameSpacing/NameSpacingService.java" />
         <option value="$PROJECT_DIR$/RenNameService/src/main/java/org/sysu/renNameService/utility/HttpClientUtil.java" />
+        <option value="$PROJECT_DIR$/BOEngine/src/main/java/org/sysu/workflow/restful/entity/RenBoEntity.java" />
+        <option value="$PROJECT_DIR$/BOEngine/src/main/java/org/sysu/workflow/restful/utility/SerializationUtil.java" />
+        <option value="$PROJECT_DIR$/BOEngine/src/main/java/org/sysu/workflow/restful/service/LaunchProcessService.java" />
       </list>
     </option>
   </component>
@@ -324,36 +352,25 @@
             <path>
               <item name="RenWFMS" type="b2602c69:ProjectViewProjectNode" />
               <item name="RenWFMS" type="462c0819:PsiDirectoryNode" />
-              <item name="RenMasterPanel" type="462c0819:PsiDirectoryNode" />
+              <item name="BOEngine" type="462c0819:PsiDirectoryNode" />
             </path>
             <path>
               <item name="RenWFMS" type="b2602c69:ProjectViewProjectNode" />
               <item name="RenWFMS" type="462c0819:PsiDirectoryNode" />
-              <item name="RenMasterPanel" type="462c0819:PsiDirectoryNode" />
-              <item name="RenMasterPanel" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="RenWFMS" type="b2602c69:ProjectViewProjectNode" />
-              <item name="RenWFMS" type="462c0819:PsiDirectoryNode" />
-              <item name="RenNameService" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="RenWFMS" type="b2602c69:ProjectViewProjectNode" />
-              <item name="RenWFMS" type="462c0819:PsiDirectoryNode" />
-              <item name="RenNameService" type="462c0819:PsiDirectoryNode" />
+              <item name="BOEngine" type="462c0819:PsiDirectoryNode" />
               <item name="src" type="462c0819:PsiDirectoryNode" />
             </path>
             <path>
               <item name="RenWFMS" type="b2602c69:ProjectViewProjectNode" />
               <item name="RenWFMS" type="462c0819:PsiDirectoryNode" />
-              <item name="RenNameService" type="462c0819:PsiDirectoryNode" />
+              <item name="BOEngine" type="462c0819:PsiDirectoryNode" />
               <item name="src" type="462c0819:PsiDirectoryNode" />
               <item name="main" type="462c0819:PsiDirectoryNode" />
             </path>
             <path>
               <item name="RenWFMS" type="b2602c69:ProjectViewProjectNode" />
               <item name="RenWFMS" type="462c0819:PsiDirectoryNode" />
-              <item name="RenNameService" type="462c0819:PsiDirectoryNode" />
+              <item name="BOEngine" type="462c0819:PsiDirectoryNode" />
               <item name="src" type="462c0819:PsiDirectoryNode" />
               <item name="main" type="462c0819:PsiDirectoryNode" />
               <item name="java" type="462c0819:PsiDirectoryNode" />
@@ -361,67 +378,32 @@
             <path>
               <item name="RenWFMS" type="b2602c69:ProjectViewProjectNode" />
               <item name="RenWFMS" type="462c0819:PsiDirectoryNode" />
-              <item name="RenNameService" type="462c0819:PsiDirectoryNode" />
+              <item name="BOEngine" type="462c0819:PsiDirectoryNode" />
               <item name="src" type="462c0819:PsiDirectoryNode" />
               <item name="main" type="462c0819:PsiDirectoryNode" />
               <item name="java" type="462c0819:PsiDirectoryNode" />
-              <item name="renNameService" type="462c0819:PsiDirectoryNode" />
+              <item name="workflow" type="462c0819:PsiDirectoryNode" />
             </path>
             <path>
               <item name="RenWFMS" type="b2602c69:ProjectViewProjectNode" />
               <item name="RenWFMS" type="462c0819:PsiDirectoryNode" />
-              <item name="RenNameService" type="462c0819:PsiDirectoryNode" />
+              <item name="BOEngine" type="462c0819:PsiDirectoryNode" />
               <item name="src" type="462c0819:PsiDirectoryNode" />
               <item name="main" type="462c0819:PsiDirectoryNode" />
               <item name="java" type="462c0819:PsiDirectoryNode" />
-              <item name="renNameService" type="462c0819:PsiDirectoryNode" />
+              <item name="workflow" type="462c0819:PsiDirectoryNode" />
               <item name="restful" type="462c0819:PsiDirectoryNode" />
             </path>
             <path>
               <item name="RenWFMS" type="b2602c69:ProjectViewProjectNode" />
               <item name="RenWFMS" type="462c0819:PsiDirectoryNode" />
-              <item name="RenNameService" type="462c0819:PsiDirectoryNode" />
+              <item name="BOEngine" type="462c0819:PsiDirectoryNode" />
               <item name="src" type="462c0819:PsiDirectoryNode" />
               <item name="main" type="462c0819:PsiDirectoryNode" />
               <item name="java" type="462c0819:PsiDirectoryNode" />
-              <item name="renNameService" type="462c0819:PsiDirectoryNode" />
+              <item name="workflow" type="462c0819:PsiDirectoryNode" />
               <item name="restful" type="462c0819:PsiDirectoryNode" />
-              <item name="controller" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="RenWFMS" type="b2602c69:ProjectViewProjectNode" />
-              <item name="RenWFMS" type="462c0819:PsiDirectoryNode" />
-              <item name="RenNameService" type="462c0819:PsiDirectoryNode" />
-              <item name="src" type="462c0819:PsiDirectoryNode" />
-              <item name="main" type="462c0819:PsiDirectoryNode" />
-              <item name="java" type="462c0819:PsiDirectoryNode" />
-              <item name="renNameService" type="462c0819:PsiDirectoryNode" />
-              <item name="roleMapping" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="RenWFMS" type="b2602c69:ProjectViewProjectNode" />
-              <item name="RenWFMS" type="462c0819:PsiDirectoryNode" />
-              <item name="RenNameService" type="462c0819:PsiDirectoryNode" />
-              <item name="src" type="462c0819:PsiDirectoryNode" />
-              <item name="main" type="462c0819:PsiDirectoryNode" />
-              <item name="java" type="462c0819:PsiDirectoryNode" />
-              <item name="renNameService" type="462c0819:PsiDirectoryNode" />
-              <item name="utility" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="RenWFMS" type="b2602c69:ProjectViewProjectNode" />
-              <item name="RenWFMS" type="462c0819:PsiDirectoryNode" />
-              <item name="RenNameService" type="462c0819:PsiDirectoryNode" />
-              <item name="src" type="462c0819:PsiDirectoryNode" />
-              <item name="test" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="RenWFMS" type="b2602c69:ProjectViewProjectNode" />
-              <item name="RenWFMS" type="462c0819:PsiDirectoryNode" />
-              <item name="RenNameService" type="462c0819:PsiDirectoryNode" />
-              <item name="src" type="462c0819:PsiDirectoryNode" />
-              <item name="test" type="462c0819:PsiDirectoryNode" />
-              <item name="java" type="462c0819:PsiDirectoryNode" />
+              <item name="service" type="462c0819:PsiDirectoryNode" />
             </path>
             <path>
               <item name="RenWFMS" type="b2602c69:ProjectViewProjectNode" />
@@ -457,18 +439,6 @@
     <property name="last_directory_selection" value="$PROJECT_DIR$/BOEngine/src/main/java/org/sysu" />
   </component>
   <component name="RecentsManager">
-    <key name="ImportMappingsDialog.RecentPackages">
-      <recent name="org.sysu.renNameService.entity" />
-      <recent name="org.sysu.workflow.restful.entity" />
-      <recent name="" />
-      <recent name="org.sysu.renNameService.Entity" />
-    </key>
-    <key name="CopyFile.RECENT_KEYS">
-      <recent name="G:\RenWFMS\RenNameService\src\main\resources" />
-      <recent name="G:\RenWFMS\RenMappingCenter\Utility" />
-      <recent name="G:\RenWFMS\RenMappingCenter" />
-      <recent name="G:\RenWFMS\COrgan\templates" />
-    </key>
     <key name="CopyClassDialog.RECENTS_KEY">
       <recent name="org.sysu.renNameService.restful.controller" />
       <recent name="org.sysu.workflow.restful.utility" />
@@ -479,6 +449,18 @@
       <recent name="G:\RenWFMS\RenNameService\src\main\resource" />
       <recent name="G:\RenWFMS\RenNameService\src\main\java" />
       <recent name="G:\RenWFMS\RenNameService\src\test\java" />
+    </key>
+    <key name="ImportMappingsDialog.RecentPackages">
+      <recent name="org.sysu.workflow.restful.entity" />
+      <recent name="org.sysu.renNameService.entity" />
+      <recent name="" />
+      <recent name="org.sysu.renNameService.Entity" />
+    </key>
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="G:\RenWFMS\RenNameService\src\main\resources" />
+      <recent name="G:\RenWFMS\RenMappingCenter\Utility" />
+      <recent name="G:\RenWFMS\RenMappingCenter" />
+      <recent name="G:\RenWFMS\COrgan\templates" />
     </key>
   </component>
   <component name="RunDashboard">
@@ -499,7 +481,7 @@
     </option>
     <option name="contentProportion" value="0.296875" />
   </component>
-  <component name="RunManager" selected="Spring Boot.BOEngineApplication">
+  <component name="RunManager" selected="Spring Boot.RenNameServiceApplication">
     <configuration default="true" type="Applet" factoryName="Applet">
       <option name="HTML_USED" value="false" />
       <option name="WIDTH" value="400" />
@@ -834,14 +816,7 @@
       <workItem from="1517128739225" duration="7332000" />
       <workItem from="1517143120519" duration="14115000" />
       <workItem from="1517196852511" duration="14970000" />
-      <workItem from="1517283614275" duration="16083000" />
-    </task>
-    <task id="LOCAL-00009" summary="data version, system config">
-      <created>1515859942188</created>
-      <option name="number" value="00009" />
-      <option name="presentableId" value="LOCAL-00009" />
-      <option name="project" value="LOCAL" />
-      <updated>1515859942188</updated>
+      <workItem from="1517283614275" duration="18070000" />
     </task>
     <task id="LOCAL-00010" summary="remove redaunt reference, ui update">
       <created>1515906039217</created>
@@ -1179,7 +1154,14 @@
       <option name="project" value="LOCAL" />
       <updated>1517311621828</updated>
     </task>
-    <option name="localTasksCounter" value="58" />
+    <task id="LOCAL-00058" summary="get bo of process">
+      <created>1517314140092</created>
+      <option name="number" value="00058" />
+      <option name="presentableId" value="LOCAL-00058" />
+      <option name="project" value="LOCAL" />
+      <updated>1517314140092</updated>
+    </task>
+    <option name="localTasksCounter" value="59" />
     <servers />
   </component>
   <component name="TestHistory">
@@ -1215,7 +1197,7 @@
     </history-entry>
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="425625000" />
+    <option name="totallyTimeSpent" value="427612000" />
   </component>
   <component name="TodoView">
     <todo-panel id="selected-file">
@@ -1228,14 +1210,13 @@
   </component>
   <component name="ToolWindowManager">
     <frame x="-8" y="-8" width="1936" height="1056" extended-state="6" />
-    <editor active="true" />
     <layout>
       <window_info id="Palette" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.24265505" sideWeight="0.5042644" order="7" side_tool="true" content_ui="tabs" />
       <window_info id="Maven Projects" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.18923241" sideWeight="0.3202329" order="8" side_tool="true" content_ui="tabs" x="687" y="90" width="329" height="942" />
       <window_info id="Capture Tool" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Designer" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
-      <window_info id="Database" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.12526652" sideWeight="0.6695779" order="4" side_tool="false" content_ui="tabs" />
+      <window_info id="Database" active="true" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.12526652" sideWeight="0.6695779" order="4" side_tool="false" content_ui="tabs" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="false" weight="0.25" sideWeight="0.4874864" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Ant Build" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="false" weight="0.25" sideWeight="0.4961915" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="UI Designer" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
@@ -1309,7 +1290,6 @@
     <option name="myLimit" value="2678400000" />
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="log util impl" />
     <MESSAGE value="log buffer and flush" />
     <MESSAGE value="name service transaction prepare" />
     <MESSAGE value="ns concurrent control architecture" />
@@ -1334,7 +1314,8 @@
     <MESSAGE value="bugfix: executor switch break; update: some master panel impl" />
     <MESSAGE value="return data helper for MP" />
     <MESSAGE value="master panel new process and bo upload" />
-    <option name="LAST_COMMIT_MESSAGE" value="master panel new process and bo upload" />
+    <MESSAGE value="get bo of process" />
+    <option name="LAST_COMMIT_MESSAGE" value="get bo of process" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -1411,14 +1392,6 @@
     <option name="FILTER_TARGETS" value="false" />
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/RenNameService/src/test/java/RuntimeRecordTest.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-154">
-          <caret line="17" column="0" lean-forward="false" selection-start-line="17" selection-start-column="0" selection-end-line="19" selection-end-column="20" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/RenNameService/src/main/java/org/sysu/renNameService/restful/dto/ReturnModelHelper.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="1145">
@@ -1493,14 +1466,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="352">
           <caret line="16" column="49" lean-forward="false" selection-start-line="16" selection-start-column="49" selection-end-line="16" selection-end-column="49" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/RenNameService/src/main/java/org/sysu/renNameService/entity/RenBoEntity.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1584">
-          <caret line="72" column="4" lean-forward="false" selection-start-line="72" selection-start-column="4" selection-end-line="72" selection-end-column="4" />
           <folding />
         </state>
       </provider>
@@ -1745,14 +1710,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/BOEngine/src/main/java/org/sysu/workflow/restful/entity/RenBoEntity.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="220">
-          <caret line="67" column="0" lean-forward="false" selection-start-line="67" selection-start-column="0" selection-end-line="67" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="jar://$MAVEN_REPOSITORY$/org/springframework/spring-aop/4.3.13.RELEASE/spring-aop-4.3.13.RELEASE.jar!/org/springframework/aop/framework/CglibAopProxy.class">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="220">
@@ -1782,16 +1739,6 @@
         <state relative-caret-position="220">
           <caret line="104" column="0" lean-forward="false" selection-start-line="104" selection-start-column="0" selection-end-line="104" selection-end-column="0" />
           <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/BOEngine/src/main/java/org/sysu/workflow/restful/service/LaunchProcessService.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="212">
-          <caret line="93" column="41" lean-forward="false" selection-start-line="93" selection-start-column="41" selection-end-line="93" selection-end-column="41" />
-          <folding>
-            <element signature="e#3902#3910#0" expanded="true" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -1839,9 +1786,43 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/RenNameService/src/main/java/org/sysu/renNameService/nameSpacing/NameSpacingService.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="234">
-          <caret line="130" column="47" lean-forward="true" selection-start-line="130" selection-start-column="47" selection-end-line="130" selection-end-column="47" />
+        <state relative-caret-position="344">
+          <caret line="135" column="33" lean-forward="true" selection-start-line="135" selection-start-column="33" selection-end-line="135" selection-end-column="33" />
           <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/BOEngine/src/main/java/org/sysu/workflow/restful/entity/RenBoEntity.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="330">
+          <caret line="15" column="46" lean-forward="false" selection-start-line="15" selection-start-column="46" selection-end-line="15" selection-end-column="46" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/RenNameService/src/main/java/org/sysu/renNameService/entity/RenBoEntity.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="1475">
+          <caret line="72" column="4" lean-forward="false" selection-start-line="72" selection-start-column="4" selection-end-line="72" selection-end-column="4" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/BOEngine/src/main/java/org/sysu/workflow/restful/utility/SerializationUtil.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="506">
+          <caret line="41" column="54" lean-forward="false" selection-start-line="41" selection-start-column="25" selection-end-line="41" selection-end-column="54" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/BOEngine/src/main/java/org/sysu/workflow/restful/service/LaunchProcessService.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="1745">
+          <caret line="153" column="0" lean-forward="true" selection-start-line="153" selection-start-column="0" selection-end-line="153" selection-end-column="0" />
+          <folding>
+            <element signature="e#3902#3910#0" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>

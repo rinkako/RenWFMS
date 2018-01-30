@@ -107,7 +107,7 @@ public final class LaunchProcessService {
                 HashSet<String> oneInvolves = LaunchProcessService.GetInvolvedBusinessRole(scxml);
                 retSet.addAll(oneInvolves);
                 rbe.setBroles(SerializationUtil.JsonSerialization(oneInvolves, ""));
-                rbe.setSerialized(SerializationUtil.SerializationSCXMLToString(scxml));
+                rbe.setSerialized(SerializationUtil.SerializationSCXMLToByteArray(scxml));
             }
             transaction.commit();
             return retSet;

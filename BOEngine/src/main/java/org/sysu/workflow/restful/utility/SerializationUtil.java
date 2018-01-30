@@ -39,12 +39,12 @@ public class SerializationUtil {
      * @param scxml {@code SCXML} instance
      * @return serialized string
      */
-    public static String SerializationSCXMLToString(SCXML scxml) {
+    public static byte[] SerializationSCXMLToByteArray(SCXML scxml) {
         try {
             ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
             ObjectOutputStream out = new ObjectOutputStream(byteArrayOutputStream);
             out.writeObject(scxml);
-            return byteArrayOutputStream.toString("ISO-8859-1");
+            return byteArrayOutputStream.toByteArray();
         }
         catch (Exception ex) {
             LogUtil.Log("When SerializationSCXMLToString exception occurred, " + ex.toString(),
