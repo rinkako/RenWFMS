@@ -42,7 +42,7 @@ public final class LaunchProcessService {
             List pbResult = session.createQuery(String.format("FROM RenProcessboEntity WHERE pid = '%s'", pid)).list();
             for (Object pb : pbResult) {
                 RenProcessboEntity renProcessboEntity = (RenProcessboEntity) pb;
-                String boid = renProcessboEntity.getBoId();
+                String boid = renProcessboEntity.getBoid();
                 //根据bo id找到root bo的content
                 if(boid.equals(roid)) {
                     List boResult = session.createQuery(String.format("FROM RenBoEntity WHERE boid = '%s'", boid)).list();
@@ -60,7 +60,7 @@ public final class LaunchProcessService {
         } catch (Exception e) {
             e.printStackTrace();
             LogUtil.Log("When read bo content by pid and roid, exception occurred, " + e.toString() + ", service rollback",
-                    LaunchProcessService.class.getName(), LogUtil.LogLevelType.ERROR);
+                    LaunchProcessService.class.getName(), LogUtil.LogLevelType.ERROR, pid);
             transaction.rollback();
         }
     }
@@ -87,7 +87,7 @@ public final class LaunchProcessService {
     }
 
     /**
-     * Serialize a list of BO by their id and return involved business role name.
+     * Serialize a list of BO by their id and return involved business role names.
      * @param boidList BOs to be serialized
      * @return HashSet of Involved business role name
      */
@@ -114,7 +114,7 @@ public final class LaunchProcessService {
         }
         catch (Exception ex) {
             LogUtil.Log(String.format("When serialize BOList(%s), exception occurred, %s, service rollback", boidList, ex),
-                    LaunchProcessService.class.getName(), LogUtil.LogLevelType.ERROR);
+                    LaunchProcessService.class.getName(), LogUtil.LogLevelType.ERROR, boidList);
             transaction.rollback();
         }
         return retSet;
@@ -132,7 +132,7 @@ public final class LaunchProcessService {
         }
         catch (Exception ex) {
             LogUtil.Log(String.format("When read BO XML data, exception occurred, %s", ex),
-                    LaunchProcessService.class.getName(), LogUtil.LogLevelType.ERROR);
+                    LaunchProcessService.class.getName(), LogUtil.LogLevelType.ERROR, boXMLContent);
         }
         return null;
     }

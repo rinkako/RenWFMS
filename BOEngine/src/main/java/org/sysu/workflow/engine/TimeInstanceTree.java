@@ -9,6 +9,10 @@ import java.util.Stack;
  */
 public class TimeInstanceTree {
     /**
+     * 实例树的根节点
+     */
+    public TimeTreeNode Root;
+    /**
      * 构造器
      */
     public TimeInstanceTree() {
@@ -49,10 +53,10 @@ public class TimeInstanceTree {
 
     /**
      * 通过节点的描述文件名取得实例树节点集合并序列化成一个向量
-     * @param target 要取得的对象的文件名
+     * @param targetName 要取得的对象的文件名
      * @return 深度优先搜索得到的序列化的树对应的节点向量
      */
-    public ArrayList<TimeTreeNode> GetNodeVectorByTarget(String target) {
+    public ArrayList<TimeTreeNode> GetNodeVectorByTarget(String targetName) {
         if (this.Root == null) {
             return null;
         }
@@ -61,7 +65,7 @@ public class TimeInstanceTree {
         searchStack.push(this.Root);
         while (!searchStack.empty()) {
             TimeTreeNode curNode = searchStack.pop();
-            if (curNode.getFilename().equals(target)) {
+            if (curNode.getFilename().equals(targetName)) {
                 rVec.add(curNode);
             }
             for (int i = 0; i < curNode.Children.size(); i++) {
@@ -150,13 +154,13 @@ public class TimeInstanceTree {
 
     /**
      * 通过节点的唯一编号取得实例树上对应节点的符合描述文件名的直接一代孩子节点并序列化成一个向量
-     * @param tid 唯一编号
-     * @param target 要取得的对象的文件名
+     * @param tid 当前节点的唯一编号
+     * @param target 要取得的目标对象的文件名（name属性）
      * @return 深度优先搜索得到的序列化的树对应的节点向量
      */
     public ArrayList<TimeTreeNode> GetChildrenVectorByTarget(String tid, String target) {
         TimeTreeNode nNode = this.GetNodeById(tid);
-        ArrayList<TimeTreeNode> ret = new ArrayList<TimeTreeNode>();
+        ArrayList<TimeTreeNode> ret = new ArrayList();
         if (nNode != null) {
             for (TimeTreeNode tn : nNode.Children) {
                 if (tn.getFilename().equals(target)) {
@@ -168,7 +172,35 @@ public class TimeInstanceTree {
     }
 
     /**
-     * 实例树的根节点
+     * 通过节点的唯一编号取得实例树上对应节点的符合描述文件名的所有祖先节点并序列化成一个向量
+     * @param tid 当前节点的唯一编号
+     * @param target 要取得的目标对象的文件名（name属性）
+     * @return 序列化的树对应的节点向量
      */
-    public TimeTreeNode Root;
+    public ArrayList<TimeTreeNode> GetAncestorsVectorByTarget(String tid, String target) {
+        ArrayList<TimeTreeNode>  ancestors = new ArrayList<TimeTreeNode>();
+        TimeTreeNode currentNode = this.GetNodeById(tid);
+        while(currentNode != null && currentNode.Parent != null) {
+            currentNode = currentNode.Parent;
+            if(currentNode.getFilename().equals(target)){
+                ancestors.add(currentNode);
+            }
+        }
+        return ancestors;
+    }
+
+    /**
+     * 通过节点的唯一编号取得实例树上对应节点的祖先节点并序列化成一个向量
+     * @param tid 唯一编号
+     * @return 得到的序列化的树对应的节点向量
+     */
+    public ArrayList<TimeTreeNode> GetAncestorsVector(String tid) {
+        ArrayList<TimeTreeNode>  ancestors = new ArrayList<TimeTreeNode>();
+        TimeTreeNode currentNode = this.GetNodeById(tid);
+        while(currentNode != null && currentNode.Parent != null) {
+            currentNode = currentNode.Parent;
+            ancestors.add(currentNode);
+        }
+        return ancestors;
+    }
 }
