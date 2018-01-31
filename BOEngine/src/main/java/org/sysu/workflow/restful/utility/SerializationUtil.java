@@ -29,7 +29,7 @@ public class SerializationUtil {
         }
         catch (Exception ex) {
             LogUtil.Log("When json serialization exception occurred, " + ex.toString(),
-                    SerializationUtil.class.getName(), LogUtil.LogLevelType.ERROR);
+                    SerializationUtil.class.getName(), LogUtil.LogLevelType.ERROR, rtid);
             return null;
         }
     }
@@ -48,7 +48,7 @@ public class SerializationUtil {
         }
         catch (Exception ex) {
             LogUtil.Log("When SerializationSCXMLToString exception occurred, " + ex.toString(),
-                    SerializationUtil.class.getName(), LogUtil.LogLevelType.ERROR);
+                    SerializationUtil.class.getName(), LogUtil.LogLevelType.ERROR, "");
             return null;
         }
     }
@@ -66,7 +66,7 @@ public class SerializationUtil {
         }
         catch (Exception ex) {
             LogUtil.Log("When DeSerializationSCXML exception occurred, " + ex.toString(),
-                    SerializationUtil.class.getName(), LogUtil.LogLevelType.ERROR);
+                    SerializationUtil.class.getName(), LogUtil.LogLevelType.ERROR, "");
             return null;
         }
     }

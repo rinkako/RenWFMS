@@ -114,7 +114,7 @@ public class Send extends NamelistHolder implements ContentContainer {
 
 
     /**
-     * BOO引擎的消息发送机制 扩展的内容
+     * BOO引擎的消息发送机制扩展的内容
      */
     private String messageMode;
 
@@ -375,12 +375,12 @@ public class Send extends NamelistHolder implements ContentContainer {
     @Override
     public void execute(ActionExecutionContext exctx) throws ModelException, SCXMLExpressionException {
         // Send attributes evaluation
+        //获取send标签所在的父状态
         EnterableState parentState = getParentEnterableState();
         Context ctx = exctx.getContext(parentState);
         ctx.setLocal(getNamespacesKey(), getNamespaces());
         Evaluator eval = exctx.getEvaluator();
-        // Most attributes of <send> are expressions so need to be
-        // evaluated before the EventDispatcher callback
+        // Most attributes of <send> are expressions so need to be evaluated before the EventDispatcher callback
 
         //求出hint的值
         Object hintsValue = null;
@@ -394,8 +394,7 @@ public class Send extends NamelistHolder implements ContentContainer {
                 eval.evalAssign(ctx, idlocation, id, Evaluator.AssignType.REPLACE_CHILDREN, null);
             }
         }
-
-
+        //得到targetValue和typeValue
         String targetValue = target;
         if (targetValue == null && targetexpr != null) {
             targetValue = (String) getTextContentIfNodeResult(eval.eval(ctx, targetexpr));
@@ -420,13 +419,16 @@ public class Send extends NamelistHolder implements ContentContainer {
         } else if (!SCXMLIOProcessor.DEFAULT_EVENT_PROCESSOR.equals(typeValue) && typeValue.trim().equalsIgnoreCase(SCXMLIOProcessor.SCXML_EVENT_PROCESSOR)) {
             typeValue = SCXMLIOProcessor.DEFAULT_EVENT_PROCESSOR;
         }
+
+        //得到消息传播模式
         MessageMode messageModeValue = null;
         if (messageMode != null) {
-            messageModeValue = Enum.valueOf(MessageMode.class,messageMode);
+            messageModeValue = Enum.valueOf(MessageMode.class, messageMode);
         }
         String targetNameValue = targetName;
         String targetStateValue = targetState;
 
+        //将事件要传递的参数放到payload中
         Object payload = null;
         Map<String, Object> payloadDataMap = new LinkedHashMap<String, Object>();
         addNamelistDataToPayload(exctx, payloadDataMap);
@@ -451,6 +453,7 @@ public class Send extends NamelistHolder implements ContentContainer {
         if (delayString != null) {
             wait = parseDelay(delayString, exctx.getAppLog());
         }
+        //得到事件名
         String eventValue = event;
         if (eventValue == null && eventexpr != null) {
             eventValue = (String) getTextContentIfNodeResult(eval.eval(ctx, eventexpr));
@@ -470,8 +473,8 @@ public class Send extends NamelistHolder implements ContentContainer {
         if (exctx.getEventDispatcher() instanceof MulitStateMachineDispatcher){
             if (messageModeValue != null) {
                 SCXMLExecutionContext execctx = (SCXMLExecutionContext)exctx.getInternalIOProcessor();
-
-                exctx.getEventDispatcher().send(execctx.RootTid, execctx.Tid, id, targetValue, messageModeValue, targetNameValue, targetStateValue, typeValue, eventValue, payloadDataMap, hintsValue, wait);
+                exctx.getEventDispatcher().send(execctx.RootTid, execctx.Tid, id, targetValue, messageModeValue,
+                        targetNameValue, targetStateValue, typeValue, eventValue, payloadDataMap, hintsValue, wait);
             } else {
                 exctx.getEventDispatcher().send(ioProcessors, id, targetValue, typeValue, eventValue,
                         payload, hintsValue, wait);

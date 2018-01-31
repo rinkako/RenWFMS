@@ -601,7 +601,9 @@ public class SCXMLExecutor implements SCXMLIOProcessor {
      */
     public void triggerEvent(final TriggerEvent evt)
             throws ModelException {
+        //add a TriggerEvent into the external event queue
         addEvent(evt);
+        //trigger all the TriggerEvents in the extrnal event queue
         triggerEvents();
     }
 
@@ -628,22 +630,21 @@ public class SCXMLExecutor implements SCXMLIOProcessor {
     /**
      * Trigger all pending and incoming events, until there are no more pending events
      * 触发所有等待的和 incoming的事件，直到没有等待的事件
-     *
      * @throws ModelException in case there is a fatal SCXML object model problem.
      */
     public void triggerEvents() throws ModelException {
-        ArrayList<TimeTreeNode> childrenList = InstanceManager.GetInstanceTree(this.RootTid).GetNodeById(this.Tid).Children;
-        ArrayList<TriggerEvent> childrenTriggerList = new ArrayList<TriggerEvent>();
-        Object[] eqArr = this.externalEventQueue.toArray();
-        for (Object te : eqArr) {
-            childrenTriggerList.add((TriggerEvent)te);
-        }
-        for (TimeTreeNode cNode : childrenList) {
-            SCXMLExecutor tExecutor = cNode.getExect().getSCXMLExecutor();
-            for (int i = 0; tExecutor.isRunning() && i < childrenTriggerList.size(); i++) {
-                tExecutor.triggerEvent(childrenTriggerList.get(i));
-            }
-        }
+//        ArrayList<TimeTreeNode> childrenList = InstanceManager.GetInstanceTree(this.RootTid).GetNodeById(this.Tid).Children;
+//        ArrayList<TriggerEvent> childrenTriggerList = new ArrayList<TriggerEvent>();
+//        Object[] eqArr = this.externalEventQueue.toArray();
+//        for (Object te : eqArr) {
+//            childrenTriggerList.add((TriggerEvent)te);
+//        }
+//        for (TimeTreeNode cNode : childrenList) {
+//            SCXMLExecutor tExecutor = cNode.getExect().getSCXMLExecutor();
+//            for (int i = 0; tExecutor.isRunning() && i < childrenTriggerList.size(); i++) {
+//                tExecutor.triggerEvent(childrenTriggerList.get(i));
+//            }
+//        }
         TriggerEvent evt;
         while (exctx.isRunning() && (evt = externalEventQueue.poll()) != null) {
             eventStep(evt);
@@ -651,8 +652,7 @@ public class SCXMLExecutor implements SCXMLIOProcessor {
     }
 
     /**
-     * 事件步中调用  语义里面的东西，nextStep,
-     *
+     * 事件步中调用语义里面的东西，nextStep
      * @param event
      * @throws ModelException
      */
