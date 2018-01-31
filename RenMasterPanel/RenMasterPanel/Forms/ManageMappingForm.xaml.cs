@@ -10,6 +10,7 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
+using RenMasterPanel.Controller;
 
 namespace RenMasterPanel.Forms
 {
@@ -21,6 +22,7 @@ namespace RenMasterPanel.Forms
         public ManageMappingForm()
         {
             InitializeComponent();
+            MPController.GetAllResourceInCOrgan();
         }
     }
 }

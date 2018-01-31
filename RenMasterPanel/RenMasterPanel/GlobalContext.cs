@@ -17,6 +17,10 @@ namespace RenMasterPanel
 
         public static readonly string URL_UploadBO = "http://localhost:10234/ns/uploadBO";
 
+        public static readonly string URL_GetAllResources = "http://localhost:10234/rolemap/getAllResourceFromCOrgan";
+
+        public static readonly string URL_GetAllRelationConnections = "http://localhost:10234/rolemap/getAllConnectionFromCOrgan";
+
         public static List<Dictionary<String, String>> Current_Ren_Process_List = null;
 
     }

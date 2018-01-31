@@ -5,6 +5,7 @@
 package org.sysu.renNameService.restful.controller;
 import org.springframework.web.bind.annotation.*;
 import org.sysu.renNameService.NSScheduler;
+import org.sysu.renNameService.authorization.AuthorizationService;
 import org.sysu.renNameService.restful.dto.ReturnModel;
 import org.sysu.renNameService.restful.dto.ReturnModelHelper;
 import org.sysu.renNameService.restful.dto.StatusCode;
@@ -201,20 +202,27 @@ public class RoleMappingController {
 
     /**
      * Get all resources from a REN user binding COrgan.
+     * @param token auth token
      * @param renid ren auth user id (required)
      * @return response package
      */
     @RequestMapping(value = "/getAllResourceFromCOrgan", produces = {"application/json", "application/xml"})
     @ResponseBody
     @Transactional
-    public ReturnModel GetAllResourceFromCOrgan(@RequestParam(value="renid", required = false)String renid) {
+    public ReturnModel GetAllResourceFromCOrgan(@RequestParam(value="token", required = false)String token,
+                                                @RequestParam(value="renid", required = false)String renid) {
         ReturnModel rnModel = new ReturnModel();
         try {
             // miss params
             List<String> missingParams = new ArrayList<>();
+            if (token == null) missingParams.add("token");
             if (renid == null) missingParams.add("renid");
             if (missingParams.size() > 0) {
                 return ReturnModelHelper.MissingParametersResponse(missingParams);
+            }
+            // token check
+            if (!AuthorizationService.CheckValid(token)) {
+                return ReturnModelHelper.UnauthorizedResponse(token);
             }
             // logic
             HashMap<String, String> args = new HashMap<>();
@@ -239,14 +247,20 @@ public class RoleMappingController {
     @RequestMapping(value = "/getAllConnectionFromCOrgan", produces = {"application/json", "application/xml"})
     @ResponseBody
     @Transactional
-    public ReturnModel GetAllConnectionFromCOrgan(@RequestParam(value="renid", required = false)String renid) {
+    public ReturnModel GetAllConnectionFromCOrgan(@RequestParam(value="token", required = false)String token,
+                                                  @RequestParam(value="renid", required = false)String renid) {
         ReturnModel rnModel = new ReturnModel();
         try {
             // miss params
             List<String> missingParams = new ArrayList<>();
+            if (token == null) missingParams.add("token");
             if (renid == null) missingParams.add("renid");
             if (missingParams.size() > 0) {
                 return ReturnModelHelper.MissingParametersResponse(missingParams);
+            }
+            // token check
+            if (!AuthorizationService.CheckValid(token)) {
+                return ReturnModelHelper.UnauthorizedResponse(token);
             }
             // logic
             HashMap<String, String> args = new HashMap<>();

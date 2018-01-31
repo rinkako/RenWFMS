@@ -186,7 +186,7 @@ namespace RenMasterPanel.Controller
         /// </summary>
         /// <param name="boName"></param>
         /// <param name="content"></param>
-        /// <returns></returns>
+        /// <returns>Dictionary of BO upload response</returns>
         public static Dictionary<String, String> UploadBO(string boName, string content)
         {
             try
@@ -200,11 +200,32 @@ namespace RenMasterPanel.Controller
                     },
                     out var retStr);
                 var response = JsonConvert.DeserializeObject<StdResponseEntity>(retStr);
-                return ReturnDataHelper.DecodeDictionary(response);
+                return ReturnDataHelper.DecodeToStringStringDictionary(response);
             }
             catch (Exception ex)
             {
                 LogUtils.LogLine("UploadBO exception occurred" + ex, "MPController", LogLevel.Error);
+                return null;
+            }
+        }
+
+        public static string GetAllResourceInCOrgan()
+        {
+            try
+            {
+                NetClient.PostData(GlobalContext.URL_GetAllResources, new Dictionary<string, string>
+                    {
+                        { "token", MPController.CurrentTransaction.AuthToken },
+                        { "renid", MPController.CurrentTransaction.RenUsername }
+                    },
+                    out var retStr);
+                var response = JsonConvert.DeserializeObject<StdResponseEntity>(retStr);
+                var dict = ReturnDataHelper.DecodeToDataSet(response);
+                return "";
+            }
+            catch (Exception ex)
+            {
+                LogUtils.LogLine("Get resources in COrgan, exception occurred" + ex, "MPController", LogLevel.Error);
                 return null;
             }
         }

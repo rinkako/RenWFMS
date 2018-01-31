@@ -431,7 +431,7 @@ class CGateway:
     @staticmethod
     def RetrieveAllEntity(**argd):
         """
-        Restful API for getting all entities in the COrgan.
+        Restful API for getting all entities in the COrgan, ONLY USE BY NAME SERVICE.
         :param argd: request argument dictionary
         :return: dumped json string
         """
@@ -459,7 +459,7 @@ class CGateway:
     @staticmethod
     def RetrieveAllConnection(**argd):
         """
-        Restful API for getting all connections in the COrgan.
+        Restful API for getting all connections in the COrgan, ONLY USE BY NAME SERVICE.
         :param argd: request argument dictionary
         :return: dumped json string
         """
