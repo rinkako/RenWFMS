@@ -6,10 +6,11 @@ package org.sysu.renNameService.utility;
 import org.apache.commons.codec.digest.DigestUtils;
 import org.sysu.renNameService.GlobalContext;
 
+
 /**
  * Author: Rinkako
  * Date  : 2018/1/28
- * Usage :
+ * Usage : Methods for data encryption and authorization verification.
  */
 public class EncryptUtil {
     /**
@@ -20,4 +21,5 @@ public class EncryptUtil {
     public static String EncryptSHA256(String orgStr) {
         return DigestUtils.sha256Hex(orgStr + GlobalContext.AUTHORITY_SALT);
     }
+
 }

@@ -16,6 +16,16 @@ public final class GlobalContext {
     public static String NAME_SERVICE_GLOBAL_ID = UUID.randomUUID().toString();
 
     /**
+     * Public key for data package signature.
+     */
+    public static final String PUBLIC_KEY = "MIGfMA0GCSqGSIb3DQEBAQUAA4GNADCBiQKBgQCh5g4pc8+YD8QLXQSI441vkY+quXJfSS4m4QV4FTOCyTBR9rTqHGpvYRTITAV5nPHVFeej1c0+WSJ3DUopMdItuAMBdKUlvPigOQwWJShXl5IzlWGGYFC4tCAX34PyoXQ4ec/+Uj2YUA0b4/3t3HG077kpu13rGGKQ4uECtOyzAwIDAQAB";
+
+    /**
+     * Private key for data package signature.
+     */
+    public static final String PRIVATE_KEY = "MIICdwIBADANBgkqhkiG9w0BAQEFAASCAmEwggJdAgEAAoGBAKHmDilzz5gPxAtdBIjjjW+Rj6q5cl9JLibhBXgVM4LJMFH2tOocam9hFMhMBXmc8dUV56PVzT5ZIncNSikx0i24AwF0pSW8+KA5DBYlKFeXkjOVYYZgULi0IBffg/KhdDh5z/5SPZhQDRvj/e3ccbTvuSm7XesYYpDi4QK07LMDAgMBAAECgYEAijkRJED1Hx1uwkjjQ0AMFBIRt6/mvwWKurTpZ3GqbeH5ODFKmooyMO+Qv8Vv8zmUmtm9z/oM5ktRipU1GOCpUPMJh6i14PMHY4gNB62uuvhkv2pAsHkfcYpkov4CIHVWtdyY+O0i0fyxMrq2ScjbURLlPUKUuj+sXunLI9Kz7RkCQQDmHLD95hZGdvTV/Qc0as+UvyXJJIOQvvaFlgSQQEO3zBiqnM/UYmNbtNFOHwnLyRwLpqhUz1vw/7ckDvX0oUZnAkEAtBzLHdZWGwER4U5j9ZfEw/T6+s87ta/9JgrSXFlfWetZBrnktwVV2laVNV54T/BL7L2xaOPrttrFLvJFRlU1BQJAAWhxiMwsnLfDnb+TmLWCmaVlxMpNZ8hTV9PoKT3LbEd6ayjUeLc1Zm0/zpuQAsgzPLsDUqmGJX5bD4Rr6thFxwJBAICGY3LhNgSDGO078RyZtnFW6Zn8M1GNSgnRgxcfN2mFBbxE/q6TghYR3tt8lEIG6UcAfg6pRdTv+/FqNIDh4LkCQBHszW0gobdBUFD79irxlUkBZiRtw1+SPI8FOwjJmy2Cx/Recv41pk3s3dq/FN6L0gQr5GsH2i7N8nWG2UJdYSE=";
+
+    /**
      * Transaction action key in argument dict.
      */
     public static final String TRANSACTION_ACTION_KEY = "?action";
