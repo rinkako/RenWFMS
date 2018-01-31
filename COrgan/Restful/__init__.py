@@ -204,6 +204,28 @@ def GetCapabilityAgent():
     return StartDash(argd, CGateway.RetrieveAgentWithCapability, _ArgsException)
 
 
+@restfulBp.route("/ns/getresources", methods=["GET", "POST"])
+def GetAllResources():
+    token = request.values.get('token')
+    renid = request.values.get('renid')
+    nsid = request.values.get('nsid')
+    argd = {"#token": token,
+            "#renid": renid,
+            "#nsid": nsid}
+    return StartDash(argd, CGateway.RetrieveAllEntity, _ArgsException)
+
+
+@restfulBp.route("/ns/getconnections", methods=["GET", "POST"])
+def GetAllConnections():
+    token = request.values.get('token')
+    renid = request.values.get('renid')
+    nsid = request.values.get('nsid')
+    argd = {"#token": token,
+            "#renid": renid,
+            "#nsid": nsid}
+    return StartDash(argd, CGateway.RetrieveAllConnection, _ArgsException)
+
+
 """
 Helper Methods
 """

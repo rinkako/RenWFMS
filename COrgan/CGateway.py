@@ -7,6 +7,7 @@
 """
 import json
 import CController
+import GlobalConfigContext
 import GlobalConfigContext as GCC
 from datetime import datetime
 from Utility.EncryptUtil import EncryptUtil
@@ -55,7 +56,7 @@ class CGateway:
         :param response_dict: A dictionary, key is the label and value is the body
         :return: JSON string
         """
-        dumpResp = json.dumps(response_dict, skipkeys=True, ensure_ascii=False, default=CGateway._DumpEntityHandler)
+        dumpResp = json.dumps(response_dict, skipkeys=True, ensure_ascii=False, default=lambda t: t.__dict__)
         return u"%s\n" % dumpResp
 
     @staticmethod
@@ -67,7 +68,7 @@ class CGateway:
         """
         if args_dict is None:
             args_dict = {}
-        args_dict["code"] = "Success"
+        args_dict["code"] = "OK"
         return CGateway._DumpResponse(args_dict)
 
     @staticmethod
@@ -79,7 +80,7 @@ class CGateway:
         """
         if args_dict is None:
             args_dict = {}
-        args_dict["code"] = "Failed"
+        args_dict["code"] = "Fail"
         return CGateway._DumpResponse(args_dict)
 
     @staticmethod
@@ -101,8 +102,8 @@ class CGateway:
         :param session: session id
         :return: the unauthorized exception JSON string
         """
-        return CGateway._DumpResponse({"return": "Unauthorized Service Request. session:%s" % session,
-                                       "code": "Unauthorized"})
+        return CGateway._DumpResponse({"code": "Unauthorized",
+                                       "return": "Unauthorized Service Request. session: %s" % session})
 
     @staticmethod
     def _HandleExceptionAndUnauthorized(flagVal, retVal, session=None):
@@ -434,19 +435,26 @@ class CGateway:
         :param argd: request argument dictionary
         :return: dumped json string
         """
-        flag1, ret1 = CGateway.core.RetrieveAllHuman(argd["session"])
-        flag2, ret2 = CGateway.core.RetrieveAllAgent(argd["session"])
-        flag3, ret3 = CGateway.core.RetrieveAllGroup(argd["session"])
-        flag4, ret4 = CGateway.core.RetrieveAllPosition(argd["session"])
-        flag5, ret5 = CGateway.core.RetrieveAllCapabilities(argd["session"])
-        flag = flag1 & flag2 & flag3 & flag4 & flag5
-        pRet = ""
-        if ret1 == GCC.UNAUTHORIZED or ret2 == GCC.UNAUTHORIZED or ret3 == GCC.UNAUTHORIZED or ret4 == GCC.UNAUTHORIZED or ret5 == GCC.UNAUTHORIZED:
-            pRet = GCC.UNAUTHORIZED
-        xFlag = CGateway._HandleExceptionAndUnauthorized(flag, pRet, argd["session"])
-        if xFlag is not None:
-            return xFlag
-        return CGateway._SuccessResponse({'return': [ret1, ret2, ret3, ret4, ret5]})
+        checkSign = argd["nsid"] + "," + argd["renid"]
+        token = EncryptUtil.DecodeURLSafeBase64(argd["token"])
+        try:
+            tokenRet = EncryptUtil.VerifySign(checkSign, token, GlobalConfigContext.AUTH_NameService_PublicKey)
+        except:
+            tokenRet = False
+        if tokenRet is False:
+            return CGateway._UnauthorizedServiceResponse(token)
+        flag1, ret1 = CGateway.core.RetrieveAllHuman(GlobalConfigContext.AUTH_INTERNAL_SESSION)
+        flag2, ret2 = CGateway.core.RetrieveAllAgent(GlobalConfigContext.AUTH_INTERNAL_SESSION)
+        flag3, ret3 = CGateway.core.RetrieveAllGroup(GlobalConfigContext.AUTH_INTERNAL_SESSION)
+        flag4, ret4 = CGateway.core.RetrieveAllPosition(GlobalConfigContext.AUTH_INTERNAL_SESSION)
+        flag5, ret5 = CGateway.core.RetrieveAllCapabilities(GlobalConfigContext.AUTH_INTERNAL_SESSION)
+        retDict = dict()
+        retDict["human"] = ret1
+        retDict["agent"] = ret2
+        retDict["group"] = ret3
+        retDict["position"] = ret4
+        retDict["capability"] = ret5
+        return CGateway._DumpResponse(retDict)
 
     @staticmethod
     def RetrieveAllConnection(**argd):
@@ -455,8 +463,16 @@ class CGateway:
         :param argd: request argument dictionary
         :return: dumped json string
         """
-        flag, ret = CGateway.core.RetrieveAllConnection(argd["session"])
-        xFlag = CGateway._HandleExceptionAndUnauthorized(flag, ret, argd["session"])
+        checkSign = argd["nsid"] + "," + argd["renid"]
+        token = EncryptUtil.DecodeURLSafeBase64(argd["token"])
+        try:
+            tokenRet = EncryptUtil.VerifySign(checkSign, token, GlobalConfigContext.AUTH_NameService_PublicKey)
+        except:
+            tokenRet = False
+        if tokenRet is False:
+            return CGateway._UnauthorizedServiceResponse(token)
+        flag, ret = CGateway.core.RetrieveAllConnection(GlobalConfigContext.AUTH_INTERNAL_SESSION)
+        xFlag = CGateway._HandleExceptionAndUnauthorized(flag, ret, GlobalConfigContext.AUTH_INTERNAL_SESSION)
         if xFlag is not None:
             return xFlag
-        return CGateway._SuccessResponse({'return': ret})
+        return CGateway._DumpResponse(ret)

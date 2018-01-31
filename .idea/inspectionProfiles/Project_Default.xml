@@ -24,6 +24,7 @@
       <option name="ignoredIdentifiers">
         <list>
           <option value="COrganApp.flask" />
+          <option value="str.substring" />
         </list>
       </option>
     </inspection_tool>

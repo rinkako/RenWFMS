@@ -82,6 +82,33 @@ public class RSASignatureUtil {
     }
 
     /**
+     * Translate a Base64 string to URL safe Base64 string.
+     * @param encodeBase64 Base64 string to be translated
+     * @return URL safe string
+     */
+    public static String SafeUrlBase64Encode(String encodeBase64) {
+        String safeBase64Str = encodeBase64.replace('+', '-');
+        safeBase64Str = safeBase64Str.replace('/', '_');
+        safeBase64Str = safeBase64Str.replaceAll("=", "");
+        return safeBase64Str;
+    }
+
+    /**
+     * Translate a URL safe Base64 string to original Base64 string.
+     * @param safeBase64Str URL safe Base64 string
+     * @return original Base64 string
+     */
+    public static String SafeUrlBase64Decode(final String safeBase64Str) {
+        String base64Str = safeBase64Str.replace('-', '+');
+        base64Str = base64Str.replace('_', '/');
+        int mod4 = base64Str.length() % 4;
+        if (mod4 > 0) {
+            base64Str = base64Str + "====".substring(mod4);
+        }
+        return base64Str;
+    }
+
+    /**
      * Algorithm for key generator.
      */
     private static final String KEY_ALGORITHM = "RSA";

@@ -44,7 +44,7 @@ class EncryptUtil:
         return base64.b64encode(signature)
 
     @staticmethod
-    def Verify(data, signature, pubKey):
+    def VerifySign(data, signature, pubKey):
         """
         :param data: data to be verified
         :param signature: signature of this data
@@ -58,8 +58,22 @@ class EncryptUtil:
             return True
         return False
 
+    @staticmethod
+    def DecodeURLSafeBase64(safeBase64Str):
+        """
+        Decode a URL safe Base64 string to original string.
+        :param safeBase64Str: URL safe Base64 string
+        :return: original string
+        """
+        base64Str = safeBase64Str.replace('-', '+')
+        base64Str = base64Str.replace('_', '/')
+        mod4 = len(base64Str) % 4
+        if mod4 > 0:
+            base64Str = base64Str + "===="[0:mod4]
+        return base64Str
+
 
 if __name__ == '__main__':
     test_sign = "VESLo+bDgNu9G0hD0eGvRDJ701t+DLMHqbEH615uHgoCCRGYdnBNpq+QsUS5RFoq140Vx4kNj6RhVfWtNOP556ZWeFQbE1jekv8c/7gy5ltPaFoNIgP3r5wrnYldgeUDAVUJtIuYW6Hq4epWtz6jJV+J87DVLk/GtUFgYK1ZZh8="
     test_sign_org = "123456"
-    print EncryptUtil.Verify(test_sign_org, test_sign, GCC.AUTH_NameService_PublicKey)
+    print EncryptUtil.VerifySign(test_sign_org, test_sign, GCC.AUTH_NameService_PublicKey)

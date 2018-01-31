@@ -56,22 +56,39 @@ public class NSExecutor extends Observable {
                         case "getWorkerByBRole":
                             ArrayList<String> bRoles = RoleMappingService.GetWorkerByBusinessRole(rtid, (String) args.get("brole"));
                             retStr = SerializationUtil.JsonSerialization(bRoles, rtid);
+                            execResult.put("rtid", rtid);
                             break;
                         case "getBRoleByWorker":
                             ArrayList<String> gidList = RoleMappingService.GetBusinessRoleByGlobalId(rtid, (String) args.get("gid"));
                             retStr = SerializationUtil.JsonSerialization(gidList, rtid);
+                            execResult.put("rtid", rtid);
                             break;
                         case "register":
                             RoleMappingService.RegisterRoleMapService(rtid, (String) args.get("organGid"), (String) args.get("dataVersion"), Integer.valueOf((String) args.get("isolationType")), (String) args.get("map"));
                             retStr = "OK";
+                            execResult.put("rtid", rtid);
                             break;
                         case "fin":
                             RoleMappingService.FinishRoleMapService(rtid);
                             retStr = "OK";
+                            execResult.put("rtid", rtid);
                             break;
                         case "getInvolved":
                             ArrayList<RenRolemapEntity> involves = RoleMappingService.GetInvolvedResource(rtid);
                             retStr = SerializationUtil.JsonSerialization(involves, rtid);
+                            execResult.put("rtid", rtid);
+                            break;
+                        case "getAllResourceFromCOrgan":
+                            retStr = RoleMappingService.GetAllResourceFromCOrgan((String) args.get("renid"), rtid == null ? "": rtid, nst.getTransactionContext().getNsid());
+                            if (rtid != null) {
+                                execResult.put("rtid", rtid);
+                            }
+                            break;
+                        case "getAllConnectionFromCOrgan":
+                            retStr = RoleMappingService.GetAllConnectionFromCOrgan((String) args.get("renid"), rtid == null ? "": rtid, nst.getTransactionContext().getNsid());
+                            if (rtid != null) {
+                                execResult.put("rtid", rtid);
+                            }
                             break;
                     }
                     // prepare execution result
@@ -80,7 +97,6 @@ public class NSExecutor extends Observable {
                     execResult.put("context", nst);
                     execResult.put("nsid", context.getNsid());
                     execResult.put("action", act);
-                    execResult.put("rtid", rtid);
                     break;
                 case Namespacing:
                     String nsAct = (String) nst.getParameterDictionary().get(GlobalContext.TRANSACTION_ACTION_KEY);

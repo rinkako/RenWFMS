@@ -32,6 +32,7 @@ public class RoleMappingController {
      */
     @RequestMapping(value = "/getWorkerByBRole", produces = {"application/json", "application/xml"})
     @ResponseBody
+    @Transactional
     public ReturnModel GetWorkerByBusinessRole(@RequestParam(value="rtid", required = false)String rtid,
                                                @RequestParam(value="brole", required = false)String brole) {
         ReturnModel rnModel = new ReturnModel();
@@ -65,6 +66,7 @@ public class RoleMappingController {
      */
     @RequestMapping(value = "/getBRoleByWorker", produces = {"application/json", "application/xml"})
     @ResponseBody
+    @Transactional
     public ReturnModel GetBusinessRoleByGlobalId(@RequestParam(value="rtid", required = false)String rtid,
                                                  @RequestParam(value="gid", required = false)String gid) {
         ReturnModel rnModel = new ReturnModel();
@@ -102,6 +104,7 @@ public class RoleMappingController {
      */
     @RequestMapping(value = "/register", produces = {"application/json", "application/xml"})
     @ResponseBody
+    @Transactional
     public ReturnModel RegisterRoleMapService(@RequestParam(value="rtid", required = false)String rtid,
                                               @RequestParam(value="organgid", required = false)String organGid,
                                               @RequestParam(value="dataversion", required = false)String dataVersion,
@@ -188,6 +191,70 @@ public class RoleMappingController {
             args.put("rtid", rtid);
             NameServiceTransaction t = TransactionCreator.Create(TransactionType.BusinessRoleMapping, "getInvolved", args);
             String jsonifyResult = (String) RoleMappingController.scheduler.Schedule(t);
+            // return
+            ReturnModelHelper.StandardResponse(rnModel, StatusCode.OK, jsonifyResult);
+        } catch (Exception e) {
+            ReturnModelHelper.ExceptionResponse(rnModel, e.getClass().getName());
+        }
+        return rnModel;
+    }
+
+    /**
+     * Get all resources from a REN user binding COrgan.
+     * @param renid ren auth user id (required)
+     * @return response package
+     */
+    @RequestMapping(value = "/getAllResourceFromCOrgan", produces = {"application/json", "application/xml"})
+    @ResponseBody
+    @Transactional
+    public ReturnModel GetAllResourceFromCOrgan(@RequestParam(value="renid", required = false)String renid) {
+        ReturnModel rnModel = new ReturnModel();
+        try {
+            // miss params
+            List<String> missingParams = new ArrayList<>();
+            if (renid == null) missingParams.add("renid");
+            if (missingParams.size() > 0) {
+                return ReturnModelHelper.MissingParametersResponse(missingParams);
+            }
+            // logic
+            HashMap<String, String> args = new HashMap<>();
+            args.put("renid", renid);
+
+            NameServiceTransaction t = TransactionCreator.Create(TransactionType.BusinessRoleMapping, "getAllResourceFromCOrgan", args);
+            String jsonifyResult = (String) RoleMappingController.scheduler.Schedule(t);
+
+            // return
+            ReturnModelHelper.StandardResponse(rnModel, StatusCode.OK, jsonifyResult);
+        } catch (Exception e) {
+            ReturnModelHelper.ExceptionResponse(rnModel, e.getClass().getName());
+        }
+        return rnModel;
+    }
+
+    /**
+     * Get all resources from a REN user binding COrgan.
+     * @param renid ren auth user id (required)
+     * @return response package
+     */
+    @RequestMapping(value = "/getAllConnectionFromCOrgan", produces = {"application/json", "application/xml"})
+    @ResponseBody
+    @Transactional
+    public ReturnModel GetAllConnectionFromCOrgan(@RequestParam(value="renid", required = false)String renid) {
+        ReturnModel rnModel = new ReturnModel();
+        try {
+            // miss params
+            List<String> missingParams = new ArrayList<>();
+            if (renid == null) missingParams.add("renid");
+            if (missingParams.size() > 0) {
+                return ReturnModelHelper.MissingParametersResponse(missingParams);
+            }
+            // logic
+            HashMap<String, String> args = new HashMap<>();
+            args.put("renid", renid);
+
+            NameServiceTransaction t = TransactionCreator.Create(TransactionType.BusinessRoleMapping, "getAllConnectionFromCOrgan", args);
+            String jsonifyResult = (String) RoleMappingController.scheduler.Schedule(t);
+
             // return
             ReturnModelHelper.StandardResponse(rnModel, StatusCode.OK, jsonifyResult);
         } catch (Exception e) {

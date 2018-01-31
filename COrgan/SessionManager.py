@@ -7,6 +7,8 @@
 """
 import uuid
 import time
+
+import GlobalConfigContext
 from Entity.CSession import CSession
 
 
@@ -117,6 +119,12 @@ class SessionManager:
 
     """ Active Session Dictionary """
     ActiveSessionDict = {}
+
+
+# Engine Calling Session
+tr = CSession(GlobalConfigContext.AUTH_INTERNAL_SESSION, '&&EngineCall', '&&EngineCall', time.time())
+tr.Level = 1
+SessionManager.ActiveSessionDict[GlobalConfigContext.AUTH_INTERNAL_SESSION] = tr
 
 
 tr = CSession('testadmin', 'testadmin', '123456', time.time())

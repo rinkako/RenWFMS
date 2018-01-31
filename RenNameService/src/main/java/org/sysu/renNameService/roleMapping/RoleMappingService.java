@@ -5,14 +5,16 @@
 package org.sysu.renNameService.roleMapping;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
+import org.sysu.renNameService.GlobalContext;
+import org.sysu.renNameService.entity.RenAuthEntity;
 import org.sysu.renNameService.entity.RenRolemapArchivedEntity;
 import org.sysu.renNameService.entity.RenRolemapEntity;
 import org.sysu.renNameService.utility.HibernateUtil;
+import org.sysu.renNameService.utility.HttpClientUtil;
 import org.sysu.renNameService.utility.LogUtil;
-import java.util.AbstractMap;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.UUID;
+import org.sysu.renNameService.utility.RSASignatureUtil;
+
+import java.util.*;
 
 /**
  * Author: Rinkako
@@ -208,6 +210,86 @@ public final class RoleMappingService {
                     RoleMappingService.class.getName(), LogUtil.LogLevelType.ERROR, rtid);
             transaction.rollback();
             throw ex;
+        }
+    }
+
+    /**
+     * Get all resource from a Ren auth user COrgan gateway.
+     * @param renid ren auth id
+     * @param rtid process rtid
+     * @param nsid transaction id for signature
+     * @return a list of [human, agent, group, position, capability] json string
+     */
+    public static String GetAllResourceFromCOrgan(String renid, String rtid, String nsid) {
+        Session session = HibernateUtil.GetLocalThreadSession();
+        Transaction transaction = session.beginTransaction();
+        boolean cmtFlag = false;
+        try {
+            RenAuthEntity rae = session.get(RenAuthEntity.class, renid);
+            cmtFlag = true;
+            transaction.commit();
+            assert rae != null;
+            String corganUrl = rae.getCorganGateway();
+            if (corganUrl == null || corganUrl.equals("")) {
+                LogUtil.Log("Get resource by COrgan, but auth user does not bind any COrgan gateway",
+                        RoleMappingService.class.getName(), LogUtil.LogLevelType.WARNING, rtid);
+                return "";
+            }
+            HashMap<String, String> args = new HashMap<>();
+            String nsSign = RSASignatureUtil.Signature(nsid + "," + renid, GlobalContext.PRIVATE_KEY);
+            assert nsSign != null;
+            args.put("renid", renid);
+            args.put("nsid", nsid);
+            args.put("token", RSASignatureUtil.SafeUrlBase64Encode(nsSign));
+            return HttpClientUtil.SendPost(corganUrl + "ns/getresources", args, "");
+        }
+        catch (Exception ex) {
+            LogUtil.Log("When GetAllResourceFromCOrgan role map service, exception occurred, " + ex.toString(),
+                    RoleMappingService.class.getName(), LogUtil.LogLevelType.ERROR, rtid);
+            if (!cmtFlag) {
+                transaction.rollback();
+            }
+            return "";
+        }
+    }
+
+    /**
+     * Get all relation connections from a Ren auth user COrgan gateway.
+     * @param renid ren auth id
+     * @param rtid process rtid
+     * @param nsid transaction id for signature
+     * @return a list of connection json string
+     */
+    public static String GetAllConnectionFromCOrgan(String renid, String rtid, String nsid) {
+        Session session = HibernateUtil.GetLocalThreadSession();
+        Transaction transaction = session.beginTransaction();
+        boolean cmtFlag = false;
+        try {
+            RenAuthEntity rae = session.get(RenAuthEntity.class, renid);
+            cmtFlag = true;
+            transaction.commit();
+            assert rae != null;
+            String corganUrl = rae.getCorganGateway();
+            if (corganUrl == null || corganUrl.equals("")) {
+                LogUtil.Log("Get resource by COrgan, but auth user does not bind any COrgan gateway",
+                        RoleMappingService.class.getName(), LogUtil.LogLevelType.WARNING, rtid);
+                return "";
+            }
+            HashMap<String, String> args = new HashMap<>();
+            String nsSign = RSASignatureUtil.Signature(nsid + "," + renid, GlobalContext.PRIVATE_KEY);
+            assert nsSign != null;
+            args.put("renid", renid);
+            args.put("nsid", nsid);
+            args.put("token", RSASignatureUtil.SafeUrlBase64Encode(nsSign));
+            return HttpClientUtil.SendPost(corganUrl + "ns/getconnections", args, "");
+        }
+        catch (Exception ex) {
+            LogUtil.Log("When GetAllConnectionFromCOrgan role map service, exception occurred, " + ex.toString(),
+                    RoleMappingService.class.getName(), LogUtil.LogLevelType.ERROR, rtid);
+            if (!cmtFlag) {
+                transaction.rollback();
+            }
+            return "";
         }
     }
 
