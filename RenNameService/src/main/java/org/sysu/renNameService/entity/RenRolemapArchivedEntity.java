@@ -3,16 +3,17 @@
  * Rinkako, Ariana, Gordan. SYSU SDCS.
  */
 package org.sysu.renNameService.entity;
+
 import javax.persistence.*;
 import java.util.Objects;
 
 /**
  * Author: Rinkako
- * Date  : 2018/1/21
+ * Date  : 2018/2/1
  * Usage :
  */
 @Entity
-@Table(name = "ren_rolemap_archived", schema = "rennameservice")
+@Table(name = "ren_rolemap_archived", schema = "renboengine")
 public class RenRolemapArchivedEntity {
     private String mapId;
     private String rtid;
@@ -20,7 +21,6 @@ public class RenRolemapArchivedEntity {
     private String corganGid;
     private String mappedGid;
     private String dataVersion;
-    private int transactionIsolation;
 
     @Id
     @Column(name = "map_id", nullable = false, length = 64)
@@ -82,23 +82,12 @@ public class RenRolemapArchivedEntity {
         this.dataVersion = dataVersion;
     }
 
-    @Basic
-    @Column(name = "transaction_isolation", nullable = false)
-    public int getTransactionIsolation() {
-        return transactionIsolation;
-    }
-
-    public void setTransactionIsolation(int transactionIsolation) {
-        this.transactionIsolation = transactionIsolation;
-    }
-
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         RenRolemapArchivedEntity that = (RenRolemapArchivedEntity) o;
-        return transactionIsolation == that.transactionIsolation &&
-                Objects.equals(mapId, that.mapId) &&
+        return Objects.equals(mapId, that.mapId) &&
                 Objects.equals(rtid, that.rtid) &&
                 Objects.equals(broleName, that.broleName) &&
                 Objects.equals(corganGid, that.corganGid) &&
@@ -109,6 +98,6 @@ public class RenRolemapArchivedEntity {
     @Override
     public int hashCode() {
 
-        return Objects.hash(mapId, rtid, broleName, corganGid, mappedGid, dataVersion, transactionIsolation);
+        return Objects.hash(mapId, rtid, broleName, corganGid, mappedGid, dataVersion);
     }
 }

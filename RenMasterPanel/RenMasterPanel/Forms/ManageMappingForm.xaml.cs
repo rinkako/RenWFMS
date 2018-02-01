@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Data;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Windows;
@@ -26,12 +27,92 @@ namespace RenMasterPanel.Forms
         private readonly bool initFinish = false;
 
         /// <summary>
+        /// Buffer of Mappings.
+        /// </summary>
+        public List<KeyValuePair<String, String>> CurrentMap = new List<KeyValuePair<string, string>>();
+
+        /// <summary>
         /// Create a new mapping management form.
         /// </summary>
         public ManageMappingForm()
         {
             InitializeComponent();
+            // Business Roles
+            foreach (var br in MPController.CurrentTransaction.BusinessRoleList)
+            {
+                this.ListBox_BusinessRole.Items.Add(br);
+            }
+            // Mappings
+            foreach (var mapItem in MPController.CurrentTransaction.Mappings)
+            {
+                this.CurrentMap.Add(mapItem);
+            }
+            foreach (var mapKVP in MPController.CurrentTransaction.Mappings)
+            {
+                var resourceType = MPController.GetResourceTypeByGid(mapKVP.Value);
+                var resourceStr = "";
+                DataRow dr;
+                switch (resourceType)
+                {
+                    case ResourceType.Human:
+                        dr = MPController.FindResourceDataRow(GlobalContext.ResourcesDataSet.Tables["human"],
+                            mapKVP.Value);
+                        resourceStr = String.Format("[H] {0}: {1} {2}", dr["PersonId"], dr["FirstName"],
+                            dr["LastName"]);
+                        break;
+                    case ResourceType.Agent:
+                        dr = MPController.FindResourceDataRow(GlobalContext.ResourcesDataSet.Tables["agent"],
+                            mapKVP.Value);
+                        resourceStr = String.Format("[A] {0}", dr["Name"]);
+                        break;
+                    case ResourceType.Group:
+                        dr = MPController.FindResourceDataRow(GlobalContext.ResourcesDataSet.Tables["group"],
+                            mapKVP.Value);
+                        resourceStr = String.Format("[G] {0} ({1})", dr["Name"],
+                            MPController.ParseGroupType(dr["GroupType"]));
+                        break;
+                    case ResourceType.Position:
+                        dr = MPController.FindResourceDataRow(GlobalContext.ResourcesDataSet.Tables["position"],
+                            mapKVP.Value);
+                        var belongTo = dr["BelongToGroup"] as string;
+                        var belongToStr = "";
+                        if (belongTo != null)
+                        {
+                            var fetched = GlobalContext.ResourcesDataSet.Tables["group"].Rows.Cast<DataRow>()
+                                .FirstOrDefault(groupRow => groupRow["GlobalId"] as string == belongTo);
+                            if (fetched != null)
+                            {
+                                belongToStr = $" (Group: {fetched["Name"]})";
+                            }
+                        }
+                        resourceStr = String.Format("[P] {0}{1}", dr["Name"], belongToStr);
+                        break;
+                    case ResourceType.Capability:
+                        dr = MPController.FindResourceDataRow(GlobalContext.ResourcesDataSet.Tables["capability"],
+                            mapKVP.Value);
+                        resourceStr = String.Format("[C] {0}", dr["Name"]);
+                        break;
+                    default:
+                        throw new ArgumentOutOfRangeException();
+                }
+                this.ListBox_Mappings.Items.Add(String.Format("{0} => {1}", mapKVP.Key, resourceStr));
+            }
+            // refresh resource list
             this.RefreshLists(true, true, true, true, true);
+            // filter ComboBoxs
+            foreach (DataRow dataRow in GlobalContext.ResourcesDataSet.Tables["group"].Rows)
+            {
+                this.ComboBox_Step2_Filter_G.Items.Add($"{dataRow["Name"]}");
+            }
+            foreach (DataRow dataRow in GlobalContext.ResourcesDataSet.Tables["position"].Rows)
+            {
+                this.ComboBox_Step2_Filter_P.Items.Add($"{dataRow["Name"]}");
+            }
+            foreach (DataRow dataRow in GlobalContext.ResourcesDataSet.Tables["capability"].Rows)
+            {
+                this.ComboBox_Step2_Filter_C.Items.Add($"{dataRow["Name"]}");
+            }
+            // set finish flag
             this.initFinish = true;
         }
 
@@ -40,15 +121,28 @@ namespace RenMasterPanel.Forms
         /// </summary>
         private void RefreshLists(bool? showHuman, bool? showAgent, bool? showGroup, bool? showPosition, bool? showCapability)
         {
-            // Business Roles
-            this.ListBox_BusinessRole.Items.Clear();
-            foreach (var br in MPController.CurrentTransaction.BusinessRoleList)
-            {
-                this.ListBox_BusinessRole.Items.Add(br);
-            }
             // Resources
             this.ListBox_Resources.Items.Clear();
-            var ds = GlobalContext.ResourcesDataSet = MPController.GetAllResourceInCOrgan();
+            var counter = 0;
+            string dv1, dv2;
+            DataSet ds;
+            do
+            {
+                dv1 = MPController.GetDataVersion();
+                ds = MPController.GetAllResourceInCOrgan();
+                dv2 = MPController.GetDataVersion();
+                counter++;
+            } while (dv1 != dv2);
+            if (counter > 100)
+            {
+                MessageBox.Show("Data version is Error!");
+                throw new Exception();
+            }
+            GlobalContext.ResourcesDataSet = ds;
+            var dvItems = dv1.Substring(1, dv1.Length - 2).Split(',');
+            Debug.Assert(dvItems.Length == 2);
+            GlobalContext.ResourcesDataVersion = dvItems[0];
+            GlobalContext.ResourcesCOrganGid = dvItems[1];
             if (showHuman == true)
             {
                 foreach (DataRow row in ds.Tables["human"].Rows)
@@ -69,7 +163,7 @@ namespace RenMasterPanel.Forms
                     {
                         Content = String.Format("[A] {0}", row["Name"]),
                         Tag = row["GlobalId"],
-                        ToolTip = String.Format("{0}, {1}", ParseAgentType(row["Type"]), row["Location"])
+                        ToolTip = String.Format("{0}, {1}", MPController.ParseAgentType(row["Type"]), row["Location"])
                     };
                     this.ListBox_Resources.Items.Add(lb);
                 }
@@ -80,7 +174,7 @@ namespace RenMasterPanel.Forms
                 {
                     var lb = new Label
                     {
-                        Content = String.Format("[G] {0} ({1})", row["Name"], ParseGroupType(row["GroupType"])),
+                        Content = String.Format("[G] {0} ({1})", row["Name"], MPController.ParseGroupType(row["GroupType"])),
                         Tag = row["GlobalId"]
                     };
                     this.ListBox_Resources.Items.Add(lb);
@@ -121,60 +215,8 @@ namespace RenMasterPanel.Forms
                     this.ListBox_Resources.Items.Add(lb);
                 }
             }
-            // Mappings
-            this.ListBox_Mappings.Items.Clear();
         }
-
-        /// <summary>
-        /// Parse COrgan group type enum value to enum name.
-        /// </summary>
-        /// <param name="enumValObj">enum value</param>
-        /// <returns>enum name string</returns>
-        private static string ParseGroupType(object enumValObj)
-        {
-            if (enumValObj is int)
-            {
-                switch (enumValObj)
-                {
-                    case 0:
-                        return "Department";
-                    case 1:
-                        return "Team";
-                    case 3:
-                        return "Cluster";
-                    case 4:
-                        return "Division";
-                    case 5:
-                        return "Branch";
-                    case 6:
-                        return "Unit";
-                    default:
-                        return "Group";
-                }
-            }
-            return "Group";
-        }
-
-        /// <summary>
-        /// Parse COrgan agent type enum value to enum name.
-        /// </summary>
-        /// <param name="enumValObj">enum value</param>
-        /// <returns>enum name string</returns>
-        private static string ParseAgentType(object enumValObj)
-        {
-            if (enumValObj is int)
-            {
-                switch (enumValObj)
-                {
-                    case 0:
-                        return "Reentrant";
-                    default:
-                        return "NotReentrant";
-                }
-            }
-            return "NotReentrant";
-        }
-
+        
         /// <summary>
         /// When filter check box changed.
         /// </summary>
@@ -188,6 +230,61 @@ namespace RenMasterPanel.Forms
                     this.CheckBox_Position.IsChecked,
                     this.CheckBox_Capability.IsChecked);
             }
+        }
+        
+        /// <summary>
+        /// Button: Add a new map.
+        /// </summary>
+        private void Button_AddMap_Click(object sender, RoutedEventArgs e)
+        {
+            if (this.ListBox_BusinessRole.SelectedIndex == -1 || this.ListBox_Resources.SelectedIndex == -1)
+            {
+                return;
+            }
+            var selectedBRoleName = this.ListBox_BusinessRole.SelectedItem.ToString();
+            var selectedResourceLabel = this.ListBox_Resources.SelectedItem as Label;
+            var selectedResourceDescriptor = selectedResourceLabel.Content.ToString();
+            var selectedResourceGid = selectedResourceLabel.Tag.ToString();
+            // find if already exit
+            var findedFlag = this.CurrentMap.Any(kvp => kvp.Key == selectedBRoleName && kvp.Value == selectedResourceGid);
+            if (findedFlag)
+            {
+                MessageBox.Show(String.Format("Mapping << {0} => {1} >> already exist.", selectedBRoleName, selectedResourceDescriptor));
+                return;
+            }
+            this.ListBox_Mappings.Items.Add(String.Format("{0} => {1}", selectedBRoleName, selectedResourceDescriptor));
+            this.CurrentMap.Add(new KeyValuePair<string, string>(selectedBRoleName, selectedResourceGid));
+        }
+
+        /// <summary>
+        /// Button: Remove a map.
+        /// </summary>
+        private void Button_RemoveMap_Click(object sender, RoutedEventArgs e)
+        {
+            if (this.ListBox_Mappings.SelectedIndex == -1)
+            {
+                return;
+            }
+            var removeIdx = this.ListBox_Mappings.SelectedIndex;
+            this.ListBox_Mappings.Items.RemoveAt(removeIdx);
+            this.CurrentMap.RemoveAt(removeIdx);
+            if (this.ListBox_Mappings.Items.Count > 0)
+            {
+                this.ListBox_Mappings.SelectedIndex = 0;
+            }
+        }
+
+        /// <summary>
+        /// Button: Save and close.
+        /// </summary>
+        private void Button_Save_Click(object sender, RoutedEventArgs e)
+        {
+            MPController.CurrentTransaction.Mappings = new List<KeyValuePair<string, string>>();
+            foreach (var mapItem in this.CurrentMap)
+            {
+                MPController.CurrentTransaction.Mappings.Add(mapItem);
+            }
+            this.Close();
         }
     }
 }

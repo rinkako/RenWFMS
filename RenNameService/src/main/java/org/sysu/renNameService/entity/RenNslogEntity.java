@@ -10,11 +10,11 @@ import java.util.Objects;
 
 /**
  * Author: Rinkako
- * Date  : 2018/1/30
+ * Date  : 2018/2/1
  * Usage :
  */
 @Entity
-@Table(name = "ren_nslog", schema = "renboengine")
+@Table(name = "ren_nslog", schema = "renboengine", catalog = "")
 public class RenNslogEntity {
     private String logid;
     private String label;

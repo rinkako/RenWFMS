@@ -476,3 +476,25 @@ class CGateway:
         if xFlag is not None:
             return xFlag
         return CGateway._DumpResponse(ret)
+
+    @staticmethod
+    def RetrieveDataVersionGid(**argd):
+        """
+        Restful API for getting data version of COrgan, ONLY USE BY NAME SERVICE.
+        :param argd: request argument dictionary
+        :return: dumped json string
+        """
+        checkSign = argd["nsid"] + "," + argd["renid"]
+        token = EncryptUtil.DecodeURLSafeBase64(argd["token"])
+        try:
+            tokenRet = EncryptUtil.VerifySign(checkSign, token, GlobalConfigContext.AUTH_NameService_PublicKey)
+        except:
+            tokenRet = False
+        if tokenRet is False:
+            return CGateway._UnauthorizedServiceResponse(token)
+        flag1, ret1 = CGateway.core.GetCurrentDataVersion(GlobalConfigContext.AUTH_INTERNAL_SESSION)
+        flag2, ret2 = CGateway.core.GetOrganizationId(GlobalConfigContext.AUTH_INTERNAL_SESSION)
+        xFlag = CGateway._HandleExceptionAndUnauthorized(flag1 & flag2, ret1, GlobalConfigContext.AUTH_INTERNAL_SESSION)
+        if xFlag is not None:
+            return xFlag
+        return CGateway._DumpResponse("%s,%s" % (ret1, ret2))

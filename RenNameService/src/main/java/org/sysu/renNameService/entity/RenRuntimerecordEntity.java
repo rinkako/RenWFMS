@@ -10,7 +10,7 @@ import java.util.Objects;
 
 /**
  * Author: Rinkako
- * Date  : 2018/1/27
+ * Date  : 2018/2/1
  * Usage :
  */
 @Entity
@@ -29,6 +29,7 @@ public class RenRuntimerecordEntity {
     private String resourcingId;
     private String resourceBinding;
     private Integer resourceBindingType;
+    private Integer failureType;
 
     @Id
     @Column(name = "rtid", nullable = false, length = 64)
@@ -160,6 +161,16 @@ public class RenRuntimerecordEntity {
         this.resourceBindingType = resourceBindingType;
     }
 
+    @Basic
+    @Column(name = "failure_type", nullable = true)
+    public Integer getFailureType() {
+        return failureType;
+    }
+
+    public void setFailureType(Integer failureType) {
+        this.failureType = failureType;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -177,12 +188,13 @@ public class RenRuntimerecordEntity {
                 Objects.equals(interpreterId, that.interpreterId) &&
                 Objects.equals(resourcingId, that.resourcingId) &&
                 Objects.equals(resourceBinding, that.resourceBinding) &&
-                Objects.equals(resourceBindingType, that.resourceBindingType);
+                Objects.equals(resourceBindingType, that.resourceBindingType) &&
+                Objects.equals(failureType, that.failureType);
     }
 
     @Override
     public int hashCode() {
 
-        return Objects.hash(rtid, processId, processName, sessionId, launchAuthorityId, launchTimestamp, launchFrom, launchType, tag, interpreterId, resourcingId, resourceBinding, resourceBindingType);
+        return Objects.hash(rtid, processId, processName, sessionId, launchAuthorityId, launchTimestamp, launchFrom, launchType, tag, interpreterId, resourcingId, resourceBinding, resourceBindingType, failureType);
     }
 }

@@ -1,12 +1,21 @@
+/*
+ * Project Ren @ 2018
+ * Rinkako, Ariana, Gordan. SYSU SDCS.
+ */
 package org.sysu.workflow.restful.entity;
 
 import javax.persistence.*;
 import java.sql.Timestamp;
 
+/**
+ * Author: Rinkako
+ * Date  : 2018/2/1
+ * Usage :
+ */
 @Entity
-@Table(name = "ren_nslog", schema = "renboengine")
+@Table(name = "ren_nslog", schema = "renboengine", catalog = "")
 public class RenNslogEntity {
-    private int id;
+    private String logid;
     private String label;
     private String level;
     private String message;
@@ -14,13 +23,13 @@ public class RenNslogEntity {
     private String rtid;
 
     @Id
-    @Column(name = "id", nullable = false)
-    public int getId() {
-        return id;
+    @Column(name = "logid", nullable = false, length = 64)
+    public String getLogid() {
+        return logid;
     }
 
-    public void setId(int id) {
-        this.id = id;
+    public void setLogid(String logid) {
+        this.logid = logid;
     }
 
     @Basic
@@ -80,7 +89,7 @@ public class RenNslogEntity {
 
         RenNslogEntity that = (RenNslogEntity) o;
 
-        if (id != that.id) return false;
+        if (logid != null ? !logid.equals(that.logid) : that.logid != null) return false;
         if (label != null ? !label.equals(that.label) : that.label != null) return false;
         if (level != null ? !level.equals(that.level) : that.level != null) return false;
         if (message != null ? !message.equals(that.message) : that.message != null) return false;
@@ -92,7 +101,7 @@ public class RenNslogEntity {
 
     @Override
     public int hashCode() {
-        int result = id;
+        int result = logid != null ? logid.hashCode() : 0;
         result = 31 * result + (label != null ? label.hashCode() : 0);
         result = 31 * result + (level != null ? level.hashCode() : 0);
         result = 31 * result + (message != null ? message.hashCode() : 0);

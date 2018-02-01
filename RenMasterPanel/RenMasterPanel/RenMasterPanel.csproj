@@ -62,6 +62,7 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="Controller\ResourceType.cs" />
     <Compile Include="Controller\ReturnDataHelper.cs" />
     <Compile Include="Controller\StdResponseEntity.cs" />
     <Compile Include="Controller\TransactionPackage.cs" />

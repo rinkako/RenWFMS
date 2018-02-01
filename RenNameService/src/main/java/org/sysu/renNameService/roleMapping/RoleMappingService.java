@@ -176,9 +176,11 @@ public final class RoleMappingService {
     /**
      * Register role map service for a specific process runtime.
      * @param rtid process rtid
+     * @param organGid organization global id
+     * @param dataVersion organization data version
      * @param descriptor register parameter descriptor string
      */
-    public static void RegisterRoleMapService(String rtid, String organGid, String dataVersion, int isolationType, String descriptor) {
+    public static void RegisterRoleMapService(String rtid, String organGid, String dataVersion, String descriptor) {
         ArrayList<AbstractMap.SimpleEntry<String, String>> parsedList = RoleMapParser.Parse(descriptor);
         // create cache map
         CachedRoleMap crm = new CachedRoleMap();
@@ -192,7 +194,6 @@ public final class RoleMappingService {
             rre.setCorganGid(organGid);
             rre.setMappedGid(kvp.getValue());
             rre.setDataVersion(dataVersion);
-            rre.setTransactionIsolation(isolationType);
             crm.addCacheItem(rre);
         }
         // save to steady
@@ -294,6 +295,45 @@ public final class RoleMappingService {
     }
 
     /**
+     * Get data version from a Ren auth user COrgan gateway.
+     * @param renid ren auth id
+     * @param nsid transaction id for signature
+     * @return a list of connection json string
+     */
+    public static String GetDataVersionAndGidFromCOrgan(String renid, String nsid) {
+        Session session = HibernateUtil.GetLocalThreadSession();
+        Transaction transaction = session.beginTransaction();
+        boolean cmtFlag = false;
+        try {
+            RenAuthEntity rae = session.get(RenAuthEntity.class, renid);
+            cmtFlag = true;
+            transaction.commit();
+            assert rae != null;
+            String corganUrl = rae.getCorganGateway();
+            if (corganUrl == null || corganUrl.equals("")) {
+                LogUtil.Log("Get data version by COrgan, but auth user does not bind any COrgan gateway",
+                        RoleMappingService.class.getName(), LogUtil.LogLevelType.WARNING, "");
+                return "";
+            }
+            HashMap<String, String> args = new HashMap<>();
+            String nsSign = RSASignatureUtil.Signature(nsid + "," + renid, GlobalContext.PRIVATE_KEY);
+            assert nsSign != null;
+            args.put("renid", renid);
+            args.put("nsid", nsid);
+            args.put("token", RSASignatureUtil.SafeUrlBase64Encode(nsSign));
+            return HttpClientUtil.SendPost(corganUrl + "ns/getdataversiongid", args, "");
+        }
+        catch (Exception ex) {
+            LogUtil.Log("When GetDataVersionFromCOrgan role map service, exception occurred, " + ex.toString(),
+                    RoleMappingService.class.getName(), LogUtil.LogLevelType.ERROR, "");
+            if (!cmtFlag) {
+                transaction.rollback();
+            }
+            return "";
+        }
+    }
+
+    /**
      * Generate an achieve role map entity.
      * @param rre role map entity
      * @return role map achieved entity
@@ -306,7 +346,6 @@ public final class RoleMappingService {
         rrae.setCorganGid(rre.getCorganGid());
         rrae.setMappedGid(rre.getMappedGid());
         rrae.setDataVersion(rre.getDataVersion());
-        rrae.setTransactionIsolation(rre.getTransactionIsolation());
         return rrae;
     }
 }

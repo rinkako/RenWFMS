@@ -6,10 +6,12 @@ package org.sysu.renNameService.authorization;
 
 import org.hibernate.Session;
 import org.hibernate.Transaction;
+import org.sysu.renNameService.GlobalContext;
 import org.sysu.renNameService.entity.RenAuthEntity;
 import org.sysu.renNameService.utility.EncryptUtil;
 import org.sysu.renNameService.utility.HibernateUtil;
 import org.sysu.renNameService.utility.LogUtil;
+import org.sysu.renNameService.utility.RSASignatureUtil;
 
 import java.sql.Timestamp;
 import java.util.HashMap;
@@ -84,15 +86,20 @@ public class AuthorizationService {
             rae.setCorganGateway(corganGateway);
             rae.setState(0);
             rae.setCreatetimestamp(new Timestamp(System.currentTimeMillis()));
+            String signature = RSASignatureUtil.Signature(username, GlobalContext.PRIVATE_KEY);
+            assert signature != null;
+            String safeSignature = RSASignatureUtil.SafeUrlBase64Encode(signature);
+            rae.setUrlsafeSignature(safeSignature);
             session.save(rae);
             transaction.commit();
+            return safeSignature;
         }
         catch (Exception ex) {
             LogUtil.Log(String.format("AddAuthorizationUser but exception occurred (%s), service rollback, %s", username, ex),
                     AuthorizationService.class.getName(), LogUtil.LogLevelType.ERROR, "");
             transaction.rollback();
+            return "#exception";
         }
-        return "#exception";
     }
 
     /**
@@ -119,8 +126,8 @@ public class AuthorizationService {
             LogUtil.Log(String.format("RemoveAuthorizationUser but exception occurred (%s), service rollback, %s", username, ex),
                     AuthorizationService.class.getName(), LogUtil.LogLevelType.ERROR, "");
             transaction.rollback();
+            return false;
         }
-        return false;
     }
 
     /**
@@ -157,8 +164,8 @@ public class AuthorizationService {
             LogUtil.Log(String.format("UpdateAuthorizationUser but exception occurred (%s), service rollback, %s", username, ex),
                     AuthorizationService.class.getName(), LogUtil.LogLevelType.ERROR, "");
             transaction.rollback();
+            return false;
         }
-        return false;
     }
 
     /**
@@ -178,8 +185,8 @@ public class AuthorizationService {
             LogUtil.Log(String.format("ContainAuthorizationUser but exception occurred (%s), service rollback, %s", username, ex),
                     AuthorizationService.class.getName(), LogUtil.LogLevelType.ERROR, "");
             transaction.rollback();
+            return true;
         }
-        return true;
     }
 
     /**
@@ -199,7 +206,7 @@ public class AuthorizationService {
             LogUtil.Log(String.format("RetrieveAuthorizationUser but exception occurred (%s), service rollback, %s", username, ex),
                     AuthorizationService.class.getName(), LogUtil.LogLevelType.ERROR, "");
             transaction.rollback();
+            return null;
         }
-        return null;
     }
 }

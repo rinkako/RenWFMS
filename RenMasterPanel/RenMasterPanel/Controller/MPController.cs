@@ -137,16 +137,13 @@ namespace RenMasterPanel.Controller
                     out var retStr);
                 var response = JsonConvert.DeserializeObject<StdResponseEntity>(retStr);
                 var boList = ReturnDataHelper.DecodeList(response);
-                var retList = new List<Dictionary<String, String>>();
-                foreach (var bo in boList)
-                {
-                    var boKVP = (List<String>) (bo as JArray).ToObject<List<String>>();
-                    var dict = new Dictionary<string, string>();
-                    dict.Add("boid", boKVP[0]);
-                    dict.Add("bo_name", boKVP[1]);
-                    retList.Add(dict);
-                }
-                return retList;
+                return boList.Select(bo => (bo as JArray).ToObject<List<String>>())
+                    .Select(boKVP => new Dictionary<string, string>
+                    {
+                        {"boid", boKVP[0]},
+                        {"bo_name", boKVP[1]}
+                    })
+                    .ToList();
             }
             catch (Exception ex)
             {
@@ -235,6 +232,98 @@ namespace RenMasterPanel.Controller
         }
 
         /// <summary>
+        /// Get the data version of this Ren auth binding COrgan.
+        /// </summary>
+        public static String GetDataVersion()
+        {
+            try
+            {
+                NetClient.PostData(GlobalContext.URL_GetDataVersion, new Dictionary<string, string>
+                    {
+                        { "token", MPController.CurrentTransaction.AuthToken },
+                        { "renid", MPController.CurrentTransaction.RenUsername }
+                    },
+                    out var retStr);
+                var response = JsonConvert.DeserializeObject<StdResponseEntity>(retStr);
+                return ReturnDataHelper.DecodeString(response);
+            }
+            catch (Exception ex)
+            {
+                LogUtils.LogLine("Submit process, exception occurred" + ex, "MPController", LogLevel.Error);
+                return null;
+            }
+        }
+
+        /// <summary>
+        /// Submit the process to NS and get a rtid.
+        /// </summary>
+        public static String SubmitProcess()
+        {
+            try
+            {
+                NetClient.PostData(GlobalContext.URL_SubmitProcess, new Dictionary<string, string>
+                    {
+                        { "token", MPController.CurrentTransaction.AuthToken },
+                        { "pid", MPController.CurrentTransaction.ProcessPID },
+                        { "from", "MasterPanel.NET" },
+                        { "renid", MPController.CurrentTransaction.RenUsername },
+                        { "bindingType", MPController.CurrentTransaction.IsolationType.ToString() },
+                        { "launchType", MPController.CurrentTransaction.LaunchType.ToString() },
+                        { "failureType", MPController.CurrentTransaction.FailureType.ToString() },
+                        { "binding", "" }  // todo static Resources.xml
+                    },
+                    out var retStr);
+                var response = JsonConvert.DeserializeObject<StdResponseEntity>(retStr);
+                return ReturnDataHelper.DecodeString(response);
+            }
+            catch (Exception ex)
+            {
+                LogUtils.LogLine("Submit process, exception occurred" + ex, "MPController", LogLevel.Error);
+                return null;
+            }
+        }
+
+        /// <summary>
+        /// Register mappings to NS.
+        /// </summary>
+        public static String RegisterMappings()
+        {
+            try
+            {
+                NetClient.PostData(GlobalContext.URL_UploadMapping, new Dictionary<string, string>
+                    {
+                        { "token", MPController.CurrentTransaction.AuthToken },
+                        { "rtid", GlobalContext.CurrentRTID },
+                        { "organgid", GlobalContext.ResourcesCOrganGid },
+                        { "dataversion", GlobalContext.ResourcesDataVersion },
+                        { "map", MPController.GeneratePostMapStringOfMappings() }
+                    },
+                    out var retStr);
+                var response = JsonConvert.DeserializeObject<StdResponseEntity>(retStr);
+                return ReturnDataHelper.DecodeString(response);
+            }
+            catch (Exception ex)
+            {
+                LogUtils.LogLine("Submit process, exception occurred" + ex, "MPController", LogLevel.Error);
+                return null;
+            }
+        }
+
+        /// <summary>
+        /// Generate a string to post to NS of current mapping description.
+        /// </summary>
+        /// <returns>descriptor string</returns>
+        public static string GeneratePostMapStringOfMappings()
+        {
+            var retStr = MPController.CurrentTransaction.Mappings.Aggregate("", (current, mapKVP) => current + String.Format("{0},{1};", mapKVP.Key, mapKVP.Value));
+            if (retStr.Length > 0)
+            {
+                retStr = retStr.Substring(0, retStr.Length - 1);
+            }
+            return retStr;
+        }
+
+        /// <summary>
         /// Get the name list of BOs in current transaction binding process.
         /// </summary>
         /// <returns>List of BO name strings</returns>
@@ -258,6 +347,92 @@ namespace RenMasterPanel.Controller
                 }
             }
             return String.Empty;
+        }
+
+        /// <summary>
+        /// Upload business role mappings to Name Service.
+        /// </summary>
+        public static void UploadBusinessRoleMapping()
+        {
+            throw new NotImplementedException();
+        }
+
+        /// <summary>
+        /// Get resource enum by its global id string prefix.
+        /// </summary>
+        /// <param name="gid">Global id string</param>
+        /// <returns>Resource enum</returns>
+        public static ResourceType GetResourceTypeByGid(string gid)
+        {
+            var gidItem = gid.Split('_');
+            switch (gidItem[0])
+            {
+                case "Human":
+                    return ResourceType.Human;
+                case "Agent":
+                    return ResourceType.Agent;
+                case "Dept":
+                    return ResourceType.Group;
+                case "Pos":
+                    return ResourceType.Position;
+                case "Capa":
+                    return ResourceType.Capability;
+                default:
+                    throw new ArgumentOutOfRangeException();
+            }
+        }
+
+        /// <summary>
+        /// Parse COrgan group type enum value to enum name.
+        /// </summary>
+        /// <param name="enumValObj">enum value</param>
+        /// <returns>enum name string</returns>
+        public static string ParseGroupType(object enumValObj)
+        {
+            switch (enumValObj)
+            {
+                case 0:
+                    return "Department";
+                case 1:
+                    return "Team";
+                case 3:
+                    return "Cluster";
+                case 4:
+                    return "Division";
+                case 5:
+                    return "Branch";
+                case 6:
+                    return "Unit";
+                default:
+                    return "Group";
+            }
+        }
+
+        /// <summary>
+        /// Parse COrgan agent type enum value to enum name.
+        /// </summary>
+        /// <param name="enumValObj">enum value</param>
+        /// <returns>enum name string</returns>
+        public static string ParseAgentType(object enumValObj)
+        {
+            switch (enumValObj)
+            {
+                case 0:
+                    return "Reentrant";
+                default:
+                    return "NotReentrant";
+            }
+        }
+
+        /// <summary>
+        /// Find a DataRow in a DataTable by its Global id.
+        /// </summary>
+        /// <param name="dt">DataTable instance</param>
+        /// <param name="gid">Global id of fetching row</param>
+        /// <returns>DataRow, null if not exist</returns>
+        public static DataRow FindResourceDataRow(DataTable dt, string gid)
+        {
+            return dt.Rows.Cast<DataRow>().FirstOrDefault(row => row["GlobalId"].ToString() == gid);
         }
     }
 }

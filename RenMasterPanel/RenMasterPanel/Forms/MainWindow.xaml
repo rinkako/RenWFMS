@@ -6,10 +6,10 @@
                       Title="Master Panel"
                       Height="400" Width="752" ResizeMode="CanMinimize" WindowStartupLocation="CenterScreen">
     <Grid>
-        <controls:MetroAnimatedSingleRowTabControl x:Name="tabControl" controls:TabControlHelper.Transition="Left" controls:TabControlHelper.IsUnderlined="True">
+        <controls:MetroAnimatedSingleRowTabControl SelectedIndex="0" x:Name="tabControl" controls:TabControlHelper.Transition="Left" controls:TabControlHelper.IsUnderlined="True">
             <TabItem Header="       选择流程       " controls:ControlsHelper.HeaderFontSize="22">
                 <Grid x:Name="Grid_Step1">
-                    <Label Content="选择流程目录和入口BO" FontSize="18" HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top"/>
+                    <Label Content="选择流程目录和入口BO" Foreground="DodgerBlue" FontSize="18" HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top"/>
                     <Button x:Name="Button_Step1_Open" Content="Open" HorizontalAlignment="Left" FontSize="12" Margin="10,48,0,0" VerticalAlignment="Top" Width="116" Click="Button_Step1_Open_OnClick"/>
                     <TextBox x:Name="TextBox_Step1_Open" Text="" IsReadOnly="True" HorizontalAlignment="Left" VerticalContentAlignment="Center" Height="30" Margin="140,48,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="596"/>
                     <GroupBox Header="流程中包含的Business Object" HorizontalAlignment="Left" Height="200" Margin="10,96,0,0" VerticalAlignment="Top" Width="726">
@@ -18,10 +18,9 @@
                     <Button Content="Next &gt;" HorizontalAlignment="Left" FontSize="12" Margin="620,301,0,0" VerticalAlignment="Top" Width="116" Click="Button_Step1_Next_OnClick"/>
                     <ComboBox x:Name="ComboBox_Step1_MainBO" HorizontalAlignment="Left" Margin="155,305,0,0" VerticalAlignment="Top" Width="309"/>
                     <Label Content="入口Business Object：" HorizontalAlignment="Left" Margin="10,305,0,0" VerticalAlignment="Top" Height="26" Width="140"/>
-                    <ComboBox x:Name="ComboBox_Step1_Processes" HorizontalAlignment="Left" Margin="469,17,0,0" VerticalAlignment="Top" Width="267" SelectedIndex="0" SelectionChanged="ComboBox_SelectionChanged">
+                    <ComboBox x:Name="ComboBox_Step1_Processes" HorizontalAlignment="Left" Margin="469,17,0,0" VerticalAlignment="Top" Width="267" SelectedIndex="0" SelectionChanged="ComboBox_Step1_ProcessChoose_SelectionChanged">
                         <System:String>&lt;从本地导入&gt;</System:String>
                     </ComboBox>
-                    <Button Content="Refresh" HorizontalAlignment="Left" Margin="389,17,0,0" VerticalAlignment="Top" Width="75" Click="ButtonBase_OnClick" Height="26"/>
                 </Grid>
             </TabItem>
             <TabItem Header="       角色映射       " controls:ControlsHelper.HeaderFontSize="22">
@@ -35,23 +34,58 @@
                         <System:String>Using Business Role Mapping</System:String>
                         <System:String>Using Resource.xml</System:String>
                     </ComboBox>
-                    <Label Content="Resource Register Type" Foreground="Gray" HorizontalAlignment="Left" Margin="5,27,0,0" VerticalAlignment="Top"/>
-                    <Label Name="Label_Step2_Operations" Content="Operations" Foreground="Gray" HorizontalAlignment="Left" Margin="5,95,0,0" VerticalAlignment="Top"/>
+                    <Label Content="注册资源方式" Foreground="Gray" HorizontalAlignment="Left" Margin="5,27,0,0" VerticalAlignment="Top"/>
+                    <Label Name="Label_Step2_Operations" Content="操作" Foreground="Gray" HorizontalAlignment="Left" Margin="5,95,0,0" VerticalAlignment="Top"/>
                     <Button Name="Button_Step2_ManageMap" Content="Manage Mappings" HorizontalAlignment="Left" Margin="10,125,0,0" VerticalAlignment="Top" Width="206" Click="Button_Step2_ManageMap_Click"/>
-                    <Button Name="Button_Step2_Load" Content="Load" HorizontalAlignment="Left" Margin="116,157,0,0" VerticalAlignment="Top" Width="100"/>
-                    <Button Name="Button_Step2_Save"  Content="Save" HorizontalAlignment="Left" Margin="10,157,0,0" VerticalAlignment="Top" Width="100"/>
-                    <Button Name="Button_Step2_Next" Content="Next &gt;" HorizontalAlignment="Left" FontSize="12" Margin="620,301,0,0" VerticalAlignment="Top" Width="116" Click="Button_Step1_Next_OnClick"/>
-                    <Label Name="Label_Step2_Preset" Content="Preset" Foreground="Gray" HorizontalAlignment="Left" Margin="5,206,0,0" VerticalAlignment="Top"/>
+                    <Button Name="Button_Step2_Load" Content="Load" HorizontalAlignment="Left" Margin="116,157,0,0" VerticalAlignment="Top" Width="100" Click="Button_Step2_Load_Click"/>
+                    <Button Name="Button_Step2_Save"  Content="Save" HorizontalAlignment="Left" Margin="10,157,0,0" VerticalAlignment="Top" Width="100" Click="Button_Step2_Save_Click"/>
+                    <Button Name="Button_Step2_Next" Content="Next &gt;" HorizontalAlignment="Left" FontSize="12" Margin="620,301,0,0" VerticalAlignment="Top" Width="116" Click="Button_Step2_Next_OnClick"/>
+                    <Label Name="Label_Step2_Preset" Content="预设" Foreground="Gray" HorizontalAlignment="Left" Margin="5,206,0,0" VerticalAlignment="Top"/>
                     <ComboBox Name="ComboBox_Step2_Preset" HorizontalAlignment="Left" Margin="10,231,0,0" VerticalAlignment="Top" Width="206" SelectedIndex="0">
                     </ComboBox>
 
                 </Grid>
             </TabItem>
             <TabItem Header="       创建事务       " controls:ControlsHelper.HeaderFontSize="22">
-                <Grid x:Name="Grid_Step3"/>
+                <Grid x:Name="Grid_Step3">
+                    <Label Content="流程名称：" Foreground="DodgerBlue" FontSize="16" HorizontalAlignment="Left" Margin="436,9,0,0" VerticalAlignment="Top" Width="100"/>
+                    <Label Content="流程业务对象清单：" Foreground="DodgerBlue" FontSize="16" HorizontalAlignment="Left" Margin="436,72,0,0" VerticalAlignment="Top"/>
+                    <Label Name="Label_Step3_ProcessName" Content="ProcessName" FontSize="14" HorizontalAlignment="Left" Margin="454,39,0,0" VerticalAlignment="Top" Width="282"/>
+                    <ListBox Name="ListBox_Step3_BOList" BorderThickness="2" BorderBrush="LightBlue" HorizontalAlignment="Left" Height="185" Margin="454,102,0,0" VerticalAlignment="Top" Width="287"/>
+                    <Rectangle Fill="LightBlue" Width="2" Margin="434,0,310,0"/>
+                    <Button x:Name="Button_Step3_Next" Content="Submit &gt;" HorizontalAlignment="Left" FontSize="12" Margin="620,301,0,0" VerticalAlignment="Top" Width="116" Click="Button_Step3_Next_OnClick"/>
+                    <Label Content="何时启动这个流程：" Foreground="Gray" FontSize="14" HorizontalAlignment="Left" Margin="10,11,0,0" VerticalAlignment="Top"/>
+                    <ComboBox Name="ComboBox_Step3_Launch" HorizontalAlignment="Left" Margin="10,39,0,0" VerticalAlignment="Top" Width="160" SelectedIndex="0" SelectionChanged="ComboBox_Step3_Launch_SelectionChanged">
+                        <System:String>提交即启动</System:String>
+                        <System:String>在指定时刻启动</System:String>
+                        <System:String>等待ProcessBegin信号</System:String>
+                        <System:String>不启动</System:String>
+                    </ComboBox>
+                    <DatePicker Name="DatePicker_Step3_LaunchByTime" Visibility="Hidden" HorizontalAlignment="Left" Margin="180,39,0,0" VerticalAlignment="Top" Width="110" SelectedDateFormat="Short"/>
+                    <TextBox Name="TextBox_Step3_Hour_LaunchByTime" Visibility="Hidden" Text="22" TextAlignment="Center" HorizontalAlignment="Left" Height="23" Margin="299,39,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="32" MaxLength="2" MaxLines="1"/>
+                    <Label Name="Label_Step3_h_LaunchByTime" Visibility="Hidden" Content=":" Margin="331,39,402,271"/>
+                    <TextBox Name="TextBox_Step3_Minute_LaunchByTime" Visibility="Hidden" Text="22" TextAlignment="Center" HorizontalAlignment="Left" Height="23" Margin="344,39,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="32" MaxLength="2" MaxLines="1"/>
+                    <Label Name="Label_Step3_m_LaunchByTime" Visibility="Hidden" Content=":" Margin="376,39,357,271"/>
+                    <TextBox Name="TextBox_Step3_Second_LaunchByTime" Visibility="Hidden" Text="22" TextAlignment="Center" HorizontalAlignment="Left" Height="23" Margin="389,39,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="32" MaxLength="2" MaxLines="1"/>
+                    <Label Content="当流程失败时：" Foreground="Gray" FontSize="14" HorizontalAlignment="Left" Margin="10,80,0,0" VerticalAlignment="Top"/>
+                    <ComboBox Name="ComboBox_Step3_WhenFailure" HorizontalAlignment="Left" Margin="10,108,0,0" VerticalAlignment="Top" Width="250" SelectedIndex="0">
+                        <System:String>尝试继续执行</System:String>
+                        <System:String>快速失败</System:String>
+                    </ComboBox>
+                    <Label Content="当映射的组织架构发生改变时：" Foreground="Gray" FontSize="14" HorizontalAlignment="Left" Margin="10,149,0,0" VerticalAlignment="Top"/>
+                    <ComboBox Name="ComboBox_Step3_WhenMapChange" HorizontalAlignment="Left" Margin="10,177,0,0" VerticalAlignment="Top" Width="250" SelectedIndex="0">
+                        <System:String>按可重复读的原则继续流程</System:String>
+                        <System:String>按脏读的原则继续流程</System:String>
+                        <System:String>快速失败</System:String>
+                    </ComboBox>
+                </Grid>
             </TabItem>
-            <TabItem Header="         确认         " controls:ControlsHelper.HeaderFontSize="22">
-                <Grid x:Name="Grid_Step4"/>
+            <TabItem Header="         回执         " controls:ControlsHelper.HeaderFontSize="22">
+                <Grid x:Name="Grid_Step4">
+                    <Label Content="流程已提交，执行ID：" Foreground="DodgerBlue" FontSize="18" HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top"/>
+                    <TextBlock Name="Label_Step4_Rtid" Text="RTID" TextAlignment="Center" FontSize="18" Foreground="ForestGreen" HorizontalAlignment="Left" Margin="10,68,0,0" VerticalAlignment="Top" Height="41" Width="726"/>
+                    <Button Content="debug start" HorizontalAlignment="Left" Margin="615,282,0,0" VerticalAlignment="Top" Width="121" Height="44"/>
+                </Grid>
             </TabItem>
         </controls:MetroAnimatedSingleRowTabControl>
         <Rectangle Fill="Transparent" IsHitTestVisible="True" Height="40" VerticalAlignment="Top"/>

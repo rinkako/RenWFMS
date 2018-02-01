@@ -21,8 +21,16 @@ namespace RenMasterPanel.Controller
 
         public String ProcessName { get; set; } = null;
 
+        public int IsolationType { get; set; } = 0;
+
+        public int FailureType { get; set; } = 0;
+
+        public int LaunchType { get; set; } = 0;
+
         public List<Dictionary<string, string>> BOVector { get; set; }
 
         public HashSet<string> BusinessRoleList { get; set; } = new HashSet<string>();
+
+        public List<KeyValuePair<String, String>> Mappings { get; set; } = new List<KeyValuePair<string, string>>();
     }
 }

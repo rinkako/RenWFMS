@@ -22,6 +22,7 @@ public class RenAuthEntity {
     private Integer state;
     private Timestamp createtimestamp;
     private String corganGateway;
+    private String urlsafeSignature;
 
     public void setLevel(int level) {
         this.level = level;
@@ -107,5 +108,15 @@ public class RenAuthEntity {
 
     public void setCorganGateway(String corganGateway) {
         this.corganGateway = corganGateway;
+    }
+
+    @Basic
+    @Column(name = "urlsafe_signature", nullable = true, length = -1)
+    public String getUrlsafeSignature() {
+        return urlsafeSignature;
+    }
+
+    public void setUrlsafeSignature(String urlsafeSignature) {
+        this.urlsafeSignature = urlsafeSignature;
     }
 }

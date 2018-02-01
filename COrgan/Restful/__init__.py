@@ -226,6 +226,17 @@ def GetAllConnections():
     return StartDash(argd, CGateway.RetrieveAllConnection, _ArgsException)
 
 
+@restfulBp.route("/ns/getdataversiongid", methods=["GET", "POST"])
+def GetDataVersionGid():
+    token = request.values.get('token')
+    renid = request.values.get('renid')
+    nsid = request.values.get('nsid')
+    argd = {"#token": token,
+            "#renid": renid,
+            "#nsid": nsid}
+    return StartDash(argd, CGateway.RetrieveDataVersionGid, _ArgsException)
+
+
 """
 Helper Methods
 """

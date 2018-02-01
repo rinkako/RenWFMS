@@ -64,7 +64,7 @@ public class NSExecutor extends Observable {
                             execResult.put("rtid", rtid);
                             break;
                         case "register":
-                            RoleMappingService.RegisterRoleMapService(rtid, (String) args.get("organGid"), (String) args.get("dataVersion"), Integer.valueOf((String) args.get("isolationType")), (String) args.get("map"));
+                            RoleMappingService.RegisterRoleMapService(rtid, (String) args.get("organGid"), (String) args.get("dataVersion"), (String) args.get("map"));
                             retStr = "OK";
                             execResult.put("rtid", rtid);
                             break;
@@ -89,6 +89,9 @@ public class NSExecutor extends Observable {
                             if (rtid != null) {
                                 execResult.put("rtid", rtid);
                             }
+                            break;
+                        case "getDataVersionAndGidFromCOrgan":
+                            retStr = RoleMappingService.GetDataVersionAndGidFromCOrgan((String) args.get("renid"), nst.getTransactionContext().getNsid());
                             break;
                     }
                     // prepare execution result
@@ -126,9 +129,8 @@ public class NSExecutor extends Observable {
                             RenBoEntity getBoEntity = NameSpacingService.GetBO((String) args.get("boid"), (String) args.get("rtid"));
                             retStr = SerializationUtil.JsonSerialization(getBoEntity, "");
                             break;
-                        case "SubmitLaunchProcess":
-                            RenRuntimerecordEntity submitLaunchProcessEntity = NameSpacingService.SubmitLaunchProcess((String) args.get("pid"), (String) args.get("rtid"), (String) args.get("from"), (String) args.get("renid"), (String) args.get("authoritySession"), (Integer) args.get("bindingType"), (String) args.get("binding"));
-                            retStr = SerializationUtil.JsonSerialization(submitLaunchProcessEntity, "");
+                        case "submitProcess":
+                            retStr = NameSpacingService.SubmitProcess((String) args.get("pid"), (String) args.get("from"), (String) args.get("renid"), (String) args.get("authoritySession"), Integer.parseInt((String) args.get("bindingType")), Integer.parseInt((String) args.get("launchType")), Integer.parseInt((String) args.get("failureType")), (String) args.get("binding"));
                             break;
                     }
                     // prepare execution result
