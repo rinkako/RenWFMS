@@ -183,6 +183,13 @@ namespace RenMasterPanel.Forms
         private void Button_Step2_ManageMap_Click(object sender, RoutedEventArgs e)
         {
             new ManageMappingForm().ShowDialog();
+            this.RefreshPreviewMappings();
         }
+        
+        private void RefreshPreviewMappings()
+        {
+            this.ListBox_Step2_PreviewMap.Items.Clear();
+        }
+
     }
 }

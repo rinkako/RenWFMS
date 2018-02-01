@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Linq;
 using System.Text;
 
@@ -23,5 +24,6 @@ namespace RenMasterPanel
 
         public static List<Dictionary<String, String>> Current_Ren_Process_List = null;
 
+        public static DataSet ResourcesDataSet = null;
     }
 }

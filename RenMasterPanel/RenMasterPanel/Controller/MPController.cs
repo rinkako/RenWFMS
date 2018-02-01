@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data;
 using System.IO;
 using System.Linq;
 using Newtonsoft.Json;
@@ -209,7 +210,11 @@ namespace RenMasterPanel.Controller
             }
         }
 
-        public static string GetAllResourceInCOrgan()
+        /// <summary>
+        /// Get all resources in the COrgan by ren auth user binding gateway.
+        /// </summary>
+        /// <returns>a DataSet of retrieved data</returns>
+        public static DataSet GetAllResourceInCOrgan()
         {
             try
             {
@@ -220,8 +225,7 @@ namespace RenMasterPanel.Controller
                     },
                     out var retStr);
                 var response = JsonConvert.DeserializeObject<StdResponseEntity>(retStr);
-                var dict = ReturnDataHelper.DecodeToDataSet(response);
-                return "";
+                return ReturnDataHelper.DecodeToDataSet(response);
             }
             catch (Exception ex)
             {

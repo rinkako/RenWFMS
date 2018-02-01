@@ -6,7 +6,7 @@
                       Title="Master Panel"
                       Height="400" Width="752" ResizeMode="CanMinimize" WindowStartupLocation="CenterScreen">
     <Grid>
-        <controls:MetroAnimatedSingleRowTabControl SelectedIndex="1" x:Name="tabControl" controls:TabControlHelper.Transition="Left" controls:TabControlHelper.IsUnderlined="True">
+        <controls:MetroAnimatedSingleRowTabControl x:Name="tabControl" controls:TabControlHelper.Transition="Left" controls:TabControlHelper.IsUnderlined="True">
             <TabItem Header="       选择流程       " controls:ControlsHelper.HeaderFontSize="22">
                 <Grid x:Name="Grid_Step1">
                     <Label Content="选择流程目录和入口BO" FontSize="18" HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top"/>
@@ -28,9 +28,7 @@
                 <Grid x:Name="Grid_Step2">
                     <GroupBox Header="Mapping Preview" HorizontalAlignment="Left" Height="286" Margin="230,10,0,0" VerticalAlignment="Top" Width="506">
                         <Grid>
-                            <ListBox BorderThickness="1" HorizontalAlignment="Left" Height="240" Margin="10,5,0,0" VerticalAlignment="Top" Width="220" BorderBrush="LightSkyBlue"/>
-                            <Label Content="→" FontSize="20" Foreground="Gray" HorizontalContentAlignment="Center" Margin="230,107,230,106"/>
-                            <ListBox BorderThickness="1" Height="240" Margin="0,5,10,0" VerticalAlignment="Top" BorderBrush="LightSkyBlue" HorizontalAlignment="Right" Width="220"/>
+                            <ListBox Name="ListBox_Step2_PreviewMap" BorderThickness="1" HorizontalAlignment="Left" Height="240" Margin="10,5,0,0" VerticalAlignment="Top" Width="474" BorderBrush="LightSkyBlue"/>
                         </Grid>
                     </GroupBox>
                     <ComboBox HorizontalAlignment="Left" Margin="10,52,0,0" VerticalAlignment="Top" Width="206" SelectedIndex="0">
