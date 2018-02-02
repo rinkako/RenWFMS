@@ -51,10 +51,6 @@ public class SCXMLReaderTest {
 
 
 
-
-
-
-
     @Test
     public void testSCXMLReader() throws Exception {
 
@@ -111,6 +107,7 @@ public class SCXMLReaderTest {
         for(Task task:scxml.getTasks().getTaskList()){
             System.out.println(task.getName()+":"+task.getId());
         }
+
         Evaluator evaluator = new JexlEvaluator();
         SCXMLExecutor executor = new SCXMLExecutor(evaluator, new MulitStateMachineDispatcher(), new SimpleErrorReporter());
         executor.setStateMachine(scxml);
@@ -118,32 +115,41 @@ public class SCXMLReaderTest {
 
         TriggerEvent tEvt = new TriggerEvent("submit", TriggerEvent.SIGNAL_EVENT, null);
         executor.triggerEvent(tEvt);
+        System.out.println("send submit");
 
         tEvt = new TriggerEvent("produced", TriggerEvent.SIGNAL_EVENT, null);
         executor.triggerEvent(tEvt);
+        System.out.println("send produced");
 
         EventDataPackage edp = new EventDataPackage();
         edp.passed = "1";
         tEvt = new TriggerEvent("testCompleted", TriggerEvent.SIGNAL_EVENT, edp);
         executor.triggerEvent(tEvt);
+        System.out.println("send testCompleted");
 
         tEvt = new TriggerEvent("delivered", TriggerEvent.SIGNAL_EVENT, null);
         executor.triggerEvent(tEvt);
+        System.out.println("send delivered");
 
         tEvt = new TriggerEvent("archived", TriggerEvent.SIGNAL_EVENT, null);
         executor.triggerEvent(tEvt);
+        System.out.println("send archived");
 
         tEvt = new TriggerEvent("requestCheck", TriggerEvent.SIGNAL_EVENT, null);
         executor.triggerEvent(tEvt);
+        System.out.println("send requestCheck");
 
         tEvt = new TriggerEvent("calculated", TriggerEvent.SIGNAL_EVENT, null);
         executor.triggerEvent(tEvt);
+        System.out.println("send calculated");
 
         tEvt = new TriggerEvent("paid", TriggerEvent.SIGNAL_EVENT, null);
         executor.triggerEvent(tEvt);
+        System.out.println("send paid");
 
         tEvt = new TriggerEvent("archived", TriggerEvent.SIGNAL_EVENT, null);
         executor.triggerEvent(tEvt);
+        System.out.println("send archived");
 
         Assert.assertNotNull(scxml);
     }

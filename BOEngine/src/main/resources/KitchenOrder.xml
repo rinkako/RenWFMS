@@ -1,66 +1,98 @@
 <businessclass name="KitchenOrder" version="1.0" xmlns="http://www.w3.org/2005/07/scxml">
- <tasks>
-    <task id="produceDishes" brole="agent" name="produceDishesTask" event="produced">
-    </task>
-    <task id="testQuality" brole="agent" name="testQualityTask" event="testCompleted">
-    </task>
-    <task id="deliver" brole="agent" name="deliverTask" event="delivered">
-    </task>
-    <task id="archive" brole="agent" name="archiveTask" event="archived">
-    </task>
- </tasks>
- <state id="Initial">
-  <transition target="Producing"></transition>
- </state>
- <state id="Producing">
-  <onentry>
-   <call name="produceDishesTask"></call>
-  </onentry>
-  <transition event="produced" target="QualityTesting"></transition>
- </state>
- <state id="QualityTesting">
-  <onentry>
-   <call name="testQualityTask"></call>
-  </onentry>
-  <transition event="testCompleted" cond="_event.data.passed eq 0" target="Producing"></transition>
-  <transition event="testCompleted" cond="_event.data.passed eq 1" target="Delivering"></transition>
- </state>
- <state id="Delivering">
-  <onentry>
-   <call name="deliverTask"></call>
-  </onentry>
-  <transition event="delivered" target="Archiving">
-  	<send event="delivered" type="scxml" messageMode="TO_PARENT"></send>
-  </transition>
- </state>
- <state id="Archiving">
-  <onentry>
-   <call name="archiveTask"></call>
-  </onentry>
-  <transition event="archived" target="KOFinal">
-   <send event="finish" type="scxml" messageMode="TO_PARENT"></send>
-  </transition>
- </state>
- <final id="KOFinal"></final>
- <layout h="816" w="1186" x="0" y="0">
-  <workflowNode h="75" id="Initial" w="75" x="362" y="342">
-   <workflowEdge event="" source="Initial" target="Producing"></workflowEdge>
-  </workflowNode>
-  <workflowNode h="75" id="Producing" w="75" x="500" y="340">
-   <workflowEdge event="produced" source="Producing" target="QualityTesting"></workflowEdge>
-  </workflowNode>
-  <workflowNode h="75" id="QualityTesting" w="75" x="670" y="340">
-   <workflowEdge event="notPass" source="QualityTesting" target="Producing">null
-    <edgePoint x="617" y="320"></edgePoint>
-   </workflowEdge>
-   <workflowEdge event="allPassed" source="QualityTesting" target="Delivering"></workflowEdge>
-  </workflowNode>
-  <workflowNode h="75" id="Delivering" w="75" x="670" y="470">
-   <workflowEdge event="delivered" source="Delivering" target="Archiving"></workflowEdge>
-  </workflowNode>
-  <workflowNode h="75" id="Archiving" w="75" x="510" y="470">
-   <workflowEdge event="archived" source="Archiving" target="Final"></workflowEdge>
-  </workflowNode>
-  <workflowNode h="75" id="Final" w="75" x="360" y="470"></workflowNode>
- </layout>
+
+    <tasks>
+        <task id="produceDishes" brole="agent" name="produceDishesTask" event="produced">
+        </task>
+        <task id="testQuality" brole="agent" name="testQualityTask" event="testCompleted">
+        </task>
+        <task id="deliver" brole="agent" name="deliverTask" event="delivered">
+        </task>
+        <task id="archive" brole="agent" name="archiveTask" event="archived">
+        </task>
+    </tasks>
+
+    <state id="Initial">
+        <onentry>
+            <log expr="'KO entering Initial state'"/>
+        </onentry>
+        <transition target="Producing"></transition>
+        <onexit>
+            <log expr="'KO exiting Initial state'"/>
+        </onexit>
+    </state>
+    <state id="Producing">
+        <onentry>
+            <!--<call name="produceDishesTask"></call>-->
+            <log expr="'KO entering Producing state'"/>
+        </onentry>
+        <transition event="produced" target="QualityTesting"></transition>
+        <onexit>
+            <log expr="'KO exiting Producing state'"/>
+        </onexit>
+    </state>
+    <state id="QualityTesting">
+        <onentry>
+            <!--<call name="testQualityTask"></call>-->
+            <log expr="'KO entering QualityTesting state'"/>
+        </onentry>
+        <transition event="testCompleted" cond="_event.data.passed eq 0" target="Producing"></transition>
+        <transition event="testCompleted" cond="_event.data.passed eq 1" target="Delivering"></transition>
+        <onexit>
+            <log expr="'KO exiting QualityTesting state'"/>
+        </onexit>
+    </state>
+    <state id="Delivering">
+        <onentry>
+            <!--<call name="deliverTask"></call>-->
+            <log expr="'KO entering Delivering state'"/>
+        </onentry>
+        <transition event="delivered" target="Archiving">
+            <send event="delivered" type="scxml" messageMode="TO_PARENT"></send>
+        </transition>
+        <onexit>
+            <log expr="'KO exiting Delivering state'"/>
+        </onexit>
+    </state>
+    <state id="Archiving">
+        <onentry>
+            <!--<call name="archiveTask"></call>-->
+            <log expr="'KO entering Archiving state'"/>
+        </onentry>
+        <transition event="archived" target="KOFinal">
+            <send event="finish" type="scxml" messageMode="TO_PARENT"></send>
+            <log expr="'KO sends the finish event to its parent'"/>
+        </transition>
+        <onexit>
+            <log expr="'KO exiting Archiving state'"/>
+        </onexit>
+    </state>
+    <final id="KOFinal">
+        <onentry>
+            <log expr="'KO entering KOFinal state'"/>
+        </onentry>
+        <onexit>
+            <log expr="'KO exiting KOFinal state'"/>
+        </onexit>
+    </final>
+    <layout h="816" w="1186" x="0" y="0">
+        <workflowNode h="75" id="Initial" w="75" x="362" y="342">
+            <workflowEdge event="" source="Initial" target="Producing"></workflowEdge>
+        </workflowNode>
+        <workflowNode h="75" id="Producing" w="75" x="500" y="340">
+            <workflowEdge event="produced" source="Producing" target="QualityTesting"></workflowEdge>
+        </workflowNode>
+        <workflowNode h="75" id="QualityTesting" w="75" x="670" y="340">
+            <workflowEdge event="notPass" source="QualityTesting" target="Producing">null
+                <edgePoint x="617" y="320"></edgePoint>
+            </workflowEdge>
+            <workflowEdge event="allPassed" source="QualityTesting" target="Delivering"></workflowEdge>
+        </workflowNode>
+        <workflowNode h="75" id="Delivering" w="75" x="670" y="470">
+            <workflowEdge event="delivered" source="Delivering" target="Archiving"></workflowEdge>
+        </workflowNode>
+        <workflowNode h="75" id="Archiving" w="75" x="510" y="470">
+            <workflowEdge event="archived" source="Archiving" target="Final"></workflowEdge>
+        </workflowNode>
+        <workflowNode h="75" id="Final" w="75" x="360" y="470"></workflowNode>
+    </layout>
 </businessclass>
