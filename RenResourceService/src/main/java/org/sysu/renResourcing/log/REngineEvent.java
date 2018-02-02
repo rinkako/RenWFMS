@@ -1,7 +1,7 @@
 package org.sysu.renResourcing.log;
 
-import org.sysu.renResourcing.context.RIdentifier;
-import org.sysu.renResourcing.context.RServiceType;
+import org.sysu.renResourcing.basic.RIdentifier;
+import org.sysu.renResourcing.basic.enums.RServiceType;
 import org.sysu.renResourcing.context.RSession;
 
 import java.util.Date;

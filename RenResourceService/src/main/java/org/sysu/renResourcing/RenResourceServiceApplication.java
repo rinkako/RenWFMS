@@ -1,3 +1,7 @@
+/*
+ * Project Ren @ 2018
+ * Rinkako, Ariana, Gordan. SYSU SDCS.
+ */
 package org.sysu.renResourcing;
 
 import org.springframework.boot.SpringApplication;
@@ -5,6 +9,9 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.context.embedded.ConfigurableEmbeddedServletContainer;
 import org.springframework.boot.context.embedded.EmbeddedServletContainerCustomizer;
 
+/**
+ * Ren Resource Service Entry Point.
+ */
 @SpringBootApplication
 public class RenResourceServiceApplication implements EmbeddedServletContainerCustomizer {
 

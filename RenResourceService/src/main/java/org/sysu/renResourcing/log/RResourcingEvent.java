@@ -1,6 +1,6 @@
 package org.sysu.renResourcing.log;
 
-import org.sysu.renResourcing.context.RIdentifier;
+import org.sysu.renResourcing.basic.RIdentifier;
 import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 
 /**

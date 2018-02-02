@@ -4,6 +4,7 @@ import org.sysu.renResourcing.basic.RSelector;
 import org.sysu.renResourcing.context.RParticipant;
 import org.sysu.renResourcing.context.ResourcingContext;
 
+import java.io.Serializable;
 import java.util.HashMap;
 import java.util.HashSet;
 
@@ -13,7 +14,12 @@ import java.util.HashSet;
  * Usage : Base allocator for all implemented allocators.
  *         Allocator is used to choose a participant to handle task from candidate set.
  */
-public abstract class RAllocator extends RSelector {
+public abstract class RAllocator extends RSelector implements Serializable {
+    /**
+     * Serial version UID.
+     */
+    private static final long serialVersionUID = 1L;
+
     /**
      * Create a new allocator.
      * @param id unique id for selector fetching

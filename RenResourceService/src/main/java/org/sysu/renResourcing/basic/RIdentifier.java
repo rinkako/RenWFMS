@@ -1,4 +1,4 @@
-package org.sysu.renResourcing.context;
+package org.sysu.renResourcing.basic;
 import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 
 import java.io.Serializable;

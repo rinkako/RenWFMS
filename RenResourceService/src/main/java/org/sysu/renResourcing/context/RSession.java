@@ -1,5 +1,7 @@
 package org.sysu.renResourcing.context;
 
+import org.sysu.renResourcing.basic.RIdentifier;
+
 /**
  * Author: Rinkako
  * Date  : 2017/11/14

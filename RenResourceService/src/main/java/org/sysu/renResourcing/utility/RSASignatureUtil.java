@@ -5,8 +5,6 @@
 package org.sysu.renResourcing.utility;
 
 import org.apache.commons.codec.binary.Base64;
-import org.sysu.renResourcing.GlobalContext;
-
 import java.security.*;
 import java.security.spec.PKCS8EncodedKeySpec;
 import java.security.spec.X509EncodedKeySpec;

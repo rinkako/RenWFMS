@@ -4,7 +4,7 @@
  */
 package org.sysu.renResourcing;
 
-import org.sysu.renResourcing.basic.TrackerPhase;
+import org.sysu.renResourcing.basic.enums.TrackerPhase;
 import org.sysu.renResourcing.context.ResourcingContext;
 
 import java.util.Observable;

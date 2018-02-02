@@ -8,6 +8,7 @@ import org.sysu.renResourcing.basic.RSelector;
 import org.sysu.renResourcing.context.RParticipant;
 import org.sysu.renResourcing.context.ResourcingContext;
 
+import java.io.Serializable;
 import java.util.HashMap;
 import java.util.HashSet;
 
@@ -17,7 +18,12 @@ import java.util.HashSet;
  * Usage : Base allocator for all implemented constraints.
  *         Constraint is used to make the work item allocation in some specific way.
  */
-public abstract class RConstraint extends RSelector {
+public abstract class RConstraint extends RSelector implements Serializable {
+    /**
+     * Serial version UID.
+     */
+    private static final long serialVersionUID = 1L;
+
     /**
      * Create a new filter.
      * @param id unique id for selector fetching

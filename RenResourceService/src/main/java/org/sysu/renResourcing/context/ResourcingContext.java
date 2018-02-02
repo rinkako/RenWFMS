@@ -1,5 +1,8 @@
 package org.sysu.renResourcing.context;
 
+import org.sysu.renResourcing.basic.RIdentifier;
+import org.sysu.renResourcing.basic.enums.RServiceType;
+
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.HashMap;
