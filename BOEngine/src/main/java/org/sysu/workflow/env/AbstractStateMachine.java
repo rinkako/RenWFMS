@@ -25,7 +25,7 @@ import java.net.URL;
  * developers to use this model directly into the corresponding code
  * artifacts. The resulting artifacts tend to be much simpler, embody
  * a useful separation of concerns and are easier to understand and
- * maintain. As the size of the modeled entity grows, these benefits
+ * maintain. As the size of the modeled context grows, these benefits
  * become more apparent.</p>
  * <p/>
  * <p>This approach functions by registering an SCXMLListener that gets

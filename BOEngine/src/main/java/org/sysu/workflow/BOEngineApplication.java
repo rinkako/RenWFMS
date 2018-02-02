@@ -11,7 +11,7 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
 
 @SpringBootApplication
 @EnableTransactionManagement
-@EntityScan(basePackages = "org.sysu.workflow.restful.entity")
+@EntityScan(basePackages = "org.sysu.workflow.restful.context")
 public class BOEngineApplication implements EmbeddedServletContainerCustomizer {
     public static void main(String[] args) {
         SpringApplication.run(BOEngineApplication.class, args);

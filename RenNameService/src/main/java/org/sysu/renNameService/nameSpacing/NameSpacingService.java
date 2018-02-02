@@ -171,7 +171,7 @@ public class NameSpacingService {
     }
 
     /**
-     * Get a BO entity by its id.
+     * Get a BO context by its id.
      * @param boid BO unique id
      * @return {@code RenBoEntity} instance
      */
@@ -185,7 +185,7 @@ public class NameSpacingService {
         }
         catch (Exception ex) {
             transaction.rollback();
-            LogUtil.Log("Get BO entity but exception occurred, service rollback, " + ex, NameSpacingService.class.getName(), LogUtil.LogLevelType.ERROR, rtid);
+            LogUtil.Log("Get BO context but exception occurred, service rollback, " + ex, NameSpacingService.class.getName(), LogUtil.LogLevelType.ERROR, rtid);
         }
         return null;
     }

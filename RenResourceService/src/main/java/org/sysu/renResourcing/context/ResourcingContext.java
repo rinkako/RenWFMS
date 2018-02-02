@@ -1,4 +1,4 @@
-package org.sysu.renResourcing.entity;
+package org.sysu.renResourcing.context;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -11,11 +11,11 @@ import java.util.UUID;
  * Usage : RenResourcing service object, it is used as an
  *         internal data package for service invoking.
  */
-public class RServiceItem extends RIdentifier {
+public class ResourcingContext extends RIdentifier {
     /**
-     * Create new RServiceItem instance
+     * Create new ResourcingContext instance
      */
-    public RServiceItem() {
+    public ResourcingContext() {
         this.Id = UUID.randomUUID().toString().replace("-", "");
     }
 

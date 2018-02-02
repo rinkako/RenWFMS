@@ -1,12 +1,11 @@
 package org.sysu.renResourcing.restful.controller;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import org.sysu.renResourcing.restful.dto.DTOUtil;
 import org.sysu.renResourcing.restful.dto.ReturnElement;
 import org.sysu.renResourcing.restful.dto.ReturnModel;
 import org.sysu.renResourcing.restful.dto.StatusCode;
-import org.sysu.renResourcing.util.TimestampUtil;
+import org.sysu.renResourcing.utility.TimestampUtil;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -24,7 +23,7 @@ public class AgentController {
     public ReturnModel ExceptionHandlerFunction(String exception) {
         ReturnModel rnModel = new ReturnModel();
         rnModel.setCode(StatusCode.Exception);
-        rnModel.setRs(TimestampUtil.GetTimeStamp() + " 0");
+        rnModel.setRs(TimestampUtil.GetTimeStampString() + " 0");
 
         ReturnElement returnElement = new ReturnElement();
         returnElement.setMessage(exception);
@@ -68,7 +67,7 @@ public class AgentController {
 
             if (CheckToken()) {
                 rnModel.setCode(StatusCode.OK);
-                rnModel.setRs(TimestampUtil.GetTimeStamp() + " 0");
+                rnModel.setRs(TimestampUtil.GetTimeStampString() + " 0");
                 ReturnElement returnElement = new ReturnElement();
                 returnElement.setData("GetAgent");
                 rnModel.setReturnElement(returnElement);
@@ -117,7 +116,7 @@ public class AgentController {
 
             if (CheckToken()) {
                 rnModel.setCode(StatusCode.OK);
-                rnModel.setRs(TimestampUtil.GetTimeStamp() + " 0");
+                rnModel.setRs(TimestampUtil.GetTimeStampString() + " 0");
                 ReturnElement returnElement = new ReturnElement();
                 returnElement.setData("SetAgent");
                 rnModel.setReturnElement(returnElement);
@@ -157,7 +156,7 @@ public class AgentController {
 
             if (CheckToken()) {
                 rnModel.setCode(StatusCode.OK);
-                rnModel.setRs(TimestampUtil.GetTimeStamp() + " 0");
+                rnModel.setRs(TimestampUtil.GetTimeStampString() + " 0");
                 ReturnElement returnElement = new ReturnElement();
                 returnElement.setData("ContainAgent");
                 rnModel.setReturnElement(returnElement);
@@ -203,7 +202,7 @@ public class AgentController {
 
             if (CheckToken()) {
                 rnModel.setCode(StatusCode.OK);
-                rnModel.setRs(TimestampUtil.GetTimeStamp() + " 0");
+                rnModel.setRs(TimestampUtil.GetTimeStampString() + " 0");
                 ReturnElement returnElement = new ReturnElement();
                 returnElement.setData("AddAgent");
                 rnModel.setReturnElement(returnElement);
@@ -243,7 +242,7 @@ public class AgentController {
 
             if (CheckToken()) {
                 rnModel.setCode(StatusCode.OK);
-                rnModel.setRs(TimestampUtil.GetTimeStamp() + " 0");
+                rnModel.setRs(TimestampUtil.GetTimeStampString() + " 0");
                 ReturnElement returnElement = new ReturnElement();
                 returnElement.setData("RemoveAgent");
                 rnModel.setReturnElement(returnElement);
@@ -286,7 +285,7 @@ public class AgentController {
 
             if (CheckToken()) {
                 rnModel.setCode(StatusCode.OK);
-                rnModel.setRs(TimestampUtil.GetTimeStamp() + " 0");
+                rnModel.setRs(TimestampUtil.GetTimeStampString() + " 0");
                 ReturnElement returnElement = new ReturnElement();
                 returnElement.setData("AddAgentRole");
                 rnModel.setReturnElement(returnElement);
@@ -329,7 +328,7 @@ public class AgentController {
 
             if (CheckToken()) {
                 rnModel.setCode(StatusCode.OK);
-                rnModel.setRs(TimestampUtil.GetTimeStamp() + " 0");
+                rnModel.setRs(TimestampUtil.GetTimeStampString() + " 0");
                 ReturnElement returnElement = new ReturnElement();
                 returnElement.setData("RemoveAgentRole");
                 rnModel.setReturnElement(returnElement);

@@ -2,7 +2,7 @@
 package org.sysu.workflow.model;
 
 /**
- * A <code>BodyContainer</code> is an entity that retains the element body
+ * A <code>BodyContainer</code> is an context that retains the element body
  * text from the document.
  */
 public interface BodyContainer {

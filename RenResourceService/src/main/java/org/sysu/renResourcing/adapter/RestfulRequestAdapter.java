@@ -1,6 +1,6 @@
 package org.sysu.renResourcing.adapter;
 
-import org.sysu.renResourcing.entity.RServiceItem;
+import org.sysu.renResourcing.context.ResourcingContext;
 
 /**
  * Author: Rinkako
@@ -15,7 +15,7 @@ public class RestfulRequestAdapter implements IRPCRequestAdapter {
      * @param req request string
      * @return RenResourcing service object
      */
-    public RServiceItem RequestReceived(String req) {
+    public ResourcingContext RequestReceived(String req) {
         return null;
     }
 }

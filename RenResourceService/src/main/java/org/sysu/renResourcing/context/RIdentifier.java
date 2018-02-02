@@ -1,4 +1,4 @@
-package org.sysu.renResourcing.entity;
+package org.sysu.renResourcing.context;
 import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 
 import java.io.Serializable;
@@ -6,7 +6,7 @@ import java.io.Serializable;
 /**
  * Author: Rinkako
  * Date  : 2017/11/14
- * Usage : A abstract class for the entity which can be an
+ * Usage : A abstract class for the context which can be an
  *         identifier and can be stored to steady memory.
  */
 public abstract class RIdentifier implements Serializable {

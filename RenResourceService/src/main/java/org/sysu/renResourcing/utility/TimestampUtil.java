@@ -1,14 +1,11 @@
-/*
- * Project Ren @ 2018
- * Rinkako, Ariana, Gordan. SYSU SDCS.
- */
-package org.sysu.renNameService.utility;
+package org.sysu.renResourcing.utility;
+
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
 /**
  * Author: Rinkako
- * Date  : 2018/1/18
+ * Date  : 2017/12/14
  * Usage : This utility used for getting the timestamp.
  */
 public class TimestampUtil {
@@ -25,4 +22,3 @@ public class TimestampUtil {
      */
     private static SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 }
-

@@ -29,12 +29,12 @@ public class EventVariable implements Serializable {
     private final String type;
 
     /**
-     * The sendid in case the sending entity has specified a value for this.
+     * The sendid in case the sending context has specified a value for this.
      */
     private final String sendid;
 
     /**
-     * The URI string of the originating entity in an external event.
+     * The URI string of the originating context in an external event.
      */
     private final String origin;
 
@@ -49,7 +49,7 @@ public class EventVariable implements Serializable {
     private final String invokeid;
 
     /**
-     * Whatever data the sending entity chose to include in the event
+     * Whatever data the sending context chose to include in the event
      */
     private final Object data;
 

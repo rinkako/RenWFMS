@@ -87,7 +87,7 @@ public class TriggerEvent implements Serializable {
     /**
      * The predefined SCXML 'error.communication' Event name
      * <p>
-     * Indicates that an error has occurred while trying to communicate with an external entity.
+     * Indicates that an error has occurred while trying to communicate with an external context.
      * </p>
      *
      * @see <a href="http://www.w3.org/TR/scxml/#errorsAndEvents">

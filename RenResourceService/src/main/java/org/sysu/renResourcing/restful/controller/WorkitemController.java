@@ -5,7 +5,7 @@ import org.sysu.renResourcing.restful.dto.DTOUtil;
 import org.sysu.renResourcing.restful.dto.ReturnElement;
 import org.sysu.renResourcing.restful.dto.ReturnModel;
 import org.sysu.renResourcing.restful.dto.StatusCode;
-import org.sysu.renResourcing.util.TimestampUtil;
+import org.sysu.renResourcing.utility.TimestampUtil;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -22,7 +22,7 @@ public class WorkitemController {
     public ReturnModel ExceptionHandlerFunction(String exception) {
         ReturnModel rnModel = new ReturnModel();
         rnModel.setCode(StatusCode.Exception);
-        rnModel.setRs(TimestampUtil.GetTimeStamp() + " 0");
+        rnModel.setRs(TimestampUtil.GetTimeStampString() + " 0");
 
         ReturnElement returnElement = new ReturnElement();
         returnElement.setMessage(exception);
@@ -62,7 +62,7 @@ public class WorkitemController {
 
             if (CheckToken()) {
                 rnModel.setCode(StatusCode.OK);
-                rnModel.setRs(TimestampUtil.GetTimeStamp() + " 0");
+                rnModel.setRs(TimestampUtil.GetTimeStampString() + " 0");
                 ReturnElement returnElement = new ReturnElement();
                 returnElement.setData("GetWorkitemList");
                 rnModel.setReturnElement(returnElement);
@@ -102,7 +102,7 @@ public class WorkitemController {
 
             if (CheckToken()) {
                 rnModel.setCode(StatusCode.OK);
-                rnModel.setRs(TimestampUtil.GetTimeStamp() + " 0");
+                rnModel.setRs(TimestampUtil.GetTimeStampString() + " 0");
                 ReturnElement returnElement = new ReturnElement();
                 returnElement.setData("GetWorkitem");
                 rnModel.setReturnElement(returnElement);
@@ -142,7 +142,7 @@ public class WorkitemController {
 
             if (CheckToken()) {
                 rnModel.setCode(StatusCode.OK);
-                rnModel.setRs(TimestampUtil.GetTimeStamp() + " 0");
+                rnModel.setRs(TimestampUtil.GetTimeStampString() + " 0");
                 ReturnElement returnElement = new ReturnElement();
                 returnElement.setData("SetWorkitem");
                 rnModel.setReturnElement(returnElement);
@@ -182,7 +182,7 @@ public class WorkitemController {
 
             if (CheckToken()) {
                 rnModel.setCode(StatusCode.OK);
-                rnModel.setRs(TimestampUtil.GetTimeStamp() + " 0");
+                rnModel.setRs(TimestampUtil.GetTimeStampString() + " 0");
                 ReturnElement returnElement = new ReturnElement();
                 returnElement.setData("StartWorkitem");
                 rnModel.setReturnElement(returnElement);
@@ -222,7 +222,7 @@ public class WorkitemController {
 
             if (CheckToken()) {
                 rnModel.setCode(StatusCode.OK);
-                rnModel.setRs(TimestampUtil.GetTimeStamp() + " 0");
+                rnModel.setRs(TimestampUtil.GetTimeStampString() + " 0");
                 ReturnElement returnElement = new ReturnElement();
                 returnElement.setData("RestartWorkitem");
                 rnModel.setReturnElement(returnElement);
@@ -262,7 +262,7 @@ public class WorkitemController {
 
             if (CheckToken()) {
                 rnModel.setCode(StatusCode.OK);
-                rnModel.setRs(TimestampUtil.GetTimeStamp() + " 0");
+                rnModel.setRs(TimestampUtil.GetTimeStampString() + " 0");
                 ReturnElement returnElement = new ReturnElement();
                 returnElement.setData("CompleteWorkitem");
                 rnModel.setReturnElement(returnElement);
@@ -302,7 +302,7 @@ public class WorkitemController {
 
             if (CheckToken()) {
                 rnModel.setCode(StatusCode.OK);
-                rnModel.setRs(TimestampUtil.GetTimeStamp() + " 0");
+                rnModel.setRs(TimestampUtil.GetTimeStampString() + " 0");
                 ReturnElement returnElement = new ReturnElement();
                 returnElement.setData("AcceptWorkitem");
                 rnModel.setReturnElement(returnElement);
@@ -342,7 +342,7 @@ public class WorkitemController {
 
             if (CheckToken()) {
                 rnModel.setCode(StatusCode.OK);
-                rnModel.setRs(TimestampUtil.GetTimeStamp() + " 0");
+                rnModel.setRs(TimestampUtil.GetTimeStampString() + " 0");
                 ReturnElement returnElement = new ReturnElement();
                 returnElement.setData("AllocateWorkitem");
                 rnModel.setReturnElement(returnElement);
@@ -382,7 +382,7 @@ public class WorkitemController {
 
             if (CheckToken()) {
                 rnModel.setCode(StatusCode.OK);
-                rnModel.setRs(TimestampUtil.GetTimeStamp() + " 0");
+                rnModel.setRs(TimestampUtil.GetTimeStampString() + " 0");
                 ReturnElement returnElement = new ReturnElement();
                 returnElement.setData("DeallocateWorktem");
                 rnModel.setReturnElement(returnElement);
@@ -422,7 +422,7 @@ public class WorkitemController {
 
             if (CheckToken()) {
                 rnModel.setCode(StatusCode.OK);
-                rnModel.setRs(TimestampUtil.GetTimeStamp() + " 0");
+                rnModel.setRs(TimestampUtil.GetTimeStampString() + " 0");
                 ReturnElement returnElement = new ReturnElement();
                 returnElement.setData("SkipWorkitem");
                 rnModel.setReturnElement(returnElement);
@@ -462,7 +462,7 @@ public class WorkitemController {
 
             if (CheckToken()) {
                 rnModel.setCode(StatusCode.OK);
-                rnModel.setRs(TimestampUtil.GetTimeStamp() + " 0");
+                rnModel.setRs(TimestampUtil.GetTimeStampString() + " 0");
                 ReturnElement returnElement = new ReturnElement();
                 returnElement.setData("SuspendWorkitem");
                 rnModel.setReturnElement(returnElement);
@@ -502,7 +502,7 @@ public class WorkitemController {
 
             if (CheckToken()) {
                 rnModel.setCode(StatusCode.OK);
-                rnModel.setRs(TimestampUtil.GetTimeStamp() + " 0");
+                rnModel.setRs(TimestampUtil.GetTimeStampString() + " 0");
                 ReturnElement returnElement = new ReturnElement();
                 returnElement.setData("UnsuspendWorkitem");
                 rnModel.setReturnElement(returnElement);
@@ -542,7 +542,7 @@ public class WorkitemController {
 
             if (CheckToken()) {
                 rnModel.setCode(StatusCode.OK);
-                rnModel.setRs(TimestampUtil.GetTimeStamp() + " 0");
+                rnModel.setRs(TimestampUtil.GetTimeStampString() + " 0");
                 ReturnElement returnElement = new ReturnElement();
                 returnElement.setData("OfferWorkitem");
                 rnModel.setReturnElement(returnElement);
@@ -582,7 +582,7 @@ public class WorkitemController {
 
             if (CheckToken()) {
                 rnModel.setCode(StatusCode.OK);
-                rnModel.setRs(TimestampUtil.GetTimeStamp() + " 0");
+                rnModel.setRs(TimestampUtil.GetTimeStampString() + " 0");
                 ReturnElement returnElement = new ReturnElement();
                 returnElement.setData("UnofferWorkitem");
                 rnModel.setReturnElement(returnElement);

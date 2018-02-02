@@ -1,4 +1,4 @@
-package org.sysu.renResourcing.entity;
+package org.sysu.renResourcing.context;
 
 import java.io.Serializable;
 

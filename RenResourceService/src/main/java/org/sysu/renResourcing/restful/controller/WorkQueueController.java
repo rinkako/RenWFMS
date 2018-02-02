@@ -5,7 +5,7 @@ import org.sysu.renResourcing.restful.dto.DTOUtil;
 import org.sysu.renResourcing.restful.dto.ReturnElement;
 import org.sysu.renResourcing.restful.dto.ReturnModel;
 import org.sysu.renResourcing.restful.dto.StatusCode;
-import org.sysu.renResourcing.util.TimestampUtil;
+import org.sysu.renResourcing.utility.TimestampUtil;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -23,7 +23,7 @@ public class WorkQueueController {
     public ReturnModel ExceptionHandlerFunction(String exception) {
         ReturnModel rnModel = new ReturnModel();
         rnModel.setCode(StatusCode.Exception);
-        rnModel.setRs(TimestampUtil.GetTimeStamp() + " 0");
+        rnModel.setRs(TimestampUtil.GetTimeStampString() + " 0");
 
         ReturnElement returnElement = new ReturnElement();
         returnElement.setMessage(exception);
@@ -66,7 +66,7 @@ public class WorkQueueController {
 
             if (CheckToken()) {
                 rnModel.setCode(StatusCode.OK);
-                rnModel.setRs(TimestampUtil.GetTimeStamp() + " 0");
+                rnModel.setRs(TimestampUtil.GetTimeStampString() + " 0");
                 ReturnElement returnElement = new ReturnElement();
                 returnElement.setData("GetWorkQueue");
                 rnModel.setReturnElement(returnElement);
@@ -106,7 +106,7 @@ public class WorkQueueController {
 
             if (CheckToken()) {
                 rnModel.setCode(StatusCode.OK);
-                rnModel.setRs(TimestampUtil.GetTimeStamp() + " 0");
+                rnModel.setRs(TimestampUtil.GetTimeStampString() + " 0");
                 ReturnElement returnElement = new ReturnElement();
                 returnElement.setData("ClearWorkQueue");
                 rnModel.setReturnElement(returnElement);
@@ -143,7 +143,7 @@ public class WorkQueueController {
 
             if (CheckToken()) {
                 rnModel.setCode(StatusCode.OK);
-                rnModel.setRs(TimestampUtil.GetTimeStamp() + " 0");
+                rnModel.setRs(TimestampUtil.GetTimeStampString() + " 0");
                 ReturnElement returnElement = new ReturnElement();
                 returnElement.setData("GetWorkQueue");
                 rnModel.setReturnElement(returnElement);
@@ -180,7 +180,7 @@ public class WorkQueueController {
 
             if (CheckToken()) {
                 rnModel.setCode(StatusCode.OK);
-                rnModel.setRs(TimestampUtil.GetTimeStamp() + " 0");
+                rnModel.setRs(TimestampUtil.GetTimeStampString() + " 0");
                 ReturnElement returnElement = new ReturnElement();
                 returnElement.setData("ClearWorkQueue");
                 rnModel.setReturnElement(returnElement);

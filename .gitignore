@@ -180,8 +180,6 @@ COrgan/GlobalConfigContext.pyc
 ModelChecker/target/classes/org/
 ModelChecker/target/generated-sources/
 RenResourceService/.DS_Store
-RenResourceService/src/main/java/org/sysu/renResourcing/filter/
-RenResourceService/src/main/java/org/sysu/renResourcing/persistence/
 RenResourceService/target/classes/org/sysu/renResourcing/resource/Agent.class
 RenResourceService/target/classes/org/sysu/renResourcing/resource/Human.class
 RenResourceService/target/generated-sources/
@@ -193,3 +191,5 @@ RenResourceService/target/generated-test-sources/
 /RenMasterPanel/RenMasterPanel/obj/
 /RenMasterPanel/packages/
 /RenMasterPanel/.vs/RenMasterPanel/v15/Server/sqlite3/db.lock
+/RenMasterPanel/.vs/RenMasterPanel/v15/Server/sqlite3/storage.ide-shm
+/RenMasterPanel/.vs/RenMasterPanel/v15/Server/sqlite3/storage.ide-wal

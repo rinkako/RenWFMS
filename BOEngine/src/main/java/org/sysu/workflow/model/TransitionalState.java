@@ -129,7 +129,7 @@ public abstract class TransitionalState extends EnterableState {
     }
 
     /**
-     * Get the outgoing transitions for this state as a java.util.List.
+     * Get the outgoing transitions for this state as a java.utility.List.
      *
      * @return List Returns the transitions list.
      */

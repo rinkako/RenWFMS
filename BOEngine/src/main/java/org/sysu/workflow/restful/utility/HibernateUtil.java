@@ -24,7 +24,7 @@ public class HibernateUtil {
     private static ThreadLocal session = new ThreadLocal();
 
     /**
-     * Construct hibernate util, binding session factory.
+     * Construct hibernate utility, binding session factory.
      * @param sessionFactory session factory instance
      */
     @Autowired(required = true)

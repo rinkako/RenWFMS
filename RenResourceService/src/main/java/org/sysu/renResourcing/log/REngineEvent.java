@@ -1,15 +1,16 @@
 package org.sysu.renResourcing.log;
 
-import org.sysu.renResourcing.entity.RIdentifier;
-import org.sysu.renResourcing.entity.RServiceType;
-import org.sysu.renResourcing.entity.RSession;
+import org.sysu.renResourcing.context.RIdentifier;
+import org.sysu.renResourcing.context.RServiceType;
+import org.sysu.renResourcing.context.RSession;
 
 import java.util.Date;
 
 /**
  * Author: Rinkako
  * Date  : 2017/11/19
- * Usage : This event entity used for Ren resourcing service.
+ * Usage : This event context used for Ren resourcing service.
+ * @deprecated will be refactored soon.
  */
 public class REngineEvent extends org.sysu.renResourcing.log.REvent {
     public REngineEvent(RServiceType et) {

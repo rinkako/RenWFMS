@@ -4,7 +4,7 @@ package org.sysu.workflow.model;
 import org.sysu.workflow.PathResolver;
 
 /**
- * A <code>PathResolverHolder</code> is an entity that holds a
+ * A <code>PathResolverHolder</code> is an context that holds a
  * {@link PathResolver}.
  */
 public interface PathResolverHolder {

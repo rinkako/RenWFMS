@@ -4,7 +4,7 @@ package org.sysu.workflow.model;
 import java.util.List;
 
 /**
- * An <code>ActionsContainer</code> is an entity that holds a list of <code>Action</code> elements.
+ * An <code>ActionsContainer</code> is an context that holds a list of <code>Action</code> elements.
  */
 public interface ActionsContainer {
 

@@ -1,6 +1,6 @@
 package org.sysu.renResourcing.restful.dto;
 
-import org.sysu.renResourcing.util.TimestampUtil;
+import org.sysu.renResourcing.utility.TimestampUtil;
 
 import java.util.List;
 
@@ -14,7 +14,7 @@ public class DTOUtil {
     public static ReturnModel HandleMissingParameters(List<String> params) {
         ReturnModel rnModel = new ReturnModel();
         rnModel.setCode(StatusCode.Fail);
-        rnModel.setRs(TimestampUtil.GetTimeStamp() + " 0");
+        rnModel.setRs(TimestampUtil.GetTimeStampString() + " 0");
         ReturnElement returnElement = new ReturnElement();
         StringBuffer sb = new StringBuffer();
         sb.append("miss parameters:");

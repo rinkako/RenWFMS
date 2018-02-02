@@ -7,6 +7,6 @@ import org.sysu.renResourcing.log.RLogger;
  * Date  : 2017/11/20 0020
  * Usage :
  */
-public class GlobalDataContext {
+public class GlobalContext {
     public static RLogger EngineLogger;
 }

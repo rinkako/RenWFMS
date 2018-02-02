@@ -5,7 +5,7 @@ import org.sysu.renResourcing.restful.dto.DTOUtil;
 import org.sysu.renResourcing.restful.dto.ReturnElement;
 import org.sysu.renResourcing.restful.dto.ReturnModel;
 import org.sysu.renResourcing.restful.dto.StatusCode;
-import org.sysu.renResourcing.util.TimestampUtil;
+import org.sysu.renResourcing.utility.TimestampUtil;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -23,7 +23,7 @@ public class ResourceController {
     public ReturnModel ExceptionHandlerFunction(String exception) {
         ReturnModel rnModel = new ReturnModel();
         rnModel.setCode(StatusCode.Exception);
-        rnModel.setRs(TimestampUtil.GetTimeStamp() + " 0");
+        rnModel.setRs(TimestampUtil.GetTimeStampString() + " 0");
 
         ReturnElement returnElement = new ReturnElement();
         returnElement.setMessage(exception);
@@ -66,7 +66,7 @@ public class ResourceController {
 
             if (CheckToken()) {
                 rnModel.setCode(StatusCode.OK);
-                rnModel.setRs(TimestampUtil.GetTimeStamp() + " 0");
+                rnModel.setRs(TimestampUtil.GetTimeStampString() + " 0");
                 ReturnElement returnElement = new ReturnElement();
                 returnElement.setData("GetResource");
                 rnModel.setReturnElement(returnElement);
@@ -109,7 +109,7 @@ public class ResourceController {
 
             if (CheckToken()) {
                 rnModel.setCode(StatusCode.OK);
-                rnModel.setRs(TimestampUtil.GetTimeStamp() + " 0");
+                rnModel.setRs(TimestampUtil.GetTimeStampString() + " 0");
                 ReturnElement returnElement = new ReturnElement();
                 returnElement.setData("SetResource");
                 rnModel.setReturnElement(returnElement);
@@ -149,7 +149,7 @@ public class ResourceController {
 
             if (CheckToken()) {
                 rnModel.setCode(StatusCode.OK);
-                rnModel.setRs(TimestampUtil.GetTimeStamp() + " 0");
+                rnModel.setRs(TimestampUtil.GetTimeStampString() + " 0");
                 ReturnElement returnElement = new ReturnElement();
                 returnElement.setData("ContainResource");
                 rnModel.setReturnElement(returnElement);
@@ -189,7 +189,7 @@ public class ResourceController {
 
             if (CheckToken()) {
                 rnModel.setCode(StatusCode.OK);
-                rnModel.setRs(TimestampUtil.GetTimeStamp() + " 0");
+                rnModel.setRs(TimestampUtil.GetTimeStampString() + " 0");
                 ReturnElement returnElement = new ReturnElement();
                 returnElement.setData("AddResource");
                 rnModel.setReturnElement(returnElement);
@@ -229,7 +229,7 @@ public class ResourceController {
 
             if (CheckToken()) {
                 rnModel.setCode(StatusCode.OK);
-                rnModel.setRs(TimestampUtil.GetTimeStamp() + " 0");
+                rnModel.setRs(TimestampUtil.GetTimeStampString() + " 0");
                 ReturnElement returnElement = new ReturnElement();
                 returnElement.setData("RemoveResource");
                 rnModel.setReturnElement(returnElement);

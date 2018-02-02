@@ -269,7 +269,7 @@ public class NameSpacingController {
     }
 
     /**
-     * Get a BO entity by its id.
+     * Get a BO context by its id.
      * @param token auth token
      * @param boid bo unique id (required)
      * @param rtid process rtid

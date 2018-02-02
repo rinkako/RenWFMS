@@ -5,7 +5,7 @@ import org.sysu.renResourcing.restful.dto.DTOUtil;
 import org.sysu.renResourcing.restful.dto.ReturnElement;
 import org.sysu.renResourcing.restful.dto.ReturnModel;
 import org.sysu.renResourcing.restful.dto.StatusCode;
-import org.sysu.renResourcing.util.TimestampUtil;
+import org.sysu.renResourcing.utility.TimestampUtil;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -22,7 +22,7 @@ public class AccessController {
     public ReturnModel ExceptionHandlerFunction(String exception) {
         ReturnModel rnModel = new ReturnModel();
         rnModel.setCode(StatusCode.Exception);
-        rnModel.setRs(TimestampUtil.GetTimeStamp() + " 0");
+        rnModel.setRs(TimestampUtil.GetTimeStampString() + " 0");
 
         ReturnElement returnElement = new ReturnElement();
         returnElement.setMessage(exception);
@@ -48,7 +48,7 @@ public class AccessController {
         ReturnModel rnModel = new ReturnModel();
         try {
             rnModel.setCode(StatusCode.OK);
-            rnModel.setRs(TimestampUtil.GetTimeStamp() + " 0");
+            rnModel.setRs(TimestampUtil.GetTimeStampString() + " 0");
             ReturnElement returnElement = new ReturnElement();
             returnElement.setData("Index");
             rnModel.setReturnElement(returnElement);
@@ -80,7 +80,7 @@ public class AccessController {
             }
 
             rnModel.setCode(StatusCode.OK);
-            rnModel.setRs(TimestampUtil.GetTimeStamp() + " 0");
+            rnModel.setRs(TimestampUtil.GetTimeStampString() + " 0");
             ReturnElement returnElement = new ReturnElement();
             returnElement.setData("Connect");
             rnModel.setReturnElement(returnElement);
@@ -112,7 +112,7 @@ public class AccessController {
 
             if (CheckToken()) {
                 rnModel.setCode(StatusCode.OK);
-                rnModel.setRs(TimestampUtil.GetTimeStamp() + " 0");
+                rnModel.setRs(TimestampUtil.GetTimeStampString() + " 0");
                 ReturnElement returnElement = new ReturnElement();
                 returnElement.setData("DisConnect");
                 rnModel.setReturnElement(returnElement);
@@ -149,7 +149,7 @@ public class AccessController {
 
             if (CheckToken()) {
                 rnModel.setCode(StatusCode.OK);
-                rnModel.setRs(TimestampUtil.GetTimeStamp() + " 0");
+                rnModel.setRs(TimestampUtil.GetTimeStampString() + " 0");
                 ReturnElement returnElement = new ReturnElement();
                 returnElement.setData("Check");
                 rnModel.setReturnElement(returnElement);
@@ -186,7 +186,7 @@ public class AccessController {
 
             if (CheckToken()) {
                 rnModel.setCode(StatusCode.OK);
-                rnModel.setRs(TimestampUtil.GetTimeStamp() + " 0");
+                rnModel.setRs(TimestampUtil.GetTimeStampString() + " 0");
                 ReturnElement returnElement = new ReturnElement();
                 returnElement.setData("CheckAdmin");
                 rnModel.setReturnElement(returnElement);
@@ -232,7 +232,7 @@ public class AccessController {
 
             if (CheckToken()) {
                 rnModel.setCode(StatusCode.OK);
-                rnModel.setRs(TimestampUtil.GetTimeStamp() + " 0");
+                rnModel.setRs(TimestampUtil.GetTimeStampString() + " 0");
                 ReturnElement returnElement = new ReturnElement();
                 returnElement.setData("AddUser");
                 rnModel.setReturnElement(returnElement);
@@ -272,7 +272,7 @@ public class AccessController {
 
             if (CheckToken()) {
                 rnModel.setCode(StatusCode.OK);
-                rnModel.setRs(TimestampUtil.GetTimeStamp() + " 0");
+                rnModel.setRs(TimestampUtil.GetTimeStampString() + " 0");
                 ReturnElement returnElement = new ReturnElement();
                 returnElement.setData("RemoveUser");
                 rnModel.setReturnElement(returnElement);
@@ -312,7 +312,7 @@ public class AccessController {
 
             if (CheckToken()) {
                 rnModel.setCode(StatusCode.OK);
-                rnModel.setRs(TimestampUtil.GetTimeStamp() + " 0");
+                rnModel.setRs(TimestampUtil.GetTimeStampString() + " 0");
                 ReturnElement returnElement = new ReturnElement();
                 returnElement.setData("GetUser");
                 rnModel.setReturnElement(returnElement);
@@ -358,7 +358,7 @@ public class AccessController {
 
             if (CheckToken()) {
                 rnModel.setCode(StatusCode.OK);
-                rnModel.setRs(TimestampUtil.GetTimeStamp() + " 0");
+                rnModel.setRs(TimestampUtil.GetTimeStampString() + " 0");
                 ReturnElement returnElement = new ReturnElement();
                 returnElement.setData("SetUser");
                 rnModel.setReturnElement(returnElement);

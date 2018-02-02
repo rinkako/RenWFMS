@@ -99,9 +99,9 @@ public final class RoleMappingService {
     }
 
     /**
-     * Get business role name by a organization entity global id.
+     * Get business role name by a organization context global id.
      * @param rtid process rtid
-     * @param globalId organization entity global id
+     * @param globalId organization context global id
      * @return ArrayList of business role name string
      */
     public static ArrayList<String> GetBusinessRoleByGlobalId(String rtid, String globalId) {
@@ -334,9 +334,9 @@ public final class RoleMappingService {
     }
 
     /**
-     * Generate an achieve role map entity.
-     * @param rre role map entity
-     * @return role map achieved entity
+     * Generate an achieve role map context.
+     * @param rre role map context
+     * @return role map achieved context
      */
     private static RenRolemapArchivedEntity AchieveRoleMap(RenRolemapEntity rre) {
         RenRolemapArchivedEntity rrae = new RenRolemapArchivedEntity();

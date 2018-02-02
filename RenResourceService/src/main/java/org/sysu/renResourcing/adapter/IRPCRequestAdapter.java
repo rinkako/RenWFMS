@@ -1,6 +1,6 @@
 package org.sysu.renResourcing.adapter;
 
-import org.sysu.renResourcing.entity.RServiceItem;
+import org.sysu.renResourcing.context.ResourcingContext;
 
 /**
  * Author: Rinkako
@@ -14,5 +14,5 @@ public interface IRPCRequestAdapter {
      * @param req request string
      * @return RenResourcing service object
      */
-    RServiceItem RequestReceived(String req);
+    ResourcingContext RequestReceived(String req);
 }

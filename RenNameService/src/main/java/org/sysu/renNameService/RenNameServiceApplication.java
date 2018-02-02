@@ -17,7 +17,7 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
  */
 @SpringBootApplication
 @EnableTransactionManagement
-@EntityScan(basePackages = "org.sysu.renNameService.entity")
+@EntityScan(basePackages = "org.sysu.renNameService.context")
 public class RenNameServiceApplication implements EmbeddedServletContainerCustomizer {
 
     public static void main(String[] args) {

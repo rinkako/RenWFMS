@@ -1,6 +1,6 @@
 package org.sysu.renResourcing.log;
 
-import org.sysu.renResourcing.entity.RIdentifier;
+import org.sysu.renResourcing.context.RIdentifier;
 
 import java.util.Date;
 
@@ -8,6 +8,7 @@ import java.util.Date;
  * Author: Rinkako
  * Date  : 2017/11/19
  * Usage :
+ * @deprecated will be refactored soon.
  */
 public abstract class REvent extends RIdentifier {
     /**

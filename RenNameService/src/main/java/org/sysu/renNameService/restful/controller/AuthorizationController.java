@@ -254,7 +254,7 @@ public class AuthorizationController {
     }
 
     /**
-     * Get authorization entity by its user name.
+     * Get authorization context by its user name.
      * @param token auth token
      * @param username user unique name
      * @return response package
@@ -288,7 +288,7 @@ public class AuthorizationController {
     }
 
     /**
-     * Get authorization entity by its user name.
+     * Get authorization context by its user name.
      * @param token auth token
      * @param username user unique name
      * @return response package

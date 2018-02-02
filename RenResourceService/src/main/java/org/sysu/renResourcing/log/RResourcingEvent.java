@@ -1,12 +1,13 @@
 package org.sysu.renResourcing.log;
 
-import org.sysu.renResourcing.entity.RIdentifier;
+import org.sysu.renResourcing.context.RIdentifier;
 import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 
 /**
  * Author: Rinkako
  * Date  : 2017/11/19
  * Usage :
+ * @deprecated will be refactored soon.
  */
 public class RResourcingEvent extends REvent {
     /**
