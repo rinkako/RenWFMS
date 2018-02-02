@@ -1,19 +1,10 @@
-/*
- * Project Ren @ 2018
- * Rinkako, Ariana, Gordan. SYSU SDCS.
- */
 package org.sysu.workflow.restful.entity;
 
 import javax.persistence.*;
 import java.sql.Timestamp;
 
-/**
- * Author: Rinkako
- * Date  : 2018/2/2
- * Usage :
- */
 @Entity
-@Table(name = "ren_process", schema = "renboengine", catalog = "")
+@Table(name = "ren_process", schema = "renboengine")
 public class RenProcessEntity {
     private String pid;
     private String processName;

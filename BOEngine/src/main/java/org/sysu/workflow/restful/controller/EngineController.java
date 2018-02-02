@@ -23,25 +23,22 @@ public class EngineController {
     /**
      * read xml document from database according to the file name, and then go it.
      * @param pid process id
-     * @param roid root BO id
      * @return response package
      */
     @RequestMapping(value = "/launch", produces = {"application/json", "application/xml"})
     @ResponseBody
     @Transactional
-    public ReturnModel LaunchProcess(@RequestParam(value = "pid", required = false) String pid,
-                               @RequestParam(value = "roid", required = false) String roid) {
+    public ReturnModel LaunchProcess(@RequestParam(value = "pid", required = false) String pid) {
         ReturnModel rnModel = new ReturnModel();
         try {
             // miss params
             ArrayList<String> missingParams = new ArrayList<String>();
             if (pid == null) missingParams.add("pid");
-            if (roid == null) missingParams.add("roid");
             if (missingParams.size() > 0) {
                 return ExcepetionHandler.HandleMissingParameters(missingParams);
             }
             // logic
-            LaunchProcessService.LaunchProcess(pid, roid);
+            LaunchProcessService.LaunchProcess(pid);
             // return
             rnModel.setCode(StatusCode.OK);
             rnModel.setRs(TimestampUtil.GetTimeStamp() + " 0");

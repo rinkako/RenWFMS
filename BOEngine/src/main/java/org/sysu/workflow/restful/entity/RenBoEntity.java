@@ -1,6 +1,7 @@
 package org.sysu.workflow.restful.entity;
 
 import javax.persistence.*;
+import java.util.Arrays;
 
 @Entity
 @Table(name = "ren_bo", schema = "renboengine")
@@ -10,7 +11,7 @@ public class RenBoEntity {
     private String pid;
     private int state;
     private String boContent;
-    private String serialized;
+    private byte[] serialized;
     private String broles;
 
     @Id
@@ -65,11 +66,11 @@ public class RenBoEntity {
 
     @Basic
     @Column(name = "serialized", nullable = true)
-    public String getSerialized() {
+    public byte[] getSerialized() {
         return serialized;
     }
 
-    public void setSerialized(String serialized) {
+    public void setSerialized(byte[] serialized) {
         this.serialized = serialized;
     }
 
@@ -95,7 +96,7 @@ public class RenBoEntity {
         if (boName != null ? !boName.equals(that.boName) : that.boName != null) return false;
         if (pid != null ? !pid.equals(that.pid) : that.pid != null) return false;
         if (boContent != null ? !boContent.equals(that.boContent) : that.boContent != null) return false;
-        if (serialized != null ? !serialized.equals(that.serialized) : that.serialized != null) return false;
+        if (!Arrays.equals(serialized, that.serialized)) return false;
         if (broles != null ? !broles.equals(that.broles) : that.broles != null) return false;
 
         return true;
@@ -108,7 +109,7 @@ public class RenBoEntity {
         result = 31 * result + (pid != null ? pid.hashCode() : 0);
         result = 31 * result + state;
         result = 31 * result + (boContent != null ? boContent.hashCode() : 0);
-        result = 31 * result + (serialized != null ? serialized.hashCode() : 0);
+        result = 31 * result + Arrays.hashCode(serialized);
         result = 31 * result + (broles != null ? broles.hashCode() : 0);
         return result;
     }

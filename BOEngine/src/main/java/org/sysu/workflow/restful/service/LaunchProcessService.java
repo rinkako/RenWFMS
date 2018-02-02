@@ -12,6 +12,7 @@ import org.sysu.workflow.io.SCXMLReader;
 import org.sysu.workflow.model.SCXML;
 import org.sysu.workflow.model.extend.Task;
 import org.sysu.workflow.restful.entity.RenBoEntity;
+import org.sysu.workflow.restful.entity.RenProcessEntity;
 import org.sysu.workflow.restful.utility.HibernateUtil;
 import org.sysu.workflow.restful.utility.LogUtil;
 import org.sysu.workflow.restful.utility.SerializationUtil;
@@ -29,17 +30,16 @@ import java.util.List;
  */
 public final class LaunchProcessService {
     /**
-     * obtain xml document from database according to the process id and root bo id, and then read it
+     * obtain main bo xml content from database according to the process id, and then read it
      * @param pid process id
-     * @param roid root BO id
      */
-    public static void LaunchProcess(String pid, String roid) {
+    public static void LaunchProcess(String pid) {
         Session session = HibernateUtil.GetLocalThreadSession();
         Transaction transaction = session.beginTransaction();
         try {
             //根据process id从db中找到该process关联的bo(可能是多个)
-            List pbResult = session.createQuery(String.format("FROM RenProcessboEntity WHERE pid = '%s'", pid)).list();
-            for (Object pb : pbResult) {
+//            List pbResult = session.createQuery(String.format("FROM RenProcessboEntity WHERE pid = '%s'", pid)).list();
+//            for (Object pb : pbResult) {
 //                RenProcessboEntity renProcessboEntity = (RenProcessboEntity) pb;
 //                String boid = renProcessboEntity.getBoid();
 //                //根据bo id找到root bo的content
@@ -54,6 +54,18 @@ public final class LaunchProcessService {
 //                    }
 //                    break;
 //                }
+//            }
+            RenProcessEntity rpe = session.get(RenProcessEntity.class, pid);
+            assert rpe != null;
+            String mainBO = rpe.getMainBo();
+            List boList = session.createQuery(String.format("FROM RenBoEntity WHERE pid = '%s'", pid)).list();
+            for(Object bo:boList) {
+                RenBoEntity boEntity = (RenBoEntity) bo;
+                if(boEntity.getBoName().equals(mainBO)) {
+                    String boContent = boEntity.getBoContent();
+                    ExecuteBO(boContent);
+                    break;
+                }
             }
             transaction.commit();
         } catch (Exception e) {
@@ -106,7 +118,7 @@ public final class LaunchProcessService {
                 HashSet<String> oneInvolves = LaunchProcessService.GetInvolvedBusinessRole(scxml);
                 retSet.addAll(oneInvolves);
                 rbe.setBroles(SerializationUtil.JsonSerialization(oneInvolves, ""));
-                rbe.setSerialized(SerializationUtil.SerializationSCXMLToByteArray(scxml).toString());
+                rbe.setSerialized(SerializationUtil.SerializationSCXMLToByteArray(scxml));
             }
             transaction.commit();
             return retSet;
