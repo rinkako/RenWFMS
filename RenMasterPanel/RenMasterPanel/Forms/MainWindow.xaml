@@ -78,13 +78,21 @@
                         <System:String>按脏读的原则继续流程</System:String>
                         <System:String>快速失败</System:String>
                     </ComboBox>
+                    <Label Content="工作流网关认证方式：" Foreground="Gray" FontSize="14" HorizontalAlignment="Left" Margin="10,218,0,0" VerticalAlignment="Top"/>
+                    <ComboBox Name="ComboBox_Step3_AuthorizationType" HorizontalAlignment="Left" Margin="10,246,0,0" VerticalAlignment="Top" Width="250" SelectedIndex="0">
+                        <System:String>使用租户的公共密钥</System:String>
+                        <System:String>使用该流程的私有密钥</System:String>
+                    </ComboBox>
                 </Grid>
             </TabItem>
             <TabItem Header="         回执         " controls:ControlsHelper.HeaderFontSize="22">
                 <Grid x:Name="Grid_Step4">
                     <Label Content="流程已提交，执行ID：" Foreground="DodgerBlue" FontSize="18" HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top"/>
-                    <TextBlock Name="Label_Step4_Rtid" Text="RTID" TextAlignment="Center" FontSize="18" Foreground="ForestGreen" HorizontalAlignment="Left" Margin="10,68,0,0" VerticalAlignment="Top" Height="41" Width="726"/>
+                    <TextBlock Name="Label_Step4_Rtid" Text="RTID" TextAlignment="Center" FontSize="18" Foreground="ForestGreen" HorizontalAlignment="Left" Margin="10,48,0,0" VerticalAlignment="Top" Height="41" Width="726"/>
                     <Button Content="debug start" HorizontalAlignment="Left" Margin="615,282,0,0" VerticalAlignment="Top" Width="121" Height="44"/>
+                    <Label Name="Label_Step4_AuthSign" Content="流程认证私钥：" Foreground="Gray" FontSize="14" HorizontalAlignment="Left" Margin="10,94,0,0" VerticalAlignment="Top"/>
+                    <Label x:Name="Label_Step4_AuthSign_Warn" Content="请安全地保存这份密钥，因为任何人都可以使用它来请求该流程的相关工作流服务" Foreground="Gray" FontSize="10" HorizontalContentAlignment="Right" HorizontalAlignment="Left" Margin="10,245,0,0" VerticalAlignment="Top" Width="726"/>
+                    <TextBox Name="TextBox_Step4_AuthSign" HorizontalAlignment="Left" Height="128" Margin="10,122,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="726" IsReadOnly="True"/>
                 </Grid>
             </TabItem>
         </controls:MetroAnimatedSingleRowTabControl>

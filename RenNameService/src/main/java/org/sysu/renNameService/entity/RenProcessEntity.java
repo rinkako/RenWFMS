@@ -10,7 +10,7 @@ import java.util.Objects;
 
 /**
  * Author: Rinkako
- * Date  : 2018/1/26
+ * Date  : 2018/2/2
  * Usage :
  */
 @Entity
@@ -21,11 +21,13 @@ public class RenProcessEntity {
     private String mainBo;
     private String creatorRenid;
     private Timestamp createTimestamp;
-    private Integer launchCount;
-    private Integer successCount;
+    private int launchCount;
+    private int successCount;
     private Timestamp lastLaunchTimestamp;
-    private Long averageCost;
+    private long averageCost;
     private int state;
+    private int authtype;
+    private String selfsignature;
 
     @Id
     @Column(name = "pid", nullable = false, length = 64)
@@ -78,22 +80,22 @@ public class RenProcessEntity {
     }
 
     @Basic
-    @Column(name = "launch_count", nullable = true)
-    public Integer getLaunchCount() {
+    @Column(name = "launch_count", nullable = false)
+    public int getLaunchCount() {
         return launchCount;
     }
 
-    public void setLaunchCount(Integer launchCount) {
+    public void setLaunchCount(int launchCount) {
         this.launchCount = launchCount;
     }
 
     @Basic
-    @Column(name = "success_count", nullable = true)
-    public Integer getSuccessCount() {
+    @Column(name = "success_count", nullable = false)
+    public int getSuccessCount() {
         return successCount;
     }
 
-    public void setSuccessCount(Integer successCount) {
+    public void setSuccessCount(int successCount) {
         this.successCount = successCount;
     }
 
@@ -108,15 +110,14 @@ public class RenProcessEntity {
     }
 
     @Basic
-    @Column(name = "average_cost", nullable = true)
-    public Long getAverageCost() {
+    @Column(name = "average_cost", nullable = false)
+    public long getAverageCost() {
         return averageCost;
     }
 
-    public void setAverageCost(Long averageCost) {
+    public void setAverageCost(long averageCost) {
         this.averageCost = averageCost;
     }
-
 
     @Basic
     @Column(name = "state", nullable = false)
@@ -128,25 +129,48 @@ public class RenProcessEntity {
         this.state = state;
     }
 
+    @Basic
+    @Column(name = "authtype", nullable = false)
+    public int getAuthtype() {
+        return authtype;
+    }
+
+    public void setAuthtype(int authtype) {
+        this.authtype = authtype;
+    }
+
+    @Basic
+    @Column(name = "selfsignature", nullable = true, length = -1)
+    public String getSelfsignature() {
+        return selfsignature;
+    }
+
+    public void setSelfsignature(String selfsignature) {
+        this.selfsignature = selfsignature;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         RenProcessEntity that = (RenProcessEntity) o;
-        return Objects.equals(pid, that.pid) &&
+        return launchCount == that.launchCount &&
+                successCount == that.successCount &&
+                averageCost == that.averageCost &&
+                state == that.state &&
+                authtype == that.authtype &&
+                Objects.equals(pid, that.pid) &&
                 Objects.equals(processName, that.processName) &&
                 Objects.equals(mainBo, that.mainBo) &&
                 Objects.equals(creatorRenid, that.creatorRenid) &&
                 Objects.equals(createTimestamp, that.createTimestamp) &&
-                Objects.equals(launchCount, that.launchCount) &&
-                Objects.equals(successCount, that.successCount) &&
                 Objects.equals(lastLaunchTimestamp, that.lastLaunchTimestamp) &&
-                Objects.equals(averageCost, that.averageCost);
+                Objects.equals(selfsignature, that.selfsignature);
     }
 
     @Override
     public int hashCode() {
 
-        return Objects.hash(pid, processName, mainBo, creatorRenid, createTimestamp, launchCount, successCount, lastLaunchTimestamp, averageCost);
+        return Objects.hash(pid, processName, mainBo, creatorRenid, createTimestamp, launchCount, successCount, lastLaunchTimestamp, averageCost, state, authtype, selfsignature);
     }
 }

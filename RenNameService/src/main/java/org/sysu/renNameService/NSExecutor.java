@@ -130,7 +130,7 @@ public class NSExecutor extends Observable {
                             retStr = SerializationUtil.JsonSerialization(getBoEntity, "");
                             break;
                         case "submitProcess":
-                            retStr = NameSpacingService.SubmitProcess((String) args.get("pid"), (String) args.get("from"), (String) args.get("renid"), (String) args.get("authoritySession"), Integer.parseInt((String) args.get("bindingType")), Integer.parseInt((String) args.get("launchType")), Integer.parseInt((String) args.get("failureType")), (String) args.get("binding"));
+                            retStr = NameSpacingService.SubmitProcess((String) args.get("pid"), (String) args.get("from"), (String) args.get("renid"), (String) args.get("authoritySession"), Integer.parseInt((String) args.get("bindingType")), Integer.parseInt((String) args.get("launchType")), Integer.parseInt((String) args.get("failureType")), Integer.parseInt((String) args.get("authType")), (String) args.get("binding"));
                             break;
                     }
                     // prepare execution result

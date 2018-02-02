@@ -39,5 +39,7 @@ namespace RenMasterPanel
         public static DataSet ResourcesDataSet = null;
 
         public static String CurrentRTID = null;
+
+        public static String CurrentProcessSelfSignature = null;
     }
 }

@@ -392,11 +392,25 @@ namespace RenMasterPanel.Forms
             MPController.CurrentTransaction.LaunchType = this.ComboBox_Step3_Launch.SelectedIndex;
             MPController.CurrentTransaction.IsolationType = this.ComboBox_Step3_WhenMapChange.SelectedIndex;
             MPController.CurrentTransaction.FailureType = this.ComboBox_Step3_WhenFailure.SelectedIndex;
-            GlobalContext.CurrentRTID = MPController.SubmitProcess();
+            var submitRes = MPController.SubmitProcess();
+            var submitResItem = submitRes.Split(',');
+            GlobalContext.CurrentRTID = submitResItem[0];
+            GlobalContext.CurrentProcessSelfSignature = submitResItem[1];
             Debug.Assert(GlobalContext.CurrentRTID != null);
             MPController.RegisterMappings();
             // update UI
             this.Label_Step4_Rtid.Text = GlobalContext.CurrentRTID;
+            if (String.IsNullOrEmpty(GlobalContext.CurrentProcessSelfSignature))
+            {
+                this.Label_Step4_AuthSign.Visibility = this.Label_Step4_AuthSign_Warn.Visibility =
+                    this.TextBox_Step4_AuthSign.Visibility = Visibility.Hidden;
+            }
+            else
+            {
+                this.Label_Step4_AuthSign.Visibility = this.Label_Step4_AuthSign_Warn.Visibility =
+                    this.TextBox_Step4_AuthSign.Visibility = Visibility.Visible;
+                this.TextBox_Step4_AuthSign.Text = GlobalContext.CurrentProcessSelfSignature;
+            }
             this.tabControl.SelectedIndex += 1;
         }
 

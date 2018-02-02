@@ -27,6 +27,8 @@ namespace RenMasterPanel.Controller
 
         public int LaunchType { get; set; } = 0;
 
+        public int AuthType { get; set; } = 0;
+
         public List<Dictionary<string, string>> BOVector { get; set; }
 
         public HashSet<string> BusinessRoleList { get; set; } = new HashSet<string>();

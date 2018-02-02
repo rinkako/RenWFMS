@@ -1,21 +1,32 @@
+/*
+ * Project Ren @ 2018
+ * Rinkako, Ariana, Gordan. SYSU SDCS.
+ */
 package org.sysu.workflow.restful.entity;
 
 import javax.persistence.*;
 import java.sql.Timestamp;
 
+/**
+ * Author: Rinkako
+ * Date  : 2018/2/2
+ * Usage :
+ */
 @Entity
-@Table(name = "ren_process", schema = "renboengine")
+@Table(name = "ren_process", schema = "renboengine", catalog = "")
 public class RenProcessEntity {
     private String pid;
     private String processName;
     private String mainBo;
     private String creatorRenid;
     private Timestamp createTimestamp;
-    private Integer launchCount;
-    private Integer successCount;
+    private int launchCount;
+    private int successCount;
     private Timestamp lastLaunchTimestamp;
-    private Long averageCost;
+    private long averageCost;
     private int state;
+    private int authtype;
+    private String selfsignature;
 
     @Id
     @Column(name = "pid", nullable = false, length = 64)
@@ -68,22 +79,22 @@ public class RenProcessEntity {
     }
 
     @Basic
-    @Column(name = "launch_count", nullable = true)
-    public Integer getLaunchCount() {
+    @Column(name = "launch_count", nullable = false)
+    public int getLaunchCount() {
         return launchCount;
     }
 
-    public void setLaunchCount(Integer launchCount) {
+    public void setLaunchCount(int launchCount) {
         this.launchCount = launchCount;
     }
 
     @Basic
-    @Column(name = "success_count", nullable = true)
-    public Integer getSuccessCount() {
+    @Column(name = "success_count", nullable = false)
+    public int getSuccessCount() {
         return successCount;
     }
 
-    public void setSuccessCount(Integer successCount) {
+    public void setSuccessCount(int successCount) {
         this.successCount = successCount;
     }
 
@@ -98,12 +109,12 @@ public class RenProcessEntity {
     }
 
     @Basic
-    @Column(name = "average_cost", nullable = true)
-    public Long getAverageCost() {
+    @Column(name = "average_cost", nullable = false)
+    public long getAverageCost() {
         return averageCost;
     }
 
-    public void setAverageCost(Long averageCost) {
+    public void setAverageCost(long averageCost) {
         this.averageCost = averageCost;
     }
 
@@ -117,6 +128,26 @@ public class RenProcessEntity {
         this.state = state;
     }
 
+    @Basic
+    @Column(name = "authtype", nullable = false)
+    public int getAuthtype() {
+        return authtype;
+    }
+
+    public void setAuthtype(int authtype) {
+        this.authtype = authtype;
+    }
+
+    @Basic
+    @Column(name = "selfsignature", nullable = true, length = -1)
+    public String getSelfsignature() {
+        return selfsignature;
+    }
+
+    public void setSelfsignature(String selfsignature) {
+        this.selfsignature = selfsignature;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -124,18 +155,21 @@ public class RenProcessEntity {
 
         RenProcessEntity that = (RenProcessEntity) o;
 
+        if (launchCount != that.launchCount) return false;
+        if (successCount != that.successCount) return false;
+        if (averageCost != that.averageCost) return false;
         if (state != that.state) return false;
+        if (authtype != that.authtype) return false;
         if (pid != null ? !pid.equals(that.pid) : that.pid != null) return false;
         if (processName != null ? !processName.equals(that.processName) : that.processName != null) return false;
         if (mainBo != null ? !mainBo.equals(that.mainBo) : that.mainBo != null) return false;
         if (creatorRenid != null ? !creatorRenid.equals(that.creatorRenid) : that.creatorRenid != null) return false;
         if (createTimestamp != null ? !createTimestamp.equals(that.createTimestamp) : that.createTimestamp != null)
             return false;
-        if (launchCount != null ? !launchCount.equals(that.launchCount) : that.launchCount != null) return false;
-        if (successCount != null ? !successCount.equals(that.successCount) : that.successCount != null) return false;
         if (lastLaunchTimestamp != null ? !lastLaunchTimestamp.equals(that.lastLaunchTimestamp) : that.lastLaunchTimestamp != null)
             return false;
-        if (averageCost != null ? !averageCost.equals(that.averageCost) : that.averageCost != null) return false;
+        if (selfsignature != null ? !selfsignature.equals(that.selfsignature) : that.selfsignature != null)
+            return false;
 
         return true;
     }
@@ -147,11 +181,13 @@ public class RenProcessEntity {
         result = 31 * result + (mainBo != null ? mainBo.hashCode() : 0);
         result = 31 * result + (creatorRenid != null ? creatorRenid.hashCode() : 0);
         result = 31 * result + (createTimestamp != null ? createTimestamp.hashCode() : 0);
-        result = 31 * result + (launchCount != null ? launchCount.hashCode() : 0);
-        result = 31 * result + (successCount != null ? successCount.hashCode() : 0);
+        result = 31 * result + launchCount;
+        result = 31 * result + successCount;
         result = 31 * result + (lastLaunchTimestamp != null ? lastLaunchTimestamp.hashCode() : 0);
-        result = 31 * result + (averageCost != null ? averageCost.hashCode() : 0);
+        result = 31 * result + (int) (averageCost ^ (averageCost >>> 32));
         result = 31 * result + state;
+        result = 31 * result + authtype;
+        result = 31 * result + (selfsignature != null ? selfsignature.hashCode() : 0);
         return result;
     }
 }

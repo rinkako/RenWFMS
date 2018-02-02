@@ -13,6 +13,7 @@ import org.sysu.renNameService.entity.RenRuntimerecordEntity;
 import org.sysu.renNameService.utility.HibernateUtil;
 import org.sysu.renNameService.utility.HttpClientUtil;
 import org.sysu.renNameService.utility.LogUtil;
+import org.sysu.renNameService.utility.RSASignatureUtil;
 
 import java.sql.Timestamp;
 import java.util.AbstractMap;
@@ -208,11 +209,19 @@ public class NameSpacingService {
                                        Integer bindingType,
                                        Integer launchType,
                                        Integer failureType,
+                                       Integer authType,
                                        String binding) {
         Session session = HibernateUtil.GetLocalThreadSession();
         Transaction transaction = session.beginTransaction();
         try {
             RenProcessEntity rpe = session.get(RenProcessEntity.class, pid);
+            rpe.setAuthtype(authType);
+            String authSign = "";
+            if (authType != 0) {
+                authSign = RSASignatureUtil.Signature(pid, GlobalContext.PRIVATE_KEY);
+                assert authSign != null;
+                rpe.setSelfsignature(authSign);
+            }
             RenRuntimerecordEntity rrte = new RenRuntimerecordEntity();
             String rtid = String.format("RTID_%s", UUID.randomUUID());
             rrte.setRtid(rtid);
@@ -228,11 +237,11 @@ public class NameSpacingService {
             rrte.setLaunchTimestamp(new Timestamp(System.currentTimeMillis()));
             session.save(rrte);
             transaction.commit();
-            return rtid;
+            return String.format("%s,%s", rtid, authSign);
         }
         catch (Exception ex) {
             transaction.rollback();
-            LogUtil.Log(String.format("Submit launch process but exception occurred(pid: %s), service rollback, %s", pid, ex), NameSpacingService.class.getName(), LogUtil.LogLevelType.ERROR, "");
+            LogUtil.Log(String.format("Submit process but exception occurred(pid: %s), service rollback, %s", pid, ex), NameSpacingService.class.getName(), LogUtil.LogLevelType.ERROR, "");
         }
         return null;
     }

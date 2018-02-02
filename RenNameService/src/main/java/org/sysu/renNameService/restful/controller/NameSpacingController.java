@@ -328,6 +328,7 @@ public class NameSpacingController {
                                      @RequestParam(value="bindingType", required = false)String bindingType,
                                      @RequestParam(value="launchType", required = false)String launchType,
                                      @RequestParam(value="failureType", required = false)String failureType,
+                                     @RequestParam(value="authType", required = false)String authType,
                                      @RequestParam(value="binding", required = false)String binding) {
         ReturnModel rnModel = new ReturnModel();
         try {
@@ -340,6 +341,7 @@ public class NameSpacingController {
             if (bindingType == null) missingParams.add("bindingType");
             if (launchType == null) missingParams.add("launchType");
             if (failureType == null) missingParams.add("failureType");
+            if (authType == null) missingParams.add("authType");
             if (missingParams.size() > 0) {
                 return ReturnModelHelper.MissingParametersResponse(missingParams);
             }
@@ -356,6 +358,7 @@ public class NameSpacingController {
             args.put("bindingType", bindingType);
             args.put("launchType", launchType);
             args.put("failureType", failureType);
+            args.put("authType", authType);
             args.put("binding", binding == null ? "" : binding);  // binding not exist when using business role map service
             NameServiceTransaction t = TransactionCreator.Create(TransactionType.Namespacing, "submitProcess", args);
             String jsonifyResult = (String) NameSpacingController.scheduler.Schedule(t);
