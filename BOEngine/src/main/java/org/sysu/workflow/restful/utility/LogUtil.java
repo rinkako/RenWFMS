@@ -1,7 +1,6 @@
 package org.sysu.workflow.restful.utility;
 
 import org.hibernate.Session;
-import org.hibernate.Transaction;
 import org.sysu.workflow.restful.entity.RenNslogEntity;
 
 import java.sql.Timestamp;

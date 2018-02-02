@@ -149,23 +149,22 @@ public class MulitStateMachineDispatcher extends SimpleDispatcher implements Ser
                 case MULTICAST:
                     // TODO:
                     break;
-                case TO_ANCESTOR:
-                    // TODO:
-                    sendToAncestor(treeId, currentSessionId, targetName, targetState, event, data, hints, delay);
-                    break;
-                case TO_CHILD:
-                    // TODO:
-                    sendToChild(treeId, currentSessionId, targetName, targetState, event, data, hints, delay);
-                    break;
-                case TO_OFFSPRING:
-                    // TODO:
-                    sendToOffSpring(treeId, currentSessionId, targetName, targetState, event, data, hints, delay);
+                case UNICAST:
+                    sendUniCast(treeId, currentSessionId, targetName, targetState, event, data, hints, delay);
                     break;
                 case TO_PARENT:
                     sendToParent(treeId, currentSessionId, targetName, targetState, event, data, hints, delay);
                     break;
+                case TO_CHILD:
+                    sendToChild(treeId, currentSessionId, targetName, targetState, event, data, hints, delay);
+                    break;
+                case TO_ANCESTOR:
+                    sendToAncestor(treeId, currentSessionId, targetName, targetState, event, data, hints, delay);
+                    break;
+                case TO_OFFSPRING:
+                    sendToOffSpring(treeId, currentSessionId, targetName, targetState, event, data, hints, delay);
+                    break;
                 case TO_SIBLING:
-                    //????????target????????
                     // TODO:
                     break;
                 default:
@@ -325,6 +324,33 @@ public class MulitStateMachineDispatcher extends SimpleDispatcher implements Ser
     }
 
     /**
+     * send the event to the tree node according to the specified target name
+     * @param treeId
+     * @param currentSessionId
+     * @param targetName
+     * @param targetState
+     * @param event
+     * @param data
+     * @param hints
+     * @param delay
+     * @return
+     */
+    private boolean sendUniCast(String treeId, String currentSessionId, String targetName, String targetState, String event, Object data, Object hints, long delay) {
+        ArrayList<TimeTreeNode> targetTreeNodeList;
+        //get the target node list by the target name
+        if(targetName != null && !"".equals(targetName)){
+            targetTreeNodeList = InstanceManager.GetInstanceTree(treeId).GetNodeVectorByTarget(targetName);
+        }else{
+            return true;
+        }
+        //get the current tree node by currentSessionId
+        TimeTreeNode currentTreeNode = InstanceManager.GetInstanceTree(treeId).GetNodeById(currentSessionId);
+        String eventPrefix = currentTreeNode != InstanceManager.GetInstanceTree(treeId).Root ? currentTreeNode.getFilename() + "." : "";
+        sendToTarget(targetTreeNodeList, targetState, eventPrefix + event, data);
+        return true;
+    }
+
+    /**
      * send event to all the target tree nodes
      * @param targetTreeNodeList the target node list
      * @param targetState the current state of the target node
@@ -332,15 +358,15 @@ public class MulitStateMachineDispatcher extends SimpleDispatcher implements Ser
      * @param data
      */
     private void sendToTarget(ArrayList<TimeTreeNode> targetTreeNodeList, String targetState, String event, Object data) {
-        //如果指定了目标状态
+        //if the target state is not null
         if (targetState != null && !"".equals(targetState)) {
             for (TimeTreeNode treeNode : targetTreeNodeList) {
-                //获取target node的SCXML执行器
+                //get the unique scxml executor for each tree node
                 SCXMLExecutor scxmlExecutor = treeNode.getExect().getSCXMLExecutor();
-                //判断target是否处于目标状态
                 if (scxmlExecutor != null) {
                     if (scxmlExecutor.getStatus().isInState(targetState)) {
                         try {
+                            //send the event to the current state of the target node
                             scxmlExecutor.triggerEvent(new TriggerEvent(event, TriggerEvent.SIGNAL_EVENT, data));
                         } catch (ModelException e) {
                             e.printStackTrace();
@@ -353,7 +379,7 @@ public class MulitStateMachineDispatcher extends SimpleDispatcher implements Ser
         } else {
             for (TimeTreeNode treeNode : targetTreeNodeList) {
                 SCXMLExecutor scxmlExecutor = treeNode.getExect().getSCXMLExecutor();
-                //如果没有指定target state，则直接把event放到target的外部事件队列中
+                //put the event to the external queue no matter which state the node is in currently
                 if (scxmlExecutor != null) {
                     try {
                         scxmlExecutor.triggerEvent(new TriggerEvent(event, TriggerEvent.SIGNAL_EVENT, data));

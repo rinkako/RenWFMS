@@ -68,7 +68,7 @@ public class RenProcessEntity {
     }
 
     @Basic
-    @Column(name = "launch_count", nullable = true)
+    @Column(name = "launch_count", nullable = false)
     public Integer getLaunchCount() {
         return launchCount;
     }
@@ -78,7 +78,7 @@ public class RenProcessEntity {
     }
 
     @Basic
-    @Column(name = "success_count", nullable = true)
+    @Column(name = "success_count", nullable = false)
     public Integer getSuccessCount() {
         return successCount;
     }
@@ -98,7 +98,7 @@ public class RenProcessEntity {
     }
 
     @Basic
-    @Column(name = "average_cost", nullable = true)
+    @Column(name = "average_cost", nullable = false)
     public Long getAverageCost() {
         return averageCost;
     }
