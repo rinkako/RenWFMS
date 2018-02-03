@@ -14,5 +14,6 @@
         <mapping class="org.sysu.workflow.restful.entity.RenBoEntity"/>
         <mapping class="org.sysu.workflow.restful.entity.RenNslogEntity"/>
         <mapping class="org.sysu.workflow.restful.entity.RenProcessEntity"/>
+        <mapping class="org.sysu.workflow.restful.entity.RenRuntimerecordEntity"/>
     </session-factory>
 </hibernate-configuration>

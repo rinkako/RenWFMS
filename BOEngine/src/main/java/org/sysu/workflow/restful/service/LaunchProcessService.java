@@ -4,6 +4,7 @@ import org.hibernate.Session;
 import org.hibernate.Transaction;
 import org.sysu.workflow.Context;
 import org.sysu.workflow.Evaluator;
+import org.sysu.workflow.EvaluatorFactory;
 import org.sysu.workflow.SCXMLExecutor;
 import org.sysu.workflow.env.MulitStateMachineDispatcher;
 import org.sysu.workflow.env.SimpleErrorReporter;
@@ -13,6 +14,7 @@ import org.sysu.workflow.model.SCXML;
 import org.sysu.workflow.model.extend.Task;
 import org.sysu.workflow.restful.entity.RenBoEntity;
 import org.sysu.workflow.restful.entity.RenProcessEntity;
+import org.sysu.workflow.restful.entity.RenRuntimerecordEntity;
 import org.sysu.workflow.restful.utility.HibernateUtil;
 import org.sysu.workflow.restful.utility.LogUtil;
 import org.sysu.workflow.restful.utility.SerializationUtil;
@@ -23,17 +25,19 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 
+import static org.sysu.workflow.restful.utility.SerializationUtil.DeserializationSCXMLByByteArray;
+
 /**
  * Author: Ariana
  * Date  : 2018/1/22
- * Usage : All xml document parse service will be handled in this service module.
+ * Usage : All process launch service will be handled in this service module.
  */
 public final class LaunchProcessService {
     /**
-     * obtain main bo xml content from database according to the process id, and then read it
-     * @param pid process id
+     * obtain main bo xml content from database according to the process id, and then read and execute it
+     * @param rtid the runtime record of a process
      */
-    public static void LaunchProcess(String pid) {
+    public static void LaunchProcess(String rtid) {
         Session session = HibernateUtil.GetLocalThreadSession();
         Transaction transaction = session.beginTransaction();
         try {
@@ -55,6 +59,9 @@ public final class LaunchProcessService {
 //                    break;
 //                }
 //            }
+            RenRuntimerecordEntity rre = session.get(RenRuntimerecordEntity.class, rtid);
+            assert rre != null;
+            String pid = rre.getProcessId();
             RenProcessEntity rpe = session.get(RenProcessEntity.class, pid);
             assert rpe != null;
             String mainBO = rpe.getMainBo();
@@ -62,34 +69,39 @@ public final class LaunchProcessService {
             for(Object bo:boList) {
                 RenBoEntity boEntity = (RenBoEntity) bo;
                 if(boEntity.getBoName().equals(mainBO)) {
-                    String boContent = boEntity.getBoContent();
-                    ExecuteBO(boContent);
+//                    String boContent = boEntity.getBoContent();
+//                    ExecuteBO(boContent);
+                    byte[] serializedBO = boEntity.getSerialized();
+                    SCXML DeserializedBO = DeserializationSCXMLByByteArray(serializedBO);
+                    LaunchProcessService.ExecuteBO(DeserializedBO, rtid, pid);
                     break;
                 }
             }
             transaction.commit();
         } catch (Exception e) {
             e.printStackTrace();
-            LogUtil.Log("When read bo content by pid and roid, exception occurred, " + e.toString() + ", service rollback",
-                    LaunchProcessService.class.getName(), LogUtil.LogLevelType.ERROR, pid);
+            LogUtil.Log("When read bo by rtid, exception occurred, " + e.toString() + ", service rollback",
+                    LaunchProcessService.class.getName(), LogUtil.LogLevelType.ERROR, rtid);
             transaction.rollback();
         }
     }
 
     /**
-     * read bo content and go it
-     * @param boContent
+     * execute the main bo of the current process
+     * @param scxml
+     * @param rtid
+     * @param pid
      */
-    public static void ExecuteBO(String boContent) {
-        Evaluator evaluator = new JexlEvaluator();
-        SCXMLExecutor executor = new SCXMLExecutor(evaluator, new MulitStateMachineDispatcher(), new SimpleErrorReporter());
+    public static void ExecuteBO(SCXML scxml, String rtid, String pid) {
         try {
-            //解析成SCXML对象
-            SCXML scxml = LaunchProcessService.ParseStringToSCXML(boContent);
-            //启动状态机实例
-            //Evaluator evaluator = EvaluatorFactory.getEvaluator(scxml);
+//          Evaluator evaluator = new JexlEvaluator();
+            Evaluator evaluator = EvaluatorFactory.getEvaluator(scxml);
+            SCXMLExecutor executor = new SCXMLExecutor(evaluator, new MulitStateMachineDispatcher(), new SimpleErrorReporter());
+            //初始化执行上下文
             Context rootContext = evaluator.newContext(null);
             executor.setRootContext(rootContext);
+            executor.setRtid(rtid);
+            executor.setPid(pid);
             executor.setStateMachine(scxml);
             executor.go();
         } catch (Exception e) {

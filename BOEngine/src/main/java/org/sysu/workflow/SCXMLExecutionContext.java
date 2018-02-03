@@ -121,6 +121,10 @@ public class SCXMLExecutionContext implements SCXMLIOProcessor {
 
     public String RootTid;
 
+    public String Rtid;
+
+    public String Pid;
+
 
     /**
      * 构造器
