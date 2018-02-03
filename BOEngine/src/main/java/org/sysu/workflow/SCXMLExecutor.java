@@ -62,8 +62,9 @@ public class SCXMLExecutor implements SCXMLIOProcessor {
     private String executorIndex;
 
     public String Tid = UUID.randomUUID().toString();
-
     public String RootTid = "";
+    public String Rtid = "";
+    public String Pid = "";
 
     /**
      * The external event queue
@@ -106,6 +107,7 @@ public class SCXMLExecutor implements SCXMLIOProcessor {
         this.exctx = new SCXMLExecutionContext(this, expEvaluator, evtDisp, errRep);
         this.exctx.Tid = this.Tid;
         this.exctx.RootTid = this.RootTid;
+
     }
 
 
@@ -710,4 +712,21 @@ public class SCXMLExecutor implements SCXMLIOProcessor {
         return exctx;
     }
 
+    public String getRtid() {
+        return Rtid;
+    }
+
+    public void setRtid(String rtid) {
+        Rtid = rtid;
+        this.exctx.Rtid = Rtid;
+    }
+
+    public String getPid() {
+        return Pid;
+    }
+
+    public void setPid(String pid) {
+        Pid = pid;
+        this.exctx.Pid = Pid;
+    }
 }

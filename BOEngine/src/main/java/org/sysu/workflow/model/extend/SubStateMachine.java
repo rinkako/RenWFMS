@@ -1,5 +1,7 @@
 package org.sysu.workflow.model.extend;
 
+import org.hibernate.Session;
+import org.hibernate.Transaction;
 import org.sysu.workflow.bridge.InheritableContext;
 import org.sysu.workflow.engine.InstanceManager;
 import org.sysu.workflow.engine.TimeInstanceTree;
@@ -10,11 +12,18 @@ import org.sysu.workflow.io.BOInheritHandler;
 import org.sysu.workflow.io.SCXMLReader;
 import org.sysu.workflow.*;
 import org.sysu.workflow.model.*;
+import org.sysu.workflow.restful.entity.RenBoEntity;
+import org.sysu.workflow.restful.service.LaunchProcessService;
+import org.sysu.workflow.restful.utility.HibernateUtil;
+import org.sysu.workflow.restful.utility.LogUtil;
 
 import java.io.InputStream;
 import java.net.URL;
 import java.util.LinkedHashMap;
+import java.util.List;
 import java.util.Map;
+
+import static org.sysu.workflow.restful.utility.SerializationUtil.DeserializationSCXMLByByteArray;
 
 /**
  * Created by zhengshouzi on 2016/1/2.
@@ -103,7 +112,7 @@ public class SubStateMachine extends NamelistHolder implements PathResolverHolde
             Context ctx = exctx.getContext(parentState);
             ctx.setLocal(getNamespacesKey(), getNamespaces());
             Map<String, Object> payloadDataMap = new LinkedHashMap<String, Object>();
-            addParamsToPayload(exctx, payloadDataMap);//将param元素中的参数添加到一个map中
+            addParamsToPayload(exctx, payloadDataMap);
             // get resource file url
             //final URL url = this.getClass().getClassLoader().getResource(getSrc());
 
@@ -117,20 +126,45 @@ public class SubStateMachine extends NamelistHolder implements PathResolverHolde
             }
 
             SCXML scxml = null;
-            // init sub state machine SCXML object
-            try {
-                scxml = SCXMLReader.read(url);
-            } catch (Exception e) {
-                System.out.println("couldn't find :" + getSrc());
-                e.printStackTrace();
-            }
-            // launch sub state machine of the number of instances
+//            // init sub state machine SCXML object
+//            try {
+//                scxml = SCXMLReader.read(url);
+//            } catch (Exception e) {
+//                System.out.println("couldn't find :" + getSrc());
+//                e.printStackTrace();
+//            }
+
+
             SCXMLExecutionContext currentExecutionContext = (SCXMLExecutionContext) exctx.getInternalIOProcessor();
+            //Ariana:get the serialized BO from the database and deserialize it into SCXML object
+            String boName = getSrc().split(".")[0];
+            Session session = HibernateUtil.GetLocalThreadSession();
+            Transaction transaction = session.beginTransaction();
+            try{
+                List boList = session.createQuery(String.format("FROM RenBoEntity WHERE pid = '%s'", currentExecutionContext.Pid)).list();
+                for(Object bo:boList) {
+                    RenBoEntity boEntity = (RenBoEntity)bo;
+                    if(boEntity.getBoName().equals(boName)) {
+                        byte[] serializedBO = boEntity.getSerialized();
+                        scxml = DeserializationSCXMLByByteArray(serializedBO);
+                        break;
+                    }
+                }
+            }catch(Exception e) {
+                e.printStackTrace();
+                LogUtil.Log("When read bo by rtid, exception occurred, " + e.toString() + ", service rollback",
+                        LaunchProcessService.class.getName(), LogUtil.LogLevelType.ERROR, currentExecutionContext.Rtid);
+                transaction.rollback();
+            }
+
+            // launch sub state machine of the number of instances
             TimeInstanceTree iTree = InstanceManager.GetInstanceTree(currentExecutionContext.RootTid);
             TimeTreeNode curNode = iTree.GetNodeById(currentExecutionContext.Tid);
             for (int i = 0; i < getInstances(); i++) {
                 Evaluator evaluator = EvaluatorFactory.getEvaluator(scxml);
                 SCXMLExecutor executor = new SCXMLExecutor(evaluator, new MulitStateMachineDispatcher(), new SimpleErrorReporter(), null, currentExecutionContext.RootTid);
+                executor.setRtid(currentExecutionContext.Rtid);
+                executor.setPid(currentExecutionContext.Pid);
                 executor.setStateMachine(scxml);
                 System.out.println("Create sub state machine from: " + url.getFile());
                 //初始化执行上下文
