@@ -16,7 +16,7 @@ import java.util.Observer;
  *         supervise its context and executor, and always be supervised by
  *         the main scheduler.
  */
-public class NSTracker extends Observable implements Runnable, Observer {
+public class NSTracker extends Observable implements Observer {
     /**
      * Create a new asynchronously tracker.
      * @param supervisorScheduler scheduler instance to supervise tracker
@@ -38,7 +38,7 @@ public class NSTracker extends Observable implements Runnable, Observer {
         }
         this.context = nsTransaction;
         this.phase = TrackerPhase.Running;
-        this.run();
+        // todo here create executor to handle service
     }
 
     /**
@@ -64,16 +64,6 @@ public class NSTracker extends Observable implements Runnable, Observer {
      */
     public TrackerPhase getPhase() {
         return this.phase;
-    }
-
-    /**
-     * Run the tracker asynchronously.
-     * DO NOT CALL THIS METHOD DIRECTLY, USE {@code NSTracker.ExecuteAsync}
-     * @see Thread#run()
-     */
-    @Override
-    public void run() {
-
     }
 
     /**
