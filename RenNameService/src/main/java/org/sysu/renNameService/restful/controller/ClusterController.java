@@ -9,6 +9,8 @@ import org.sysu.renNameService.restful.dto.ReturnModel;
 import org.sysu.renNameService.restful.dto.ReturnModelHelper;
 import org.sysu.renNameService.restful.dto.StatusCode;
 import org.sysu.renNameService.utility.TimestampUtil;
+
+import javax.transaction.Transactional;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -23,14 +25,15 @@ import java.util.List;
 public class ClusterController {
 
     /**
-     * Doki
-     * @param from
-     * @param timestamp
-     * @param tag
-     * @return
+     * Doki Doki.
+     * @param from from which service global id
+     * @param timestamp timestamp of request sent
+     * @param tag object tag
+     * @return response package
      */
     @PostMapping(value = "/doki", produces = {"application/json", "application/xml"})
     @ResponseBody
+    @Transactional
     public ReturnModel Doki(@RequestParam(value="from", required = false)String from,
                             @RequestParam(value="timestamp", required = false)String timestamp,
                             @RequestParam(value="tag", required = false)String tag) {
@@ -46,7 +49,7 @@ public class ClusterController {
             }
 
             rnModel.setCode(StatusCode.OK);
-            rnModel.setNs(TimestampUtil.GetTimeStamp() + " 0");
+            rnModel.setNs(TimestampUtil.GetTimeStampString() + " 0");
             ReturnElement returnElement = new ReturnElement();
             returnElement.setData("Doki");
             rnModel.setReturnElement(returnElement);
@@ -81,7 +84,7 @@ public class ClusterController {
             }
 
             rnModel.setCode(StatusCode.OK);
-            rnModel.setNs(TimestampUtil.GetTimeStamp() + " 0");
+            rnModel.setNs(TimestampUtil.GetTimeStampString() + " 0");
             ReturnElement returnElement = new ReturnElement();
             returnElement.setData("Sync");
             rnModel.setReturnElement(returnElement);
@@ -112,7 +115,7 @@ public class ClusterController {
             }
 
             rnModel.setCode(StatusCode.OK);
-            rnModel.setNs(TimestampUtil.GetTimeStamp() + " 0");
+            rnModel.setNs(TimestampUtil.GetTimeStampString() + " 0");
             ReturnElement returnElement = new ReturnElement();
             returnElement.setData("Flush");
             rnModel.setReturnElement(returnElement);
@@ -143,7 +146,7 @@ public class ClusterController {
             }
 
             rnModel.setCode(StatusCode.OK);
-            rnModel.setNs(TimestampUtil.GetTimeStamp() + " 0");
+            rnModel.setNs(TimestampUtil.GetTimeStampString() + " 0");
             ReturnElement returnElement = new ReturnElement();
             returnElement.setData("Fin");
             rnModel.setReturnElement(returnElement);

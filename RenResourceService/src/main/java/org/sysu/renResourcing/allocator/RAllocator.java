@@ -1,7 +1,8 @@
 package org.sysu.renResourcing.allocator;
 
 import org.sysu.renResourcing.basic.RSelector;
-import org.sysu.renResourcing.context.ResourcingContext;
+import org.sysu.renResourcing.context.ParticipantContext;
+import org.sysu.renResourcing.context.WorkitemContext;
 
 import java.io.Serializable;
 import java.util.HashMap;
@@ -34,8 +35,5 @@ public abstract class RAllocator extends RSelector implements Serializable {
      * Perform allocation on the candidate set.
      * @return selected participant
      */
-    // todo
-    public abstract Object PerformAllocate(HashSet<Object> candidateSet, ResourcingContext context);
-
-
+    public abstract ParticipantContext PerformAllocate(HashSet<ParticipantContext> candidateSet, WorkitemContext context);
 }

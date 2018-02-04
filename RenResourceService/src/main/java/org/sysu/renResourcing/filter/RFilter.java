@@ -5,7 +5,8 @@
 package org.sysu.renResourcing.filter;
 
 import org.sysu.renResourcing.basic.RSelector;
-import org.sysu.renResourcing.context.ResourcingContext;
+import org.sysu.renResourcing.context.ParticipantContext;
+import org.sysu.renResourcing.context.WorkitemContext;
 
 import java.io.Serializable;
 import java.util.HashMap;
@@ -38,6 +39,5 @@ public abstract class RFilter extends RSelector implements Serializable {
      * Perform filter on the candidate set.
      * @return filtered participant set
      */
-    // todo participant
-    public abstract HashSet<Object> PerformFilter(HashSet<Object> candidateSet, ResourcingContext context);
+    public abstract HashSet<ParticipantContext> PerformFilter(HashSet<ParticipantContext> candidateSet, WorkitemContext context);
 }
