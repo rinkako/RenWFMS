@@ -1,12 +1,6 @@
 package org.sysu.renResourcing.context;
 
 import org.sysu.renResourcing.basic.RIdentifier;
-import org.sysu.renResourcing.basic.enums.RServiceType;
-
-import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.UUID;
 
 /**
  * Author: Rinkako
@@ -19,46 +13,7 @@ public class ResourcingContext extends RIdentifier {
      * Create new ResourcingContext instance
      */
     public ResourcingContext() {
-        this.Id = UUID.randomUUID().toString().replace("-", "");
+
     }
 
-    /**
-     * Session
-     */
-    public RSession Session = null;
-
-    /**
-     * Type of engine service
-     */
-    public RServiceType Type = RServiceType.NOP;
-
-    /**
-     * Parameter Dictionary
-     */
-    public HashMap<String, String> Args = new HashMap<String, String>();
-
-    /**
-     * Priority in schedule queue, smaller is preferential
-     */
-    public int Priority = 0;
-
-    /**
-     * Timestamp of service request arrival
-     */
-    public Date ArriveTimestamp = new Date();
-
-    /**
-     * Timestamp of service scheduled
-     */
-    public Date ScheduleTimestamp = null;
-
-    /**
-     * Timestamp of service executed
-     */
-    public Date FinishTimestamp = null;
-
-    /**
-     * Standard format for timestamp
-     */
-    private static final SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 }

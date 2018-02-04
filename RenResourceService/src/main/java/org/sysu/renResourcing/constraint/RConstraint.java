@@ -5,7 +5,6 @@
 package org.sysu.renResourcing.constraint;
 
 import org.sysu.renResourcing.basic.RSelector;
-import org.sysu.renResourcing.context.RParticipant;
 import org.sysu.renResourcing.context.ResourcingContext;
 
 import java.io.Serializable;
@@ -39,5 +38,6 @@ public abstract class RConstraint extends RSelector implements Serializable {
      * Perform constraint on the candidate set.
      * @return filtered participant set
      */
-    public abstract HashSet<RParticipant> PerformConstraint(HashSet<RParticipant> candidateSet, ResourcingContext context);
+    // todo participant
+    public abstract HashSet<Object> PerformConstraint(HashSet<Object> candidateSet, ResourcingContext context);
 }

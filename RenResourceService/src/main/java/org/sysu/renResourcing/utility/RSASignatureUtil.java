@@ -11,7 +11,7 @@ import java.security.spec.X509EncodedKeySpec;
 
 /**
  * Author: Rinkako
- * Date  : 2018/1/31
+ * Date  : 2018/2/4
  * Usage : Methods for data RSA Signature.
  */
 public class RSASignatureUtil {
