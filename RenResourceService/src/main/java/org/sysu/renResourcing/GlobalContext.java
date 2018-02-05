@@ -1,7 +1,5 @@
 package org.sysu.renResourcing;
 
-import org.sysu.renResourcing.log.RLogger;
-
 import java.util.UUID;
 
 /**
@@ -15,5 +13,23 @@ public class GlobalContext {
      */
     public static String RESOURCE_SERVICE_GLOBAL_ID = UUID.randomUUID().toString();
 
-    public static RLogger EngineLogger;
+    /**
+     * Response message of successfully queued request.
+     */
+    public static final String RESPONSE_SUCCESS = "OK";
+
+    /**
+     * Success notification string of Observable object.
+     */
+    public static final String OBSERVABLE_NOTIFY_SUCCESS = "success";
+
+    /**
+     * Success notification string of Observable object.
+     */
+    public static final String OBSERVABLE_NOTIFY_EXCEPTION = "exception";
+
+    /**
+     * Concurrent control: max active tracker.
+     */
+    public static int CONCURRENT_MAX_TRACKER = 100;
 }

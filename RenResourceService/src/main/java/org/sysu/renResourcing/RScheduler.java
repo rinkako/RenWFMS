@@ -5,12 +5,15 @@
 package org.sysu.renResourcing;
 
 import org.sysu.renResourcing.context.ResourcingContext;
+import org.sysu.renResourcing.plugin.RTrackablePlugin;
+import org.sysu.renResourcing.trigger.RTrigger;
 import org.sysu.renResourcing.utility.LogUtil;
 
 import java.util.ArrayList;
 import java.util.Observable;
 import java.util.Observer;
 import java.util.concurrent.PriorityBlockingQueue;
+import java.util.concurrent.locks.ReentrantLock;
 
 /**
  * Author: Rinkako
@@ -32,6 +35,16 @@ public final class RScheduler implements Observer {
     private final ArrayList<RTracker> trackerVector = new ArrayList<>();
 
     /**
+     * Fair reentrant lock for pending queue.
+     */
+    private final ReentrantLock handlePendingLock = new ReentrantLock(true);
+
+    /**
+     * Fair reentrant lock for tracker vector.
+     */
+    private final ReentrantLock trackerVectorLock = new ReentrantLock(true);
+
+    /**
      * Pending resourcing request context queue.
      * This field is thread safe.
      */
@@ -39,6 +52,7 @@ public final class RScheduler implements Observer {
 
     /**
      * Schedule a resourcing context.
+     * @param context resourcing request context to be scheduled
      */
     public void Schedule(ResourcingContext context) {
         if (context == null) {
@@ -48,13 +62,15 @@ public final class RScheduler implements Observer {
         }
         try {
             this.pendingQueue.add(context);
-
+            LogUtil.Log(String.format("Schedule resourcing context(%s) to pending queue, current queue length is %s",
+                    context.getRstid(), this.pendingQueue.size()), RScheduler.class.getName(),
+                    LogUtil.LogLevelType.INFO, context.getRtid());
             this.HandlePendingQueue();
         }
         catch (Exception ex) {
-            // todo rtid is not unique for a resourcing request
-            LogUtil.Log("Schedule resourcing context exception occurred, " + ex,
-                    RScheduler.class.getName(), LogUtil.LogLevelType.ERROR, "");
+            LogUtil.Log(String.format("Schedule resourcing context(%s) exception occurred, %s", context.getRstid(), ex),
+                    RScheduler.class.getName(), LogUtil.LogLevelType.ERROR, context.getRtid());
+            throw ex;  // re throw to ResourcingEngine
         }
     }
 
@@ -62,7 +78,39 @@ public final class RScheduler implements Observer {
      * Process the pending queue, until active tracker exceed concurrent control threshold.
      */
     private void HandlePendingQueue() {
+        this.handlePendingLock.lock();
+        try {
+            while (this.pendingQueue.size() < GlobalContext.CONCURRENT_MAX_TRACKER) {
+                ResourcingContext pCtx = this.pendingQueue.poll();
+                if (pCtx != null) {
+                    LogUtil.Log(String.format("Resourcing context(%s) is scheduled to launch.", pCtx.getRstid()),
+                            RScheduler.class.getName(), LogUtil.LogLevelType.INFO, pCtx.getRtid());
+                    pCtx.SetScheduled();
+                    this.LaunchTracker(pCtx);
+                } else {
+                    break;
+                }
+            }
+        }
+        finally {
+            this.handlePendingLock.unlock();
+        }
+    }
 
+    /**
+     * Actually handle a workitem launching.
+     * @param context resourcing request context to be fired
+     */
+    private void LaunchTracker(ResourcingContext context) {
+        RTracker tracker = new RTracker(context);
+        this.trackerVectorLock.lock();
+        try {
+            this.trackerVector.add(tracker);
+        }
+        finally {
+            this.trackerVectorLock.unlock();
+        }
+        new Thread(tracker).start();
     }
 
     /**
@@ -83,7 +131,17 @@ public final class RScheduler implements Observer {
      */
     @Override
     public void update(Observable o, Object arg) {
-
+        assert o instanceof RTracker;
+        RTracker tracker = (RTracker) o;
+        this.trackerVectorLock.lock();
+        try {
+            this.trackerVector.remove(tracker);
+        }
+        finally {
+            this.trackerVectorLock.unlock();
+        }
+        tracker.getContext().SetFinish();
+        ResourcingContext.SaveToSteady(tracker.getContext());
     }
 
     /**

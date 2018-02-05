@@ -6,9 +6,15 @@ package org.sysu.renResourcing;
 
 import org.hibernate.Session;
 import org.hibernate.Transaction;
+import org.sysu.renResourcing.basic.enums.RServiceType;
+import org.sysu.renResourcing.context.ResourcingContext;
 import org.sysu.renResourcing.context.TaskContext;
+import org.sysu.renResourcing.context.steady.RenRsrecordEntity;
 import org.sysu.renResourcing.context.steady.RenRuntimerecordEntity;
 import org.sysu.renResourcing.utility.HibernateUtil;
+import org.sysu.renResourcing.utility.LogUtil;
+
+import java.util.Hashtable;
 
 /**
  * Author: Rinkako
@@ -40,17 +46,28 @@ public class ResourcingEngine {
             cmtFlag = true;
             TaskContext taskContext = TaskContext.GetContext(rtid, boName, polymorphismName);
             assert taskContext != null;
-
+            // todo task context can be cached
+            Hashtable<String, Object> args = new Hashtable<>();
+            args.put("taskContext", taskContext);
+            ResourcingContext ctx = ResourcingContext.GetContext(null, rtid, RServiceType.SubmitResourcingTask, args);
+            this.mainScheduler.Schedule(ctx);
+            return GlobalContext.RESPONSE_SUCCESS;
         }
         catch (Exception ex) {
             if (!cmtFlag) {
                 transaction.rollback();
             }
+            LogUtil.Log("Exception in EngineSubmitTask, " + ex, ResourcingEngine.class.getName(),
+                    LogUtil.LogLevelType.ERROR, rtid);
+            throw ex;  // rethrow to cause exception response
         }
-        return "";
     }
 
 
+    /**
+     * Main scheduler reference.
+     */
+    private RScheduler mainScheduler = RScheduler.GetInstance();
 
     /**
      * RS engine global instance.

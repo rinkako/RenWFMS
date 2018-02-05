@@ -16,6 +16,7 @@ import org.sysu.workflow.restful.entity.RenBoEntity;
 import org.sysu.workflow.restful.service.LaunchProcessService;
 import org.sysu.workflow.restful.utility.HibernateUtil;
 import org.sysu.workflow.restful.utility.LogUtil;
+import org.sysu.workflow.restful.utility.SerializationUtil;
 
 import java.io.InputStream;
 import java.net.URL;
@@ -23,7 +24,7 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
-import static org.sysu.workflow.restful.utility.SerializationUtil.DeserializationSCXMLByByteArray;
+
 
 /**
  * Created by zhengshouzi on 2016/1/2.
@@ -146,15 +147,15 @@ public class SubStateMachine extends NamelistHolder implements PathResolverHolde
                     RenBoEntity boEntity = (RenBoEntity)bo;
                     if(boEntity.getBoName().equals(boName)) {
                         byte[] serializedBO = boEntity.getSerialized();
-                        scxml = DeserializationSCXMLByByteArray(serializedBO);
+                        scxml = SerializationUtil.DeserializationSCXMLByByteArray(serializedBO);
                         break;
                     }
                 }
             }catch(Exception e) {
                 e.printStackTrace();
+                transaction.rollback();
                 LogUtil.Log("When read bo by rtid, exception occurred, " + e.toString() + ", service rollback",
                         LaunchProcessService.class.getName(), LogUtil.LogLevelType.ERROR, currentExecutionContext.Rtid);
-                transaction.rollback();
             }
 
             // launch sub state machine of the number of instances

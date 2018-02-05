@@ -10,9 +10,6 @@ import java.io.Serializable;
 import java.util.Map;
 
 /**
- *
- * 可行性的Action的抽象基类
- *
  * An abstract base class for executable elements in SCXML,
  * such as &lt;assign&gt;, &lt;log&gt; etc.
  */

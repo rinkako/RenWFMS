@@ -1,9 +1,9 @@
 package org.sysu.renResourcing.context;
 
-import jdk.nashorn.internal.objects.Global;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
 import org.sysu.renResourcing.GlobalContext;
+import org.sysu.renResourcing.basic.enums.RServiceType;
 import org.sysu.renResourcing.context.steady.RenRsrecordEntity;
 import org.sysu.renResourcing.utility.CommonUtil;
 import org.sysu.renResourcing.utility.HibernateUtil;
@@ -38,9 +38,9 @@ public class ResourcingContext implements Comparable<ResourcingContext> {
     private int priority = 0;
 
     /**
-     * Service name.
+     * Service type enum.
      */
-    private String service;
+    private RServiceType service;
 
     /**
      * Service argument dictionary.
@@ -63,14 +63,19 @@ public class ResourcingContext implements Comparable<ResourcingContext> {
     private Timestamp finishTimestamp;
 
     /**
-     * Get a resoucing request context.
+     * Execution result descriptor.
+     */
+    private String executionResult;
+
+    /**
+     * Get a resourcing request context.
      * @param rstid resourcing request global id, null if create a new one
      * @param rtid process rtid
-     * @param serviceName service name
+     * @param service service type enum
      * @param argsDict service argument dict
      * @return Resourcing request context, null if exception occurred or assertion error
      */
-    public static ResourcingContext GetContext(String rstid, String rtid, String serviceName, Hashtable<String, Object> argsDict) {
+    public static ResourcingContext GetContext(String rstid, String rtid, RServiceType service, Hashtable<String, Object> argsDict) {
         Session session = HibernateUtil.GetLocalThreadSession();
         Transaction transaction = session.beginTransaction();
         boolean cmtFlag = false;
@@ -84,7 +89,7 @@ public class ResourcingContext implements Comparable<ResourcingContext> {
                 renRsrecordEntity.setPriority(0);
                 renRsrecordEntity.setReceiveTimestamp(new Timestamp(System.currentTimeMillis()));
                 renRsrecordEntity.setResourcingId(GlobalContext.RESOURCE_SERVICE_GLOBAL_ID);
-                renRsrecordEntity.setService(serviceName);
+                renRsrecordEntity.setService(service.name());
                 renRsrecordEntity.setArgs(SerializationUtil.JsonSerialization(argsDict));
                 session.saveOrUpdate(renRsrecordEntity);
                 transaction.commit();
@@ -103,9 +108,32 @@ public class ResourcingContext implements Comparable<ResourcingContext> {
             if (!cmtFlag) {
                 transaction.rollback();
             }
-            LogUtil.Log("When json serialization exception occurred, transaction rollback. " + ex,
+            LogUtil.Log("Get resourcing request context but exception occurred, " + ex,
                     TaskContext.class.getName(), LogUtil.LogLevelType.ERROR, rtid);
             return null;
+        }
+    }
+
+    /**
+     * Save changes context to steady memory.
+     * @param context Resourcing context to be saved
+     */
+    public static void SaveToSteady(ResourcingContext context) {
+        if (context == null) {
+            LogUtil.Log("Ignore null resourcing context saving.", TaskContext.class.getName(),
+                    LogUtil.LogLevelType.WARNING, "");
+            return;
+        }
+        Session session = HibernateUtil.GetLocalThreadSession();
+        Transaction transaction = session.beginTransaction();
+        try {
+            session.saveOrUpdate(context);
+            transaction.commit();
+        }
+        catch (Exception ex) {
+            transaction.rollback();
+            LogUtil.Log("Save resourcing request context but exception occurred, " + ex,
+                    TaskContext.class.getName(), LogUtil.LogLevelType.ERROR, context.getRtid());
         }
     }
 
@@ -118,8 +146,8 @@ public class ResourcingContext implements Comparable<ResourcingContext> {
     }
 
     /**
-     *
-     * @return
+     * Get process runtime record global id.
+     * @return process rtid string
      */
     public String getRtid() {
         return rtid;
@@ -135,10 +163,10 @@ public class ResourcingContext implements Comparable<ResourcingContext> {
     }
 
     /**
-     * Get service descriptor of this request.
-     * @return service descriptor
+     * Get service enum type of this request.
+     * @return service enum type
      */
-    public String getService() {
+    public RServiceType getService() {
         return this.service;
     }
 
@@ -189,6 +217,22 @@ public class ResourcingContext implements Comparable<ResourcingContext> {
     }
 
     /**
+     * Get the execution result.
+     * @return result descriptor string.
+     */
+    public String getExecutionResult() {
+        return executionResult;
+    }
+
+    /**
+     * Set the execution result.
+     * @param executionResult result descriptor string.
+     */
+    public void setExecutionResult(String executionResult) {
+        this.executionResult = executionResult;
+    }
+
+    /**
      * Create a new resourcing request context.
      * Private constructor for preventing create outside.
      * @param rstid resourcing request id
@@ -199,7 +243,7 @@ public class ResourcingContext implements Comparable<ResourcingContext> {
     private ResourcingContext(String rstid, String rtid, String service, Hashtable<String, Object> argsDict) {
         this.rstid = rstid;
         this.rtid = rtid;
-        this.service = service;
+        this.service = RServiceType.valueOf(service);
         this.argsDict = argsDict;
     }
 

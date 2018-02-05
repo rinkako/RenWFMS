@@ -8,12 +8,5 @@ import java.io.Serializable;
  * Usage : Enum of RenResourcing services.
  */
 public enum RServiceType implements Serializable {
-    // No operation
-    NOP,
-    // Start the resource service
-    EngineStart,
-    // Stop the resource service
-    EngineStop,
-    // Event: Exception raised
-    EngineException
+    SubmitResourcingTask,
 }
