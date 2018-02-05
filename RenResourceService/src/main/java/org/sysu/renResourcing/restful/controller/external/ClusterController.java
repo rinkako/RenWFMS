@@ -1,7 +1,7 @@
-package org.sysu.renResourcing.restful.controller;
+package org.sysu.renResourcing.restful.controller.external;
 
 import org.springframework.web.bind.annotation.*;
-import org.sysu.renResourcing.restful.dto.DTOUtil;
+import org.sysu.renResourcing.restful.dto.ReturnModelHelper;
 import org.sysu.renResourcing.restful.dto.ReturnElement;
 import org.sysu.renResourcing.restful.dto.ReturnModel;
 import org.sysu.renResourcing.restful.dto.StatusCode;
@@ -63,7 +63,7 @@ public class ClusterController {
             if (from == null) missingParams.add("from");
             if (timestamp == null) missingParams.add("timestamp");
             if (missingParams.size() > 0) {
-                rnModel = DTOUtil.HandleMissingParameters(missingParams);
+                rnModel = ReturnModelHelper.MissingParametersResponse(missingParams);
                 return rnModel;
             }
 
@@ -106,7 +106,7 @@ public class ClusterController {
             if (from == null) missingParams.add("from");
             if (timestamp == null) missingParams.add("timestamp");
             if (missingParams.size() > 0) {
-                rnModel = DTOUtil.HandleMissingParameters(missingParams);
+                rnModel = ReturnModelHelper.MissingParametersResponse(missingParams);
                 return rnModel;
             }
 
@@ -152,7 +152,7 @@ public class ClusterController {
             if (to == null) missingParams.add("to");
             if (timestamp == null) missingParams.add("timestamp");
             if (missingParams.size() > 0) {
-                rnModel = DTOUtil.HandleMissingParameters(missingParams);
+                rnModel = ReturnModelHelper.MissingParametersResponse(missingParams);
                 return rnModel;
             }
 
@@ -192,7 +192,7 @@ public class ClusterController {
             if (token == null) missingParams.add("token");
             if (to == null) missingParams.add("to");
             if (missingParams.size() > 0) {
-                rnModel = DTOUtil.HandleMissingParameters(missingParams);
+                rnModel = ReturnModelHelper.MissingParametersResponse(missingParams);
                 return rnModel;
             }
 
@@ -232,7 +232,7 @@ public class ClusterController {
             if (token == null) missingParams.add("token");
             if (to == null) missingParams.add("to");
             if (missingParams.size() > 0) {
-                rnModel = DTOUtil.HandleMissingParameters(missingParams);
+                rnModel = ReturnModelHelper.MissingParametersResponse(missingParams);
                 return rnModel;
             }
 

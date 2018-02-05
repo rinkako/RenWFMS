@@ -9,7 +9,7 @@ import java.util.Objects;
 
 /**
  * Author: Rinkako
- * Date  : 2018/2/4
+ * Date  : 2018/2/5
  * Usage :
  */
 @Entity
@@ -19,6 +19,7 @@ public class RenRstaskEntity {
     private String boid;
     private String polymorphismName;
     private String polymorphismId;
+    private String principle;
     private String eventdescriptor;
     private String hookdescriptor;
 
@@ -63,6 +64,16 @@ public class RenRstaskEntity {
     }
 
     @Basic
+    @Column(name = "principle", nullable = true, length = -1)
+    public String getPrinciple() {
+        return principle;
+    }
+
+    public void setPrinciple(String principle) {
+        this.principle = principle;
+    }
+
+    @Basic
     @Column(name = "eventdescriptor", nullable = false, length = -1)
     public String getEventdescriptor() {
         return eventdescriptor;
@@ -91,6 +102,7 @@ public class RenRstaskEntity {
                 Objects.equals(boid, that.boid) &&
                 Objects.equals(polymorphismName, that.polymorphismName) &&
                 Objects.equals(polymorphismId, that.polymorphismId) &&
+                Objects.equals(principle, that.principle) &&
                 Objects.equals(eventdescriptor, that.eventdescriptor) &&
                 Objects.equals(hookdescriptor, that.hookdescriptor);
     }
@@ -98,6 +110,6 @@ public class RenRstaskEntity {
     @Override
     public int hashCode() {
 
-        return Objects.hash(taskid, boid, polymorphismName, polymorphismId, eventdescriptor, hookdescriptor);
+        return Objects.hash(taskid, boid, polymorphismName, polymorphismId, principle, eventdescriptor, hookdescriptor);
     }
 }

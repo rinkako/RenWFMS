@@ -1,7 +1,7 @@
-package org.sysu.renResourcing.restful.controller;
+package org.sysu.renResourcing.restful.controller.external;
 
 import org.springframework.web.bind.annotation.*;
-import org.sysu.renResourcing.restful.dto.DTOUtil;
+import org.sysu.renResourcing.restful.dto.ReturnModelHelper;
 import org.sysu.renResourcing.restful.dto.ReturnElement;
 import org.sysu.renResourcing.restful.dto.ReturnModel;
 import org.sysu.renResourcing.restful.dto.StatusCode;
@@ -13,11 +13,10 @@ import java.util.List;
 /**
  * Author: Gordan
  * Date  : 2017/12/14
- * Usage : Handle requests about human resource management.
+ * Usage : Handle requests about access control.
  */
 @RestController
-@RequestMapping("/human")
-public class HumanController {
+public class AccessController {
 
     // Todo
     public ReturnModel ExceptionHandlerFunction(String exception) {
@@ -42,25 +41,72 @@ public class HumanController {
         return null;
     }
 
+    @RequestMapping(value = "/", produces = {"application/json", "application/xml"},
+            method = {RequestMethod.GET, RequestMethod.POST})
+    @ResponseBody
+    public ReturnModel Index() {
+        ReturnModel rnModel = new ReturnModel();
+        try {
+            rnModel.setCode(StatusCode.OK);
+            rnModel.setRs(TimestampUtil.GetTimeStampString() + " 0");
+            ReturnElement returnElement = new ReturnElement();
+            returnElement.setData("Index");
+            rnModel.setReturnElement(returnElement);
+        } catch (Exception e) {
+            rnModel = ExceptionHandlerFunction(e.getClass().getName());
+        }
+        return rnModel;
+    }
+
     /**
-     * Get a human resource.
-     * @param token
-     * @param id
+     * Connect to RS to request a token.
+     * @param username
+     * @param password
      * @return
      */
-    @PostMapping(value = "/get", produces = { "application/json", "application/xml"})
+    @PostMapping(value = "/connect", produces = {"application/json", "application/xml"})
     @ResponseBody
-    public ReturnModel GetHuman(@RequestParam(value="token", required = false)String token,
-                                @RequestParam(value="id", required = false)String id) {
+    public ReturnModel Connect(@RequestParam(value="username", required = false)String username,
+                               @RequestParam(value="password", required = false)String password) {
+        ReturnModel rnModel = new ReturnModel();
+        try {
+            // miss params
+            List<String> missingParams = new ArrayList<>();
+            if (username == null) missingParams.add("username");
+            if (password == null) missingParams.add("password");
+            if (missingParams.size() > 0) {
+                rnModel = ReturnModelHelper.MissingParametersResponse(missingParams);
+                return rnModel;
+            }
+
+            rnModel.setCode(StatusCode.OK);
+            rnModel.setRs(TimestampUtil.GetTimeStampString() + " 0");
+            ReturnElement returnElement = new ReturnElement();
+            returnElement.setData("Connect");
+            rnModel.setReturnElement(returnElement);
+        } catch (Exception e) {
+            rnModel = ExceptionHandlerFunction(e.getClass().getName());
+        }
+
+        return rnModel;
+    }
+
+    /**
+     * Disconnect from RS.
+     * @param token
+     * @return
+     */
+    @PostMapping(value = "/disconnect", produces = { "application/json", "application/xml"})
+    @ResponseBody
+    public ReturnModel DisConnect(@RequestParam(value="token", required = false)String token) {
         ReturnModel rnModel = new ReturnModel();
 
         try {
             // miss params
             List<String> missingParams = new ArrayList<>();
             if (token == null) missingParams.add("token");
-            if (id == null) missingParams.add("id");
             if (missingParams.size() > 0) {
-                rnModel = DTOUtil.HandleMissingParameters(missingParams);
+                rnModel = ReturnModelHelper.MissingParametersResponse(missingParams);
                 return rnModel;
             }
 
@@ -68,7 +114,7 @@ public class HumanController {
                 rnModel.setCode(StatusCode.OK);
                 rnModel.setRs(TimestampUtil.GetTimeStampString() + " 0");
                 ReturnElement returnElement = new ReturnElement();
-                returnElement.setData("GetHuman");
+                returnElement.setData("DisConnect");
                 rnModel.setReturnElement(returnElement);
             }
             else {
@@ -83,33 +129,21 @@ public class HumanController {
     }
 
     /**
-     * Set a human resource.
+     * Check the validity of the token.
      * @param token
-     * @param id
-     * @param firstname
-     * @param lastname
-     * @param note
      * @return
      */
-    @PostMapping(value = "/set", produces = { "application/json", "application/xml"})
+    @PostMapping(value = "/check", produces = { "application/json", "application/xml"})
     @ResponseBody
-    public ReturnModel SetHuman(@RequestParam(value="token", required = false)String token,
-                                @RequestParam(value="id", required = false)String id,
-                                @RequestParam(value="firstname", required = false)String firstname,
-                                @RequestParam(value="lastname", required = false)String lastname,
-                                @RequestParam(value="note", required = false)String note) {
+    public ReturnModel Check(@RequestParam(value="token", required = false)String token) {
         ReturnModel rnModel = new ReturnModel();
 
         try {
             // miss params
             List<String> missingParams = new ArrayList<>();
             if (token == null) missingParams.add("token");
-            if (id == null) missingParams.add("id");
-            if (firstname == null) missingParams.add("firstname");
-            if (lastname == null) missingParams.add("lastname");
-            if (note == null) missingParams.add("note");
             if (missingParams.size() > 0) {
-                rnModel = DTOUtil.HandleMissingParameters(missingParams);
+                rnModel = ReturnModelHelper.MissingParametersResponse(missingParams);
                 return rnModel;
             }
 
@@ -117,7 +151,7 @@ public class HumanController {
                 rnModel.setCode(StatusCode.OK);
                 rnModel.setRs(TimestampUtil.GetTimeStampString() + " 0");
                 ReturnElement returnElement = new ReturnElement();
-                returnElement.setData("SetHuman");
+                returnElement.setData("Check");
                 rnModel.setReturnElement(returnElement);
             }
             else {
@@ -132,24 +166,21 @@ public class HumanController {
     }
 
     /**
-     * Check the validity of the human resource.
+     * Check the authorization of the token
      * @param token
-     * @param id
      * @return
      */
-    @PostMapping(value = "/contain", produces = { "application/json", "application/xml"})
+    @PostMapping(value = "/checkadmin", produces = { "application/json", "application/xml"})
     @ResponseBody
-    public ReturnModel ContainHuman(@RequestParam(value="token", required = false)String token,
-                                    @RequestParam(value="id", required = false)String id) {
+    public ReturnModel CheckAdmin(@RequestParam(value="token", required = false)String token) {
         ReturnModel rnModel = new ReturnModel();
 
         try {
             // miss params
             List<String> missingParams = new ArrayList<>();
             if (token == null) missingParams.add("token");
-            if (id == null) missingParams.add("id");
             if (missingParams.size() > 0) {
-                rnModel = DTOUtil.HandleMissingParameters(missingParams);
+                rnModel = ReturnModelHelper.MissingParametersResponse(missingParams);
                 return rnModel;
             }
 
@@ -157,7 +188,7 @@ public class HumanController {
                 rnModel.setCode(StatusCode.OK);
                 rnModel.setRs(TimestampUtil.GetTimeStampString() + " 0");
                 ReturnElement returnElement = new ReturnElement();
-                returnElement.setData("ContainHuman");
+                returnElement.setData("CheckAdmin");
                 rnModel.setReturnElement(returnElement);
             }
             else {
@@ -172,31 +203,30 @@ public class HumanController {
     }
 
     /**
-     * Add a human resource.
+     * Add a user to RS.
      * @param token
-     * @param firstname
-     * @param lastname
-     * @param note
+     * @param username
+     * @param password
+     * @param isadmin
      * @return
      */
-    @PostMapping(value = "/add", produces = { "application/json", "application/xml"})
+    @PostMapping(value = "/user/add", produces = { "application/json", "application/xml"})
     @ResponseBody
-    public ReturnModel AddHuman(@RequestParam(value="token", required = false)String token,
-                                @RequestParam(value="firstname", required = false)String firstname,
-                                @RequestParam(value="lastname", required = false)String lastname,
-                                @RequestParam(value="note", required = false)String note) {
+    public ReturnModel AddUser(@RequestParam(value="token", required = false)String token,
+                               @RequestParam(value="username", required = false)String username,
+                               @RequestParam(value="password", required = false)String password,
+                               @RequestParam(value="isadmin", required = false)String isadmin) {
         ReturnModel rnModel = new ReturnModel();
 
         try {
             // miss params
             List<String> missingParams = new ArrayList<>();
             if (token == null) missingParams.add("token");
-            if (firstname == null) missingParams.add("firstname");
-            if (lastname == null) missingParams.add("lastname");
-            if (note == null) missingParams.add("note");
-
+            if (username == null) missingParams.add("username");
+            if (password == null) missingParams.add("password");
+            if (isadmin == null) missingParams.add("isadmin");
             if (missingParams.size() > 0) {
-                rnModel = DTOUtil.HandleMissingParameters(missingParams);
+                rnModel = ReturnModelHelper.MissingParametersResponse(missingParams);
                 return rnModel;
             }
 
@@ -204,7 +234,7 @@ public class HumanController {
                 rnModel.setCode(StatusCode.OK);
                 rnModel.setRs(TimestampUtil.GetTimeStampString() + " 0");
                 ReturnElement returnElement = new ReturnElement();
-                returnElement.setData("AddHuman");
+                returnElement.setData("AddUser");
                 rnModel.setReturnElement(returnElement);
             }
             else {
@@ -219,24 +249,24 @@ public class HumanController {
     }
 
     /**
-     * Remove the human resource.
+     * Remove a user from RS.
      * @param token
-     * @param id
+     * @param username
      * @return
      */
-    @PostMapping(value = "/remove", produces = { "application/json", "application/xml"})
+    @PostMapping(value = "/user/remove", produces = { "application/json", "application/xml"})
     @ResponseBody
-    public ReturnModel RemoveHuman(@RequestParam(value="token", required = false)String token,
-                                   @RequestParam(value="id", required = false)String id) {
+    public ReturnModel RemoveUser(@RequestParam(value="token", required = false)String token,
+                                  @RequestParam(value="username", required = false)String username) {
         ReturnModel rnModel = new ReturnModel();
 
         try {
             // miss params
             List<String> missingParams = new ArrayList<>();
             if (token == null) missingParams.add("token");
-            if (id == null) missingParams.add("id");
+            if (username == null) missingParams.add("username");
             if (missingParams.size() > 0) {
-                rnModel = DTOUtil.HandleMissingParameters(missingParams);
+                rnModel = ReturnModelHelper.MissingParametersResponse(missingParams);
                 return rnModel;
             }
 
@@ -244,7 +274,7 @@ public class HumanController {
                 rnModel.setCode(StatusCode.OK);
                 rnModel.setRs(TimestampUtil.GetTimeStampString() + " 0");
                 ReturnElement returnElement = new ReturnElement();
-                returnElement.setData("RemoveHuman");
+                returnElement.setData("RemoveUser");
                 rnModel.setReturnElement(returnElement);
             }
             else {
@@ -259,27 +289,24 @@ public class HumanController {
     }
 
     /**
-     * Add a role to the human resource.
+     * Get information about the user.
      * @param token
-     * @param id
-     * @param role
+     * @param username
      * @return
      */
-    @PostMapping(value = "/addrole", produces = { "application/json", "application/xml"})
+    @PostMapping(value = "/user/get", produces = { "application/json", "application/xml"})
     @ResponseBody
-    public ReturnModel AddHumanRole(@RequestParam(value="token", required = false)String token,
-                                    @RequestParam(value="id", required = false)String id,
-                                    @RequestParam(value="role", required = false)String role) {
+    public ReturnModel GetUser(@RequestParam(value="token", required = false)String token,
+                               @RequestParam(value="username", required = false)String username) {
         ReturnModel rnModel = new ReturnModel();
 
         try {
             // miss params
             List<String> missingParams = new ArrayList<>();
             if (token == null) missingParams.add("token");
-            if (id == null) missingParams.add("id");
-            if (role == null) missingParams.add("role");
+            if (username == null) missingParams.add("username");
             if (missingParams.size() > 0) {
-                rnModel = DTOUtil.HandleMissingParameters(missingParams);
+                rnModel = ReturnModelHelper.MissingParametersResponse(missingParams);
                 return rnModel;
             }
 
@@ -287,7 +314,7 @@ public class HumanController {
                 rnModel.setCode(StatusCode.OK);
                 rnModel.setRs(TimestampUtil.GetTimeStampString() + " 0");
                 ReturnElement returnElement = new ReturnElement();
-                returnElement.setData("AddHumanRole");
+                returnElement.setData("GetUser");
                 rnModel.setReturnElement(returnElement);
             }
             else {
@@ -302,27 +329,30 @@ public class HumanController {
     }
 
     /**
-     * Remove the role from the human resource.
+     * Set information of the user.
      * @param token
-     * @param id
-     * @param role
+     * @param username
+     * @param password
+     * @param isAdmin
      * @return
      */
-    @PostMapping(value = "/removerole", produces = { "application/json", "application/xml"})
+    @PostMapping(value = "/user/set", produces = { "application/json", "application/xml"})
     @ResponseBody
-    public ReturnModel RemoveHumanRole(@RequestParam(value="token", required = false)String token,
-                                       @RequestParam(value="id", required = false)String id,
-                                       @RequestParam(value="role", required = false)String role) {
+    public ReturnModel SetUser(@RequestParam(value="token", required = false)String token,
+                               @RequestParam(value="username", required = false)String username,
+                               @RequestParam(value="password", required = false)String password,
+                               @RequestParam(value="isAdmin", required = false)String isAdmin) {
         ReturnModel rnModel = new ReturnModel();
 
         try {
             // miss params
             List<String> missingParams = new ArrayList<>();
             if (token == null) missingParams.add("token");
-            if (id == null) missingParams.add("id");
-            if (role == null) missingParams.add("role");
+            if (username == null) missingParams.add("username");
+            if (password == null) missingParams.add("password");
+            if (isAdmin == null) missingParams.add("isAdmin");
             if (missingParams.size() > 0) {
-                rnModel = DTOUtil.HandleMissingParameters(missingParams);
+                rnModel = ReturnModelHelper.MissingParametersResponse(missingParams);
                 return rnModel;
             }
 
@@ -330,7 +360,7 @@ public class HumanController {
                 rnModel.setCode(StatusCode.OK);
                 rnModel.setRs(TimestampUtil.GetTimeStampString() + " 0");
                 ReturnElement returnElement = new ReturnElement();
-                returnElement.setData("RemoveHumanRole");
+                returnElement.setData("SetUser");
                 rnModel.setReturnElement(returnElement);
             }
             else {
@@ -343,5 +373,4 @@ public class HumanController {
 
         return rnModel;
     }
-
 }

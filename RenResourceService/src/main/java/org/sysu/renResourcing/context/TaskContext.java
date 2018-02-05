@@ -40,9 +40,19 @@ public class TaskContext implements Serializable {
     private String taskName;
 
     /**
+     * Task resourcing principle.
+     */
+    private String principle;
+
+    /**
      * Global id of Belong to which BO.
      */
     private String boid;
+
+    /**
+     * Global id of Belong to which Process.
+     */
+    private String pid;
 
     /**
      * Notification hook vector. (Change, NotifyURL)
@@ -75,7 +85,7 @@ public class TaskContext implements Serializable {
             assert taskEntity != null;
             transaction.commit();
             cmtFlag = true;
-            return TaskContext.GenerateTaskContext(taskEntity);
+            return TaskContext.GenerateTaskContext(taskEntity, pid);
         }
         catch (Exception ex) {
             if (!cmtFlag) {
@@ -109,6 +119,22 @@ public class TaskContext implements Serializable {
      */
     public String getBoid() {
         return this.boid;
+    }
+
+    /**
+     * Get the global id of Process which this task belong to.
+     * @return Process global id string
+     */
+    public String getPid() {
+        return this.pid;
+    }
+
+    /**
+     * Get the resourcing principle.
+     * @return principle string
+     */
+    public String getPrinciple() {
+        return this.principle;
     }
 
     /**
@@ -148,12 +174,14 @@ public class TaskContext implements Serializable {
     /**
      * Generate a task context by a steady entity.
      * @param rstaskEntity RS task entity
+     * @param pid Belong to process global id
      * @return equivalent task context.
      */
-    private static TaskContext GenerateTaskContext(RenRstaskEntity rstaskEntity) {
+    private static TaskContext GenerateTaskContext(RenRstaskEntity rstaskEntity, String pid) {
         assert rstaskEntity != null;
         TaskContext context = new TaskContext(rstaskEntity.getPolymorphismId(),
-                rstaskEntity.getPolymorphismName(), rstaskEntity.getBoid());
+                rstaskEntity.getPolymorphismName(), pid,
+                rstaskEntity.getBoid(), rstaskEntity.getPrinciple());
         String hookDescriptor = rstaskEntity.getHookdescriptor();
         if (!CommonUtil.IsNullOrEmpty(hookDescriptor)) {
             context.ParseHooks(hookDescriptor);
@@ -170,11 +198,15 @@ public class TaskContext implements Serializable {
      * Private constructor for preventing create context without using `{@code TaskContext.GetTaskContext}`.
      * @param id task unique id
      * @param name task name
+     * @param pid belong to Process global id
      * @param boid belong to BO global id
+     * @param principle resourcing principle
      */
-    private TaskContext(String id, String name, String boid) {
+    private TaskContext(String id, String name, String pid, String boid, String principle) {
         this.taskId = id;
         this.taskName = name;
+        this.pid = pid;
         this.boid = boid;
+        this.principle = principle;
     }
 }

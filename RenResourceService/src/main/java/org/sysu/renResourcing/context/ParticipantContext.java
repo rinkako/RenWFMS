@@ -107,7 +107,7 @@ public class ParticipantContext implements Serializable {
     /**
      * Generate a participant context by a steady entity.
      * @param rsparticipantEntity RS participant entity
-     * @return equivalent task context.
+     * @return equivalent participant context.
      */
     private static ParticipantContext GenerateParticipantContext(RenRsparticipantEntity rsparticipantEntity) {
         assert rsparticipantEntity != null;

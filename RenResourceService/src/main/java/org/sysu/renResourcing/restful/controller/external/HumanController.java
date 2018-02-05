@@ -1,7 +1,7 @@
-package org.sysu.renResourcing.restful.controller;
+package org.sysu.renResourcing.restful.controller.external;
 
 import org.springframework.web.bind.annotation.*;
-import org.sysu.renResourcing.restful.dto.DTOUtil;
+import org.sysu.renResourcing.restful.dto.ReturnModelHelper;
 import org.sysu.renResourcing.restful.dto.ReturnElement;
 import org.sysu.renResourcing.restful.dto.ReturnModel;
 import org.sysu.renResourcing.restful.dto.StatusCode;
@@ -13,11 +13,11 @@ import java.util.List;
 /**
  * Author: Gordan
  * Date  : 2017/12/14
- * Usage : Handle requests about role management.
+ * Usage : Handle requests about human resource management.
  */
 @RestController
-@RequestMapping("/role")
-public class RoleController {
+@RequestMapping("/human")
+public class HumanController {
 
     // Todo
     public ReturnModel ExceptionHandlerFunction(String exception) {
@@ -43,24 +43,24 @@ public class RoleController {
     }
 
     /**
-     * Get a role resource.
+     * Get a human resource.
      * @param token
-     * @param role
+     * @param id
      * @return
      */
     @PostMapping(value = "/get", produces = { "application/json", "application/xml"})
     @ResponseBody
-    public ReturnModel GetRole(@RequestParam(value="token", required = false)String token,
-                               @RequestParam(value="role", required = false)String role) {
+    public ReturnModel GetHuman(@RequestParam(value="token", required = false)String token,
+                                @RequestParam(value="id", required = false)String id) {
         ReturnModel rnModel = new ReturnModel();
 
         try {
             // miss params
             List<String> missingParams = new ArrayList<>();
             if (token == null) missingParams.add("token");
-            if (role == null) missingParams.add("role");
+            if (id == null) missingParams.add("id");
             if (missingParams.size() > 0) {
-                rnModel = DTOUtil.HandleMissingParameters(missingParams);
+                rnModel = ReturnModelHelper.MissingParametersResponse(missingParams);
                 return rnModel;
             }
 
@@ -68,7 +68,7 @@ public class RoleController {
                 rnModel.setCode(StatusCode.OK);
                 rnModel.setRs(TimestampUtil.GetTimeStampString() + " 0");
                 ReturnElement returnElement = new ReturnElement();
-                returnElement.setData("GetRole");
+                returnElement.setData("GetHuman");
                 rnModel.setReturnElement(returnElement);
             }
             else {
@@ -83,27 +83,33 @@ public class RoleController {
     }
 
     /**
-     * Set a role resource.
+     * Set a human resource.
      * @param token
-     * @param role
-     * @param privilege
+     * @param id
+     * @param firstname
+     * @param lastname
+     * @param note
      * @return
      */
     @PostMapping(value = "/set", produces = { "application/json", "application/xml"})
     @ResponseBody
-    public ReturnModel SetRole(@RequestParam(value="token", required = false)String token,
-                               @RequestParam(value="role", required = false)String role,
-                               @RequestParam(value="privilege", required = false)String privilege) {
+    public ReturnModel SetHuman(@RequestParam(value="token", required = false)String token,
+                                @RequestParam(value="id", required = false)String id,
+                                @RequestParam(value="firstname", required = false)String firstname,
+                                @RequestParam(value="lastname", required = false)String lastname,
+                                @RequestParam(value="note", required = false)String note) {
         ReturnModel rnModel = new ReturnModel();
 
         try {
             // miss params
             List<String> missingParams = new ArrayList<>();
             if (token == null) missingParams.add("token");
-            if (role == null) missingParams.add("role");
-            if (privilege == null) missingParams.add("privilege");
+            if (id == null) missingParams.add("id");
+            if (firstname == null) missingParams.add("firstname");
+            if (lastname == null) missingParams.add("lastname");
+            if (note == null) missingParams.add("note");
             if (missingParams.size() > 0) {
-                rnModel = DTOUtil.HandleMissingParameters(missingParams);
+                rnModel = ReturnModelHelper.MissingParametersResponse(missingParams);
                 return rnModel;
             }
 
@@ -111,7 +117,7 @@ public class RoleController {
                 rnModel.setCode(StatusCode.OK);
                 rnModel.setRs(TimestampUtil.GetTimeStampString() + " 0");
                 ReturnElement returnElement = new ReturnElement();
-                returnElement.setData("SetRole");
+                returnElement.setData("SetHuman");
                 rnModel.setReturnElement(returnElement);
             }
             else {
@@ -126,24 +132,24 @@ public class RoleController {
     }
 
     /**
-     * Check the validity of the role.
+     * Check the validity of the human resource.
      * @param token
-     * @param role
+     * @param id
      * @return
      */
     @PostMapping(value = "/contain", produces = { "application/json", "application/xml"})
     @ResponseBody
-    public ReturnModel ContainRole(@RequestParam(value="token", required = false)String token,
-                                   @RequestParam(value="role", required = false)String role) {
+    public ReturnModel ContainHuman(@RequestParam(value="token", required = false)String token,
+                                    @RequestParam(value="id", required = false)String id) {
         ReturnModel rnModel = new ReturnModel();
 
         try {
             // miss params
             List<String> missingParams = new ArrayList<>();
             if (token == null) missingParams.add("token");
-            if (role == null) missingParams.add("role");
+            if (id == null) missingParams.add("id");
             if (missingParams.size() > 0) {
-                rnModel = DTOUtil.HandleMissingParameters(missingParams);
+                rnModel = ReturnModelHelper.MissingParametersResponse(missingParams);
                 return rnModel;
             }
 
@@ -151,7 +157,7 @@ public class RoleController {
                 rnModel.setCode(StatusCode.OK);
                 rnModel.setRs(TimestampUtil.GetTimeStampString() + " 0");
                 ReturnElement returnElement = new ReturnElement();
-                returnElement.setData("ContainRole");
+                returnElement.setData("ContainHuman");
                 rnModel.setReturnElement(returnElement);
             }
             else {
@@ -166,27 +172,31 @@ public class RoleController {
     }
 
     /**
-     * Add a role resource.
+     * Add a human resource.
      * @param token
-     * @param role
-     * @param privilege
+     * @param firstname
+     * @param lastname
+     * @param note
      * @return
      */
     @PostMapping(value = "/add", produces = { "application/json", "application/xml"})
     @ResponseBody
-    public ReturnModel AddRole(@RequestParam(value="token", required = false)String token,
-                               @RequestParam(value="role", required = false)String role,
-                               @RequestParam(value="privilege", required = false)String privilege) {
+    public ReturnModel AddHuman(@RequestParam(value="token", required = false)String token,
+                                @RequestParam(value="firstname", required = false)String firstname,
+                                @RequestParam(value="lastname", required = false)String lastname,
+                                @RequestParam(value="note", required = false)String note) {
         ReturnModel rnModel = new ReturnModel();
 
         try {
             // miss params
             List<String> missingParams = new ArrayList<>();
             if (token == null) missingParams.add("token");
-            if (role == null) missingParams.add("role");
-            if (privilege == null) missingParams.add("privilege");
+            if (firstname == null) missingParams.add("firstname");
+            if (lastname == null) missingParams.add("lastname");
+            if (note == null) missingParams.add("note");
+
             if (missingParams.size() > 0) {
-                rnModel = DTOUtil.HandleMissingParameters(missingParams);
+                rnModel = ReturnModelHelper.MissingParametersResponse(missingParams);
                 return rnModel;
             }
 
@@ -194,7 +204,7 @@ public class RoleController {
                 rnModel.setCode(StatusCode.OK);
                 rnModel.setRs(TimestampUtil.GetTimeStampString() + " 0");
                 ReturnElement returnElement = new ReturnElement();
-                returnElement.setData("AddRole");
+                returnElement.setData("AddHuman");
                 rnModel.setReturnElement(returnElement);
             }
             else {
@@ -209,24 +219,24 @@ public class RoleController {
     }
 
     /**
-     * Remove the role resource.
+     * Remove the human resource.
      * @param token
-     * @param role
+     * @param id
      * @return
      */
     @PostMapping(value = "/remove", produces = { "application/json", "application/xml"})
     @ResponseBody
-    public ReturnModel RemoveRole(@RequestParam(value="token", required = false)String token,
-                                  @RequestParam(value="role", required = false)String role) {
+    public ReturnModel RemoveHuman(@RequestParam(value="token", required = false)String token,
+                                   @RequestParam(value="id", required = false)String id) {
         ReturnModel rnModel = new ReturnModel();
 
         try {
             // miss params
             List<String> missingParams = new ArrayList<>();
             if (token == null) missingParams.add("token");
-            if (role == null) missingParams.add("role");
+            if (id == null) missingParams.add("id");
             if (missingParams.size() > 0) {
-                rnModel = DTOUtil.HandleMissingParameters(missingParams);
+                rnModel = ReturnModelHelper.MissingParametersResponse(missingParams);
                 return rnModel;
             }
 
@@ -234,7 +244,7 @@ public class RoleController {
                 rnModel.setCode(StatusCode.OK);
                 rnModel.setRs(TimestampUtil.GetTimeStampString() + " 0");
                 ReturnElement returnElement = new ReturnElement();
-                returnElement.setData("RemoveRole");
+                returnElement.setData("RemoveHuman");
                 rnModel.setReturnElement(returnElement);
             }
             else {
@@ -249,24 +259,27 @@ public class RoleController {
     }
 
     /**
-     * Get the resource of the role.
+     * Add a role to the human resource.
      * @param token
+     * @param id
      * @param role
      * @return
      */
-    @PostMapping(value = "/getinrole", produces = { "application/json", "application/xml"})
+    @PostMapping(value = "/addrole", produces = { "application/json", "application/xml"})
     @ResponseBody
-    public ReturnModel GetInRole(@RequestParam(value="token", required = false)String token,
-                                 @RequestParam(value="role", required = false)String role) {
+    public ReturnModel AddHumanRole(@RequestParam(value="token", required = false)String token,
+                                    @RequestParam(value="id", required = false)String id,
+                                    @RequestParam(value="role", required = false)String role) {
         ReturnModel rnModel = new ReturnModel();
 
         try {
             // miss params
             List<String> missingParams = new ArrayList<>();
             if (token == null) missingParams.add("token");
+            if (id == null) missingParams.add("id");
             if (role == null) missingParams.add("role");
             if (missingParams.size() > 0) {
-                rnModel = DTOUtil.HandleMissingParameters(missingParams);
+                rnModel = ReturnModelHelper.MissingParametersResponse(missingParams);
                 return rnModel;
             }
 
@@ -274,7 +287,7 @@ public class RoleController {
                 rnModel.setCode(StatusCode.OK);
                 rnModel.setRs(TimestampUtil.GetTimeStampString() + " 0");
                 ReturnElement returnElement = new ReturnElement();
-                returnElement.setData("GetInRole");
+                returnElement.setData("AddHumanRole");
                 rnModel.setReturnElement(returnElement);
             }
             else {
@@ -289,24 +302,27 @@ public class RoleController {
     }
 
     /**
-     * Get the human resource of th role.
+     * Remove the role from the human resource.
      * @param token
+     * @param id
      * @param role
      * @return
      */
-    @PostMapping(value = "/gethumaninrole", produces = { "application/json", "application/xml"})
+    @PostMapping(value = "/removerole", produces = { "application/json", "application/xml"})
     @ResponseBody
-    public ReturnModel GetHumanInRole(@RequestParam(value="token", required = false)String token,
-                                      @RequestParam(value="role", required = false)String role) {
+    public ReturnModel RemoveHumanRole(@RequestParam(value="token", required = false)String token,
+                                       @RequestParam(value="id", required = false)String id,
+                                       @RequestParam(value="role", required = false)String role) {
         ReturnModel rnModel = new ReturnModel();
 
         try {
             // miss params
             List<String> missingParams = new ArrayList<>();
             if (token == null) missingParams.add("token");
+            if (id == null) missingParams.add("id");
             if (role == null) missingParams.add("role");
             if (missingParams.size() > 0) {
-                rnModel = DTOUtil.HandleMissingParameters(missingParams);
+                rnModel = ReturnModelHelper.MissingParametersResponse(missingParams);
                 return rnModel;
             }
 
@@ -314,7 +330,7 @@ public class RoleController {
                 rnModel.setCode(StatusCode.OK);
                 rnModel.setRs(TimestampUtil.GetTimeStampString() + " 0");
                 ReturnElement returnElement = new ReturnElement();
-                returnElement.setData("GetHumanInRole");
+                returnElement.setData("RemoveHumanRole");
                 rnModel.setReturnElement(returnElement);
             }
             else {
@@ -328,43 +344,4 @@ public class RoleController {
         return rnModel;
     }
 
-    /**
-     * Get the agent resource of the role.
-     * @param token
-     * @param role
-     * @return
-     */
-    @PostMapping(value = "/getagentinrole", produces = { "application/json", "application/xml"})
-    @ResponseBody
-    public ReturnModel GetAgentInRole(@RequestParam(value="token", required = false)String token,
-                                      @RequestParam(value="role", required = false)String role) {
-        ReturnModel rnModel = new ReturnModel();
-
-        try {
-            // miss params
-            List<String> missingParams = new ArrayList<>();
-            if (token == null) missingParams.add("token");
-            if (role == null) missingParams.add("role");
-            if (missingParams.size() > 0) {
-                rnModel = DTOUtil.HandleMissingParameters(missingParams);
-                return rnModel;
-            }
-
-            if (CheckToken()) {
-                rnModel.setCode(StatusCode.OK);
-                rnModel.setRs(TimestampUtil.GetTimeStampString() + " 0");
-                ReturnElement returnElement = new ReturnElement();
-                returnElement.setData("GetAgentInRole");
-                rnModel.setReturnElement(returnElement);
-            }
-            else {
-                rnModel = UnauthorizeHandlerFunction();
-            }
-
-        } catch (Exception e) {
-            rnModel = ExceptionHandlerFunction(e.getClass().getName());
-        }
-
-        return rnModel;
-    }
 }
