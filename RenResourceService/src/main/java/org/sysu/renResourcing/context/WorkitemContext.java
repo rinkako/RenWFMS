@@ -4,6 +4,21 @@
  */
 package org.sysu.renResourcing.context;
 
+import org.hibernate.Session;
+import org.hibernate.Transaction;
+import org.sysu.renResourcing.GlobalContext;
+import org.sysu.renResourcing.basic.enums.WorkitemResourcingStatusType;
+import org.sysu.renResourcing.basic.enums.WorkitemStatusType;
+import org.sysu.renResourcing.context.steady.RenWorkitemEntity;
+import org.sysu.renResourcing.utility.CommonUtil;
+import org.sysu.renResourcing.utility.HibernateUtil;
+import org.sysu.renResourcing.utility.LogUtil;
+import org.sysu.renResourcing.utility.SerializationUtil;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.UUID;
+
 /**
  * Author: Rinkako
  * Date  : 2018/2/4
@@ -11,8 +26,130 @@ package org.sysu.renResourcing.context;
  *         convenient way for resourcing service.
  */
 public class WorkitemContext {
-    // todo
-    public String getRtid() {
-        return "";
+
+    /**
+     * Steady entity.
+     */
+    private RenWorkitemEntity entity;
+
+    /**
+     * Argument dictionary.
+     */
+    private HashMap<String, String> argsDict;
+
+    /**
+     * Get workitem entity.
+     * @return workitem entity object
+     */
+    public RenWorkitemEntity getEntity() {
+        return this.entity;
+    }
+
+    /**
+     * Get workitem argument dictionary.
+     * @return parameter-argument hash map
+     */
+    public HashMap<String, String> getArgsDict() {
+        return this.argsDict;
+    }
+
+    /**
+     * Get an exist workitem context.
+     * @param wid workitem global id
+     * @return workitem context
+     */
+    public static WorkitemContext GetContext(String wid, String rtid) {
+        Session session = HibernateUtil.GetLocalThreadSession();
+        Transaction transaction = session.beginTransaction();
+        boolean cmtFlag = false;
+        try {
+            RenWorkitemEntity rwe = session.get(RenWorkitemEntity.class, wid);
+            assert rwe != null;
+            transaction.commit();
+            cmtFlag = true;
+            WorkitemContext retCtx = new WorkitemContext();
+            retCtx.entity = rwe;
+            return retCtx;
+        }
+        catch (Exception ex) {
+            if (!cmtFlag) {
+                transaction.rollback();
+            }
+            LogUtil.Log("Get workitem context but exception occurred, " + ex,
+                    WorkitemContext.class.getName(), LogUtil.LogLevelType.ERROR, rtid);
+            throw ex;
+        }
+    }
+
+    /**
+     * Generate a workitem context and save it to steady by a task context.
+     * @param taskContext task context to be the generation template
+     * @param args arguments vector
+     * @return workitem context
+     */
+    public static WorkitemContext GenerateContext(TaskContext taskContext, String rtid, ArrayList<String> args) {
+        assert args != null && taskContext.getParameters() != null;
+        if (args.size() != taskContext.getParameters().size()) {
+            LogUtil.Log(String.format("Generate workitem for task %s, but arguments(%s) and parameters(%s) not equal",
+                    taskContext.getTaskName(), args.size(), taskContext.getParameters().size()),
+                    WorkitemContext.class.getName(), LogUtil.LogLevelType.ERROR, rtid);
+            return null;
+        }
+        Session session = HibernateUtil.GetLocalThreadSession();
+        Transaction transaction = session.beginTransaction();
+        boolean cmtFlag = false;
+        try {
+            RenWorkitemEntity rwe = new RenWorkitemEntity();
+            rwe.setWid(String.format("WI_%s", UUID.randomUUID().toString()));
+            rwe.setRtid(rtid);
+            rwe.setResourcingId(GlobalContext.RESOURCE_SERVICE_GLOBAL_ID);
+            rwe.setProcessId(taskContext.getPid());
+            rwe.setBoId(taskContext.getBoid());
+            rwe.setTaskid(taskContext.getTaskGlobalId());
+            rwe.setTaskPolymorphismId(taskContext.getTaskId());
+            rwe.setStatus(WorkitemStatusType.Enabled.name());
+            rwe.setResourceStatus(WorkitemResourcingStatusType.Unoffered.name());
+            rwe.setExecuteTime(0L);
+            HashMap<String, String> taskArgsSign = CommonUtil.ZipVector(taskContext.getParameters(), args);
+            rwe.setArguments(SerializationUtil.JsonSerialization(taskArgsSign));
+            session.save(rwe);
+            transaction.commit();
+            cmtFlag = true;
+            WorkitemContext wCtx = new WorkitemContext();
+            wCtx.entity = rwe;
+            wCtx.argsDict = taskArgsSign;
+            return wCtx;
+        }
+        catch (Exception ex) {
+            if (!cmtFlag) {
+                transaction.rollback();
+            }
+            LogUtil.Log("Generate workitem context but exception occurred, " + ex,
+                    WorkitemContext.class.getName(), LogUtil.LogLevelType.ERROR, rtid);
+            throw ex;
+        }
+    }
+
+    /**
+     * Save changes context to steady memory.
+     * @param context context to be saved
+     */
+    public static void SaveToSteady(WorkitemContext context) {
+        if (context == null) {
+            LogUtil.Log("Ignore null workitem context saving.", WorkitemContext.class.getName(),
+                    LogUtil.LogLevelType.WARNING, "");
+            return;
+        }
+        Session session = HibernateUtil.GetLocalThreadSession();
+        Transaction transaction = session.beginTransaction();
+        try {
+            session.update(context.entity);
+            transaction.commit();
+        }
+        catch (Exception ex) {
+            transaction.rollback();
+            LogUtil.Log("Save workitem context but exception occurred, " + ex,
+                    WorkitemContext.class.getName(), LogUtil.LogLevelType.ERROR, context.getEntity().getRtid());
+        }
     }
 }

@@ -15,6 +15,8 @@ import org.sysu.renResourcing.utility.LogUtil;
 import org.sysu.renResourcing.utility.SerializationUtil;
 
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 
 /**
@@ -28,6 +30,11 @@ public class TaskContext implements Serializable {
      * Serial version UID.
      */
     private static final long serialVersionUID = 1L;
+
+    /**
+     * Task global id.
+     */
+    private String taskGlobalId;
 
     /**
      * Task id, unique in a process.
@@ -55,14 +62,24 @@ public class TaskContext implements Serializable {
     private String pid;
 
     /**
-     * Notification hook vector. (Change, NotifyURL)
+     * Task documentation.
+     */
+    private String documentation;
+
+    /**
+     * Notification hook dictionary. (Change, NotifyURL)
      */
     private HashMap<String, String> hooks = new HashMap<>();
 
     /**
-     * Callback event vector. (Status, EventName)
+     * Callback event dictionary. (Status, EventName)
      */
     private HashMap<String, String> callbacks = new HashMap<>();
+
+    /**
+     * Parameters vector.
+     */
+    private ArrayList<String> parameters = new ArrayList<>();
 
     /**
      * Get a task context by its name and belonging BO name of one runtime.
@@ -95,6 +112,22 @@ public class TaskContext implements Serializable {
                     TaskContext.class.getName(), LogUtil.LogLevelType.ERROR, rtid);
             return null;
         }
+    }
+
+    /**
+     * Get task global unique id.
+     * @return global id, this is NOT defined in BOXML but generated at runtime.
+     */
+    public String getTaskGlobalId() {
+        return this.taskGlobalId;
+    }
+
+    /**
+     * Get documentation text.
+     * @return documentation string
+     */
+    public String getDocumentation() {
+        return this.documentation;
     }
 
     /**
@@ -154,6 +187,14 @@ public class TaskContext implements Serializable {
     }
 
     /**
+     * Get the parameter vector.
+     * @return ArrayList of parameter name
+     */
+    public ArrayList<String> getParameters() {
+        return this.parameters;
+    }
+
+    /**
      * Parse hooks by a descriptor in steady.
      * @param hookJSONDescriptor JSON descriptor
      */
@@ -172,6 +213,17 @@ public class TaskContext implements Serializable {
     }
 
     /**
+     * Parse parameter vector by a descriptor in steady.
+     * @param parametersDescriptor parameter string descriptor
+     */
+    @SuppressWarnings("unchecked")
+    private void ParseParameters(String parametersDescriptor) {
+        String[] paras = parametersDescriptor.split(",");
+        this.parameters = new ArrayList<>();
+        this.parameters.addAll(Arrays.asList(paras));
+    }
+
+    /**
      * Generate a task context by a steady entity.
      * @param rstaskEntity RS task entity
      * @param pid Belong to process global id
@@ -180,8 +232,8 @@ public class TaskContext implements Serializable {
     private static TaskContext GenerateTaskContext(RenRstaskEntity rstaskEntity, String pid) {
         assert rstaskEntity != null;
         TaskContext context = new TaskContext(rstaskEntity.getPolymorphismId(),
-                rstaskEntity.getPolymorphismName(), pid,
-                rstaskEntity.getBoid(), rstaskEntity.getPrinciple());
+                rstaskEntity.getPolymorphismName(), pid, rstaskEntity.getBoid(),
+                rstaskEntity.getPrinciple(), rstaskEntity.getDocumentation());
         String hookDescriptor = rstaskEntity.getHookdescriptor();
         if (!CommonUtil.IsNullOrEmpty(hookDescriptor)) {
             context.ParseHooks(hookDescriptor);
@@ -189,6 +241,10 @@ public class TaskContext implements Serializable {
         String eventDescriptor = rstaskEntity.getEventdescriptor();
         if (!CommonUtil.IsNullOrEmpty(eventDescriptor)) {
             context.ParseCallbacks(eventDescriptor);
+        }
+        String parametersDescriptor = rstaskEntity.getParameters();
+        if (!CommonUtil.IsNullOrEmpty(parametersDescriptor)) {
+            context.ParseParameters(parametersDescriptor);
         }
         return context;
     }
@@ -201,12 +257,14 @@ public class TaskContext implements Serializable {
      * @param pid belong to Process global id
      * @param boid belong to BO global id
      * @param principle resourcing principle
+     * @param documentation task documentation text
      */
-    private TaskContext(String id, String name, String pid, String boid, String principle) {
+    private TaskContext(String id, String name, String pid, String boid, String principle, String documentation) {
         this.taskId = id;
         this.taskName = name;
         this.pid = pid;
         this.boid = boid;
         this.principle = principle;
+        this.documentation = documentation;
     }
 }

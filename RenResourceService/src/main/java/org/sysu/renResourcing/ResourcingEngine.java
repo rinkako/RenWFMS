@@ -6,11 +6,15 @@ package org.sysu.renResourcing;
 
 import org.hibernate.Session;
 import org.hibernate.Transaction;
+import org.sysu.renResourcing.basic.enums.InitializationByType;
 import org.sysu.renResourcing.basic.enums.RServiceType;
 import org.sysu.renResourcing.context.ResourcingContext;
 import org.sysu.renResourcing.context.TaskContext;
-import org.sysu.renResourcing.context.steady.RenRsrecordEntity;
 import org.sysu.renResourcing.context.steady.RenRuntimerecordEntity;
+import org.sysu.renResourcing.executor.AllocateInteractionExecutor;
+import org.sysu.renResourcing.executor.InteractionExecutor;
+import org.sysu.renResourcing.principle.PrincipleParser;
+import org.sysu.renResourcing.principle.RPrinciple;
 import org.sysu.renResourcing.utility.HibernateUtil;
 import org.sysu.renResourcing.utility.LogUtil;
 
@@ -24,7 +28,6 @@ import java.util.Hashtable;
  *         service requests here are in a same view, means there no any concept of
  *         HTTP request, etc. LEngine is responsible for solving the request and
  *         give a response result to return immediately.
- *         This is a Singleton, use {@code GetInstance} instead of create new one.
  */
 public class ResourcingEngine {
 
@@ -35,7 +38,7 @@ public class ResourcingEngine {
      * @param polymorphismName task name defined in BO XML.
      * @return response package
      */
-    public String EngineSubmitTask(String rtid, String boName, String polymorphismName) {
+    public static String EngineSubmitTask(String rtid, String boName, String polymorphismName) {
         Session session = HibernateUtil.GetLocalThreadSession();
         Transaction transaction = session.beginTransaction();
         boolean cmtFlag = false;
@@ -50,7 +53,7 @@ public class ResourcingEngine {
             Hashtable<String, Object> args = new Hashtable<>();
             args.put("taskContext", taskContext);
             ResourcingContext ctx = ResourcingContext.GetContext(null, rtid, RServiceType.SubmitResourcingTask, args);
-            this.mainScheduler.Schedule(ctx);
+            ResourcingEngine.mainScheduler.Schedule(ctx);
             return GlobalContext.RESPONSE_SUCCESS;
         }
         catch (Exception ex) {
@@ -65,26 +68,33 @@ public class ResourcingEngine {
 
 
     /**
-     * Main scheduler reference.
+     * Internal: Handle perform submit task.
+     * @param ctx rs context
      */
-    private RScheduler mainScheduler = RScheduler.GetInstance();
+    public static void PerformEngineSubmitTask(ResourcingContext ctx) throws Exception {
+        TaskContext taskContext = (TaskContext) ctx.getArgs().get("taskContext");
+        assert taskContext != null;
+        RPrinciple principle = PrincipleParser.Parse(taskContext.getPrinciple());
+        switch (principle.getDistributionType()) {
+            case Allocate:
+                AllocateInteractionExecutor allocateInteraction = new AllocateInteractionExecutor(
+                        taskContext.getTaskId(), InitializationByType.SYSTEM_INITIATED);
+                allocateInteraction.BindingAllocator(principle, ctx.getRstid(), ctx.getRtid());
 
-    /**
-     * RS engine global instance.
-     */
-    private static ResourcingEngine syncObject = new ResourcingEngine();
-
-    /**
-     * Get the singleton instance of resourcing engine.
-     * @return {@code ResourcingEngine} global unique instance.
-     */
-    public static ResourcingEngine GetInstance() {
-        return ResourcingEngine.syncObject;
+                break;
+            case Offer:
+                break;
+            case AutoAllocateIfOfferFailed:
+                break;
+            default:
+                throw new IllegalArgumentException();
+        }
     }
 
-    /**
-     * Private constructor for preventing instance create outside.
-     */
-    private ResourcingEngine() { }
 
+
+    /**
+     * Main scheduler reference.
+     */
+    private static RScheduler mainScheduler = RScheduler.GetInstance();
 }

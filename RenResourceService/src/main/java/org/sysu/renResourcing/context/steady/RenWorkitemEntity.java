@@ -10,7 +10,7 @@ import java.util.Objects;
 
 /**
  * Author: Rinkako
- * Date  : 2018/2/4
+ * Date  : 2018/2/6
  * Usage :
  */
 @Entity
@@ -18,12 +18,12 @@ import java.util.Objects;
 public class RenWorkitemEntity {
     private String wid;
     private String rtid;
+    private String resourcingId;
     private String processId;
     private String boId;
-    private String taskName;
-    private String taskId;
-    private String documentation;
-    private String attributes;
+    private String taskid;
+    private String taskPolymorphismId;
+    private String arguments;
     private Timestamp firingTime;
     private Timestamp enablementTime;
     private Timestamp startTime;
@@ -35,8 +35,7 @@ public class RenWorkitemEntity {
     private String timertrigger;
     private String timerexpiry;
     private Timestamp latestStartTime;
-    private String executeTime;
-    private String tag;
+    private long executeTime;
 
     @Id
     @Column(name = "wid", nullable = false, length = 64)
@@ -56,6 +55,16 @@ public class RenWorkitemEntity {
 
     public void setRtid(String rtid) {
         this.rtid = rtid;
+    }
+
+    @Basic
+    @Column(name = "resourcing_id", nullable = false, length = 64)
+    public String getResourcingId() {
+        return resourcingId;
+    }
+
+    public void setResourcingId(String resourcingId) {
+        this.resourcingId = resourcingId;
     }
 
     @Basic
@@ -79,43 +88,33 @@ public class RenWorkitemEntity {
     }
 
     @Basic
-    @Column(name = "taskName", nullable = false, length = -1)
-    public String getTaskName() {
-        return taskName;
+    @Column(name = "taskid", nullable = false, length = -1)
+    public String getTaskid() {
+        return taskid;
     }
 
-    public void setTaskName(String taskName) {
-        this.taskName = taskName;
-    }
-
-    @Basic
-    @Column(name = "taskID", nullable = false, length = -1)
-    public String getTaskId() {
-        return taskId;
-    }
-
-    public void setTaskId(String taskId) {
-        this.taskId = taskId;
+    public void setTaskid(String taskid) {
+        this.taskid = taskid;
     }
 
     @Basic
-    @Column(name = "documentation", nullable = true, length = -1)
-    public String getDocumentation() {
-        return documentation;
+    @Column(name = "taskPolymorphismId", nullable = false, length = -1)
+    public String getTaskPolymorphismId() {
+        return taskPolymorphismId;
     }
 
-    public void setDocumentation(String documentation) {
-        this.documentation = documentation;
+    public void setTaskPolymorphismId(String taskPolymorphismId) {
+        this.taskPolymorphismId = taskPolymorphismId;
     }
 
     @Basic
-    @Column(name = "attributes", nullable = true, length = -1)
-    public String getAttributes() {
-        return attributes;
+    @Column(name = "arguments", nullable = true, length = -1)
+    public String getArguments() {
+        return arguments;
     }
 
-    public void setAttributes(String attributes) {
-        this.attributes = attributes;
+    public void setArguments(String arguments) {
+        this.arguments = arguments;
     }
 
     @Basic
@@ -229,23 +228,13 @@ public class RenWorkitemEntity {
     }
 
     @Basic
-    @Column(name = "executeTime", nullable = true, length = 128)
-    public String getExecuteTime() {
+    @Column(name = "executeTime", nullable = false)
+    public long getExecuteTime() {
         return executeTime;
     }
 
-    public void setExecuteTime(String executeTime) {
+    public void setExecuteTime(long executeTime) {
         this.executeTime = executeTime;
-    }
-
-    @Basic
-    @Column(name = "tag", nullable = true, length = 255)
-    public String getTag() {
-        return tag;
-    }
-
-    public void setTag(String tag) {
-        this.tag = tag;
     }
 
     @Override
@@ -253,14 +242,15 @@ public class RenWorkitemEntity {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         RenWorkitemEntity that = (RenWorkitemEntity) o;
-        return Objects.equals(wid, that.wid) &&
+        return executeTime == that.executeTime &&
+                Objects.equals(wid, that.wid) &&
                 Objects.equals(rtid, that.rtid) &&
+                Objects.equals(resourcingId, that.resourcingId) &&
                 Objects.equals(processId, that.processId) &&
                 Objects.equals(boId, that.boId) &&
-                Objects.equals(taskName, that.taskName) &&
-                Objects.equals(taskId, that.taskId) &&
-                Objects.equals(documentation, that.documentation) &&
-                Objects.equals(attributes, that.attributes) &&
+                Objects.equals(taskid, that.taskid) &&
+                Objects.equals(taskPolymorphismId, that.taskPolymorphismId) &&
+                Objects.equals(arguments, that.arguments) &&
                 Objects.equals(firingTime, that.firingTime) &&
                 Objects.equals(enablementTime, that.enablementTime) &&
                 Objects.equals(startTime, that.startTime) &&
@@ -271,14 +261,12 @@ public class RenWorkitemEntity {
                 Objects.equals(completedBy, that.completedBy) &&
                 Objects.equals(timertrigger, that.timertrigger) &&
                 Objects.equals(timerexpiry, that.timerexpiry) &&
-                Objects.equals(latestStartTime, that.latestStartTime) &&
-                Objects.equals(executeTime, that.executeTime) &&
-                Objects.equals(tag, that.tag);
+                Objects.equals(latestStartTime, that.latestStartTime);
     }
 
     @Override
     public int hashCode() {
 
-        return Objects.hash(wid, rtid, processId, boId, taskName, taskId, documentation, attributes, firingTime, enablementTime, startTime, completionTime, status, resourceStatus, startedBy, completedBy, timertrigger, timerexpiry, latestStartTime, executeTime, tag);
+        return Objects.hash(wid, rtid, resourcingId, processId, boId, taskid, taskPolymorphismId, arguments, firingTime, enablementTime, startTime, completionTime, status, resourceStatus, startedBy, completedBy, timertrigger, timerexpiry, latestStartTime, executeTime);
     }
 }

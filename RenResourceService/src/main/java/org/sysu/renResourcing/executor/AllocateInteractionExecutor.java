@@ -8,7 +8,9 @@ import org.sysu.renResourcing.allocator.RAllocator;
 import org.sysu.renResourcing.basic.enums.InitializationByType;
 import org.sysu.renResourcing.context.ParticipantContext;
 import org.sysu.renResourcing.context.WorkitemContext;
+import org.sysu.renResourcing.principle.RPrinciple;
 import org.sysu.renResourcing.utility.LogUtil;
+import org.sysu.renResourcing.utility.ReflectUtil;
 
 import java.util.HashSet;
 
@@ -57,10 +59,7 @@ public class AllocateInteractionExecutor extends InteractionExecutor {
      * Binding a allocator to this executor by the principle of task.
      * @param principle allocation principle
      */
-    public void BindingAllocator(String principle, String rtid) {
-        // todo handle initiator
-
-        // todo reflect create allocator
-
+    public void BindingAllocator(RPrinciple principle, String rstid, String rtid) throws Exception {
+        this.allocator = ReflectUtil.ReflectAllocator(principle.getAllocatorName(), rstid, rtid);
     }
 }

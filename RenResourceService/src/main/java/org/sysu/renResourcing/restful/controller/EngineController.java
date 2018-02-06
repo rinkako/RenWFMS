@@ -30,6 +30,7 @@ public class EngineController {
      * @param rtid process runtime record id (required)
      * @param boname bo name (required)
      * @param taskname task polymorphism name (required)
+     * @param args argument
      * @return response package
      */
     @PostMapping(value = "/submitTask", produces = {"application/json", "application/xml"})
@@ -38,7 +39,8 @@ public class EngineController {
     public ReturnModel SubmitTask(@RequestParam(value="token", required = false)String token,
                                   @RequestParam(value="rtid", required = false)String rtid,
                                   @RequestParam(value="boname", required = false)String boname,
-                                  @RequestParam(value="taskname", required = false)String taskname) {
+                                  @RequestParam(value="taskname", required = false)String taskname,
+                                  @RequestParam(value="args", required = false)String args) {
         ReturnModel rnModel = new ReturnModel();
         try {
             // miss params
@@ -47,6 +49,7 @@ public class EngineController {
             if (rtid == null) missingParams.add("rtid");
             if (boname == null) missingParams.add("boname");
             if (taskname == null) missingParams.add("taskname");
+            if (args == null) missingParams.add("args");
             if (missingParams.size() > 0) {
                 return ReturnModelHelper.MissingParametersResponse(missingParams);
             }

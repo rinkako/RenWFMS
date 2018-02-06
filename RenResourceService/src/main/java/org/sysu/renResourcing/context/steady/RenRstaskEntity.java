@@ -9,7 +9,7 @@ import java.util.Objects;
 
 /**
  * Author: Rinkako
- * Date  : 2018/2/5
+ * Date  : 2018/2/6
  * Usage :
  */
 @Entity
@@ -22,6 +22,8 @@ public class RenRstaskEntity {
     private String principle;
     private String eventdescriptor;
     private String hookdescriptor;
+    private String documentation;
+    private String parameters;
 
     @Id
     @Column(name = "taskid", nullable = false, length = 64)
@@ -93,6 +95,26 @@ public class RenRstaskEntity {
         this.hookdescriptor = hookdescriptor;
     }
 
+    @Basic
+    @Column(name = "documentation", nullable = false, length = -1)
+    public String getDocumentation() {
+        return documentation;
+    }
+
+    public void setDocumentation(String documentation) {
+        this.documentation = documentation;
+    }
+
+    @Basic
+    @Column(name = "parameters", nullable = false, length = -1)
+    public String getParameters() {
+        return parameters;
+    }
+
+    public void setParameters(String parameters) {
+        this.parameters = parameters;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -104,12 +126,14 @@ public class RenRstaskEntity {
                 Objects.equals(polymorphismId, that.polymorphismId) &&
                 Objects.equals(principle, that.principle) &&
                 Objects.equals(eventdescriptor, that.eventdescriptor) &&
-                Objects.equals(hookdescriptor, that.hookdescriptor);
+                Objects.equals(hookdescriptor, that.hookdescriptor) &&
+                Objects.equals(documentation, that.documentation) &&
+                Objects.equals(parameters, that.parameters);
     }
 
     @Override
     public int hashCode() {
 
-        return Objects.hash(taskid, boid, polymorphismName, polymorphismId, principle, eventdescriptor, hookdescriptor);
+        return Objects.hash(taskid, boid, polymorphismName, polymorphismId, principle, eventdescriptor, hookdescriptor, documentation, parameters);
     }
 }

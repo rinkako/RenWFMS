@@ -63,7 +63,7 @@ public class ResourcingContext implements Comparable<ResourcingContext> {
     private Timestamp finishTimestamp;
 
     /**
-     * Execution result descriptor.
+     * Execution result descriptor, not save to steady.
      */
     private String executionResult;
 
@@ -116,7 +116,7 @@ public class ResourcingContext implements Comparable<ResourcingContext> {
 
     /**
      * Save changes context to steady memory.
-     * @param context Resourcing context to be saved
+     * @param context context to be saved
      */
     public static void SaveToSteady(ResourcingContext context) {
         if (context == null) {
@@ -127,7 +127,12 @@ public class ResourcingContext implements Comparable<ResourcingContext> {
         Session session = HibernateUtil.GetLocalThreadSession();
         Transaction transaction = session.beginTransaction();
         try {
-            session.saveOrUpdate(context);
+            RenRsrecordEntity rre = session.get(RenRsrecordEntity.class, context.rstid);
+            assert rre != null;
+            rre.setReceiveTimestamp(context.receivedTimestamp);
+            rre.setScheduledTimestamp(context.scheduledTimestamp);
+            rre.setFinishTimestamp(context.finishTimestamp);
+            session.update(rre);
             transaction.commit();
         }
         catch (Exception ex) {

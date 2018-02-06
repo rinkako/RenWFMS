@@ -10,6 +10,8 @@ package org.sysu.renResourcing.basic.enums;
  * Usage : Enum of initialization by.
  */
 public enum InitializationByType {
+    // Allocate by user
     USER_INITIATED,
+    // Allocate by rs engine
     SYSTEM_INITIATED
 }
