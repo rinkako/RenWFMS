@@ -8,8 +8,10 @@ import org.hibernate.Session;
 import org.hibernate.Transaction;
 import org.sysu.renResourcing.basic.enums.InitializationByType;
 import org.sysu.renResourcing.basic.enums.RServiceType;
+import org.sysu.renResourcing.context.ParticipantContext;
 import org.sysu.renResourcing.context.ResourcingContext;
 import org.sysu.renResourcing.context.TaskContext;
+import org.sysu.renResourcing.context.WorkitemContext;
 import org.sysu.renResourcing.context.steady.RenRuntimerecordEntity;
 import org.sysu.renResourcing.executor.AllocateInteractionExecutor;
 import org.sysu.renResourcing.executor.InteractionExecutor;
@@ -18,6 +20,7 @@ import org.sysu.renResourcing.principle.RPrinciple;
 import org.sysu.renResourcing.utility.HibernateUtil;
 import org.sysu.renResourcing.utility.LogUtil;
 
+import java.util.HashSet;
 import java.util.Hashtable;
 
 /**
@@ -80,6 +83,7 @@ public class ResourcingEngine {
                 AllocateInteractionExecutor allocateInteraction = new AllocateInteractionExecutor(
                         taskContext.getTaskId(), InitializationByType.SYSTEM_INITIATED);
                 allocateInteraction.BindingAllocator(principle, ctx.getRstid(), ctx.getRtid());
+                WorkitemContext.GenerateContext(taskContext, ctx.getRtid(), taskContext.getParameters());
 
                 break;
             case Offer:
@@ -88,6 +92,29 @@ public class ResourcingEngine {
                 break;
             default:
                 throw new IllegalArgumentException();
+        }
+    }
+
+    /**
+     * Get current valid participant context set.
+     * Current valid means that current resources set in Name Service according to process COrgan isolation type.
+     * @param rtid process rtid
+     * @return a Hash set for current valid participant context
+     */
+    public static HashSet<ParticipantContext> GetCurrentValidParticipant(String rtid) {
+        Session session = HibernateUtil.GetLocalThreadSession();
+        Transaction transaction = session.beginTransaction();
+        boolean cmtFlag = false;
+        try {
+            session.createQuery("FROM RenRsparticipantEntity WHERE ");
+            transaction.commit();
+            cmtFlag = true;
+        }
+        catch (Exception ex) {
+            if (!cmtFlag) {
+                transaction.rollback();
+            }
+            throw ex;
         }
     }
 

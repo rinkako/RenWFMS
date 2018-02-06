@@ -15,6 +15,7 @@ import org.sysu.renResourcing.utility.HibernateUtil;
 import org.sysu.renResourcing.utility.LogUtil;
 import org.sysu.renResourcing.utility.SerializationUtil;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.UUID;
@@ -25,7 +26,11 @@ import java.util.UUID;
  * Usage : Workitem context is an encapsulation of RenWorkitemEntity in a
  *         convenient way for resourcing service.
  */
-public class WorkitemContext {
+public class WorkitemContext implements Serializable {
+    /**
+     * Serial version UID.
+     */
+    private static final long serialVersionUID = 1L;
 
     /**
      * Steady entity.

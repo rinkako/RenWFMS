@@ -10,6 +10,7 @@ import org.sysu.renResourcing.utility.HibernateUtil;
 import org.sysu.renResourcing.utility.LogUtil;
 import org.sysu.renResourcing.utility.SerializationUtil;
 
+import java.io.Serializable;
 import java.sql.Timestamp;
 import java.util.Hashtable;
 import java.util.UUID;
@@ -20,7 +21,11 @@ import java.util.UUID;
  * Usage : Task context is an encapsulation of RenRsrecordEntity in a
  *         convenient way for resourcing service.
  */
-public class ResourcingContext implements Comparable<ResourcingContext> {
+public class ResourcingContext implements Comparable<ResourcingContext>, Serializable {
+    /**
+     * Serial version UID.
+     */
+    private static final long serialVersionUID = 1L;
 
     /**
      * Resourcing record global id.

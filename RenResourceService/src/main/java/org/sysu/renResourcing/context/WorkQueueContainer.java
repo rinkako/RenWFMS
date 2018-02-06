@@ -28,7 +28,7 @@ public class WorkQueueContainer {
      * @return worker gid string
      */
     public String getWorkerGid() {
-        return workerGid;
+        return this.workerGid;
     }
 
     /**
@@ -36,7 +36,7 @@ public class WorkQueueContainer {
      * @return container type enum
      */
     public WorkQueueContainerType getType() {
-        return type;
+        return this.type;
     }
 
     /**
@@ -48,6 +48,4 @@ public class WorkQueueContainer {
      * Type of container.
      */
     private WorkQueueContainerType type;
-
-
 }
