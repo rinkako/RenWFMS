@@ -73,11 +73,6 @@ public class NSExecutor extends Observable {
                             retStr = "OK";
                             execResult.put("rtid", rtid);
                             break;
-                        case "getInvolved":
-                            ArrayList<RenRolemapEntity> involves = RoleMappingService.GetInvolvedResource(rtid);
-                            retStr = SerializationUtil.JsonSerialization(involves, rtid);
-                            execResult.put("rtid", rtid);
-                            break;
                         case "getAllResourceFromCOrgan":
                             retStr = RoleMappingService.GetAllResourceFromCOrgan((String) args.get("renid"), rtid == null ? "": rtid, nst.getTransactionContext().getNsid());
                             if (rtid != null) {
@@ -92,6 +87,15 @@ public class NSExecutor extends Observable {
                             break;
                         case "getDataVersionAndGidFromCOrgan":
                             retStr = RoleMappingService.GetDataVersionAndGidFromCOrgan((String) args.get("renid"), nst.getTransactionContext().getNsid());
+                            break;
+                        case "getInvolved":
+                            ArrayList<RenRolemapEntity> involves = RoleMappingService.GetInvolvedResource(rtid);
+                            retStr = SerializationUtil.JsonSerialization(involves, rtid);
+                            execResult.put("rtid", rtid);
+                            break;
+                        case "loadParticipant":
+                            RoleMappingService.LoadParticipant((String) args.get("renid"), rtid, nst.getTransactionContext().getNsid());
+                            retStr = "OK";
                             break;
                     }
                     // prepare execution result

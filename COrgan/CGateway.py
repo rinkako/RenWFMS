@@ -429,6 +429,84 @@ class CGateway:
         return CGateway._SuccessResponse({'return': ret})
 
     @staticmethod
+    def RetrieveWorkerInGroup(**argd):
+        """
+        Restful API for getting a set of workers that a specific group contains, ONLY USE BY NAME SERVICE.
+        :param argd: request argument dictionary
+        :return: dumped json string
+        """
+        checkSign = argd["nsid"] + "," + argd["renid"]
+        token = EncryptUtil.DecodeURLSafeBase64(argd["token"])
+        try:
+            tokenRet = EncryptUtil.VerifySign(checkSign, token, GlobalConfigContext.AUTH_NameService_PublicKey)
+        except:
+            tokenRet = False
+        if tokenRet is False:
+            return CGateway._UnauthorizedServiceResponse(token)
+        flag1, ret1 = CGateway.core.RetrieveHumanInGroup(GlobalConfigContext.AUTH_INTERNAL_SESSION, argd["groupName"])
+        flag2, ret2 = CGateway.core.RetrieveAgentInGroup(GlobalConfigContext.AUTH_INTERNAL_SESSION, argd["groupName"])
+        return CGateway._DumpResponse(ret1 + ret2)
+
+    @staticmethod
+    def RetrieveWorkerInPosition(**argd):
+        """
+        Restful API for getting a set of workers that a specific position contains, ONLY USE BY NAME SERVICE.
+        :param argd: request argument dictionary
+        :return: dumped json string
+        """
+        checkSign = argd["nsid"] + "," + argd["renid"]
+        token = EncryptUtil.DecodeURLSafeBase64(argd["token"])
+        try:
+            tokenRet = EncryptUtil.VerifySign(checkSign, token, GlobalConfigContext.AUTH_NameService_PublicKey)
+        except:
+            tokenRet = False
+        if tokenRet is False:
+            return CGateway._UnauthorizedServiceResponse(token)
+        flag1, ret1 = CGateway.core.RetrieveHumanInPosition(GlobalConfigContext.AUTH_INTERNAL_SESSION, argd["positionName"])
+        flag2, ret2 = CGateway.core.RetrieveAgentInPosition(GlobalConfigContext.AUTH_INTERNAL_SESSION, argd["positionName"])
+        return CGateway._DumpResponse(ret1 + ret2)
+
+    @staticmethod
+    def RetrieveWorkerInCapability(**argd):
+        """
+        Restful API for getting a set of workers that a specific capability contains, ONLY USE BY NAME SERVICE.
+        :param argd: request argument dictionary
+        :return: dumped json string
+        """
+        checkSign = argd["nsid"] + "," + argd["renid"]
+        token = EncryptUtil.DecodeURLSafeBase64(argd["token"])
+        try:
+            tokenRet = EncryptUtil.VerifySign(checkSign, token, GlobalConfigContext.AUTH_NameService_PublicKey)
+        except:
+            tokenRet = False
+        if tokenRet is False:
+            return CGateway._UnauthorizedServiceResponse(token)
+        flag1, ret1 = CGateway.core.RetrieveHumanWithCapability(GlobalConfigContext.AUTH_INTERNAL_SESSION, argd["capabilityName"])
+        flag2, ret2 = CGateway.core.RetrieveAgentWithCapability(GlobalConfigContext.AUTH_INTERNAL_SESSION, argd["capabilityName"])
+        return CGateway._DumpResponse(ret1 + ret2)
+
+    @staticmethod
+    def RetrieveWorkerByOrganizable(**argd):
+        """
+        Restful API for getting workers in a organizable in the COrgan, ONLY USE BY NAME SERVICE.
+        :param argd: request argument dictionary
+        :return: dumped json string
+        """
+        checkSign = argd["nsid"] + "," + argd["renid"]
+        token = EncryptUtil.DecodeURLSafeBase64(argd["token"])
+        try:
+            tokenRet = EncryptUtil.VerifySign(checkSign, token, GlobalConfigContext.AUTH_NameService_PublicKey)
+        except:
+            tokenRet = False
+        if tokenRet is False:
+            return CGateway._UnauthorizedServiceResponse(token)
+        flag, ret = CGateway.core.RetrieveWorkerByOrganizableGid(GlobalConfigContext.AUTH_INTERNAL_SESSION, argd["gid"])
+        xFlag = CGateway._HandleExceptionAndUnauthorized(flag, ret, GlobalConfigContext.AUTH_INTERNAL_SESSION)
+        if xFlag is not None:
+            return xFlag
+        return CGateway._DumpResponse(ret)
+
+    @staticmethod
     def RetrieveAllEntity(**argd):
         """
         Restful API for getting all entities in the COrgan, ONLY USE BY NAME SERVICE.
@@ -455,6 +533,24 @@ class CGateway:
         retDict["position"] = ret4
         retDict["capability"] = ret5
         return CGateway._DumpResponse(retDict)
+
+    @staticmethod
+    def RetrieveWorkerEntityByGid(**argd):
+        """
+        Restful API for getting a list of worker entity, ONLY USE BY NAME SERVICE.
+        :param argd: request argument dictionary
+        :return: dumped json string
+        """
+        checkSign = argd["nsid"] + "," + argd["renid"]
+        token = EncryptUtil.DecodeURLSafeBase64(argd["token"])
+        try:
+            tokenRet = EncryptUtil.VerifySign(checkSign, token, GlobalConfigContext.AUTH_NameService_PublicKey)
+        except:
+            tokenRet = False
+        if tokenRet is False:
+            return CGateway._UnauthorizedServiceResponse(token)
+        flag, ret = CGateway.core.RetrieveWorkersEntity(GlobalConfigContext.AUTH_INTERNAL_SESSION, argd["gids"])
+        return CGateway._DumpResponse(ret)
 
     @staticmethod
     def RetrieveAllConnection(**argd):

@@ -204,6 +204,71 @@ def GetCapabilityAgent():
     return StartDash(argd, CGateway.RetrieveAgentWithCapability, _ArgsException)
 
 
+@restfulBp.route("/ns/getworkeringroup", methods=["GET", "POST"])
+def GetWorkerInGroup():
+    token = request.values.get('token')
+    renid = request.values.get('renid')
+    nsid = request.values.get('nsid')
+    groupName = request.values.get('groupName')
+    argd = {"#token": token,
+            "#renid": renid,
+            "#nsid": nsid,
+            "#groupName": groupName}
+    return StartDash(argd, CGateway.RetrieveWorkerInGroup, _ArgsException)
+
+
+@restfulBp.route("/ns/getworkerinposition", methods=["GET", "POST"])
+def GetWorkerInPosition():
+    token = request.values.get('token')
+    renid = request.values.get('renid')
+    nsid = request.values.get('nsid')
+    positionName = request.values.get('positionName')
+    argd = {"#token": token,
+            "#renid": renid,
+            "#nsid": nsid,
+            "#positionName": positionName}
+    return StartDash(argd, CGateway.RetrieveWorkerInPosition, _ArgsException)
+
+
+@restfulBp.route("/ns/getworkerwithcapability", methods=["GET", "POST"])
+def GetWorkerWithCapability():
+    token = request.values.get('token')
+    renid = request.values.get('renid')
+    nsid = request.values.get('nsid')
+    capabilityName = request.values.get('capabilityName')
+    argd = {"#token": token,
+            "#renid": renid,
+            "#nsid": nsid,
+            "#capabilityName": capabilityName}
+    return StartDash(argd, CGateway.RetrieveWorkerInCapability, _ArgsException)
+
+
+@restfulBp.route("/ns/getworkerinorganizable", methods=["GET", "POST"])
+def GetWorkerInOrganizable():
+    token = request.values.get('token')
+    renid = request.values.get('renid')
+    nsid = request.values.get('nsid')
+    gid = request.values.get('gid')
+    argd = {"#token": token,
+            "#renid": renid,
+            "#nsid": nsid,
+            "#gid": gid}
+    return StartDash(argd, CGateway.RetrieveWorkerByOrganizable, _ArgsException)
+
+
+@restfulBp.route("/ns/getworkerentity", methods=["GET", "POST"])
+def GetWorkerEntity():
+    token = request.values.get('token')
+    renid = request.values.get('renid')
+    nsid = request.values.get('nsid')
+    gids = request.values.get('gids')
+    argd = {"#token": token,
+            "#renid": renid,
+            "#nsid": nsid,
+            "#gids": gids}
+    return StartDash(argd, CGateway.RetrieveWorkerByOrganizable, _ArgsException)
+
+
 @restfulBp.route("/ns/getresources", methods=["GET", "POST"])
 def GetAllResources():
     token = request.values.get('token')

@@ -49,7 +49,7 @@ public class AllocateInteractionExecutor extends InteractionExecutor {
     public ParticipantContext PerformAllocation(HashSet<ParticipantContext> candidateSet, WorkitemContext workitem) {
         if (this.allocator == null) {
             LogUtil.Log("Perform allocation before binding executor to an allocator.",
-                    AllocateInteractionExecutor.class.getName(), LogUtil.LogLevelType.ERROR, workitem.getRtid());
+                    AllocateInteractionExecutor.class.getName(), LogUtil.LogLevelType.ERROR, "");
             return null;
         }
         return this.allocator.PerformAllocate(candidateSet, workitem);

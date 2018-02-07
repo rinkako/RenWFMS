@@ -855,6 +855,36 @@ class CController:
         return True, CController._connectModel.RetrieveAgentByGlobalId(org.GlobalId)
 
     @authorizeRequireWarp
+    def RetrieveWorkerByOrganizableGid(self, session, groupId):
+        """
+        Get all workers in a organizable by group global id.
+        THIS METHOD IS FOR NS ONLY.
+        :param session: session id
+        :param groupId: group global id
+        :return: a list of workers gid
+        """
+        return True, CController._connectModel.RetrieveByOrganizableGlobalId(groupId)
+
+    @authorizeRequireWarp
+    def RetrieveWorkersEntity(self, session, gids):
+        """
+        Get all workers by global id.
+        THIS METHOD IS FOR NS ONLY.
+        :param session: session id
+        :param gids: worker global id list
+        :return: a list of workers gid
+        """
+        assert isinstance(gids, str)
+        gidItem = gids.split(',')
+        retList = list()
+        for gid in gidItem:
+            if gid.startswith("Human_"):
+                retList.append(CController._humanModel.GetByGlobalId(gid))
+            elif gid.startswith("Agent_"):
+                retList.append(CController._agentModel.GetByGlobalId(gid))
+        return True, retList
+
+    @authorizeRequireWarp
     def AddHumanToGroup(self, session, personId, groupName):
         """
         Add a human to a group.

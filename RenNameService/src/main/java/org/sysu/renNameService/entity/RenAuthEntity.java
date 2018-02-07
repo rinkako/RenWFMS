@@ -10,7 +10,7 @@ import java.util.Objects;
 
 /**
  * Author: Rinkako
- * Date  : 2018/1/28
+ * Date  : 2018/2/7
  * Usage :
  */
 @Entity
@@ -18,19 +18,11 @@ import java.util.Objects;
 public class RenAuthEntity {
     private String username;
     private String password;
-    private Integer level;
-    private Integer state;
+    private int level;
+    private int state;
     private Timestamp createtimestamp;
     private String corganGateway;
     private String urlsafeSignature;
-
-    public void setLevel(int level) {
-        this.level = level;
-    }
-
-    public void setState(int state) {
-        this.state = state;
-    }
 
     @Id
     @Column(name = "username", nullable = false, length = 64)
@@ -54,21 +46,21 @@ public class RenAuthEntity {
 
     @Basic
     @Column(name = "level", nullable = false)
-    public Integer getLevel() {
+    public int getLevel() {
         return level;
     }
 
-    public void setLevel(Integer level) {
+    public void setLevel(int level) {
         this.level = level;
     }
 
     @Basic
     @Column(name = "state", nullable = false)
-    public Integer getState() {
+    public int getState() {
         return state;
     }
 
-    public void setState(Integer state) {
+    public void setState(int state) {
         this.state = state;
     }
 
@@ -80,24 +72,6 @@ public class RenAuthEntity {
 
     public void setCreatetimestamp(Timestamp createtimestamp) {
         this.createtimestamp = createtimestamp;
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        RenAuthEntity that = (RenAuthEntity) o;
-        return Objects.equals(username, that.username) &&
-                Objects.equals(password, that.password) &&
-                Objects.equals(level, that.level) &&
-                Objects.equals(state, that.state) &&
-                Objects.equals(createtimestamp, that.createtimestamp);
-    }
-
-    @Override
-    public int hashCode() {
-
-        return Objects.hash(username, password, level, state, createtimestamp);
     }
 
     @Basic
@@ -118,5 +92,25 @@ public class RenAuthEntity {
 
     public void setUrlsafeSignature(String urlsafeSignature) {
         this.urlsafeSignature = urlsafeSignature;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        RenAuthEntity that = (RenAuthEntity) o;
+        return level == that.level &&
+                state == that.state &&
+                Objects.equals(username, that.username) &&
+                Objects.equals(password, that.password) &&
+                Objects.equals(createtimestamp, that.createtimestamp) &&
+                Objects.equals(corganGateway, that.corganGateway) &&
+                Objects.equals(urlsafeSignature, that.urlsafeSignature);
+    }
+
+    @Override
+    public int hashCode() {
+
+        return Objects.hash(username, password, level, state, createtimestamp, corganGateway, urlsafeSignature);
     }
 }

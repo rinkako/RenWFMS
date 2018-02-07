@@ -34,7 +34,7 @@ public final class LogUtil {
      * @param level message level
      */
     public static void Echo(String msg, String label, LogLevelType level) {
-        String printStr = String.format("[%s]%s-%s: %s", level.name(), TimestampUtil.GetTimeStamp(), label, msg);
+        String printStr = String.format("[%s]%s-%s: %s", level.name(), TimestampUtil.GetTimeStampString(), label, msg);
         System.out.println(printStr);
     }
 
