@@ -232,6 +232,7 @@ public class RoleMappingController {
      * Load involved resources to participant for RS.
      * @param token auth token
      * @param renid ren auth user id (required)
+     * @param rtid process runtime record id (required)
      * @return response package
      */
     @RequestMapping(value = "/loadParticipant", produces = {"application/json", "application/xml"})
@@ -251,14 +252,51 @@ public class RoleMappingController {
                 return ReturnModelHelper.MissingParametersResponse(missingParams);
             }
             // token check
-//            if (!AuthorizationService.CheckValid(token)) {
-//                return ReturnModelHelper.UnauthorizedResponse(token);
-//            }
+            if (!AuthorizationService.CheckValid(token)) {
+                return ReturnModelHelper.UnauthorizedResponse(token);
+            }
             // logic
             HashMap<String, String> args = new HashMap<>();
             args.put("renid", renid);
             args.put("rtid", rtid);
             NameServiceTransaction t = TransactionCreator.Create(TransactionType.BusinessRoleMapping, "loadParticipant", args);
+            String jsonifyResult = (String) RoleMappingController.scheduler.Schedule(t);
+            // return
+            ReturnModelHelper.StandardResponse(rnModel, StatusCode.OK, jsonifyResult);
+        } catch (Exception e) {
+            ReturnModelHelper.ExceptionResponse(rnModel, e.getClass().getName());
+        }
+        return rnModel;
+    }
+
+    /**
+     * Load involved resources to participant for RS.
+     * @param token auth token
+     * @param rtid process runtime record id (required)
+     * @return response package
+     */
+    @RequestMapping(value = "/unloadParticipant", produces = {"application/json", "application/xml"})
+    @ResponseBody
+    @Transactional
+    public ReturnModel UnLoadParticipant(@RequestParam(value="token", required = false)String token,
+                                         @RequestParam(value="rtid", required = false)String rtid) {
+        ReturnModel rnModel = new ReturnModel();
+        try {
+            // miss params
+            List<String> missingParams = new ArrayList<>();
+            if (token == null) missingParams.add("token");
+            if (rtid == null) missingParams.add("rtid");
+            if (missingParams.size() > 0) {
+                return ReturnModelHelper.MissingParametersResponse(missingParams);
+            }
+            // token check
+            if (!AuthorizationService.CheckValid(token)) {
+                return ReturnModelHelper.UnauthorizedResponse(token);
+            }
+            // logic
+            HashMap<String, String> args = new HashMap<>();
+            args.put("rtid", rtid);
+            NameServiceTransaction t = TransactionCreator.Create(TransactionType.BusinessRoleMapping, "unloadParticipant", args);
             String jsonifyResult = (String) RoleMappingController.scheduler.Schedule(t);
             // return
             ReturnModelHelper.StandardResponse(rnModel, StatusCode.OK, jsonifyResult);
@@ -289,9 +327,9 @@ public class RoleMappingController {
                 return ReturnModelHelper.MissingParametersResponse(missingParams);
             }
             // token check
-//            if (!AuthorizationService.CheckValid(token)) {
-//                return ReturnModelHelper.UnauthorizedResponse(token);
-//            }
+            if (!AuthorizationService.CheckValid(token)) {
+                return ReturnModelHelper.UnauthorizedResponse(token);
+            }
             // logic
             HashMap<String, String> args = new HashMap<>();
             args.put("renid", renid);

@@ -6,10 +6,7 @@ package org.sysu.renNameService.roleMapping;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
 import org.sysu.renNameService.GlobalContext;
-import org.sysu.renNameService.entity.RenAuthEntity;
-import org.sysu.renNameService.entity.RenRolemapArchivedEntity;
-import org.sysu.renNameService.entity.RenRolemapEntity;
-import org.sysu.renNameService.entity.RenRsparticipantEntity;
+import org.sysu.renNameService.entity.*;
 import org.sysu.renNameService.utility.*;
 
 import java.util.*;
@@ -52,6 +49,12 @@ public final class RoleMappingService {
         }
     }
 
+    /**
+     * Load participants for a process to be launched soon.
+     * @param renid ren auth id
+     * @param rtid process rtid
+     * @param nsid ns
+     */
     @SuppressWarnings("unchecked")
     public static void LoadParticipant(String renid, String rtid, String nsid) {
         // get involved mappings
@@ -111,6 +114,36 @@ public final class RoleMappingService {
                     }
                 }
                 session.saveOrUpdate(rpe);
+            }
+            RenRuntimerecordEntity rre = session.get(RenRuntimerecordEntity.class, rtid);
+            rre.setParticipantCache(workerList);
+            transaction.commit();
+        }
+        catch (Exception ex) {
+            transaction.rollback();
+            LogUtil.Log("When load participant, exception occurred, " + ex.toString() + ", service rollback",
+                    RoleMappingService.class.getName(), LogUtil.LogLevelType.ERROR, rtid);
+            throw ex;
+        }
+    }
+
+    /**
+     * Unload participants for a process to be shutdown soon.
+     * @param rtid process rtid
+     */
+    public static void UnloadParticipant(String rtid) {
+        Session session = HibernateUtil.GetLocalThreadSession();
+        Transaction transaction = session.beginTransaction();
+        try {
+            RenRuntimerecordEntity rre = session.get(RenRuntimerecordEntity.class, rtid);
+            String participantCache = rre.getParticipantCache();
+            String[] participantItem = participantCache.split(",");
+            for (String participantGid : participantItem) {
+                RenRsparticipantEntity rpe = session.get(RenRsparticipantEntity.class, participantGid);
+                rpe.setReferenceCounter(rpe.getReferenceCounter() - 1);
+                if (rpe.getReferenceCounter() < 1) {
+                    session.delete(rpe);
+                }
             }
             transaction.commit();
         }

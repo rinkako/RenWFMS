@@ -1,10 +1,19 @@
+/*
+ * Project Ren @ 2018
+ * Rinkako, Ariana, Gordan. SYSU SDCS.
+ */
 package org.sysu.workflow.restful.entity;
 
 import javax.persistence.*;
 import java.sql.Timestamp;
 
+/**
+ * Author: Rinkako
+ * Date  : 2018/2/7
+ * Usage :
+ */
 @Entity
-@Table(name = "ren_runtimerecord", schema = "renboengine")
+@Table(name = "ren_runtimerecord", schema = "renboengine", catalog = "")
 public class RenRuntimerecordEntity {
     private String rtid;
     private String processId;
@@ -19,6 +28,8 @@ public class RenRuntimerecordEntity {
     private String resourcingId;
     private String resourceBinding;
     private Integer resourceBindingType;
+    private Integer failureType;
+    private String participantCache;
 
     @Id
     @Column(name = "rtid", nullable = false, length = 64)
@@ -150,6 +161,26 @@ public class RenRuntimerecordEntity {
         this.resourceBindingType = resourceBindingType;
     }
 
+    @Basic
+    @Column(name = "failure_type", nullable = true)
+    public Integer getFailureType() {
+        return failureType;
+    }
+
+    public void setFailureType(Integer failureType) {
+        this.failureType = failureType;
+    }
+
+    @Basic
+    @Column(name = "participant_cache", nullable = true, length = -1)
+    public String getParticipantCache() {
+        return participantCache;
+    }
+
+    public void setParticipantCache(String participantCache) {
+        this.participantCache = participantCache;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -175,6 +206,9 @@ public class RenRuntimerecordEntity {
             return false;
         if (resourceBindingType != null ? !resourceBindingType.equals(that.resourceBindingType) : that.resourceBindingType != null)
             return false;
+        if (failureType != null ? !failureType.equals(that.failureType) : that.failureType != null) return false;
+        if (participantCache != null ? !participantCache.equals(that.participantCache) : that.participantCache != null)
+            return false;
 
         return true;
     }
@@ -194,6 +228,8 @@ public class RenRuntimerecordEntity {
         result = 31 * result + (resourcingId != null ? resourcingId.hashCode() : 0);
         result = 31 * result + (resourceBinding != null ? resourceBinding.hashCode() : 0);
         result = 31 * result + (resourceBindingType != null ? resourceBindingType.hashCode() : 0);
+        result = 31 * result + (failureType != null ? failureType.hashCode() : 0);
+        result = 31 * result + (participantCache != null ? participantCache.hashCode() : 0);
         return result;
     }
 }

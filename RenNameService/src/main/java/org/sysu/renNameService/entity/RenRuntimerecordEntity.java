@@ -10,11 +10,11 @@ import java.util.Objects;
 
 /**
  * Author: Rinkako
- * Date  : 2018/2/1
+ * Date  : 2018/2/7
  * Usage :
  */
 @Entity
-@Table(name = "ren_runtimerecord", schema = "renboengine")
+@Table(name = "ren_runtimerecord", schema = "renboengine", catalog = "")
 public class RenRuntimerecordEntity {
     private String rtid;
     private String processId;
@@ -30,6 +30,7 @@ public class RenRuntimerecordEntity {
     private String resourceBinding;
     private Integer resourceBindingType;
     private Integer failureType;
+    private String participantCache;
 
     @Id
     @Column(name = "rtid", nullable = false, length = 64)
@@ -171,6 +172,16 @@ public class RenRuntimerecordEntity {
         this.failureType = failureType;
     }
 
+    @Basic
+    @Column(name = "participant_cache", nullable = true, length = -1)
+    public String getParticipantCache() {
+        return participantCache;
+    }
+
+    public void setParticipantCache(String participantCache) {
+        this.participantCache = participantCache;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -189,12 +200,13 @@ public class RenRuntimerecordEntity {
                 Objects.equals(resourcingId, that.resourcingId) &&
                 Objects.equals(resourceBinding, that.resourceBinding) &&
                 Objects.equals(resourceBindingType, that.resourceBindingType) &&
-                Objects.equals(failureType, that.failureType);
+                Objects.equals(failureType, that.failureType) &&
+                Objects.equals(participantCache, that.participantCache);
     }
 
     @Override
     public int hashCode() {
 
-        return Objects.hash(rtid, processId, processName, sessionId, launchAuthorityId, launchTimestamp, launchFrom, launchType, tag, interpreterId, resourcingId, resourceBinding, resourceBindingType, failureType);
+        return Objects.hash(rtid, processId, processName, sessionId, launchAuthorityId, launchTimestamp, launchFrom, launchType, tag, interpreterId, resourcingId, resourceBinding, resourceBindingType, failureType, participantCache);
     }
 }
