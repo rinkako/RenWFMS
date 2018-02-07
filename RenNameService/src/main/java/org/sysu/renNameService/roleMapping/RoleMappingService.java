@@ -57,7 +57,7 @@ public final class RoleMappingService {
         // get involved mappings
         List<RenRolemapEntity> maps = RoleMappingService.GetInvolvedResource(rtid);
         // decompose groups and capabilities into workers
-        HashMap<String, HashMap<String, String>> involvedWorkers = new HashMap<>();
+        HashMap<String, HashMap> involvedWorkers = new HashMap<>();
         HashSet<String> pendWorkers = new HashSet<>();
         for (RenRolemapEntity rre : maps) {
             String mapped = rre.getMappedGid();
@@ -68,7 +68,7 @@ public final class RoleMappingService {
                 String jWorker = RoleMappingService.GetWorkerInOrganizableFromCOrgan(renid, rtid, nsid, mapped);
                 ArrayList<HashMap<String, String>> workers = SerializationUtil.JsonDeserialization(jWorker, ArrayList.class);
                 for (HashMap<String, String> worker : workers) {
-                    involvedWorkers.put(worker.get("GlobalId"), worker);
+                    pendWorkers.add(worker.get("workerId"));
                 }
             }
         }
@@ -78,7 +78,7 @@ public final class RoleMappingService {
         }
         String workerList = sb.toString();
         if (workerList.length() > 0) {
-            workerList = workerList.substring(0, workerList.length() - 2);
+            workerList = workerList.substring(0, workerList.length() - 1);
         }
         String wes = RoleMappingService.GetWorkerEntityFromCOrgan(renid, rtid, nsid, workerList);
         ArrayList<HashMap<String, String>> weMaps = SerializationUtil.JsonDeserialization(wes, ArrayList.class);
@@ -89,9 +89,9 @@ public final class RoleMappingService {
         Session session = HibernateUtil.GetLocalThreadSession();
         Transaction transaction = session.beginTransaction();
         try {
-            for (Map.Entry<String, HashMap<String, String>> mp : involvedWorkers.entrySet()) {
+            for (Map.Entry<String, HashMap> mp : involvedWorkers.entrySet()) {
                 String workerGid = mp.getKey();
-                HashMap<String, String> workerItem = mp.getValue();
+                HashMap workerItem = mp.getValue();
                 RenRsparticipantEntity rpe = session.get(RenRsparticipantEntity.class, workerGid);
                 if (rpe != null) {
                     rpe.setReferenceCounter(rpe.getReferenceCounter() + 1);
@@ -101,13 +101,13 @@ public final class RoleMappingService {
                     rpe.setWorkerid(workerGid);
                     rpe.setReferenceCounter(1);
                     if (workerGid.startsWith("Human_")) {
-                        rpe.setDisplayname(workerItem.get("person_id"));
+                        rpe.setDisplayname((String) workerItem.get("PersonId"));
                         rpe.setType(0);
                     }
                     else {
-                        rpe.setDisplayname(workerItem.get("person_id"));
+                        rpe.setDisplayname((String) workerItem.get("Name"));
                         rpe.setType(1);
-                        rpe.setReentrantType(Integer.valueOf(workerItem.get("type")));
+                        rpe.setReentrantType((Integer) workerItem.get("Type"));
                     }
                 }
                 session.saveOrUpdate(rpe);

@@ -266,7 +266,7 @@ def GetWorkerEntity():
             "#renid": renid,
             "#nsid": nsid,
             "#gids": gids}
-    return StartDash(argd, CGateway.RetrieveWorkerByOrganizable, _ArgsException)
+    return StartDash(argd, CGateway.RetrieveWorkerEntityByGid, _ArgsException)
 
 
 @restfulBp.route("/ns/getresources", methods=["GET", "POST"])

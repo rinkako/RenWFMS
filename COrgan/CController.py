@@ -874,7 +874,6 @@ class CController:
         :param gids: worker global id list
         :return: a list of workers gid
         """
-        assert isinstance(gids, str)
         gidItem = gids.split(',')
         retList = list()
         for gid in gidItem:
