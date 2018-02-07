@@ -57,7 +57,6 @@ public class ParticipantContext implements Serializable {
         boolean cmtFlag = false;
         try {
             RenRsparticipantEntity rre = session.get(RenRsparticipantEntity.class, workerId);
-            assert rre != null;
             transaction.commit();
             cmtFlag = true;
             return ParticipantContext.GenerateParticipantContext(rre);

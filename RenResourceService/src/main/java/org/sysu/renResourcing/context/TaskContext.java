@@ -251,7 +251,7 @@ public class TaskContext implements Serializable {
 
     /**
      * Create a new context.
-     * Private constructor for preventing create context without using `{@code TaskContext.GetTaskContext}`.
+     * Private constructor for preventing create context without using `{@code TaskContext.GetContext}`.
      * @param id task unique id
      * @param name task name
      * @param pid belong to Process global id

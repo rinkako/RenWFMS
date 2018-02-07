@@ -157,4 +157,10 @@ public class WorkitemContext implements Serializable {
                     WorkitemContext.class.getName(), LogUtil.LogLevelType.ERROR, context.getEntity().getRtid());
         }
     }
+
+    /**
+     * Create a new workitem context.
+     * Private constructor for preventing create context outside.
+     */
+    private WorkitemContext() { }
 }

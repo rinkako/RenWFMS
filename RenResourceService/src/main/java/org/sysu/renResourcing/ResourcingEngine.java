@@ -17,6 +17,7 @@ import org.sysu.renResourcing.executor.AllocateInteractionExecutor;
 import org.sysu.renResourcing.executor.InteractionExecutor;
 import org.sysu.renResourcing.principle.PrincipleParser;
 import org.sysu.renResourcing.principle.RPrinciple;
+import org.sysu.renResourcing.utility.CommonUtil;
 import org.sysu.renResourcing.utility.HibernateUtil;
 import org.sysu.renResourcing.utility.LogUtil;
 
@@ -80,10 +81,24 @@ public class ResourcingEngine {
         RPrinciple principle = PrincipleParser.Parse(taskContext.getPrinciple());
         switch (principle.getDistributionType()) {
             case Allocate:
+                // create an allocate interaction
                 AllocateInteractionExecutor allocateInteraction = new AllocateInteractionExecutor(
                         taskContext.getTaskId(), InitializationByType.SYSTEM_INITIATED);
+                // create an allocator for task principle
                 allocateInteraction.BindingAllocator(principle, ctx.getRstid(), ctx.getRtid());
-                WorkitemContext.GenerateContext(taskContext, ctx.getRtid(), taskContext.getParameters());
+                // get valid resources
+                HashSet<ParticipantContext> validParticipants = ResourcingEngine.GetCurrentValidParticipant(ctx.getRtid());
+                if (validParticipants.isEmpty()) {
+                    LogUtil.Log("A task cannot be allocated to any valid resources, so it will be put into admin unoffered queue.",
+                            ResourcingEngine.class.getName(), LogUtil.LogLevelType.WARNING, ctx.getRtid());
+                    // todo move to admin queue -rinkako
+                    return;
+                }
+                // generate workitem
+                WorkitemContext workitem = WorkitemContext.GenerateContext(taskContext, ctx.getRtid(), taskContext.getParameters());
+                // do allocate to select a participant for handle this workitem
+                ParticipantContext chosenOne = allocateInteraction.PerformAllocation(validParticipants, workitem);
+                // put workitem to the chosen participant allocated queue
 
                 break;
             case Offer:
@@ -98,17 +113,28 @@ public class ResourcingEngine {
     /**
      * Get current valid participant context set.
      * Current valid means that current resources set in Name Service according to process COrgan isolation type.
+     * NOTICE that participant load and unload is handled in Name Service.
      * @param rtid process rtid
      * @return a Hash set for current valid participant context
      */
     public static HashSet<ParticipantContext> GetCurrentValidParticipant(String rtid) {
+        HashSet<ParticipantContext> retSet = new HashSet<>();
         Session session = HibernateUtil.GetLocalThreadSession();
         Transaction transaction = session.beginTransaction();
         boolean cmtFlag = false;
         try {
-            session.createQuery("FROM RenRsparticipantEntity WHERE ");
+            RenRuntimerecordEntity runtimeCtx = session.get(RenRuntimerecordEntity.class, rtid);
+            String participants = runtimeCtx.getParticipantCache();
             transaction.commit();
             cmtFlag = true;
+            if (CommonUtil.IsNullOrEmpty(participants)) {
+                return retSet;
+            }
+            String[] participantItem = participants.split(",");
+            for (String workerId : participantItem) {
+                retSet.add(ParticipantContext.GetContext(rtid, workerId));
+            }
+            return retSet;
         }
         catch (Exception ex) {
             if (!cmtFlag) {
@@ -116,10 +142,7 @@ public class ResourcingEngine {
             }
             throw ex;
         }
-        return null; // todo
     }
-
-
 
     /**
      * Main scheduler reference.

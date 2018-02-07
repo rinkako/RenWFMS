@@ -4,7 +4,9 @@
  */
 package org.sysu.renResourcing.context.steady;
 
-import javax.persistence.*;
+import javax.persistence.Column;
+import javax.persistence.Id;
+import java.io.Serializable;
 import java.util.Objects;
 
 /**
@@ -12,15 +14,12 @@ import java.util.Objects;
  * Date  : 2018/2/8
  * Usage :
  */
-@Entity
-@Table(name = "ren_queueitems", schema = "renboengine", catalog = "")
-@IdClass(RenQueueitemsEntityPK.class)
-public class RenQueueitemsEntity {
+public class RenQueueitemsEntityPK implements Serializable {
     private String workqueueId;
     private String workitemId;
 
-    @Id
     @Column(name = "workqueueId", nullable = false, length = 64)
+    @Id
     public String getWorkqueueId() {
         return workqueueId;
     }
@@ -29,8 +28,8 @@ public class RenQueueitemsEntity {
         this.workqueueId = workqueueId;
     }
 
-    @Id
     @Column(name = "workitemId", nullable = false, length = 64)
+    @Id
     public String getWorkitemId() {
         return workitemId;
     }
@@ -43,7 +42,7 @@ public class RenQueueitemsEntity {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        RenQueueitemsEntity that = (RenQueueitemsEntity) o;
+        RenQueueitemsEntityPK that = (RenQueueitemsEntityPK) o;
         return Objects.equals(workqueueId, that.workqueueId) &&
                 Objects.equals(workitemId, that.workitemId);
     }
