@@ -14,12 +14,68 @@ import org.sysu.renResourcing.basic.enums.WorkQueueContainerType;
 public class WorkQueueContainer {
 
     /**
+     * Participant offered workitem queue.
+     */
+    private WorkQueueContext offeredQueue;
+
+    /**
+     * Participant allocated workitem queue.
+     */
+    private WorkQueueContext allocatedQueue;
+
+    /**
+     * Participant started workitem queue.
+     */
+    private WorkQueueContext startedQueue;
+
+    /**
+     * Participant suspended workitem queue.
+     */
+    private WorkQueueContext suspendedQueue;
+
+    /**
+     * Admin unoffered workitem queue.
+     */
+    private WorkQueueContext unofferedQueue;
+
+    /**
+     * Admin worklisted workitem queue.
+     */
+    private WorkQueueContext worklistedQueue;
+
+    /**
+     * Queue container owner worker global id.
+     */
+    private String ownerWorkerId;
+
+    /**
+     * Type of Queue container owner.
+     */
+    private WorkQueueContainerType type;
+
+    /**
+     * Get the queue container of a specific worker.
+     * @param workerId worker global id, `admin` if admin user
+     * @return Work queue container of this worker
+     */
+    public static WorkQueueContext GetContext(String workerId) {
+        if (workerId.equals("admin")) {
+            // todo
+        }
+        else {
+
+        }
+    }
+
+
+
+    /**
      * Create a new work queue container.
      * @param workerGid owner worker global id
      * @param type container type
      */
     public WorkQueueContainer(String workerGid, WorkQueueContainerType type) {
-        this.workerGid = workerGid;
+        this.ownerWorkerId = workerGid;
         this.type = type;
     }
 
@@ -28,7 +84,7 @@ public class WorkQueueContainer {
      * @return worker gid string
      */
     public String getWorkerGid() {
-        return this.workerGid;
+        return this.ownerWorkerId;
     }
 
     /**
@@ -38,14 +94,4 @@ public class WorkQueueContainer {
     public WorkQueueContainerType getType() {
         return this.type;
     }
-
-    /**
-     * Binding worker global id.
-     */
-    private String workerGid;
-
-    /**
-     * Type of container.
-     */
-    private WorkQueueContainerType type;
 }

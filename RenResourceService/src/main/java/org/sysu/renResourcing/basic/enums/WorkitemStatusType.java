@@ -4,12 +4,14 @@
  */
 package org.sysu.renResourcing.basic.enums;
 
+import java.io.Serializable;
+
 /**
  * Author: Rinkako
  * Date  : 2018/2/6
  * Usage : Enum for workitem execution status.
  */
-public enum WorkitemStatusType {
+public enum WorkitemStatusType implements Serializable {
     Enabled,
     Fired,
     Executing,

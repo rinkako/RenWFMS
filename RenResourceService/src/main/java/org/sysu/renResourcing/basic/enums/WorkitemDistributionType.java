@@ -4,12 +4,14 @@
  */
 package org.sysu.renResourcing.basic.enums;
 
+import java.io.Serializable;
+
 /**
  * Author: Rinkako
  * Date  : 2018/2/6
  * Usage : Enum of workitem distribution type
  */
-public enum WorkitemDistributionType {
+public enum WorkitemDistributionType implements Serializable {
     Allocate,
     Offer,
     AutoAllocateIfOfferFailed

@@ -4,12 +4,14 @@
  */
 package org.sysu.renResourcing.basic.enums;
 
+import java.io.Serializable;
+
 /**
  * Author: Rinkako
  * Date  : 2018/2/4
  * Usage : Enum of worker participant type.
  */
-public enum WorkerType {
-    Huamn,
+public enum WorkerType implements Serializable {
+    Human,
     Agent
 }
