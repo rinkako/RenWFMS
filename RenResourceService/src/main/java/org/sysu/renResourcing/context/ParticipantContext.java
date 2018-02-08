@@ -8,6 +8,7 @@ import org.hibernate.Session;
 import org.hibernate.Transaction;
 import org.sysu.renResourcing.basic.enums.AgentReentrantType;
 import org.sysu.renResourcing.basic.enums.WorkerType;
+import org.sysu.renResourcing.cache.RuntimeContextCachePool;
 import org.sysu.renResourcing.context.steady.RenRsparticipantEntity;
 import org.sysu.renResourcing.utility.HibernateUtil;
 import org.sysu.renResourcing.utility.LogUtil;
@@ -52,6 +53,20 @@ public class ParticipantContext implements Serializable, RCacheablesContext {
      * @return Participant resourcing context, null if exception occurred or assertion error
      */
     public static ParticipantContext GetContext(String rtid, String workerId) {
+        return ParticipantContext.GetContext(rtid, workerId, false);
+    }
+
+    /**
+     * Get a participant context by its global id.
+     * @param workerId worker global id
+     * @return Participant resourcing context, null if exception occurred or assertion error
+     */
+    public static ParticipantContext GetContext(String rtid, String workerId, boolean forceReload) {
+        ParticipantContext cachedCtx = RuntimeContextCachePool.Retrieve(ParticipantContext.class, workerId);
+        // fetch cache
+        if (cachedCtx != null && !forceReload) {
+            return cachedCtx;
+        }
         Session session = HibernateUtil.GetLocalThreadSession();
         Transaction transaction = session.beginTransaction();
         boolean cmtFlag = false;
@@ -59,7 +74,9 @@ public class ParticipantContext implements Serializable, RCacheablesContext {
             RenRsparticipantEntity rre = session.get(RenRsparticipantEntity.class, workerId);
             transaction.commit();
             cmtFlag = true;
-            return ParticipantContext.GenerateParticipantContext(rre);
+            ParticipantContext retCtx = ParticipantContext.GenerateParticipantContext(rre);
+            RuntimeContextCachePool.AddOrUpdate(workerId, retCtx);
+            return retCtx;
         }
         catch (Exception ex) {
             if (!cmtFlag) {

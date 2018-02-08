@@ -6,7 +6,9 @@ package org.sysu.renResourcing.context;
 
 import org.hibernate.Session;
 import org.hibernate.Transaction;
+import org.sysu.renResourcing.GlobalContext;
 import org.sysu.renResourcing.basic.enums.WorkQueueType;
+import org.sysu.renResourcing.cache.RuntimeContextCachePool;
 import org.sysu.renResourcing.context.steady.RenQueueitemsEntity;
 import org.sysu.renResourcing.context.steady.RenWorkqueueEntity;
 import org.sysu.renResourcing.utility.HibernateUtil;
@@ -49,7 +51,7 @@ public class WorkQueueContext implements Serializable, RCacheablesContext {
      */
     public synchronized void AddOrUpdate(WorkitemContext workitem) {
         this.workitems.put(workitem.getEntity().getWid(), workitem);
-        this.AddRemoveChanged();
+        this.AddChangesToSteady(workitem);
     }
 
     /**
@@ -58,7 +60,7 @@ public class WorkQueueContext implements Serializable, RCacheablesContext {
      */
     public synchronized void AddQueue(Map<String, WorkitemContext> queueMap) {
         this.workitems.putAll(queueMap);
-        this.AddRemoveChanged();
+        this.AddChangesToSteady(new HashSet<>(queueMap.values()));
     }
 
     /**
@@ -68,7 +70,7 @@ public class WorkQueueContext implements Serializable, RCacheablesContext {
      */
     public synchronized void AddQueue(WorkQueueContext queue) {
         this.workitems.putAll(queue.GetQueueAsMap());
-        this.AddRemoveChanged();
+        this.AddChangesToSteady(queue.GetQueueAsSet());
     }
 
     /**
@@ -77,7 +79,7 @@ public class WorkQueueContext implements Serializable, RCacheablesContext {
      */
     public synchronized void Remove(String workitemId) {
         this.workitems.remove(workitemId);
-        this.AddRemoveChanged();
+        this.RemoveChangesToSteady(workitemId);
     }
 
     /**
@@ -85,8 +87,9 @@ public class WorkQueueContext implements Serializable, RCacheablesContext {
      * @param workitem workitem context
      */
     public synchronized void Remove(WorkitemContext workitem) {
-        this.workitems.remove(workitem.getEntity().getWid());
-        this.AddRemoveChanged();
+        String wid = workitem.getEntity().getWid();
+        this.workitems.remove(wid);
+        this.RemoveChangesToSteady(wid);
     }
 
     /**
@@ -95,10 +98,13 @@ public class WorkQueueContext implements Serializable, RCacheablesContext {
      */
     public synchronized void RemoveQueue(WorkQueueContext queue) {
         Set<WorkitemContext> qSet = queue.GetQueueAsSet();
+        HashSet<String> idSet = new HashSet<>();
         for (WorkitemContext ctx : qSet) {
-            this.Remove(ctx);
+            String wid = ctx.getEntity().getWid();
+            this.Remove(wid);
+            idSet.add(wid);
         }
-        this.AddRemoveChanged();
+        this.RemoveChangesToSteady(idSet);
     }
 
     /**
@@ -108,13 +114,16 @@ public class WorkQueueContext implements Serializable, RCacheablesContext {
     public synchronized void RemoveByRtid(String rtid) {
         // clone queue prevent iteration fault
         Set<WorkitemContext> clonedQueue = new HashSet<>(this.workitems.values());
+        HashSet<String> idSet = new HashSet<>();
         for (WorkitemContext workitem : clonedQueue) {
             if (workitem.getEntity().getRtid().equals(rtid)) {
-                this.workitems.remove(workitem.getEntity().getWid());
+                String wid = workitem.getEntity().getWid();
+                this.workitems.remove(wid);
+                idSet.add(wid);
             }
         }
-        if (clonedQueue.size() != this.workitems.size()) {
-            this.AddRemoveChanged();
+        if (!idSet.isEmpty()) {
+            this.RemoveChangesToSteady(idSet);
         }
     }
 
@@ -123,6 +132,7 @@ public class WorkQueueContext implements Serializable, RCacheablesContext {
      * @return true if queue empty
      */
     public synchronized boolean IsEmpty() {
+        this.RefreshFromSteady();
         return this.workitems.isEmpty();
     }
 
@@ -131,6 +141,7 @@ public class WorkQueueContext implements Serializable, RCacheablesContext {
      * @return number of workitems in this queue
      */
     public synchronized int Count() {
+        this.RefreshFromSteady();
         return this.workitems.size();
     }
 
@@ -140,6 +151,7 @@ public class WorkQueueContext implements Serializable, RCacheablesContext {
      * @return true if exist in queue
      */
     public synchronized boolean Contains(String workitemId) {
+        this.RefreshFromSteady();
         return this.workitems.containsKey(workitemId);
     }
 
@@ -149,6 +161,7 @@ public class WorkQueueContext implements Serializable, RCacheablesContext {
      * @return workitem context, null if not exist
      */
     public synchronized WorkitemContext Retrieve(String workitemId) {
+        this.RefreshFromSteady();
         return this.workitems.get(workitemId);
     }
 
@@ -156,8 +169,12 @@ public class WorkQueueContext implements Serializable, RCacheablesContext {
      * Clear the queue.
      */
     public synchronized void Clear() {
+        HashSet<String> idSet = new HashSet<>();
+        for (WorkitemContext ctx : this.workitems.values()) {
+            idSet.add(ctx.getEntity().getWid());
+        }
         this.workitems.clear();
-        this.AddRemoveChanged();
+        this.RemoveChangesToSteady(idSet);
     }
 
     /**
@@ -165,7 +182,8 @@ public class WorkQueueContext implements Serializable, RCacheablesContext {
      * @return all members of the queue as a HashMap of (workitemId, workitemObject)
      */
     public synchronized Map<String, WorkitemContext> GetQueueAsMap() {
-        return this.workitems;
+        this.RefreshFromSteady();
+        return new HashMap<>(this.workitems);
     }
 
     /**
@@ -173,6 +191,7 @@ public class WorkQueueContext implements Serializable, RCacheablesContext {
      * @return all members of the queue as a HashSet
      */
     public synchronized Set<WorkitemContext> GetQueueAsSet() {
+        this.RefreshFromSteady();
         Set<WorkitemContext> retSet = new HashSet<>();
         for (WorkitemContext ctx : this.workitems.values()) {
             if (ctx != null) {
@@ -184,9 +203,28 @@ public class WorkQueueContext implements Serializable, RCacheablesContext {
 
     /**
      * Get the specific queue context and store to steady.
+     * @param ownerWorkerId queue owner worker id
+     * @param queueType queue type enum
      * @return a workqueue context
      */
     public synchronized static WorkQueueContext GetContext(String ownerWorkerId, WorkQueueType queueType) {
+        return WorkQueueContext.GetContext(ownerWorkerId, queueType, false);
+    }
+
+    /**
+     * Get the specific queue context and store to steady.
+     * @param ownerWorkerId queue owner worker id
+     * @param queueType queue type enum
+     * @param forceReload force reload from steady and refresh cache
+     * @return a workqueue context
+     */
+    public synchronized static WorkQueueContext GetContext(String ownerWorkerId, WorkQueueType queueType, boolean forceReload) {
+        String wqid = String.format("WQ_%s_%s", queueType.name(), ownerWorkerId);
+        WorkQueueContext retCtx = RuntimeContextCachePool.Retrieve(WorkQueueContext.class, wqid);
+        // fetch cache
+        if (retCtx != null && !forceReload) {
+            return retCtx;
+        }
         Session session = HibernateUtil.GetLocalThreadSession();
         Transaction transaction = session.beginTransaction();
         boolean cmtFlag = false;
@@ -196,14 +234,16 @@ public class WorkQueueContext implements Serializable, RCacheablesContext {
             // if not exist in steady then create a new one
             if (rwqe == null) {
                 rwqe = new RenWorkqueueEntity();
-                rwqe.setQueueId(String.format("WQ_%s", UUID.randomUUID().toString()));
+                rwqe.setQueueId(wqid);
                 rwqe.setOwnerId(ownerWorkerId);
                 rwqe.setType(queueType.ordinal());
                 session.saveOrUpdate(rwqe);
             }
             transaction.commit();
             cmtFlag = true;
-            return WorkQueueContext.GenerateContext(rwqe);
+            WorkQueueContext generateCtx = WorkQueueContext.GenerateContext(rwqe);
+            RuntimeContextCachePool.AddOrUpdate(wqid, generateCtx);
+            return generateCtx;
         }
         catch (Exception ex) {
             if (!cmtFlag) {
@@ -240,31 +280,125 @@ public class WorkQueueContext implements Serializable, RCacheablesContext {
     }
 
     /**
-     * Set this queue is changed and flush changes to steady.
-     * NOTICE that the admin worklisted queue is dynamically construct so
-     * it is no need for persist.
+     * Refresh remove workitem changes to steady.
+     * NOTICE this method will be called when perform SET DATA type of queue context
+     * to make sure data consistency among all RS.
+     * @param removeItemId id of context to remove
      */
-    private synchronized void AddRemoveChanged() {
-        if (this.type != WorkQueueType.WORKLISTED) {
-            Session session = HibernateUtil.GetLocalThreadSession();
-            Transaction transaction = session.beginTransaction();
-            try {
-                session.createQuery(String.format("DELETE FROM RenQueueitemsEntity WHERE workqueueId = '%s'", this.queueId)).executeUpdate();
-                for (WorkitemContext workitem : this.workitems.values()) {
-                    RenQueueitemsEntity rqe = new RenQueueitemsEntity();
-                    rqe.setWorkqueueId(this.queueId);
-                    rqe.setWorkitemId(workitem.getEntity().getWid());
-                    session.saveOrUpdate(rqe);
+    private synchronized void RemoveChangesToSteady(String removeItemId) {
+        HashSet<String> oneSet = new HashSet<>();
+        oneSet.add(removeItemId);
+        this.RemoveChangesToSteady(oneSet);
+    }
+
+    /**
+     * Refresh remove workitem changes to steady.
+     * NOTICE this method will be called when perform SET DATA type of queue context
+     * to make sure data consistency among all RS.
+     * @param removeSet id of contexts to remove
+     */
+    private synchronized void RemoveChangesToSteady(Set<String> removeSet) {
+        if (this.type == WorkQueueType.WORKLISTED) {
+            return;
+        }
+        Session session = HibernateUtil.GetLocalThreadSession();
+        Transaction transaction = session.beginTransaction();
+        try {
+            for (String workitemId : removeSet) {
+                RenQueueitemsEntity rqe = (RenQueueitemsEntity) session.createQuery(String.format("FROM RenQueueitemsEntity WHERE workqueueId = '%s' AND workitemId = '%s'", this.queueId, workitemId)).uniqueResult();
+                if (rqe != null) {
+                    session.delete(rqe);
                 }
-                transaction.commit();
             }
-            catch (Exception ex) {
-                transaction.rollback();
-                LogUtil.Log(String.format("When WorkQueue(%s of %s, %s) flush changes to steady exception occurred, %s",
+            transaction.commit();
+        }
+        catch (Exception ex) {
+            transaction.rollback();
+            LogUtil.Log(String.format("When WorkQueue(%s of %s, %s) flush remove changes to steady exception occurred, %s",
                         this.queueId, this.ownerWorkerId, this.type.name(), ex), WorkQueueContext.class.getName(),
                         LogUtil.LogLevelType.ERROR, "");
-                throw ex;
+            throw ex;
+        }
+    }
+
+    /**
+     * Refresh add workitem changes to steady.
+     * NOTICE this method will be called when perform SET DATA type of queue context
+     * to make sure data consistency among all RS.
+     * @param addItem context to add
+     */
+    private synchronized void AddChangesToSteady(WorkitemContext addItem) {
+        HashSet<WorkitemContext> oneSet = new HashSet<>();
+        oneSet.add(addItem);
+        this.AddChangesToSteady(oneSet);
+    }
+
+    /**
+     * Refresh add workitem changes to steady.
+     * NOTICE this method will be called when perform SET DATA type of queue context
+     * to make sure data consistency among all RS.
+     * @param addSet set of context to add
+     */
+    private synchronized void AddChangesToSteady(Set<WorkitemContext> addSet) {
+        if (this.type == WorkQueueType.WORKLISTED) {
+            return;
+        }
+        Session session = HibernateUtil.GetLocalThreadSession();
+        Transaction transaction = session.beginTransaction();
+        try {
+            for (WorkitemContext workitem : addSet) {
+                String workitemId = workitem.getEntity().getWid();
+                RenQueueitemsEntity rqe = (RenQueueitemsEntity) session.createQuery(String.format("FROM RenQueueitemsEntity WHERE workqueueId = '%s' AND workitemId = '%s'", this.queueId, workitemId)).uniqueResult();
+                if (rqe == null) {
+                    rqe = new RenQueueitemsEntity();
+                    rqe.setWorkitemId(workitemId);
+                    rqe.setWorkqueueId(this.queueId);
+                    session.saveOrUpdate(rqe);
+                }
             }
+            transaction.commit();
+        }
+        catch (Exception ex) {
+            transaction.rollback();
+            LogUtil.Log(String.format("When WorkQueue(%s of %s, %s) flush add changes to steady exception occurred, %s",
+                    this.queueId, this.ownerWorkerId, this.type.name(), ex), WorkQueueContext.class.getName(),
+                    LogUtil.LogLevelType.ERROR, "");
+            throw ex;
+        }
+    }
+
+    /**
+     * Refresh work queue from steady.
+     * NOTICE this method will be called when perform GET DATA type of queue context
+     * to make sure data consistency among all RS.
+     */
+    @SuppressWarnings("unchecked")
+    private synchronized void RefreshFromSteady() {
+        if (this.type == WorkQueueType.WORKLISTED) {
+            return;
+        }
+        Session session = HibernateUtil.GetLocalThreadSession();
+        Transaction transaction = session.beginTransaction();
+        boolean cmtFlag = false;
+        try {
+            ArrayList<RenQueueitemsEntity> inSteady = (ArrayList<RenQueueitemsEntity>) session.createQuery(String.format("FROM RenQueueitemsEntity WHERE workqueueId = '%s'", this.queueId)).list();
+            transaction.commit();
+            cmtFlag = true;
+            ConcurrentHashMap<String, WorkitemContext> newMaps = new ConcurrentHashMap<>();
+            for (RenQueueitemsEntity rqe : inSteady) {
+                WorkitemContext workitem = WorkitemContext.GetContext(rqe.getWorkitemId(), "#RS_INTERNAL_" + GlobalContext.RESOURCE_SERVICE_GLOBAL_ID);
+                newMaps.put(rqe.getWorkitemId(), workitem);
+            }
+            this.workitems = newMaps;
+        }
+        catch (Exception ex) {
+            if (!cmtFlag) {
+                transaction.rollback();
+            }
+            LogUtil.Log(String.format("When WorkQueue(%s of %s, %s) refresh from steady exception occurred, %s",
+                    this.queueId, this.ownerWorkerId, this.type.name(), ex), WorkQueueContext.class.getName(),
+                    LogUtil.LogLevelType.ERROR, "");
+            throw ex;
         }
     }
 
@@ -282,7 +416,7 @@ public class WorkQueueContext implements Serializable, RCacheablesContext {
 
     /**
      * Create a new work queue context.
-     * NOTICE that usually this method should not be called unless worklisted queue.
+     * NOTICE that usually this method should not be called unless <b>worklisted</b> queue.
      * @param id work queue global id
      * @param ownerWorkerId owner worker global id
      * @param type queue type enum

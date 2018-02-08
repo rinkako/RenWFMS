@@ -6,6 +6,7 @@ package org.sysu.renResourcing.context;
 
 import org.hibernate.Session;
 import org.hibernate.Transaction;
+import org.sysu.renResourcing.cache.RuntimeContextCachePool;
 import org.sysu.renResourcing.context.steady.RenBoEntity;
 import org.sysu.renResourcing.context.steady.RenRstaskEntity;
 import org.sysu.renResourcing.context.steady.RenRuntimerecordEntity;
@@ -25,7 +26,7 @@ import java.util.HashMap;
  * Usage : Task context is an encapsulation of RenRSTaskEntity in a
  *         convenient way for resourcing service.
  */
-public class TaskContext implements Serializable {
+public class TaskContext implements Serializable, RCacheablesContext {
     /**
      * Serial version UID.
      */
@@ -89,6 +90,23 @@ public class TaskContext implements Serializable {
      * @return Task resourcing context, null if exception occurred or assertion error
      */
     public static TaskContext GetContext(String rtid, String boName, String taskName) {
+        return TaskContext.GetContext(rtid, boName, taskName, false);
+    }
+
+    /**
+     * Get a task context by its name and belonging BO name of one runtime.
+     * @param rtid runtime record id
+     * @param boName belong to BO id
+     * @param taskName task name
+     * @return Task resourcing context, null if exception occurred or assertion error
+     */
+    public static TaskContext GetContext(String rtid, String boName, String taskName, boolean forceReload) {
+        String taskCtxId = String.format("%s_%s_%s", rtid, boName, taskName);
+        TaskContext cachedCtx = RuntimeContextCachePool.Retrieve(TaskContext.class, taskCtxId);
+        // fetch cache
+        if (cachedCtx != null && !forceReload) {
+            return cachedCtx;
+        }
         Session session = HibernateUtil.GetLocalThreadSession();
         Transaction transaction = session.beginTransaction();
         boolean cmtFlag = false;
@@ -102,7 +120,9 @@ public class TaskContext implements Serializable {
             assert taskEntity != null;
             transaction.commit();
             cmtFlag = true;
-            return TaskContext.GenerateTaskContext(taskEntity, pid);
+            TaskContext generatedCtx = TaskContext.GenerateTaskContext(taskEntity, pid);
+            RuntimeContextCachePool.AddOrUpdate(taskCtxId, generatedCtx);
+            return generatedCtx;
         }
         catch (Exception ex) {
             if (!cmtFlag) {

@@ -65,9 +65,19 @@ public class WorkQueueContainer implements RCacheablesContext {
      * @return Work queue container of this worker
      */
     public static WorkQueueContainer GetContext(String workerId) {
+        return WorkQueueContainer.GetContext(workerId, false);
+    }
+
+    /**
+     * Get the queue container of a specific worker.
+     * @param workerId worker global id, {@code GlobalContext.WORKQUEUE_ADMIN_PREFIX} if admin user
+     * @param forceReload force reload from steady and refresh cache
+     * @return Work queue container of this worker
+     */
+    public static WorkQueueContainer GetContext(String workerId, boolean forceReload) {
         WorkQueueContainer retContainer = RuntimeContextCachePool.Retrieve(WorkQueueContainer.class, workerId);
         // fetch cache
-        if (retContainer != null) {
+        if (retContainer != null && !forceReload) {
             return retContainer;
         }
         // admin queue

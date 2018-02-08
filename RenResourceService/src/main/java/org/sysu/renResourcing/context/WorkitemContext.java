@@ -9,6 +9,7 @@ import org.hibernate.Transaction;
 import org.sysu.renResourcing.GlobalContext;
 import org.sysu.renResourcing.basic.enums.WorkitemResourcingStatusType;
 import org.sysu.renResourcing.basic.enums.WorkitemStatusType;
+import org.sysu.renResourcing.cache.RuntimeContextCachePool;
 import org.sysu.renResourcing.context.steady.RenWorkitemEntity;
 import org.sysu.renResourcing.utility.CommonUtil;
 import org.sysu.renResourcing.utility.HibernateUtil;
@@ -59,11 +60,27 @@ public class WorkitemContext implements Serializable, RCacheablesContext {
     }
 
     /**
-     * Get an exist workitem context.
+     * Get an exist workitem context from cache or steady.
      * @param wid workitem global id
      * @return workitem context
      */
     public static WorkitemContext GetContext(String wid, String rtid) {
+        return WorkitemContext.GetContext(wid, rtid, false);
+    }
+
+    /**
+     * Get an exist workitem context.
+     * @param wid workitem global id
+     * @param rtid process rtid
+     * @param forceReload force reload from steady and refresh cache
+     * @return workitem context
+     */
+    public static WorkitemContext GetContext(String wid, String rtid, boolean forceReload) {
+        WorkitemContext cachedCtx = RuntimeContextCachePool.Retrieve(WorkitemContext.class, wid);
+        // fetch cache
+        if (cachedCtx != null && !forceReload) {
+            return cachedCtx;
+        }
         Session session = HibernateUtil.GetLocalThreadSession();
         Transaction transaction = session.beginTransaction();
         boolean cmtFlag = false;
@@ -74,6 +91,7 @@ public class WorkitemContext implements Serializable, RCacheablesContext {
             cmtFlag = true;
             WorkitemContext retCtx = new WorkitemContext();
             retCtx.entity = rwe;
+            RuntimeContextCachePool.AddOrUpdate(wid, retCtx);
             return retCtx;
         }
         catch (Exception ex) {

@@ -4,6 +4,7 @@ import org.hibernate.Session;
 import org.hibernate.Transaction;
 import org.sysu.renResourcing.GlobalContext;
 import org.sysu.renResourcing.basic.enums.RServiceType;
+import org.sysu.renResourcing.cache.RuntimeContextCachePool;
 import org.sysu.renResourcing.context.steady.RenRsrecordEntity;
 import org.sysu.renResourcing.utility.CommonUtil;
 import org.sysu.renResourcing.utility.HibernateUtil;
@@ -81,6 +82,26 @@ public class ResourcingContext implements Comparable<ResourcingContext>, Seriali
      * @return Resourcing request context, null if exception occurred or assertion error
      */
     public static ResourcingContext GetContext(String rstid, String rtid, RServiceType service, Hashtable<String, Object> argsDict) {
+        return ResourcingContext.GetContext(rstid, rtid, service, argsDict, false);
+    }
+
+    /**
+     * Get a resourcing request context.
+     * @param rstid resourcing request global id, null if create a new one
+     * @param rtid process rtid
+     * @param service service type enum
+     * @param argsDict service argument dict
+     * @param forceReload force reload from steady and refresh cache
+     * @return Resourcing request context, null if exception occurred or assertion error
+     */
+    public static ResourcingContext GetContext(String rstid, String rtid, RServiceType service, Hashtable<String, Object> argsDict, boolean forceReload) {
+        if (rstid != null && !forceReload) {
+            ResourcingContext cachedCtx = RuntimeContextCachePool.Retrieve(ResourcingContext.class, rstid);
+            // fetch cache
+            if (cachedCtx != null) {
+                return cachedCtx;
+            }
+        }
         Session session = HibernateUtil.GetLocalThreadSession();
         Transaction transaction = session.beginTransaction();
         boolean cmtFlag = false;
@@ -89,7 +110,8 @@ public class ResourcingContext implements Comparable<ResourcingContext>, Seriali
             // create new
             if (rstid == null) {
                 renRsrecordEntity = new RenRsrecordEntity();
-                renRsrecordEntity.setRstid(String.format("RSR_%s", UUID.randomUUID().toString()));
+                rstid = String.format("RSR_%s", UUID.randomUUID().toString());
+                renRsrecordEntity.setRstid(rstid);
                 renRsrecordEntity.setRtid(rtid);
                 renRsrecordEntity.setPriority(0);
                 renRsrecordEntity.setReceiveTimestamp(new Timestamp(System.currentTimeMillis()));
@@ -107,7 +129,9 @@ public class ResourcingContext implements Comparable<ResourcingContext>, Seriali
                 transaction.commit();
                 cmtFlag = true;
             }
-            return ResourcingContext.GenerateResourcingContext(renRsrecordEntity);
+            ResourcingContext generatedCtx = ResourcingContext.GenerateResourcingContext(renRsrecordEntity);
+            RuntimeContextCachePool.AddOrUpdate(rstid, generatedCtx);
+            return generatedCtx;
         }
         catch (Exception ex) {
             if (!cmtFlag) {

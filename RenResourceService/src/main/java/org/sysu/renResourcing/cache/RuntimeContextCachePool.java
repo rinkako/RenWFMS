@@ -12,7 +12,7 @@ import java.util.concurrent.ConcurrentHashMap;
 
 /**
  * Author: Rinkako
- * Date  : 2018/2/6
+ * Date  : 2018/2/8
  * Usage : This class is a cache pool for all running processes resources
  *         context. Notice that all cache will lost after RS service shut
  *         down, therefore all data stored in the cache should be flushed
@@ -33,6 +33,7 @@ import java.util.concurrent.ConcurrentHashMap;
  *         running process always have only one valid cache.
  */
 public class RuntimeContextCachePool {
+
     /**
      * Cache pool for cacheables.
      */
@@ -96,7 +97,7 @@ public class RuntimeContextCachePool {
      * @param originalId context id
      * @return cache id
      */
-    private static String GenerateCacheKey(@NotNull Class<?> clazz, @NotNull String originalId) {
+    private static String GenerateCacheKey(Class<?> clazz, String originalId) {
         return String.format("%s@@%s", clazz.getSimpleName(), originalId);
     }
 
