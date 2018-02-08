@@ -34,6 +34,11 @@ public class GlobalContext {
     public static final String OBSERVABLE_NOTIFY_EXCEPTION = "exception";
 
     /**
+     * Notification for agent resourcing: action key.
+     */
+    public static final String NOTIFICATION_AGENT_ACTION = "action";
+
+    /**
      * Concurrent control: max active tracker.
      */
     public static int CONCURRENT_MAX_TRACKER = 100;

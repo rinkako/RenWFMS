@@ -16,7 +16,5 @@ public abstract class AsyncRunnablePlugin extends RTrackablePlugin implements Ru
      * @see Thread#run()
      */
     @Override
-    public void run() {
-
-    }
+    public abstract void run();
 }

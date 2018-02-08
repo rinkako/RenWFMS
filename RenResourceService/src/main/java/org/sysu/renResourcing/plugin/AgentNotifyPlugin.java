@@ -9,6 +9,7 @@ import org.sysu.renResourcing.context.ParticipantContext;
 import org.sysu.renResourcing.utility.HttpClientUtil;
 import org.sysu.renResourcing.utility.LogUtil;
 
+import java.util.ArrayList;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentLinkedQueue;
@@ -21,10 +22,84 @@ import java.util.concurrent.ConcurrentLinkedQueue;
 public class AgentNotifyPlugin extends AsyncRunnablePlugin {
 
     /**
+     * Run the plugin.
+     * This method will be the asynchronously running entry point.
+     */
+    @Override
+    public void run() {
+        this.HandlePendingMessage();
+    }
+
+    /**
+     * Create a new agent notification send plugin.
+     */
+    public AgentNotifyPlugin() { }
+
+    /**
+     * Add a notification to post.
+     * @param agentContext agent participant context
+     * @param args arguments to post
+     * @param rtid process rtid
+     */
+    public void AddNotification(ParticipantContext agentContext, Map<String, String> args, String rtid) {
+        if (!this.IsBeginSending) {
+            NotifyMessagePackage nmp = new NotifyMessagePackage();
+            nmp.Context = agentContext;
+            nmp.Args = args;
+            nmp.RtId = rtid;
+            this.pendingMessage.add(nmp);
+        }
+        else {
+            LogUtil.Log("Add item to a sending AgentNotifyPlugin, ignored.",
+                    AgentNotifyPlugin.class.getName(), LogUtil.LogLevelType.WARNING, rtid);
+        }
+    }
+
+    /**
+     * Clear all pending message.
+     */
+    public void Clear(String rtid) {
+        if (!this.IsBeginSending) {
+            this.pendingMessage.clear();
+        }
+        else {
+            LogUtil.Log("Try to clear items in a sending AgentNotifyPlugin, ignored.",
+                    AgentNotifyPlugin.class.getName(), LogUtil.LogLevelType.WARNING, rtid);
+        }
+    }
+
+    /**
+     * Count pending message.
+     * @return number of pending queue, -1 if begin to send.
+     */
+    public int Count(String rtid) {
+        if (!this.IsBeginSending) {
+            return this.pendingMessage.size();
+        }
+        else {
+            LogUtil.Log("Try to count items in a sending AgentNotifyPlugin, ignored.",
+                    AgentNotifyPlugin.class.getName(), LogUtil.LogLevelType.WARNING, rtid);
+            return -1;
+        }
+    }
+
+    /**
+     * Handle pending message queue and post them.
+     */
+    private void HandlePendingMessage() {
+        this.IsBeginSending = true;
+        for (NotifyMessagePackage nmp : this.pendingMessage) {
+            this.PostToAgent(nmp.Context, nmp.Args, nmp.RtId);
+        }
+    }
+
+    /**
      * Post data to a agent binding URL.
      * @param agentContext agent participant context
+     * @param args arguments to post
+     * @param rtid process rtid
      */
-    public void PostToAgent(ParticipantContext agentContext, Map<String, String> args, String rtid) {
+    private void PostToAgent(ParticipantContext agentContext, Map<String, String> args, String rtid) {
         try {
             // reentrant agent: send post directly.
             if (agentContext.getAgentType() == AgentReentrantType.Reentrant) {
@@ -46,8 +121,38 @@ public class AgentNotifyPlugin extends AsyncRunnablePlugin {
     }
 
     /**
+     * Message to be sent.
+     */
+    private ArrayList<NotifyMessagePackage> pendingMessage = new ArrayList<>();
+
+    /**
+     * Flag for sending.
+     */
+    private boolean IsBeginSending = false;
+
+    /**
      * Global static queue, in pattern (NotReentrantAgentGlobalId, NotificationPackageQueue).
      * NOTICE this is only a queue of current RS, other RS may send notification at the same time.
      */
     private static ConcurrentHashMap<String, ConcurrentLinkedQueue<Object>> pendingQueue = new ConcurrentHashMap<>();
+
+    /**
+     * Data package for notification.
+     */
+    private class NotifyMessagePackage {
+        /**
+         * Get or set notification send to agent context.
+         */
+        ParticipantContext Context;
+
+        /**
+         * Get or set notification arguments map.
+         */
+        Map<String, String> Args;
+
+        /**
+         * Get or set notification process rtid.
+         */
+        String RtId;
+    }
 }

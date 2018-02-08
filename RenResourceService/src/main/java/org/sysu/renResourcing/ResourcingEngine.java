@@ -6,20 +6,20 @@ package org.sysu.renResourcing;
 
 import org.hibernate.Session;
 import org.hibernate.Transaction;
-import org.sysu.renResourcing.basic.enums.InitializationByType;
-import org.sysu.renResourcing.basic.enums.RServiceType;
-import org.sysu.renResourcing.basic.enums.WorkQueueType;
+import org.sysu.renResourcing.basic.enums.*;
 import org.sysu.renResourcing.context.*;
 import org.sysu.renResourcing.context.steady.RenRuntimerecordEntity;
 import org.sysu.renResourcing.executor.AllocateInteractionExecutor;
 import org.sysu.renResourcing.executor.InteractionExecutor;
 import org.sysu.renResourcing.executor.OfferInteractionExecutor;
+import org.sysu.renResourcing.plugin.AgentNotifyPlugin;
 import org.sysu.renResourcing.principle.PrincipleParser;
 import org.sysu.renResourcing.principle.RPrinciple;
 import org.sysu.renResourcing.utility.CommonUtil;
 import org.sysu.renResourcing.utility.HibernateUtil;
 import org.sysu.renResourcing.utility.LogUtil;
 
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Hashtable;
 import java.util.Set;
@@ -120,7 +120,14 @@ public class ResourcingEngine {
                 // put workitem to the chosen participant allocated queue
                 WorkQueueContainer container = WorkQueueContainer.GetContext(chosenOne.getWorkerId());
                 container.AddToQueue(workitem, WorkQueueType.ALLOCATED);
-                // todo notify if agent
+                // notify if agent
+                if (chosenOne.getWorkerType() == WorkerType.Agent) {
+                    AgentNotifyPlugin allocateAnp = new AgentNotifyPlugin();
+                    HashMap<String, String> allocateNotifyMap = new HashMap<>();
+                    allocateNotifyMap.put(GlobalContext.NOTIFICATION_AGENT_ACTION, WorkitemDistributionType.Allocate.name());
+                    allocateAnp.AddNotification(chosenOne, allocateNotifyMap, ctx.getRtid());
+                    new Thread(allocateAnp).start();
+                }
                 break;
             case Offer:
                 // create a filter interaction
@@ -131,10 +138,19 @@ public class ResourcingEngine {
                 // do filter to select a set of participants for this workitem
                 Set<ParticipantContext> chosenSet = offerInteraction.PerformOffer(validParticipants, workitem);
                 // put workitem to chosen participants offered queue
+                AgentNotifyPlugin offerAnp = new AgentNotifyPlugin();
+                HashMap<String, String> offerNotifyMap = new HashMap<>();
+                offerNotifyMap.put(GlobalContext.NOTIFICATION_AGENT_ACTION, WorkitemDistributionType.Offer.name());
                 for (ParticipantContext oneInSet : chosenSet) {
                     WorkQueueContainer oneInSetContainer = WorkQueueContainer.GetContext(oneInSet.getWorkerId());
                     oneInSetContainer.AddToQueue(workitem, WorkQueueType.OFFERED);
-                    // todo notify if agent
+                    // notify if agent
+                    if (oneInSet.getWorkerType() == WorkerType.Agent) {
+                        offerAnp.AddNotification(oneInSet, offerNotifyMap, ctx.getRtid());
+                    }
+                }
+                if (offerAnp.Count(ctx.getRtid()) > 0) {
+                    new Thread(offerAnp).start();
                 }
                 break;
             case AutoAllocateIfOfferFailed:
