@@ -8,10 +8,7 @@ import org.hibernate.Session;
 import org.hibernate.Transaction;
 import org.sysu.renResourcing.basic.enums.InitializationByType;
 import org.sysu.renResourcing.basic.enums.RServiceType;
-import org.sysu.renResourcing.context.ParticipantContext;
-import org.sysu.renResourcing.context.ResourcingContext;
-import org.sysu.renResourcing.context.TaskContext;
-import org.sysu.renResourcing.context.WorkitemContext;
+import org.sysu.renResourcing.context.*;
 import org.sysu.renResourcing.context.steady.RenRuntimerecordEntity;
 import org.sysu.renResourcing.executor.AllocateInteractionExecutor;
 import org.sysu.renResourcing.executor.InteractionExecutor;
@@ -77,6 +74,23 @@ public class ResourcingEngine {
      */
     public static void PerformEngineSubmitTask(ResourcingContext ctx) throws Exception {
         TaskContext taskContext = (TaskContext) ctx.getArgs().get("taskContext");
+        // use runtime record to get the admin auth name for admin queue identifier
+        RenRuntimerecordEntity runtimeRecord;
+        Session session = HibernateUtil.GetLocalThreadSession();
+        Transaction transaction = session.beginTransaction();
+        try {
+            runtimeRecord = session.get(RenRuntimerecordEntity.class, ctx.getRtid());
+            assert runtimeRecord != null;
+            transaction.commit();
+        }
+        catch (Exception ex) {
+            transaction.rollback();
+            LogUtil.Log("PerformEngineSubmitTask get Runtime record failed. " + ex,
+                    ResourcingEngine.class.getName(), LogUtil.LogLevelType.ERROR, ctx.getRtid());
+            throw ex;
+        }
+        // get auth user name, session like "AUTH_admin_c880d4c9-934c-4d73-9006-22e588400000"
+        String adminQueuePostfix = runtimeRecord.getSessionId().split("_")[1];
         assert taskContext != null;
         RPrinciple principle = PrincipleParser.Parse(taskContext.getPrinciple());
         switch (principle.getDistributionType()) {
@@ -92,6 +106,7 @@ public class ResourcingEngine {
                     LogUtil.Log("A task cannot be allocated to any valid resources, so it will be put into admin unoffered queue.",
                             ResourcingEngine.class.getName(), LogUtil.LogLevelType.WARNING, ctx.getRtid());
                     // todo move to admin queue -rinkako
+                    WorkQueueContainer.GetContext(GlobalContext.WORKQUEUE_ADMIN_PREFIX + adminQueuePostfix);
                     return;
                 }
                 // generate workitem

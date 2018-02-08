@@ -4,9 +4,10 @@
  */
 package org.sysu.renResourcing.context;
 
+import org.sysu.renResourcing.GlobalContext;
 import org.sysu.renResourcing.basic.enums.WorkQueueContainerType;
 import org.sysu.renResourcing.basic.enums.WorkQueueType;
-import org.sysu.renResourcing.cache.WorkQueueContainerPool;
+import org.sysu.renResourcing.cache.RuntimeContextCachePool;
 
 import java.util.Collections;
 import java.util.Set;
@@ -16,7 +17,7 @@ import java.util.Set;
  * Date  : 2018/2/3
  * Usage : Maintaining all work queues belonging to a Participant.
  */
-public class WorkQueueContainer {
+public class WorkQueueContainer implements RCacheablesContext {
 
     /**
      * Participant offered workitem queue.
@@ -60,23 +61,24 @@ public class WorkQueueContainer {
 
     /**
      * Get the queue container of a specific worker.
-     * @param workerId worker global id, `admin` if admin user
+     * @param workerId worker global id, {@code GlobalContext.WORKQUEUE_ADMIN_PREFIX} if admin user
      * @return Work queue container of this worker
      */
     public static WorkQueueContainer GetContext(String workerId) {
-        WorkQueueContainer retContainer = WorkQueueContainerPool.Retrieve(workerId);
+        WorkQueueContainer retContainer = RuntimeContextCachePool.Retrieve(WorkQueueContainer.class, workerId);
         // fetch cache
         if (retContainer != null) {
             return retContainer;
         }
         // admin queue
-        if (workerId.equals("admin")) {
+        if (workerId.startsWith(GlobalContext.WORKQUEUE_ADMIN_PREFIX)) {
             retContainer = new WorkQueueContainer(workerId, WorkQueueContainerType.AdminSet);
         }
         // participant queue
         else {
             retContainer = new WorkQueueContainer(workerId, WorkQueueContainerType.ParticipantSet);
         }
+        RuntimeContextCachePool.AddOrUpdate(workerId, retContainer);
         return retContainer;
     }
 

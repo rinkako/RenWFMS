@@ -20,7 +20,7 @@ import java.io.Serializable;
  * Usage : Task context is an encapsulation of RenRsparticipant in a
  *         convenient way for resourcing service.
  */
-public class ParticipantContext implements Serializable {
+public class ParticipantContext implements Serializable, RCacheablesContext {
     /**
      * Serial version UID.
      */

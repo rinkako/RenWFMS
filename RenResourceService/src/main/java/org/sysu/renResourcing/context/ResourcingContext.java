@@ -21,7 +21,7 @@ import java.util.UUID;
  * Usage : Task context is an encapsulation of RenRsrecordEntity in a
  *         convenient way for resourcing service.
  */
-public class ResourcingContext implements Comparable<ResourcingContext>, Serializable {
+public class ResourcingContext implements Comparable<ResourcingContext>, Serializable, RCacheablesContext {
     /**
      * Serial version UID.
      */

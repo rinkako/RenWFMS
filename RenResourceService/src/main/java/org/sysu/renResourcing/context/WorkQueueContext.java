@@ -12,6 +12,7 @@ import org.sysu.renResourcing.context.steady.RenWorkqueueEntity;
 import org.sysu.renResourcing.utility.HibernateUtil;
 import org.sysu.renResourcing.utility.LogUtil;
 
+import java.io.Serializable;
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 
@@ -21,14 +22,14 @@ import java.util.concurrent.ConcurrentHashMap;
  * Usage : WorkQueueContext context is an encapsulation of RenWorkqueueEntity in a
  *         convenient way for resourcing service.
  */
-public class WorkQueueContext {
+public class WorkQueueContext implements Serializable, RCacheablesContext {
     /**
      * Queue global id.
      */
     private String queueId;
 
     /**
-     * Queue owner worker id, `admin` if an admin queue.
+     * Queue owner worker id, {@code GlobalContext.WORKQUEUE_ADMIN_PREFIX} if an admin queue.
      */
     private String ownerWorkerId;
 
@@ -223,7 +224,7 @@ public class WorkQueueContext {
     }
 
     /**
-     * Get owner worker global id, `admin` if an admin queue.
+     * Get owner worker global id, {@code GlobalContext.WORKQUEUE_ADMIN_PREFIX} if an admin queue.
      * @return global id string
      */
     public String getOwnerWorkerId() {

@@ -26,7 +26,7 @@ import java.util.UUID;
  * Usage : Workitem context is an encapsulation of RenWorkitemEntity in a
  *         convenient way for resourcing service.
  */
-public class WorkitemContext implements Serializable {
+public class WorkitemContext implements Serializable, RCacheablesContext {
     /**
      * Serial version UID.
      */
