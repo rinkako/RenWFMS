@@ -23,7 +23,7 @@ public final class ReflectUtil {
      */
     public static RAllocator ReflectAllocator(String allocatorName, String rstid, String rtid) throws Exception {
         try {
-            Class classType = Class.forName(ReflectUtil.ALLOCATOR_PACKAGE_PATH + allocatorName);
+            Class classType = Class.forName(ReflectUtil.ALLOCATOR_PACKAGE_PATH + allocatorName + ReflectUtil.ALLOCATOR_POSTFIX);
             return (RAllocator) classType.newInstance();
         }
         catch (Exception ex) {
@@ -43,7 +43,7 @@ public final class ReflectUtil {
      */
     public static RFilter ReflectFilter(String filterName, String rstid, String rtid) throws Exception {
         try {
-            Class classType = Class.forName(ReflectUtil.FILTER_PACKAGE_PATH + filterName);
+            Class classType = Class.forName(ReflectUtil.FILTER_PACKAGE_PATH + filterName + ReflectUtil.FILTER_POSTFIX);
             return (RFilter) classType.newInstance();
         }
         catch (Exception ex) {
@@ -62,4 +62,14 @@ public final class ReflectUtil {
      * Package path of Allocators.
      */
     private static final String FILTER_PACKAGE_PATH = "filter.";
+
+    /**
+     * Postfix of Allocator.
+     */
+    private static final String ALLOCATOR_POSTFIX = "Allocator";
+
+    /**
+     * Postfix of Filter.
+     */
+    private static final String FILTER_POSTFIX = "Filter";
 }

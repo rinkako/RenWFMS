@@ -7,6 +7,8 @@ package org.sysu.renResourcing.principle;
 import org.sysu.renResourcing.basic.enums.WorkitemDistributionType;
 
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.HashMap;
 
 /**
  * Author: Rinkako
@@ -25,19 +27,24 @@ public final class RPrinciple implements Serializable {
     private WorkitemDistributionType distributionType;
 
     /**
-     * Name of allocator.
+     * Name of distributor.
      */
-    private String allocatorName;
+    private String distributorName;
 
     /**
-     * Condition string for filter.
+     * Arguments map for filter.
      */
-    private String filterCondition;
+    private HashMap filterArgsMap;
 
     /**
-     * Descriptor for constraint rule set.
+     * Constraints list.
      */
-    private String constraintDescriptor;
+    private ArrayList<String> constraints;
+
+    /**
+     * Constraints argument map list.
+     */
+    private ArrayList<HashMap> constraintsArgs;
 
     /**
      * Get distribution type of task.
@@ -48,40 +55,42 @@ public final class RPrinciple implements Serializable {
     }
 
     /**
-     * Get allocator name of task.
-     * @return name of allocator to be reflection created
+     * Get distributor name of task.
+     * @return name of distributor to be reflection created
      */
-    public String getAllocatorName() {
-        return this.allocatorName;
+    public String getDistributorName() {
+        return this.distributorName;
     }
 
     /**
      * Get filter condition of task.
-     * @return filter condition to be parsed
+     * @return filter condition map
      */
-    public String getFilterCondition() {
-        return this.filterCondition;
+    public HashMap getFilterCondition() {
+        return this.filterArgsMap;
     }
 
     /**
-     * Get constraint descriptor of task.
-     * @return constraint descriptor string to be parsed
+     * Add a constraint to principle.
+     * @param constraintName constraint name
+     * @param constraintArgs argument dictionary
      */
-    public String getConstraintDescriptor() {
-        return this.constraintDescriptor;
+    public void AddConstraint(String constraintName, HashMap constraintArgs) {
+        this.constraints.add(constraintName);
+        this.constraintsArgs.add(constraintArgs);
     }
 
     /**
      * Set parsed principle data.
      * @param type distribution type enum
-     * @param allocatorName allocator name for reflect allocator instance generated
-     * @param filterCondition filter condition expression to be JLex parsed
-     * @param constraintDescriptor constraint descriptor for parsed
+     * @param distributorName distributor name for reflect instance generated
+     * @param filterArgs filter arguments map
      */
-    public void SetParsed(WorkitemDistributionType type, String allocatorName, String filterCondition, String constraintDescriptor) {
+    public void SetParsed(WorkitemDistributionType type, String distributorName, HashMap filterArgs) {
         this.distributionType = type == null ? WorkitemDistributionType.Allocate : type;
-        this.allocatorName = allocatorName;
-        this.filterCondition = filterCondition;
-        this.constraintDescriptor = constraintDescriptor;
+        this.distributorName = distributorName;
+        this.filterArgsMap = filterArgs;
+        this.constraints = new ArrayList<>();
+        this.constraintsArgs = new ArrayList<>();
     }
 }

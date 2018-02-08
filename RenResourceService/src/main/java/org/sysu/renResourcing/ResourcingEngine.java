@@ -13,6 +13,7 @@ import org.sysu.renResourcing.executor.AllocateInteractionExecutor;
 import org.sysu.renResourcing.executor.InteractionExecutor;
 import org.sysu.renResourcing.executor.OfferInteractionExecutor;
 import org.sysu.renResourcing.plugin.AgentNotifyPlugin;
+import org.sysu.renResourcing.plugin.AsyncPluginRunner;
 import org.sysu.renResourcing.principle.PrincipleParser;
 import org.sysu.renResourcing.principle.RPrinciple;
 import org.sysu.renResourcing.utility.CommonUtil;
@@ -126,7 +127,7 @@ public class ResourcingEngine {
                     HashMap<String, String> allocateNotifyMap = new HashMap<>();
                     allocateNotifyMap.put(GlobalContext.NOTIFICATION_AGENT_ACTION, WorkitemDistributionType.Allocate.name());
                     allocateAnp.AddNotification(chosenOne, allocateNotifyMap, ctx.getRtid());
-                    new Thread(allocateAnp).start();
+                    AsyncPluginRunner.AsyncRun(allocateAnp);
                 }
                 break;
             case Offer:
@@ -150,7 +151,7 @@ public class ResourcingEngine {
                     }
                 }
                 if (offerAnp.Count(ctx.getRtid()) > 0) {
-                    new Thread(offerAnp).start();
+                    AsyncPluginRunner.AsyncRun(offerAnp);
                 }
                 break;
             case AutoAllocateIfOfferFailed:
