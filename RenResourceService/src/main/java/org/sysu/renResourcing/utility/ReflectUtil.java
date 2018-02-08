@@ -5,6 +5,7 @@
 package org.sysu.renResourcing.utility;
 
 import org.sysu.renResourcing.allocator.RAllocator;
+import org.sysu.renResourcing.filter.RFilter;
 
 /**
  * Author: Rinkako
@@ -33,7 +34,32 @@ public final class ReflectUtil {
     }
 
     /**
+     * Create a new filter by its name.
+     * @param filterName name of filter to be created
+     * @param rstid rs request id
+     * @param rtid process rtid
+     * @return Specific filter
+     * @throws Exception reflect instance create failed
+     */
+    public static RFilter ReflectFilter(String filterName, String rstid, String rtid) throws Exception {
+        try {
+            Class classType = Class.forName(ReflectUtil.FILTER_PACKAGE_PATH + filterName);
+            return (RFilter) classType.newInstance();
+        }
+        catch (Exception ex) {
+            LogUtil.Log(String.format("Request %s, Reflect create filter (%s) failed, %s", rstid, filterName, ex),
+                    ReflectUtil.class.getName(), LogUtil.LogLevelType.ERROR, rtid);
+            throw ex;  // rethrow to engine
+        }
+    }
+
+    /**
      * Package path of Allocators.
      */
     private static final String ALLOCATOR_PACKAGE_PATH = "allocator.";
+
+    /**
+     * Package path of Allocators.
+     */
+    private static final String FILTER_PACKAGE_PATH = "filter.";
 }

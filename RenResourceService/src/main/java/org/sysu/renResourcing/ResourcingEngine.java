@@ -8,10 +8,12 @@ import org.hibernate.Session;
 import org.hibernate.Transaction;
 import org.sysu.renResourcing.basic.enums.InitializationByType;
 import org.sysu.renResourcing.basic.enums.RServiceType;
+import org.sysu.renResourcing.basic.enums.WorkQueueType;
 import org.sysu.renResourcing.context.*;
 import org.sysu.renResourcing.context.steady.RenRuntimerecordEntity;
 import org.sysu.renResourcing.executor.AllocateInteractionExecutor;
 import org.sysu.renResourcing.executor.InteractionExecutor;
+import org.sysu.renResourcing.executor.OfferInteractionExecutor;
 import org.sysu.renResourcing.principle.PrincipleParser;
 import org.sysu.renResourcing.principle.RPrinciple;
 import org.sysu.renResourcing.utility.CommonUtil;
@@ -20,6 +22,7 @@ import org.sysu.renResourcing.utility.LogUtil;
 
 import java.util.HashSet;
 import java.util.Hashtable;
+import java.util.Set;
 
 /**
  * Author: Rinkako
@@ -93,6 +96,18 @@ public class ResourcingEngine {
         String adminQueuePostfix = runtimeRecord.getSessionId().split("_")[1];
         assert taskContext != null;
         RPrinciple principle = PrincipleParser.Parse(taskContext.getPrinciple());
+        // generate workitem
+        WorkitemContext workitem = WorkitemContext.GenerateContext(taskContext, ctx.getRtid(), taskContext.getParameters());
+        // get valid resources
+        HashSet<ParticipantContext> validParticipants = ResourcingEngine.GetCurrentValidParticipant(ctx.getRtid());
+        if (validParticipants.isEmpty()) {
+            LogUtil.Log("A task cannot be allocated to any valid resources, so it will be put into admin unoffered queue.",
+                    ResourcingEngine.class.getName(), LogUtil.LogLevelType.WARNING, ctx.getRtid());
+            // move to admin queue
+            WorkQueueContainer adminContainer = WorkQueueContainer.GetContext(GlobalContext.WORKQUEUE_ADMIN_PREFIX + adminQueuePostfix);
+            adminContainer.AddToQueue(workitem, WorkQueueType.UNOFFERED);
+            return;
+        }
         switch (principle.getDistributionType()) {
             case Allocate:
                 // create an allocate interaction
@@ -100,25 +115,30 @@ public class ResourcingEngine {
                         taskContext.getTaskId(), InitializationByType.SYSTEM_INITIATED);
                 // create an allocator for task principle
                 allocateInteraction.BindingAllocator(principle, ctx.getRstid(), ctx.getRtid());
-                // get valid resources
-                HashSet<ParticipantContext> validParticipants = ResourcingEngine.GetCurrentValidParticipant(ctx.getRtid());
-                if (validParticipants.isEmpty()) {
-                    LogUtil.Log("A task cannot be allocated to any valid resources, so it will be put into admin unoffered queue.",
-                            ResourcingEngine.class.getName(), LogUtil.LogLevelType.WARNING, ctx.getRtid());
-                    // todo move to admin queue -rinkako
-                    WorkQueueContainer.GetContext(GlobalContext.WORKQUEUE_ADMIN_PREFIX + adminQueuePostfix);
-                    return;
-                }
-                // generate workitem
-                WorkitemContext workitem = WorkitemContext.GenerateContext(taskContext, ctx.getRtid(), taskContext.getParameters());
                 // do allocate to select a participant for handle this workitem
                 ParticipantContext chosenOne = allocateInteraction.PerformAllocation(validParticipants, workitem);
                 // put workitem to the chosen participant allocated queue
-
+                WorkQueueContainer container = WorkQueueContainer.GetContext(chosenOne.getWorkerId());
+                container.AddToQueue(workitem, WorkQueueType.ALLOCATED);
+                // todo notify if agent
                 break;
             case Offer:
+                // create a filter interaction
+                OfferInteractionExecutor offerInteraction = new OfferInteractionExecutor(
+                        taskContext.getTaskId(), InitializationByType.SYSTEM_INITIATED);
+                // create a filter for task principle
+                offerInteraction.BindingFilter(principle, ctx.getRstid(), ctx.getRtid());
+                // do filter to select a set of participants for this workitem
+                Set<ParticipantContext> chosenSet = offerInteraction.PerformOffer(validParticipants, workitem);
+                // put workitem to chosen participants offered queue
+                for (ParticipantContext oneInSet : chosenSet) {
+                    WorkQueueContainer oneInSetContainer = WorkQueueContainer.GetContext(oneInSet.getWorkerId());
+                    oneInSetContainer.AddToQueue(workitem, WorkQueueType.OFFERED);
+                    // todo notify if agent
+                }
                 break;
             case AutoAllocateIfOfferFailed:
+                // todo not implementation
                 break;
             default:
                 throw new IllegalArgumentException();
