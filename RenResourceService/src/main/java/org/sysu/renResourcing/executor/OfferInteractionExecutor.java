@@ -61,6 +61,6 @@ public class OfferInteractionExecutor extends InteractionExecutor {
      * @param principle allocation principle
      */
     public void BindingFilter(RPrinciple principle, String rstid, String rtid) throws Exception {
-        this.filter = ReflectUtil.ReflectFilter(principle.getAllocatorName(), rstid, rtid);
+        this.filter = ReflectUtil.ReflectFilter(principle.getDistributorName(), rstid, rtid);
     }
 }

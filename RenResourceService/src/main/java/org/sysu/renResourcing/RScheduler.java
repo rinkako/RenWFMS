@@ -4,9 +4,8 @@
  */
 package org.sysu.renResourcing;
 
+import org.sysu.renResourcing.cache.RuntimeContextCachePool;
 import org.sysu.renResourcing.context.ResourcingContext;
-import org.sysu.renResourcing.plugin.RTrackablePlugin;
-import org.sysu.renResourcing.trigger.RTrigger;
 import org.sysu.renResourcing.utility.LogUtil;
 
 import java.util.ArrayList;
@@ -140,8 +139,23 @@ public final class RScheduler implements Observer {
         finally {
             this.trackerVectorLock.unlock();
         }
-        tracker.getContext().SetFinish();
-        ResourcingContext.SaveToSteady(tracker.getContext());
+        ResourcingContext rCtx = tracker.getContext();
+        try {
+            rCtx.SetFinish();
+            ResourcingContext.SaveToSteady(rCtx);
+            RuntimeContextCachePool.Remove(ResourcingContext.class, rCtx.getRstid());
+        }
+        catch (Exception ex) {
+            try {
+                LogUtil.Log(String.format("Achieving resourcing context(%s: %s) but exception occurred, %S",
+                        rCtx.getService().name(), rCtx.getRstid(), ex), RScheduler.class.getName(),
+                        LogUtil.LogLevelType.ERROR, rCtx.getRtid());
+            }
+            catch (Exception ex2) {
+                LogUtil.Log(String.format("Achieving resourcing context but exception occurred: %s, %s", ex, ex2),
+                        RScheduler.class.getName(), LogUtil.LogLevelType.ERROR, "");
+            }
+        }
     }
 
     /**

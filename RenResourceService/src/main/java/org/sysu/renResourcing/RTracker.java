@@ -92,10 +92,23 @@ final class RTracker extends Observable implements Observer, Runnable {
      * Actually run the tracker and handle resourcing request.
      */
     private void ActualRun() {
-        switch (this.context.getService()) {
-            case SubmitResourcingTask:
-
-                break;
+        // execute service
+        try {
+            switch (this.context.getService()) {
+                case SubmitResourcingTask:
+                    ResourcingEngine.PerformEngineSubmitTask(this.context);
+                    break;
+            }
+        }
+        // All exception inside tracker will be handle here, no need to throw outside since it asynchronous executed.
+        catch (Exception ex) {
+            LogUtil.Log("Tracker exception: " + ex, RTracker.class.getName(),
+                    LogUtil.LogLevelType.ERROR, this.context.getRtid());
+        }
+        // bubble notification to scheduler
+        finally {
+            this.setChanged();
+            this.notifyObservers();
         }
     }
 

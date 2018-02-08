@@ -60,6 +60,6 @@ public class AllocateInteractionExecutor extends InteractionExecutor {
      * @param principle allocation principle
      */
     public void BindingAllocator(RPrinciple principle, String rstid, String rtid) throws Exception {
-        this.allocator = ReflectUtil.ReflectAllocator(principle.getAllocatorName(), rstid, rtid);
+        this.allocator = ReflectUtil.ReflectAllocator(principle.getDistributorName(), rstid, rtid);
     }
 }
