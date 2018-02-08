@@ -111,6 +111,7 @@ public final class RoleMappingService {
                         rpe.setDisplayname((String) workerItem.get("Name"));
                         rpe.setType(1);
                         rpe.setReentrantType((Integer) workerItem.get("Type"));
+                        rpe.setAgentLocation((String) workerItem.get("Location"));
                     }
                 }
                 session.saveOrUpdate(rpe);

@@ -2,12 +2,9 @@
  * Project Ren @ 2018
  * Rinkako, Ariana, Gordan. SYSU SDCS.
  */
-package org.sysu.renNameService.utility;
+package org.sysu.renResourcing.utility;
 
-import java.io.BufferedReader;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.io.OutputStreamWriter;
+import java.io.*;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.net.URLConnection;
@@ -15,7 +12,7 @@ import java.util.Map;
 
 /**
  * Author: Rinkako
- * Date  : 2018/1/27
+ * Date  : 2018/2/8
  * Usage : Static methods for HTTP request sending.
  */
 public class HttpClientUtil {
@@ -25,7 +22,7 @@ public class HttpClientUtil {
      * @param rtid process rtid
      * @return response string
      */
-    public static String SendGet(String sendUrl, String rtid) {
+    public static String SendGet(String sendUrl, String rtid) throws Exception {
         BufferedReader in = null;
         try {
             URL realUrl = new URL(sendUrl);
@@ -46,6 +43,7 @@ public class HttpClientUtil {
         } catch (Exception ex) {
             LogUtil.Log("Exception occur when send http get request, " + ex,
                     HttpClientUtil.class.getName(), LogUtil.LogLevelType.ERROR, rtid);
+            throw ex;
         }
         finally {
             try {
@@ -57,7 +55,6 @@ public class HttpClientUtil {
                         HttpClientUtil.class.getName(), LogUtil.LogLevelType.ERROR, rtid);
             }
         }
-        return null;
     }
 
     /**
@@ -67,7 +64,7 @@ public class HttpClientUtil {
      * @param rtid process rtid
      * @return response string
      */
-    public static String SendPost(String sendUrl, Map<String, String> args, String rtid) {
+    public static String SendPost(String sendUrl, Map<String, String> args, String rtid) throws Exception {
         try {
             URL url = new URL(sendUrl);
             HttpURLConnection connection = (HttpURLConnection) url.openConnection();
@@ -104,7 +101,7 @@ public class HttpClientUtil {
         } catch (Exception ex) {
             LogUtil.Log("Exception occur when send http post request, " + ex,
                     HttpClientUtil.class.getName(), LogUtil.LogLevelType.ERROR, rtid);
+            throw ex;
         }
-        return "Exception";
     }
 }

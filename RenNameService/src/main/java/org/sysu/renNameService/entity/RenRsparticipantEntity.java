@@ -9,7 +9,7 @@ import java.util.Objects;
 
 /**
  * Author: Rinkako
- * Date  : 2018/2/7
+ * Date  : 2018/2/8
  * Usage :
  */
 @Entity
@@ -20,6 +20,7 @@ public class RenRsparticipantEntity {
     private int type;
     private int reentrantType;
     private int referenceCounter;
+    private String agentLocation;
 
     @Id
     @Column(name = "workerid", nullable = false, length = 64)
@@ -71,6 +72,16 @@ public class RenRsparticipantEntity {
         this.referenceCounter = referenceCounter;
     }
 
+    @Basic
+    @Column(name = "agentLocation", nullable = true, length = -1)
+    public String getAgentLocation() {
+        return agentLocation;
+    }
+
+    public void setAgentLocation(String agentLocation) {
+        this.agentLocation = agentLocation;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -80,12 +91,13 @@ public class RenRsparticipantEntity {
                 reentrantType == that.reentrantType &&
                 referenceCounter == that.referenceCounter &&
                 Objects.equals(workerid, that.workerid) &&
-                Objects.equals(displayname, that.displayname);
+                Objects.equals(displayname, that.displayname) &&
+                Objects.equals(agentLocation, that.agentLocation);
     }
 
     @Override
     public int hashCode() {
 
-        return Objects.hash(workerid, displayname, type, reentrantType, referenceCounter);
+        return Objects.hash(workerid, displayname, type, reentrantType, referenceCounter, agentLocation);
     }
 }

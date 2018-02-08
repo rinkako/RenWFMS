@@ -43,6 +43,11 @@ public class ParticipantContext implements Serializable, RCacheablesContext {
     private WorkerType workerType;
 
     /**
+     * Agent location, null if Human.
+     */
+    private String agentLocation;
+
+    /**
      * Agent type enum, only valid when worker type is Agent.
      */
     private AgentReentrantType agentType;
@@ -121,6 +126,14 @@ public class ParticipantContext implements Serializable, RCacheablesContext {
     }
 
     /**
+     * Get Agent location, null if Human.
+     * @return agent location string
+     */
+    public String getAgentLocation() {
+        return this.agentLocation;
+    }
+
+    /**
      * Generate a participant context by a steady entity.
      * @param rsparticipantEntity RS participant entity
      * @return equivalent participant context.
@@ -129,8 +142,11 @@ public class ParticipantContext implements Serializable, RCacheablesContext {
         assert rsparticipantEntity != null;
         ParticipantContext context = new ParticipantContext(rsparticipantEntity.getWorkerid(),
                 WorkerType.values()[rsparticipantEntity.getType()]);
-        context.agentType = AgentReentrantType.values()[rsparticipantEntity.getReentrantType()];
         context.displayName = rsparticipantEntity.getDisplayname();
+        if (context.workerType == WorkerType.Agent) {
+            context.agentType = AgentReentrantType.values()[rsparticipantEntity.getReentrantType()];
+            context.agentLocation = rsparticipantEntity.getAgentLocation();
+        }
         return context;
     }
 
@@ -144,5 +160,4 @@ public class ParticipantContext implements Serializable, RCacheablesContext {
         this.workerId = workerId;
         this.workerType = type;
     }
-
 }
