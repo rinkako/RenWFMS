@@ -134,6 +134,15 @@ public class WorkQueueContext {
     }
 
     /**
+     * Check if a workitem in queue.
+     * @param workitemId workitem global id
+     * @return true if exist in queue
+     */
+    public synchronized boolean Contains(String workitemId) {
+        return this.workitems.containsKey(workitemId);
+    }
+
+    /**
      * Get a workitem context from this queue by its global id.
      * @param workitemId workitem global id
      * @return workitem context, null if not exist
@@ -272,12 +281,12 @@ public class WorkQueueContext {
 
     /**
      * Create a new work queue context.
-     * Private constructor for preventing create context without using `{@code WorkQueueContext.GetContext}`.
+     * NOTICE that usually this method should not be called unless worklisted queue.
      * @param id work queue global id
      * @param ownerWorkerId owner worker global id
      * @param type queue type enum
      */
-    private WorkQueueContext(String id, String ownerWorkerId, WorkQueueType type) {
+    public WorkQueueContext(String id, String ownerWorkerId, WorkQueueType type) {
         this.queueId = id;
         this.ownerWorkerId = ownerWorkerId;
         this.type = type;
