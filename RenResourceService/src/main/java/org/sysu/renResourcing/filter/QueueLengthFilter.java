@@ -5,13 +5,11 @@
 package org.sysu.renResourcing.filter;
 
 import org.apache.commons.jexl2.Expression;
-import org.apache.commons.jexl2.JexlEngine;
 import org.sysu.renResourcing.basic.enums.WorkQueueType;
 import org.sysu.renResourcing.context.ParticipantContext;
 import org.sysu.renResourcing.context.WorkQueueContainer;
 import org.sysu.renResourcing.context.WorkQueueContext;
 import org.sysu.renResourcing.context.WorkitemContext;
-import org.sysu.renResourcing.plugin.evaluator.REvaluator;
 import org.sysu.renResourcing.plugin.evaluator.RJexlEvaluator;
 import org.sysu.renResourcing.plugin.evaluator.RJexlMapContext;
 
