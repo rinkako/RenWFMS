@@ -44,6 +44,8 @@ public class AllocateInteractionExecutor extends InteractionExecutor {
 
     /**
      * Use allocator to handle allocation service.
+     * @param candidateSet candidate participant set
+     * @param workitem workitem context
      * @return Allocated Participant context.
      */
     public ParticipantContext PerformAllocation(HashSet<ParticipantContext> candidateSet, WorkitemContext workitem) {

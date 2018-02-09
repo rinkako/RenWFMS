@@ -33,6 +33,8 @@ public abstract class RAllocator extends RSelector implements Serializable {
 
     /**
      * Perform allocation on the candidate set.
+     * @param candidateSet candidate participant set
+     * @param context workitem context
      * @return selected participant
      */
     public abstract ParticipantContext PerformAllocate(HashSet<ParticipantContext> candidateSet, WorkitemContext context);

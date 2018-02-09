@@ -37,6 +37,8 @@ public abstract class RFilter extends RSelector implements Serializable {
 
     /**
      * Perform filter on the candidate set.
+     * @param candidateSet candidate participant set
+     * @param context workitem context
      * @return filtered participant set
      */
     public abstract HashSet<ParticipantContext> PerformFilter(HashSet<ParticipantContext> candidateSet, WorkitemContext context);
