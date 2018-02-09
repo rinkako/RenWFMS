@@ -8,7 +8,7 @@ import org.hibernate.Session;
 import org.hibernate.Transaction;
 import org.sysu.renResourcing.GlobalContext;
 import org.sysu.renResourcing.basic.enums.WorkQueueType;
-import org.sysu.renResourcing.cache.RuntimeContextCachePool;
+import org.sysu.renResourcing.consistency.RuntimeContextCachePool;
 import org.sysu.renResourcing.context.steady.RenQueueitemsEntity;
 import org.sysu.renResourcing.context.steady.RenWorkqueueEntity;
 import org.sysu.renResourcing.utility.HibernateUtil;

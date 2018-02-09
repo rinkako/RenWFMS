@@ -9,8 +9,6 @@ import org.sysu.renResourcing.utility.CommonUtil;
 import java.io.Serializable;
 import java.sql.Timestamp;
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Map;
 
 /**
  * Author: Rinkako

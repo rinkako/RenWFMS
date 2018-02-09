@@ -61,7 +61,7 @@ public class HttpClientUtil {
     }
 
     /**
-     * Send HTTP request by GET method.
+     * Send HTTP request by POST method.
      * @param sendUrl url to send
      * @param args arguments to be encoded
      * @param rtid process rtid

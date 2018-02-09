@@ -9,7 +9,7 @@ import org.hibernate.Transaction;
 import org.sysu.renResourcing.GlobalContext;
 import org.sysu.renResourcing.basic.enums.WorkitemResourcingStatusType;
 import org.sysu.renResourcing.basic.enums.WorkitemStatusType;
-import org.sysu.renResourcing.cache.RuntimeContextCachePool;
+import org.sysu.renResourcing.consistency.RuntimeContextCachePool;
 import org.sysu.renResourcing.context.steady.RenWorkitemEntity;
 import org.sysu.renResourcing.utility.CommonUtil;
 import org.sysu.renResourcing.utility.HibernateUtil;

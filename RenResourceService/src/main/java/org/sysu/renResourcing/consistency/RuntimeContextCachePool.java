@@ -2,7 +2,7 @@
  * Project Ren @ 2018
  * Rinkako, Ariana, Gordan. SYSU SDCS.
  */
-package org.sysu.renResourcing.cache;
+package org.sysu.renResourcing.consistency;
 
 import org.sysu.renResourcing.context.RCacheablesContext;
 
@@ -30,7 +30,7 @@ import java.util.concurrent.ConcurrentHashMap;
  *         launched, resourcing requests from some running process will
  *         be sent to new RS instance which NEVER handle any request for
  *         this running process. This appointment can make sure that one
- *         running process always have only one valid cache.
+ *         running process always have ONLY one valid cache.
  */
 public class RuntimeContextCachePool {
 

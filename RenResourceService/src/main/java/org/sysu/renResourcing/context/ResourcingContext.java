@@ -4,7 +4,7 @@ import org.hibernate.Session;
 import org.hibernate.Transaction;
 import org.sysu.renResourcing.GlobalContext;
 import org.sysu.renResourcing.basic.enums.RServiceType;
-import org.sysu.renResourcing.cache.RuntimeContextCachePool;
+import org.sysu.renResourcing.consistency.RuntimeContextCachePool;
 import org.sysu.renResourcing.context.steady.RenRsrecordEntity;
 import org.sysu.renResourcing.utility.CommonUtil;
 import org.sysu.renResourcing.utility.HibernateUtil;

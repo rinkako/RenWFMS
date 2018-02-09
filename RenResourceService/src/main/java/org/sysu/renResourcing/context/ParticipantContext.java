@@ -8,7 +8,7 @@ import org.hibernate.Session;
 import org.hibernate.Transaction;
 import org.sysu.renResourcing.basic.enums.AgentReentrantType;
 import org.sysu.renResourcing.basic.enums.WorkerType;
-import org.sysu.renResourcing.cache.RuntimeContextCachePool;
+import org.sysu.renResourcing.consistency.RuntimeContextCachePool;
 import org.sysu.renResourcing.context.steady.RenRsparticipantEntity;
 import org.sysu.renResourcing.utility.HibernateUtil;
 import org.sysu.renResourcing.utility.LogUtil;

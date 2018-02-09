@@ -4,7 +4,7 @@
  */
 package org.sysu.renResourcing;
 
-import org.sysu.renResourcing.cache.RuntimeContextCachePool;
+import org.sysu.renResourcing.consistency.RuntimeContextCachePool;
 import org.sysu.renResourcing.context.ResourcingContext;
 import org.sysu.renResourcing.utility.LogUtil;
 

@@ -7,8 +7,10 @@ package org.sysu.renResourcing;
 import org.sysu.renResourcing.basic.ObservableMessage;
 import org.sysu.renResourcing.basic.enums.TrackerPhase;
 import org.sysu.renResourcing.context.ResourcingContext;
+import org.sysu.renResourcing.interfaceService.InterfaceB;
 import org.sysu.renResourcing.utility.LogUtil;
 
+import java.beans.Expression;
 import java.util.Observable;
 import java.util.Observer;
 
@@ -64,6 +66,7 @@ final class RTracker extends Observable implements Observer, Runnable {
         try {
             this.ActualRun();
         }
+        // All exception inside tracker will be handle here, no need to throw outside since it asynchronous executed.
         catch (Exception ex) {
             LogUtil.Log(String.format("Tracker(%s) exception occurred, %s", this.context.getRstid(), ex),
                     RTracker.class.getName(), LogUtil.LogLevelType.ERROR, this.context.getRtid());
@@ -91,24 +94,11 @@ final class RTracker extends Observable implements Observer, Runnable {
     /**
      * Actually run the tracker and handle resourcing request.
      */
-    private void ActualRun() {
-        // execute service
-        try {
-            switch (this.context.getService()) {
-                case SubmitResourcingTask:
-                    ResourcingEngine.PerformEngineSubmitTask(this.context);
-                    break;
-            }
-        }
-        // All exception inside tracker will be handle here, no need to throw outside since it asynchronous executed.
-        catch (Exception ex) {
-            LogUtil.Log("Tracker exception: " + ex, RTracker.class.getName(),
-                    LogUtil.LogLevelType.ERROR, this.context.getRtid());
-        }
-        // bubble notification to scheduler
-        finally {
-            this.setChanged();
-            this.notifyObservers();
+    private void ActualRun() throws Exception {
+        switch (this.context.getService()) {
+            case SubmitResourcingTask:
+                InterfaceB.PerformEngineSubmitTask(this.context);
+                break;
         }
     }
 
