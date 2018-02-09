@@ -4,7 +4,7 @@ import org.hibernate.Session;
 import org.hibernate.Transaction;
 import org.sysu.renResourcing.GlobalContext;
 import org.sysu.renResourcing.basic.enums.RServiceType;
-import org.sysu.renResourcing.consistency.RuntimeContextCachePool;
+import org.sysu.renResourcing.consistency.ContextCachePool;
 import org.sysu.renResourcing.context.steady.RenRsrecordEntity;
 import org.sysu.renResourcing.utility.CommonUtil;
 import org.sysu.renResourcing.utility.HibernateUtil;
@@ -96,7 +96,7 @@ public class ResourcingContext implements Comparable<ResourcingContext>, Seriali
      */
     public static ResourcingContext GetContext(String rstid, String rtid, RServiceType service, Hashtable<String, Object> argsDict, boolean forceReload) {
         if (rstid != null && !forceReload) {
-            ResourcingContext cachedCtx = RuntimeContextCachePool.Retrieve(ResourcingContext.class, rstid);
+            ResourcingContext cachedCtx = ContextCachePool.Retrieve(ResourcingContext.class, rstid);
             // fetch cache
             if (cachedCtx != null) {
                 return cachedCtx;
@@ -130,7 +130,7 @@ public class ResourcingContext implements Comparable<ResourcingContext>, Seriali
                 cmtFlag = true;
             }
             ResourcingContext generatedCtx = ResourcingContext.GenerateResourcingContext(renRsrecordEntity);
-            RuntimeContextCachePool.AddOrUpdate(rstid, generatedCtx);
+            ContextCachePool.AddOrUpdate(rstid, generatedCtx);
             return generatedCtx;
         }
         catch (Exception ex) {

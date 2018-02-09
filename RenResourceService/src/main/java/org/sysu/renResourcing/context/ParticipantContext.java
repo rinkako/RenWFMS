@@ -8,7 +8,7 @@ import org.hibernate.Session;
 import org.hibernate.Transaction;
 import org.sysu.renResourcing.basic.enums.AgentReentrantType;
 import org.sysu.renResourcing.basic.enums.WorkerType;
-import org.sysu.renResourcing.consistency.RuntimeContextCachePool;
+import org.sysu.renResourcing.consistency.ContextCachePool;
 import org.sysu.renResourcing.context.steady.RenRsparticipantEntity;
 import org.sysu.renResourcing.utility.HibernateUtil;
 import org.sysu.renResourcing.utility.LogUtil;
@@ -67,7 +67,7 @@ public class ParticipantContext implements Serializable, RCacheablesContext {
      * @return Participant resourcing context, null if exception occurred or assertion error
      */
     public static ParticipantContext GetContext(String rtid, String workerId, boolean forceReload) {
-        ParticipantContext cachedCtx = RuntimeContextCachePool.Retrieve(ParticipantContext.class, workerId);
+        ParticipantContext cachedCtx = ContextCachePool.Retrieve(ParticipantContext.class, workerId);
         // fetch cache
         if (cachedCtx != null && !forceReload) {
             return cachedCtx;
@@ -80,7 +80,7 @@ public class ParticipantContext implements Serializable, RCacheablesContext {
             transaction.commit();
             cmtFlag = true;
             ParticipantContext retCtx = ParticipantContext.GenerateParticipantContext(rre);
-            RuntimeContextCachePool.AddOrUpdate(workerId, retCtx);
+            ContextCachePool.AddOrUpdate(workerId, retCtx);
             return retCtx;
         }
         catch (Exception ex) {

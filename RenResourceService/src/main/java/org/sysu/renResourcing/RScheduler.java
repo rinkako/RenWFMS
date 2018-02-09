@@ -4,7 +4,7 @@
  */
 package org.sysu.renResourcing;
 
-import org.sysu.renResourcing.consistency.RuntimeContextCachePool;
+import org.sysu.renResourcing.consistency.ContextCachePool;
 import org.sysu.renResourcing.context.ResourcingContext;
 import org.sysu.renResourcing.utility.LogUtil;
 
@@ -143,7 +143,7 @@ public final class RScheduler implements Observer {
         try {
             rCtx.SetFinish();
             ResourcingContext.SaveToSteady(rCtx);
-            RuntimeContextCachePool.Remove(ResourcingContext.class, rCtx.getRstid());
+            ContextCachePool.Remove(ResourcingContext.class, rCtx.getRstid());
         }
         catch (Exception ex) {
             try {

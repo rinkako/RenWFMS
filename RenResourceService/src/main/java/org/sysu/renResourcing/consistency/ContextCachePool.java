@@ -32,7 +32,7 @@ import java.util.concurrent.ConcurrentHashMap;
  *         this running process. This appointment can make sure that one
  *         running process always have ONLY one valid cache.
  */
-public class RuntimeContextCachePool {
+public class ContextCachePool {
 
     /**
      * Cache pool for cacheables.
@@ -45,8 +45,8 @@ public class RuntimeContextCachePool {
      * @param cacheObj cache context
      */
     public static void AddOrUpdate(@NotNull String idKey, @NotNull RCacheablesContext cacheObj) {
-        String cacheKey = RuntimeContextCachePool.GenerateCacheKey(cacheObj.getClass(), idKey);
-        RuntimeContextCachePool.cachePool.put(cacheKey, cacheObj);
+        String cacheKey = ContextCachePool.GenerateCacheKey(cacheObj.getClass(), idKey);
+        ContextCachePool.cachePool.put(cacheKey, cacheObj);
     }
 
     /**
@@ -55,8 +55,8 @@ public class RuntimeContextCachePool {
      * @param idKey cache fetch key, unique for a type of context object
      */
     public static void Remove(@NotNull Class<?> clazz, @NotNull String idKey) {
-        String cacheKey = RuntimeContextCachePool.GenerateCacheKey(clazz, idKey);
-        RuntimeContextCachePool.cachePool.remove(cacheKey);
+        String cacheKey = ContextCachePool.GenerateCacheKey(clazz, idKey);
+        ContextCachePool.cachePool.remove(cacheKey);
     }
 
     /**
@@ -68,15 +68,15 @@ public class RuntimeContextCachePool {
      */
     @SuppressWarnings("unchecked")
     public static <Ty> Ty Retrieve(@NotNull Class<Ty> clazz, @NotNull String idKey) {
-        String cacheKey = RuntimeContextCachePool.GenerateCacheKey(clazz, idKey);
-        return (Ty) RuntimeContextCachePool.cachePool.get(cacheKey);
+        String cacheKey = ContextCachePool.GenerateCacheKey(clazz, idKey);
+        return (Ty) ContextCachePool.cachePool.get(cacheKey);
     }
 
     /**
      * Clear the whole cache pool.
      */
     public static void Clear() {
-        RuntimeContextCachePool.cachePool.clear();
+        ContextCachePool.cachePool.clear();
     }
 
     /**
@@ -84,10 +84,10 @@ public class RuntimeContextCachePool {
      * @param clazz context class
      */
     public static synchronized void Clear(@NotNull Class<?> clazz) {
-        ConcurrentHashMap<String, RCacheablesContext> cloned = new ConcurrentHashMap<>(RuntimeContextCachePool.cachePool);
+        ConcurrentHashMap<String, RCacheablesContext> cloned = new ConcurrentHashMap<>(ContextCachePool.cachePool);
         for (Map.Entry<String, RCacheablesContext> kvp : cloned.entrySet()) {
             if (clazz.isInstance(kvp.getValue())) {
-                RuntimeContextCachePool.cachePool.remove(kvp.getKey());
+                ContextCachePool.cachePool.remove(kvp.getKey());
             }
         }
     }

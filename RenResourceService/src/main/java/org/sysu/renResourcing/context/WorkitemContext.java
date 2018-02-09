@@ -9,7 +9,7 @@ import org.hibernate.Transaction;
 import org.sysu.renResourcing.GlobalContext;
 import org.sysu.renResourcing.basic.enums.WorkitemResourcingStatusType;
 import org.sysu.renResourcing.basic.enums.WorkitemStatusType;
-import org.sysu.renResourcing.consistency.RuntimeContextCachePool;
+import org.sysu.renResourcing.consistency.ContextCachePool;
 import org.sysu.renResourcing.context.steady.RenWorkitemEntity;
 import org.sysu.renResourcing.utility.CommonUtil;
 import org.sysu.renResourcing.utility.HibernateUtil;
@@ -17,6 +17,7 @@ import org.sysu.renResourcing.utility.LogUtil;
 import org.sysu.renResourcing.utility.SerializationUtil;
 
 import java.io.Serializable;
+import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.UUID;
@@ -76,7 +77,7 @@ public class WorkitemContext implements Serializable, RCacheablesContext {
      * @return workitem context
      */
     public static WorkitemContext GetContext(String wid, String rtid, boolean forceReload) {
-        WorkitemContext cachedCtx = RuntimeContextCachePool.Retrieve(WorkitemContext.class, wid);
+        WorkitemContext cachedCtx = ContextCachePool.Retrieve(WorkitemContext.class, wid);
         // fetch cache
         if (cachedCtx != null && !forceReload) {
             return cachedCtx;
@@ -91,7 +92,7 @@ public class WorkitemContext implements Serializable, RCacheablesContext {
             cmtFlag = true;
             WorkitemContext retCtx = new WorkitemContext();
             retCtx.entity = rwe;
-            RuntimeContextCachePool.AddOrUpdate(wid, retCtx);
+            ContextCachePool.AddOrUpdate(wid, retCtx);
             return retCtx;
         }
         catch (Exception ex) {
@@ -133,6 +134,7 @@ public class WorkitemContext implements Serializable, RCacheablesContext {
             rwe.setStatus(WorkitemStatusType.Enabled.name());
             rwe.setResourceStatus(WorkitemResourcingStatusType.Unoffered.name());
             rwe.setExecuteTime(0L);
+            rwe.setEnablementTime(new Timestamp(System.currentTimeMillis()));
             HashMap<String, String> taskArgsSign = CommonUtil.ZipVector(taskContext.getParameters(), args);
             rwe.setArguments(SerializationUtil.JsonSerialization(taskArgsSign));
             session.save(rwe);

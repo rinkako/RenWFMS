@@ -11,8 +11,7 @@ import java.util.concurrent.locks.ReentrantReadWriteLock;
  * Author: Rinkako
  * Date  : 2018/2/9
  * Usage : This class is a lock manager for all running processes resources
- *         context. Notice that all locks will be unlock after RS service
- *         shut down.
+ *         contexts using ReentrantReadWriteLock.
  *         This manager is responsible for controlling context concurrency
  *         access for this ONE Resource Service. NOTICE that it has no idea
  *         about this context is used by other RS instance or not. For the
@@ -21,7 +20,7 @@ import java.util.concurrent.locks.ReentrantReadWriteLock;
  *         2. Workitem can use lock, since we make sure that one workitem
  *         ONLY managed by ONE specific RS.
  */
-public class RuntimeContextLockManager {
+public class ContextLockManager {
 
     /**
      * Lock table.
@@ -40,9 +39,9 @@ public class RuntimeContextLockManager {
      * @param contextId context id
      */
     public static void ReadLock(Class<?> clazz, String contextId) {
-        String lockId = RuntimeContextLockManager.GenerateLockKey(clazz, contextId);
-        RuntimeContextLockManager.CheckEmptyLock(lockId);
-        RuntimeContextLockManager.lockTable.get(lockId).readLock().lock();
+        String lockId = ContextLockManager.GenerateLockKey(clazz, contextId);
+        ContextLockManager.CheckEmptyLock(lockId);
+        ContextLockManager.lockTable.get(lockId).readLock().lock();
     }
 
     /**
@@ -66,9 +65,9 @@ public class RuntimeContextLockManager {
      * @param contextId context id
      */
     public static void WriteLock(Class<?> clazz, String contextId) {
-        String lockId = RuntimeContextLockManager.GenerateLockKey(clazz, contextId);
-        RuntimeContextLockManager.CheckEmptyLock(lockId);
-        RuntimeContextLockManager.lockTable.get(lockId).writeLock().lock();
+        String lockId = ContextLockManager.GenerateLockKey(clazz, contextId);
+        ContextLockManager.CheckEmptyLock(lockId);
+        ContextLockManager.lockTable.get(lockId).writeLock().lock();
     }
 
     /**
@@ -89,9 +88,9 @@ public class RuntimeContextLockManager {
      * by the current thread; and {@code false} otherwise.
      */
     public static boolean TryWriteLock(Class<?> clazz, String contextId) {
-        String lockId = RuntimeContextLockManager.GenerateLockKey(clazz, contextId);
-        RuntimeContextLockManager.CheckEmptyLock(lockId);
-        return RuntimeContextLockManager.lockTable.get(lockId).writeLock().tryLock();
+        String lockId = ContextLockManager.GenerateLockKey(clazz, contextId);
+        ContextLockManager.CheckEmptyLock(lockId);
+        return ContextLockManager.lockTable.get(lockId).writeLock().tryLock();
     }
 
     /**
@@ -100,8 +99,8 @@ public class RuntimeContextLockManager {
      * @param contextId context id
      */
     public static void ReadUnLock(Class<?> clazz, String contextId) {
-        String lockId = RuntimeContextLockManager.GenerateLockKey(clazz, contextId);
-        ReentrantReadWriteLock lock = RuntimeContextLockManager.lockTable.get(lockId);
+        String lockId = ContextLockManager.GenerateLockKey(clazz, contextId);
+        ReentrantReadWriteLock lock = ContextLockManager.lockTable.get(lockId);
         if (lock != null) {
             lock.readLock().unlock();
         }
@@ -113,8 +112,8 @@ public class RuntimeContextLockManager {
      * @param contextId context id
      */
     public static void WriteUnLock(Class<?> clazz, String contextId) {
-        String lockId = RuntimeContextLockManager.GenerateLockKey(clazz, contextId);
-        ReentrantReadWriteLock lock = RuntimeContextLockManager.lockTable.get(lockId);
+        String lockId = ContextLockManager.GenerateLockKey(clazz, contextId);
+        ReentrantReadWriteLock lock = ContextLockManager.lockTable.get(lockId);
         if (lock != null) {
             lock.writeLock().unlock();
         }
@@ -126,8 +125,8 @@ public class RuntimeContextLockManager {
      * @param keyId lock key id
      */
     private synchronized static void CheckEmptyLock(String keyId) {
-        if (!RuntimeContextLockManager.lockTable.containsKey(keyId)) {
-            RuntimeContextLockManager.lockTable.put(keyId, new ReentrantReadWriteLock());
+        if (!ContextLockManager.lockTable.containsKey(keyId)) {
+            ContextLockManager.lockTable.put(keyId, new ReentrantReadWriteLock());
         }
     }
 

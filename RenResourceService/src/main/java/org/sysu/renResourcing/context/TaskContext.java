@@ -6,7 +6,7 @@ package org.sysu.renResourcing.context;
 
 import org.hibernate.Session;
 import org.hibernate.Transaction;
-import org.sysu.renResourcing.consistency.RuntimeContextCachePool;
+import org.sysu.renResourcing.consistency.ContextCachePool;
 import org.sysu.renResourcing.context.steady.RenBoEntity;
 import org.sysu.renResourcing.context.steady.RenRstaskEntity;
 import org.sysu.renResourcing.context.steady.RenRuntimerecordEntity;
@@ -102,7 +102,7 @@ public class TaskContext implements Serializable, RCacheablesContext {
      */
     public static TaskContext GetContext(String rtid, String boName, String taskName, boolean forceReload) {
         String taskCtxId = String.format("%s_%s_%s", rtid, boName, taskName);
-        TaskContext cachedCtx = RuntimeContextCachePool.Retrieve(TaskContext.class, taskCtxId);
+        TaskContext cachedCtx = ContextCachePool.Retrieve(TaskContext.class, taskCtxId);
         // fetch cache
         if (cachedCtx != null && !forceReload) {
             return cachedCtx;
@@ -121,7 +121,7 @@ public class TaskContext implements Serializable, RCacheablesContext {
             transaction.commit();
             cmtFlag = true;
             TaskContext generatedCtx = TaskContext.GenerateTaskContext(taskEntity, pid);
-            RuntimeContextCachePool.AddOrUpdate(taskCtxId, generatedCtx);
+            ContextCachePool.AddOrUpdate(taskCtxId, generatedCtx);
             return generatedCtx;
         }
         catch (Exception ex) {

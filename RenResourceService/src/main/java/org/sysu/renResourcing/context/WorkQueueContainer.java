@@ -7,7 +7,7 @@ package org.sysu.renResourcing.context;
 import org.sysu.renResourcing.GlobalContext;
 import org.sysu.renResourcing.basic.enums.WorkQueueContainerType;
 import org.sysu.renResourcing.basic.enums.WorkQueueType;
-import org.sysu.renResourcing.consistency.RuntimeContextCachePool;
+import org.sysu.renResourcing.consistency.ContextCachePool;
 
 import java.util.Collections;
 import java.util.Set;
@@ -75,7 +75,7 @@ public class WorkQueueContainer implements RCacheablesContext {
      * @return Work queue container of this worker
      */
     public static WorkQueueContainer GetContext(String workerId, boolean forceReload) {
-        WorkQueueContainer retContainer = RuntimeContextCachePool.Retrieve(WorkQueueContainer.class, workerId);
+        WorkQueueContainer retContainer = ContextCachePool.Retrieve(WorkQueueContainer.class, workerId);
         // fetch cache
         if (retContainer != null && !forceReload) {
             return retContainer;
@@ -88,7 +88,7 @@ public class WorkQueueContainer implements RCacheablesContext {
         else {
             retContainer = new WorkQueueContainer(workerId, WorkQueueContainerType.ParticipantSet);
         }
-        RuntimeContextCachePool.AddOrUpdate(workerId, retContainer);
+        ContextCachePool.AddOrUpdate(workerId, retContainer);
         return retContainer;
     }
 

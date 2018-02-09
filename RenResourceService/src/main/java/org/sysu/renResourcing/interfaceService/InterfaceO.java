@@ -6,7 +6,9 @@ package org.sysu.renResourcing.interfaceService;
 
 import org.hibernate.Session;
 import org.hibernate.Transaction;
+import org.sysu.renResourcing.basic.enums.PrivilegeType;
 import org.sysu.renResourcing.context.ParticipantContext;
+import org.sysu.renResourcing.context.WorkitemContext;
 import org.sysu.renResourcing.context.steady.RenRuntimerecordEntity;
 import org.sysu.renResourcing.utility.CommonUtil;
 import org.sysu.renResourcing.utility.HibernateUtil;
@@ -57,5 +59,17 @@ public class InterfaceO {
             }
             throw ex;
         }
+    }
+
+    /**
+     * Check if a participant has a privilege.
+     * @param participant participant context
+     * @param workitem workitem context
+     * @param privilege privilege enum
+     * @return true if participant has the privilege
+     */
+    public static boolean CheckPrivilege(ParticipantContext participant, WorkitemContext workitem, PrivilegeType privilege) {
+        // todo
+        return true;
     }
 }

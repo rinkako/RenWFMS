@@ -8,7 +8,7 @@ import org.hibernate.Session;
 import org.hibernate.Transaction;
 import org.sysu.renResourcing.GlobalContext;
 import org.sysu.renResourcing.basic.enums.WorkQueueType;
-import org.sysu.renResourcing.consistency.RuntimeContextCachePool;
+import org.sysu.renResourcing.consistency.ContextCachePool;
 import org.sysu.renResourcing.context.steady.RenQueueitemsEntity;
 import org.sysu.renResourcing.context.steady.RenWorkqueueEntity;
 import org.sysu.renResourcing.utility.HibernateUtil;
@@ -220,7 +220,7 @@ public class WorkQueueContext implements Serializable, RCacheablesContext {
      */
     public synchronized static WorkQueueContext GetContext(String ownerWorkerId, WorkQueueType queueType, boolean forceReload) {
         String wqid = String.format("WQ_%s_%s", queueType.name(), ownerWorkerId);
-        WorkQueueContext retCtx = RuntimeContextCachePool.Retrieve(WorkQueueContext.class, wqid);
+        WorkQueueContext retCtx = ContextCachePool.Retrieve(WorkQueueContext.class, wqid);
         // fetch cache
         if (retCtx != null && !forceReload) {
             return retCtx;
@@ -242,7 +242,7 @@ public class WorkQueueContext implements Serializable, RCacheablesContext {
             transaction.commit();
             cmtFlag = true;
             WorkQueueContext generateCtx = WorkQueueContext.GenerateContext(rwqe);
-            RuntimeContextCachePool.AddOrUpdate(wqid, generateCtx);
+            ContextCachePool.AddOrUpdate(wqid, generateCtx);
             return generateCtx;
         }
         catch (Exception ex) {
