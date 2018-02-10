@@ -42,4 +42,23 @@ public class CommonUtil {
         }
         return retMap;
     }
+
+    /**
+     * Zip a key vector and a value vector to a hash map in all string type.
+     * Key list and value list should have same size.
+     * @param keyList key vector, all entry should be unique
+     * @param valueList value vector
+     * @return A HashMap for (key, value)
+     */
+    public static HashMap<String, String> ZipVectorConvertString(List keyList, List valueList) {
+        if (keyList == null || valueList == null) {
+            return null;
+        }
+        assert keyList.size() == valueList.size();
+        HashMap<String, String> retMap = new HashMap<>();
+        for (int i = 0; i < keyList.size(); i++) {
+            retMap.put(keyList.get(i).toString(), valueList.get(i).toString());
+        }
+        return retMap;
+    }
 }

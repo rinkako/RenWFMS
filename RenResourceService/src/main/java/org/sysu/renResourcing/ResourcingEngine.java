@@ -11,7 +11,9 @@ import org.sysu.renResourcing.context.*;
 import org.sysu.renResourcing.context.steady.RenRuntimerecordEntity;
 import org.sysu.renResourcing.utility.HibernateUtil;
 import org.sysu.renResourcing.utility.LogUtil;
+import org.sysu.renResourcing.utility.SerializationUtil;
 
+import java.util.ArrayList;
 import java.util.Hashtable;
 
 /**
@@ -30,9 +32,10 @@ public class ResourcingEngine {
      * @param rtid process runtime record id
      * @param boName task belong to BO name
      * @param polymorphismName task name defined in BO XML.
+     * @param arguments arguments list in JSON string
      * @return response package
      */
-    public static String EngineSubmitTask(String rtid, String boName, String polymorphismName) {
+    public static String EngineSubmitTask(String rtid, String boName, String polymorphismName, String arguments) {
         Session session = HibernateUtil.GetLocalThreadSession();
         Transaction transaction = session.beginTransaction();
         boolean cmtFlag = false;
@@ -44,7 +47,10 @@ public class ResourcingEngine {
             TaskContext taskContext = TaskContext.GetContext(rtid, boName, polymorphismName);
             assert taskContext != null;
             Hashtable<String, Object> args = new Hashtable<>();
+            ArrayList argVector = SerializationUtil.JsonDeserialization(arguments, ArrayList.class);
+            assert argVector != null;
             args.put("taskContext", taskContext);
+            args.put("taskArgumentsVector", argVector);
             ResourcingContext ctx = ResourcingContext.GetContext(null, rtid, RServiceType.SubmitResourcingTask, args);
             ResourcingEngine.mainScheduler.Schedule(ctx);
             return GlobalContext.RESPONSE_SUCCESS;

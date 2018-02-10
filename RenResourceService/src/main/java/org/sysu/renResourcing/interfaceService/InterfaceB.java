@@ -22,6 +22,7 @@ import org.sysu.renResourcing.utility.HibernateUtil;
 import org.sysu.renResourcing.utility.LogUtil;
 
 import java.sql.Timestamp;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Set;
@@ -61,7 +62,7 @@ public class InterfaceB {
         assert taskContext != null;
         RPrinciple principle = PrincipleParser.Parse(taskContext.getPrinciple());
         // generate workitem
-        WorkitemContext workitem = WorkitemContext.GenerateContext(taskContext, ctx.getRtid(), taskContext.getParameters());
+        WorkitemContext workitem = WorkitemContext.GenerateContext(taskContext, ctx.getRtid(), (ArrayList) ctx.getArgs().get("taskArgumentsVector"));
         assert workitem != null;
         // get valid resources
         HashSet<ParticipantContext> validParticipants = InterfaceO.GetCurrentValidParticipant(ctx.getRtid());

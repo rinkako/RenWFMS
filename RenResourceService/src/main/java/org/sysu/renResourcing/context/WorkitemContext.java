@@ -111,7 +111,7 @@ public class WorkitemContext implements Serializable, RCacheablesContext {
      * @param args arguments vector
      * @return workitem context
      */
-    public static WorkitemContext GenerateContext(TaskContext taskContext, String rtid, ArrayList<String> args) {
+    public static WorkitemContext GenerateContext(TaskContext taskContext, String rtid, ArrayList args) {
         assert args != null && taskContext.getParameters() != null;
         if (args.size() != taskContext.getParameters().size()) {
             LogUtil.Log(String.format("Generate workitem for task %s, but arguments(%s) and parameters(%s) not equal",
@@ -135,7 +135,7 @@ public class WorkitemContext implements Serializable, RCacheablesContext {
             rwe.setResourceStatus(WorkitemResourcingStatusType.Unoffered.name());
             rwe.setExecuteTime(0L);
             rwe.setEnablementTime(new Timestamp(System.currentTimeMillis()));
-            HashMap<String, String> taskArgsSign = CommonUtil.ZipVector(taskContext.getParameters(), args);
+            HashMap<String, String> taskArgsSign = CommonUtil.ZipVectorConvertString(taskContext.getParameters(), args);
             rwe.setArguments(SerializationUtil.JsonSerialization(taskArgsSign));
             session.save(rwe);
             transaction.commit();

@@ -6,6 +6,7 @@ package org.sysu.renResourcing.restful.controller;
 
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
+import org.sysu.renResourcing.ResourcingEngine;
 import org.sysu.renResourcing.restful.dto.ReturnModel;
 import org.sysu.renResourcing.restful.dto.ReturnModelHelper;
 import org.sysu.renResourcing.restful.dto.StatusCode;
@@ -54,7 +55,7 @@ public class EngineController {
                 return ReturnModelHelper.MissingParametersResponse(missingParams);
             }
             // logic
-            String jsonifyResult = "";  // todo
+            String jsonifyResult = ResourcingEngine.EngineSubmitTask(rtid, boname, taskname, args);
             // return
             ReturnModelHelper.StandardResponse(rnModel, StatusCode.OK, jsonifyResult);
         } catch (Exception e) {
