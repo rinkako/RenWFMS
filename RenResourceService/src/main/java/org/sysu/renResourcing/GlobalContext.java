@@ -42,4 +42,9 @@ public class GlobalContext {
      * Concurrent control: max active tracker.
      */
     public static int CONCURRENT_MAX_TRACKER = 100;
+
+    /**
+     * Resources event log enable switch.
+     */
+    public static Boolean EVENTLOG_ENABLE = true;
 }

@@ -7,10 +7,12 @@ package org.sysu.renResourcing.context;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
 import org.sysu.renResourcing.GlobalContext;
+import org.sysu.renResourcing.basic.enums.RSEventType;
 import org.sysu.renResourcing.basic.enums.WorkQueueType;
 import org.sysu.renResourcing.consistency.ContextCachePool;
 import org.sysu.renResourcing.context.steady.RenQueueitemsEntity;
 import org.sysu.renResourcing.context.steady.RenWorkqueueEntity;
+import org.sysu.renResourcing.interfaceService.InterfaceE;
 import org.sysu.renResourcing.utility.HibernateUtil;
 import org.sysu.renResourcing.utility.LogUtil;
 
@@ -52,6 +54,7 @@ public class WorkQueueContext implements Serializable, RCacheablesContext {
     public synchronized void AddOrUpdate(WorkitemContext workitem) {
         this.workitems.put(workitem.getEntity().getWid(), workitem);
         this.AddChangesToSteady(workitem);
+        this.LogEvent(workitem);
     }
 
     /**
@@ -61,6 +64,7 @@ public class WorkQueueContext implements Serializable, RCacheablesContext {
     public synchronized void AddQueue(Map<String, WorkitemContext> queueMap) {
         this.workitems.putAll(queueMap);
         this.AddChangesToSteady(new HashSet<>(queueMap.values()));
+        this.LogEvent(queueMap);
     }
 
     /**
@@ -69,8 +73,10 @@ public class WorkQueueContext implements Serializable, RCacheablesContext {
      * @param queue queue to be added
      */
     public synchronized void AddQueue(WorkQueueContext queue) {
-        this.workitems.putAll(queue.GetQueueAsMap());
+        Map<String, WorkitemContext> qMap = queue.GetQueueAsMap();
+        this.workitems.putAll(qMap);
         this.AddChangesToSteady(queue.GetQueueAsSet());
+        this.LogEvent(qMap);
     }
 
     /**
@@ -277,6 +283,45 @@ public class WorkQueueContext implements Serializable, RCacheablesContext {
      */
     public WorkQueueType getType() {
         return this.type;
+    }
+
+    /**
+     * Write resource event log to steady.
+     * @param workitem workitem context
+     */
+    private void LogEvent(WorkitemContext workitem) {
+        if (this.type != WorkQueueType.WORKLISTED) {
+            RSEventType evtType = null;
+            switch (this.type) {
+                case OFFERED:
+                    evtType = RSEventType.offer;
+                    break;
+                case ALLOCATED:
+                    evtType = RSEventType.allocate;
+                    break;
+                case STARTED:
+                    evtType = RSEventType.start;
+                    break;
+                case SUSPENDED:
+                    evtType = RSEventType.suspend;
+                    break;
+                case UNOFFERED:
+                    evtType = RSEventType.unoffer;
+                    break;
+            }
+            assert evtType != null;
+            InterfaceE.WriteLog(workitem, this.ownerWorkerId, evtType);
+        }
+    }
+
+    /**
+     * Write resource event log to steady.
+     * @param workitems workitem context map
+     */
+    private void LogEvent(Map<String, WorkitemContext> workitems) {
+        for (WorkitemContext workitem : workitems.values()) {
+            this.LogEvent(workitem);
+        }
     }
 
     /**
