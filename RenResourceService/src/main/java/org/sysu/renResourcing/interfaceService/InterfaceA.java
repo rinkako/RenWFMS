@@ -12,5 +12,5 @@ package org.sysu.renResourcing.interfaceService;
  *         service requests passing from NameService or BOEngine.
  */
 public class InterfaceA {
-    // todo Is interface A for RS needed? We already handle all process control in Name Service.
+    // todo Is interface A for RS needed? We already handle all process control in Name Service. -rinkako
 }

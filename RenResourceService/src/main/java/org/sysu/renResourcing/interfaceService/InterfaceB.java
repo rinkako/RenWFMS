@@ -323,7 +323,7 @@ public class InterfaceB {
                 WorkQueueContainer container = WorkQueueContainer.GetContext(participant.getWorkerId());
                 container.RemoveFromQueue(workitem, WorkQueueType.ALLOCATED);
                 InterfaceB.WorkitemStatusChanged(workitem, WorkitemStatusType.valueOf(workitem.getEntity().getStatus()), WorkitemStatusType.Complete);
-                // todo use interfaceE to log skip
+                InterfaceE.WriteLog(workitem, participant.getWorkerId(), RSEventType.skip);
                 return true;
             }
             catch (Exception ex) {
@@ -354,7 +354,7 @@ public class InterfaceB {
             WorkQueueContainer container = WorkQueueContainer.GetContext(participant.getWorkerId());
             container.RemoveFromQueue(workitem, WorkQueueType.STARTED);
             InterfaceB.WorkitemStatusChanged(workitem, WorkitemStatusType.valueOf(workitem.getEntity().getStatus()), WorkitemStatusType.Complete);
-            // todo use interfaceE to log skip
+            InterfaceE.WriteLog(workitem, participant.getWorkerId(), RSEventType.complete);
             return true;
         }
         catch (Exception ex) {
