@@ -348,8 +348,10 @@ public class InterfaceB {
     public boolean CompleteWorkitem(ParticipantContext participant, WorkitemContext workitem) {
         try {
             RenWorkitemEntity rwe = workitem.getEntity();
-            rwe.setExecuteTime(0);  // todo execution time span
-            rwe.setCompletionTime(new Timestamp(System.currentTimeMillis()));
+            Timestamp currentTS = new Timestamp(System.currentTimeMillis());
+            Timestamp startTS = rwe.getStartTime();
+            rwe.setExecuteTime(currentTS.getTime() - startTS.getTime());
+            rwe.setCompletionTime(currentTS);
             rwe.setCompletedBy(participant.getWorkerId());
             WorkitemContext.SaveToSteady(workitem);
             WorkQueueContainer container = WorkQueueContainer.GetContext(participant.getWorkerId());

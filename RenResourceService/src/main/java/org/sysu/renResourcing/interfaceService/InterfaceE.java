@@ -89,6 +89,4 @@ public class InterfaceE {
         AsyncPluginRunner.AsyncRun(writer);
     }
 
-
-
 }

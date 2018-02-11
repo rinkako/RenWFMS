@@ -23,7 +23,8 @@ import java.util.HashSet;
  *         resources in COrgan, and register involved resources to Participant in Name
  *         Service. Therefore we assert when Resource Service need to refer a RESOURCE,
  *         it has already been registered in steady memory as a PARTICIPANT. So, this
- *         interface just for involved resources information retrieving.
+ *         interface just for involved resources information retrieving and participants
+ *         privileges management.
  */
 public class InterfaceO {
 
