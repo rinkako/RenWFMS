@@ -10,7 +10,6 @@ import org.sysu.renResourcing.context.ResourcingContext;
 import org.sysu.renResourcing.interfaceService.InterfaceB;
 import org.sysu.renResourcing.utility.LogUtil;
 
-import java.beans.Expression;
 import java.util.Observable;
 import java.util.Observer;
 
