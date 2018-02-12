@@ -54,6 +54,7 @@ public class RenSimplePrincipleGrammar implements PrincipleGrammar {
             return retPrinciple;
         }
         catch (Exception ex) {
+            // todo use interfaceX to report this exception to domain ren auth user
             LogUtil.Log(String.format("Parse (%s) failed: %s", descriptor, ex),
                     RenSimplePrincipleGrammar.class.getName(), LogUtil.LogLevelType.ERROR, "");
             return null;
