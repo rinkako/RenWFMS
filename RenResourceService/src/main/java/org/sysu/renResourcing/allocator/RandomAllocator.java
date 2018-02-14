@@ -14,18 +14,16 @@ import java.util.HashSet;
 
 /**
  * Author: Rinkako
- * Date  : 2018/2/9
- * Usage : Performs allocation based on work queue length, prefer shortest.
+ * Date  : 2018/2/13
+ * Usage : Performs allocation based on random choose.
  */
-public class ShortestQueueAllocator extends RAllocator {
+public class RandomAllocator extends RAllocator {
 
     /**
      * Allocator description.
      */
-    public static final String Descriptor = "The Shortest-Queue allocator " +
-            "chooses from a distribution set the participant with the " +
-            "shortest Allocated queue (i.e. the least number of workitems " +
-            "in the Allocated queue).";
+    public static final String Descriptor = "The random allocator chooses " +
+            "from a distribution set the participant randomly.";
 
     /**
      * Create a new allocator.
@@ -48,22 +46,7 @@ public class ShortestQueueAllocator extends RAllocator {
      */
     @Override
     public ParticipantContext PerformAllocate(HashSet<ParticipantContext> candidateSet, WorkitemContext context) {
-        int currentShortest = Integer.MAX_VALUE;
-        int currentLength;
-        ParticipantContext retCtx = null;
-        for (ParticipantContext p : candidateSet) {
-            WorkQueueContainer container = WorkQueueContainer.GetContext(p.getWorkerId());
-            if (container.IsNullOrEmptyQueue(WorkQueueType.ALLOCATED)) {
-                return p;
-            }
-            else {
-                currentLength = container.DirectlyGetQueue(WorkQueueType.ALLOCATED).Count();
-            }
-            if (currentLength < currentShortest) {
-                currentShortest = currentLength;
-                retCtx = p;
-            }
-        }
-        return retCtx;
+        int chosenIdx = CommonUtil.GenerateRandomNumber(0, candidateSet.size());
+        return (ParticipantContext) candidateSet.toArray()[chosenIdx];
     }
 }

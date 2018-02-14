@@ -15,6 +15,7 @@ import java.util.HashSet;
  *         Allocator is used to choose a participant to handle task from candidate set.
  */
 public abstract class RAllocator extends RSelector implements Serializable {
+
     /**
      * Serial version UID.
      */

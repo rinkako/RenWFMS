@@ -6,6 +6,7 @@ package org.sysu.renResourcing.utility;
 
 import java.util.HashMap;
 import java.util.List;
+import java.util.Random;
 
 /**
  * Author: Rinkako
@@ -20,6 +21,17 @@ public class CommonUtil {
      */
     public static boolean IsNullOrEmpty(String str) {
         return str != null && !str.equals("");
+    }
+
+    /**
+     * Generate a random number in interval of [min, max)
+     * @param min low border included
+     * @param max up border not included
+     * @return a random number in interval
+     */
+    public static int GenerateRandomNumber(int min, int max) {
+        Random rand = new Random();
+        return rand.nextInt(max - min) + min;
     }
 
     /**
