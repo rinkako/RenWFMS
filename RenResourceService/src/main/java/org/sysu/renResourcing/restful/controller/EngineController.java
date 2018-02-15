@@ -63,4 +63,34 @@ public class EngineController {
         }
         return rnModel;
     }
+
+    /**
+     * Signal that a process runtime has already finished.
+     * @param token engine signature token (required)
+     * @param rtid process runtime record id (required)
+     * @return response package
+     */
+    @PostMapping(value = "/finRtid", produces = {"application/json", "application/xml"})
+    @ResponseBody
+    @Transactional
+    public ReturnModel FinRtid(@RequestParam(value="token", required = false)String token,
+                               @RequestParam(value="rtid", required = false)String rtid) {
+        ReturnModel rnModel = new ReturnModel();
+        try {
+            // miss params
+            List<String> missingParams = new ArrayList<>();
+            if (token == null) missingParams.add("token");
+            if (rtid == null) missingParams.add("rtid");
+            if (missingParams.size() > 0) {
+                return ReturnModelHelper.MissingParametersResponse(missingParams);
+            }
+            // logic
+            String jsonifyResult = "";  // todo
+            // return
+            ReturnModelHelper.StandardResponse(rnModel, StatusCode.OK, jsonifyResult);
+        } catch (Exception e) {
+            ReturnModelHelper.ExceptionResponse(rnModel, e.getClass().getName());
+        }
+        return rnModel;
+    }
 }

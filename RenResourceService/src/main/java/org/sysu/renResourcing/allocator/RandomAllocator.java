@@ -4,10 +4,9 @@
  */
 package org.sysu.renResourcing.allocator;
 
-import org.sysu.renResourcing.basic.enums.WorkQueueType;
 import org.sysu.renResourcing.context.ParticipantContext;
-import org.sysu.renResourcing.context.WorkQueueContainer;
 import org.sysu.renResourcing.context.WorkitemContext;
+import org.sysu.renResourcing.utility.CommonUtil;
 
 import java.util.HashMap;
 import java.util.HashSet;
@@ -33,8 +32,8 @@ public class RandomAllocator extends RAllocator {
      * @param type        type name string
      * @param args        parameter dictionary in HashMap
      */
-    public ShortestQueueAllocator(String id, String type, HashMap<String, String> args) {
-        super(id, type, ShortestQueueAllocator.Descriptor, args);
+    public RandomAllocator(String id, String type, HashMap<String, String> args) {
+        super(id, type, RandomAllocator.Descriptor, args);
     }
 
     /**
