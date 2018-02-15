@@ -437,7 +437,10 @@ def performAddPosition():
         xflag, reportGid = core.RetrievePositionId(session['SID'], reportToId)
         if xflag is False or reportGid is None:
             return redirect(url_for('AccessErrorPage', dt='x'))
-    belongToId = request.form['f_belong']
+    if 'f_belong' in request.form:
+        belongToId = request.form['f_belong']
+    else:
+        belongToId = ''
     xflag, belongGid = core.RetrieveGroupId(session['SID'], belongToId)
     if xflag is False or belongGid is None:
         return redirect(url_for('AccessErrorPage', dt='x'))

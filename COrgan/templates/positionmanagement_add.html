@@ -113,7 +113,8 @@
 	<script>
         function check(){
             var tusr = document.getElementById("tPositionname").value;
-            if (tusr.trim() === '') {
+            var tbelongC = document.getElementById("tBelong").value;
+            if (tusr.trim() === '' || tbelongC === '') {
                 alert("请完整填写表单！");
                 return false;
             }
