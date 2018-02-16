@@ -103,6 +103,7 @@ public final class RoleMappingService {
                     rpe = new RenRsparticipantEntity();
                     rpe.setWorkerid(workerGid);
                     rpe.setReferenceCounter(1);
+                    rpe.setNote((String) workerItem.get("Note"));
                     if (workerGid.startsWith("Human_")) {
                         rpe.setDisplayname((String) workerItem.get("PersonId"));
                         rpe.setType(0);

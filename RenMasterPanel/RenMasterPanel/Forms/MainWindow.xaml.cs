@@ -392,6 +392,7 @@ namespace RenMasterPanel.Forms
             MPController.CurrentTransaction.LaunchType = this.ComboBox_Step3_Launch.SelectedIndex;
             MPController.CurrentTransaction.IsolationType = this.ComboBox_Step3_WhenMapChange.SelectedIndex;
             MPController.CurrentTransaction.FailureType = this.ComboBox_Step3_WhenFailure.SelectedIndex;
+            MPController.CurrentTransaction.AuthType = this.ComboBox_Step3_AuthorizationType.SelectedIndex;
             var submitRes = MPController.SubmitProcess();
             var submitResItem = submitRes.Split(',');
             GlobalContext.CurrentRTID = submitResItem[0];
@@ -414,6 +415,19 @@ namespace RenMasterPanel.Forms
             this.tabControl.SelectedIndex += 1;
         }
 
+        #endregion
+
+        #region Step4
+
+        /// <summary>
+        /// Step3 Button: Next.
+        /// </summary>
+        private void Button_Step4_DebugStart(object sender, RoutedEventArgs e)
+        {
+            MPController.LoadParticipant();
+            MessageBox.Show(@"OK");
+        }
+        
         #endregion
         
     }

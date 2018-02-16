@@ -1,17 +1,8 @@
-/*
- * Project Ren @ 2018
- * Rinkako, Ariana, Gordan. SYSU SDCS.
- */
 package org.sysu.renNameService.entity;
 
 import javax.persistence.*;
 import java.util.Objects;
 
-/**
- * Author: Rinkako
- * Date  : 2018/2/8
- * Usage :
- */
 @Entity
 @Table(name = "ren_rsparticipant", schema = "renboengine", catalog = "")
 public class RenRsparticipantEntity {
@@ -21,9 +12,10 @@ public class RenRsparticipantEntity {
     private int reentrantType;
     private int referenceCounter;
     private String agentLocation;
+    private String note;
 
     @Id
-    @Column(name = "workerid", nullable = false, length = 64)
+    @Column(name = "workerid")
     public String getWorkerid() {
         return workerid;
     }
@@ -33,7 +25,7 @@ public class RenRsparticipantEntity {
     }
 
     @Basic
-    @Column(name = "displayname", nullable = true, length = -1)
+    @Column(name = "displayname")
     public String getDisplayname() {
         return displayname;
     }
@@ -43,7 +35,7 @@ public class RenRsparticipantEntity {
     }
 
     @Basic
-    @Column(name = "type", nullable = false)
+    @Column(name = "type")
     public int getType() {
         return type;
     }
@@ -53,7 +45,7 @@ public class RenRsparticipantEntity {
     }
 
     @Basic
-    @Column(name = "reentrantType", nullable = false)
+    @Column(name = "reentrantType")
     public int getReentrantType() {
         return reentrantType;
     }
@@ -63,7 +55,7 @@ public class RenRsparticipantEntity {
     }
 
     @Basic
-    @Column(name = "referenceCounter", nullable = false)
+    @Column(name = "referenceCounter")
     public int getReferenceCounter() {
         return referenceCounter;
     }
@@ -73,13 +65,23 @@ public class RenRsparticipantEntity {
     }
 
     @Basic
-    @Column(name = "agentLocation", nullable = true, length = -1)
+    @Column(name = "agentLocation")
     public String getAgentLocation() {
         return agentLocation;
     }
 
     public void setAgentLocation(String agentLocation) {
         this.agentLocation = agentLocation;
+    }
+
+    @Basic
+    @Column(name = "note")
+    public String getNote() {
+        return note;
+    }
+
+    public void setNote(String note) {
+        this.note = note;
     }
 
     @Override
@@ -92,12 +94,13 @@ public class RenRsparticipantEntity {
                 referenceCounter == that.referenceCounter &&
                 Objects.equals(workerid, that.workerid) &&
                 Objects.equals(displayname, that.displayname) &&
-                Objects.equals(agentLocation, that.agentLocation);
+                Objects.equals(agentLocation, that.agentLocation) &&
+                Objects.equals(note, that.note);
     }
 
     @Override
     public int hashCode() {
 
-        return Objects.hash(workerid, displayname, type, reentrantType, referenceCounter, agentLocation);
+        return Objects.hash(workerid, displayname, type, reentrantType, referenceCounter, agentLocation, note);
     }
 }

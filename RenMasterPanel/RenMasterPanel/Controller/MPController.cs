@@ -270,7 +270,7 @@ namespace RenMasterPanel.Controller
                         { "bindingType", MPController.CurrentTransaction.IsolationType.ToString() },
                         { "launchType", MPController.CurrentTransaction.LaunchType.ToString() },
                         { "failureType", MPController.CurrentTransaction.FailureType.ToString() },
-                        { "authType", "0" },  // todo auth type
+                        { "authType", MPController.CurrentTransaction.AuthType.ToString() },  // todo auth type
                         { "binding", "" }  // todo static Resources.xml
                     },
                     out var retStr);
@@ -305,7 +305,31 @@ namespace RenMasterPanel.Controller
             }
             catch (Exception ex)
             {
-                LogUtils.LogLine("Submit process, exception occurred" + ex, "MPController", LogLevel.Error);
+                LogUtils.LogLine("Register mappings, exception occurred" + ex, "MPController", LogLevel.Error);
+                return null;
+            }
+        }
+        
+        /// <summary>
+        /// Load resources participant for RS.
+        /// </summary>
+        public static String LoadParticipant()
+        {
+            try
+            {
+                NetClient.PostData(GlobalContext.URL_LoadParticipant, new Dictionary<string, string>
+                    {
+                        { "token", MPController.CurrentTransaction.AuthToken },
+                        { "rtid", GlobalContext.CurrentRTID },
+                        { "renid", MPController.CurrentTransaction.RenUsername }
+                    },
+                    out var retStr);
+                var response = JsonConvert.DeserializeObject<StdResponseEntity>(retStr);
+                return ReturnDataHelper.DecodeString(response);
+            }
+            catch (Exception ex)
+            {
+                LogUtils.LogLine("Load participant for RS, exception occurred" + ex, "MPController", LogLevel.Error);
                 return null;
             }
         }

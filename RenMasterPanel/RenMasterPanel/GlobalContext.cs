@@ -29,6 +29,8 @@ namespace RenMasterPanel
         public static readonly string URL_GetAllRelationConnections = "http://localhost:10234/rolemap/getAllConnectionFromCOrgan";
         
         public static readonly string URL_UploadMapping = "http://localhost:10234/rolemap/register";
+        
+        public static readonly string URL_LoadParticipant = "http://localhost:10234/rolemap/loadParticipant";
 
         public static List<Dictionary<String, String>> Current_Ren_Process_List = null;
 

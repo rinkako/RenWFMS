@@ -50,7 +50,7 @@ namespace RenMasterPanel.Util
                     Console.WriteLine(@"时间戳：{0}", DateTime.Now);
                     Console.WriteLine(@"工作集：{0:F3} MB", Environment.WorkingSet / 1048576.0);
                     Console.WriteLine(@"信  息：{0}", information);
-                    MessageBox.Show(@"At: " + causer + Environment.NewLine + information, @"YuriError");
+                    MessageBox.Show(@"At: " + causer + Environment.NewLine + information, @"Error");
                     break;
                 case LogLevel.Simple:
                 default:

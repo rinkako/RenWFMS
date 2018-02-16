@@ -89,7 +89,7 @@
                 <Grid x:Name="Grid_Step4">
                     <Label Content="流程已提交，执行ID：" Foreground="DodgerBlue" FontSize="18" HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top"/>
                     <TextBlock Name="Label_Step4_Rtid" Text="RTID" TextAlignment="Center" FontSize="18" Foreground="ForestGreen" HorizontalAlignment="Left" Margin="10,48,0,0" VerticalAlignment="Top" Height="41" Width="726"/>
-                    <Button Content="debug start" HorizontalAlignment="Left" Margin="615,282,0,0" VerticalAlignment="Top" Width="121" Height="44"/>
+                    <Button Content="debug start" HorizontalAlignment="Left" Margin="615,282,0,0" VerticalAlignment="Top" Width="121" Height="44" Click="Button_Step4_DebugStart"/>
                     <Label Name="Label_Step4_AuthSign" Content="流程认证私钥：" Foreground="Gray" FontSize="14" HorizontalAlignment="Left" Margin="10,94,0,0" VerticalAlignment="Top"/>
                     <Label x:Name="Label_Step4_AuthSign_Warn" Content="请安全地保存这份密钥，因为任何人都可以使用它来请求该流程的相关工作流服务" Foreground="Gray" FontSize="10" HorizontalContentAlignment="Right" HorizontalAlignment="Left" Margin="10,245,0,0" VerticalAlignment="Top" Width="726"/>
                     <TextBox Name="TextBox_Step4_AuthSign" HorizontalAlignment="Left" Height="128" Margin="10,122,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="726" IsReadOnly="True"/>
