@@ -270,6 +270,7 @@ namespace RenMasterPanel.Controller
                         { "bindingType", MPController.CurrentTransaction.IsolationType.ToString() },
                         { "launchType", MPController.CurrentTransaction.LaunchType.ToString() },
                         { "failureType", MPController.CurrentTransaction.FailureType.ToString() },
+                        { "authType", "0" },  // todo auth type
                         { "binding", "" }  // todo static Resources.xml
                     },
                     out var retStr);

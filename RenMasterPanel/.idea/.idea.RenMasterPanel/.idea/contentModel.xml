@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ContentModelStore">
+    <e p="C:\Users\LJ\.Rider2017.3\system\resharper-host\local\Transient\ReSharperHost\v11\SolutionCaches\_RenMasterPanel.-528920316.00" t="ExcludeRecursive" />
+    <e p="C:\Users\LJ\IdeaProjects\RenWFMS\RenMasterPanel" t="IncludeFlat">
+      <e p="packages" t="ExcludeRecursive" />
+      <e p="RenMasterPanel" t="IncludeRecursive">
+        <e p="App.xaml" t="Include" />
+        <e p="App.xaml.cs" t="Include" />
+        <e p="bin" t="ExcludeRecursive" />
+        <e p="Controller" t="Include">
+          <e p="MPController.cs" t="Include" />
+          <e p="ResourceType.cs" t="Include" />
+          <e p="ReturnDataHelper.cs" t="Include" />
+          <e p="StdResponseEntity.cs" t="Include" />
+          <e p="TransactionPackage.cs" t="Include" />
+        </e>
+        <e p="Forms" t="Include">
+          <e p="LoginForm.xaml" t="Include" />
+          <e p="LoginForm.xaml.cs" t="Include" />
+          <e p="MainWindow.xaml" t="Include" />
+          <e p="MainWindow.xaml.cs" t="Include" />
+          <e p="ManageMappingForm.xaml" t="Include" />
+          <e p="ManageMappingForm.xaml.cs" t="Include" />
+          <e p="ProcessNameForm.xaml" t="Include" />
+          <e p="ProcessNameForm.xaml.cs" t="Include" />
+          <e p="TextPreviewForm.xaml" t="Include" />
+          <e p="TextPreviewForm.xaml.cs" t="Include" />
+        </e>
+        <e p="GlobalContext.cs" t="Include" />
+        <e p="obj" t="ExcludeRecursive" />
+        <e p="packages.config" t="Include" />
+        <e p="Properties" t="Include">
+          <e p="AssemblyInfo.cs" t="Include" />
+          <e p="Resources.Designer.cs" t="Include" />
+          <e p="Resources.resx" t="Include" />
+          <e p="Settings.Designer.cs" t="Include" />
+          <e p="Settings.settings" t="Include" />
+        </e>
+        <e p="RenMasterPanel.csproj" t="IncludeRecursive" />
+        <e p="Util" t="Include">
+          <e p="IOUtil.cs" t="Include" />
+          <e p="LogUtil.cs" t="Include" />
+          <e p="NetClient.cs" t="Include" />
+        </e>
+      </e>
+      <e p="RenMasterPanel.sln" t="IncludeFlat" />
+    </e>
+  </component>
+</project>
