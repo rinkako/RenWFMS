@@ -1,6 +1,5 @@
 package org.sysu.workflow.bridge;
 
-import com.sun.org.apache.xpath.internal.operations.Bool;
 
 /**
  * 为状态机引擎提供与消息处理路由的接口

@@ -5,7 +5,6 @@
 package org.sysu.renNameService;
 import org.sysu.renNameService.transaction.NameServiceTransaction;
 import org.sysu.renNameService.utility.LogUtil;
-import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 
 import java.sql.Timestamp;
 import java.util.HashSet;
@@ -44,7 +43,8 @@ public class NSScheduler implements Observer {
                 this.HandlePendingTransaction();
                 break;
             case GlobalControl:
-                throw new NotImplementedException();
+                // todo
+                break;
         }
         return null;
     }

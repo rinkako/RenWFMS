@@ -1,7 +1,6 @@
 package org.sysu.renResourcing.adapter;
 
 import org.sysu.renResourcing.context.ResourcingContext;
-import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 
 /**
  * Author: Rinkako
@@ -16,6 +15,6 @@ public class YAWLRequestAdapter implements IRPCRequestAdapter {
      * @return RenResourcing service object
      */
     public ResourcingContext RequestReceived(String req) {
-        throw new NotImplementedException();
+        return null; // todo
     }
 }

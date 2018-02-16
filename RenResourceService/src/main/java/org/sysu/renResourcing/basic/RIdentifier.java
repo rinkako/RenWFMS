@@ -1,5 +1,4 @@
 package org.sysu.renResourcing.basic;
-import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 
 import java.io.Serializable;
 
@@ -38,6 +37,6 @@ public abstract class RIdentifier implements Serializable {
      * @return a RIdentifier object
      */
     public RIdentifier FromXML(String xml) {
-        throw new NotImplementedException();
+        return null;  // todo
     }
 }

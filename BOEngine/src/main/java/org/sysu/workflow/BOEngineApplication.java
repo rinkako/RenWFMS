@@ -11,7 +11,7 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
 
 @SpringBootApplication
 @EnableTransactionManagement
-@EntityScan(basePackages = "org.sysu.workflow.restful.context")
+@EntityScan(basePackages = "org.sysu.workflow.restful.entity")
 public class BOEngineApplication implements EmbeddedServletContainerCustomizer {
     public static void main(String[] args) {
         SpringApplication.run(BOEngineApplication.class, args);
@@ -19,7 +19,7 @@ public class BOEngineApplication implements EmbeddedServletContainerCustomizer {
 
     @Override
     public void customize(ConfigurableEmbeddedServletContainer configurableEmbeddedServletContainer) {
-        configurableEmbeddedServletContainer.setPort(10232);//修改服务器监听端口
+        configurableEmbeddedServletContainer.setPort(10232);
     }
 
     @Bean
