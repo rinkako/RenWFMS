@@ -2346,30 +2346,7 @@ public final class SCXMLReader {
         }
         call.setNamelist(readAV(reader, ATTR_NAMELIST));
 
-        loop:
-        while(reader.hasNext()){
-            String name, nsURI;
-            switch (reader.next()) {
-                case XMLStreamConstants.START_ELEMENT:
-                    pushNamespaces(reader, configuration);
-                    nsURI = reader.getNamespaceURI();
-                    name = reader.getLocalName();
-                    if (XMLNS_SCXML.equals(nsURI)) {
-                        if (ELEM_PARAM.equals(name)) {
-                            readParam(reader, configuration, call);
-                        } else {
-                            reportIgnoredElement(reader, configuration, ELEM_BOO_CALL, nsURI, name);
-                        }
-                    } else {
-                        reportIgnoredElement(reader, configuration, ELEM_BOO_CALL, nsURI, name);
-                    }
-                    break;
-                case XMLStreamConstants.END_ELEMENT:
-                    popNamespaces(reader, configuration);
-                    break loop;
-                default:
-            }
-        }
+
         readNamespaces(configuration, call);
         call.setParent(executable);
         if (parent != null) {

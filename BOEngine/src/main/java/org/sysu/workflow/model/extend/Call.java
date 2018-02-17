@@ -75,6 +75,7 @@ public class Call extends NamelistHolder implements Serializable {
      */
     @Override
     public void execute(ActionExecutionContext exctx) throws ModelException, SCXMLExpressionException {
+        System.out.println(">>> CALL: " + this.name);
         SCXMLExecutionContext scxmlExecContext = (SCXMLExecutionContext)exctx.getInternalIOProcessor();
         EnterableState parentState = getParentEnterableState();
         Context ctx = exctx.getContext(parentState);

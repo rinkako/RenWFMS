@@ -342,7 +342,7 @@ public class SCXMLExecutionContext implements SCXMLIOProcessor {
 
     /**
      * @return Returns the event dispatcher
-     * 返回之间分发器
+     * 返回事件分发器
      */
     public EventDispatcher getEventDispatcher() {
         return eventdispatcher;

@@ -1,10 +1,7 @@
 
 package org.sysu.workflow.io;
 
-import org.sysu.workflow.Evaluator;
-import org.sysu.workflow.SCXMLExecutor;
-import org.sysu.workflow.SCXMLTestHelper;
-import org.sysu.workflow.TriggerEvent;
+import org.sysu.workflow.*;
 import org.sysu.workflow.bridge.InheritableContext;
 import org.sysu.workflow.env.MulitStateMachineDispatcher;
 import org.sysu.workflow.env.SimpleErrorReporter;
@@ -15,6 +12,7 @@ import org.sysu.workflow.model.SCXML;
 import org.apache.commons.codec.binary.Base64;
 import org.junit.Assert;
 import org.junit.Test;
+import org.sysu.workflow.model.extend.MessageMode;
 import org.sysu.workflow.model.extend.Task;
 import org.sysu.workflow.model.extend.Tasks;
 
@@ -24,6 +22,7 @@ import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.HashMap;
 import java.util.Map;
+
 
 /**
  * Unit tests
@@ -77,19 +76,19 @@ public class SCXMLReaderTest {
         long endTime=System.currentTimeMillis();
         System.out.println("COST TIME： " + (endTime-startTime) + "ms");
 
-        startTime=System.currentTimeMillis();
-        ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
-        ObjectOutputStream out = new ObjectOutputStream(byteArrayOutputStream);
-        out.writeObject(scxml);
-        String deptString = byteArrayOutputStream.toString("ISO-8859-1");//必须是ISO-8859-1
-        System.out.println("COST TIME： " + (endTime-startTime) + "ms");
-
-        startTime=System.currentTimeMillis();
-        ByteArrayInputStream byteArrayInputStream = new ByteArrayInputStream(deptString.getBytes("ISO-8859-1"));
-        ObjectInputStream objectInputStream = new ObjectInputStream(byteArrayInputStream);
-        SCXML scxml2 = (SCXML) objectInputStream.readObject();
-        endTime=System.currentTimeMillis();
-        System.out.println("COST TIME： " + (endTime-startTime) + "ms");
+//        startTime=System.currentTimeMillis();
+//        ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
+//        ObjectOutputStream out = new ObjectOutputStream(byteArrayOutputStream);
+//        out.writeObject(scxml);
+//        String deptString = byteArrayOutputStream.toString("ISO-8859-1");//必须是ISO-8859-1
+//        System.out.println("COST TIME： " + (endTime-startTime) + "ms");
+//
+//        startTime=System.currentTimeMillis();
+//        ByteArrayInputStream byteArrayInputStream = new ByteArrayInputStream(deptString.getBytes("ISO-8859-1"));
+//        ObjectInputStream objectInputStream = new ObjectInputStream(byteArrayInputStream);
+//        SCXML scxml2 = (SCXML) objectInputStream.readObject();
+//        endTime=System.currentTimeMillis();
+//        System.out.println("COST TIME： " + (endTime-startTime) + "ms");
 
         Datamodel dm = scxml.getDatamodel();
         System.out.println("guest order的data");
@@ -109,46 +108,51 @@ public class SCXMLReaderTest {
         }
 
         Evaluator evaluator = new JexlEvaluator();
-        SCXMLExecutor executor = new SCXMLExecutor(evaluator, new MulitStateMachineDispatcher(), new SimpleErrorReporter());
+        EventDispatcher dispatcher = new MulitStateMachineDispatcher();
+        SCXMLExecutor executor = new SCXMLExecutor(evaluator, dispatcher, new SimpleErrorReporter());
         executor.setStateMachine(scxml);
         executor.go();
 
-        TriggerEvent tEvt = new TriggerEvent("submit", TriggerEvent.SIGNAL_EVENT, null);
-        executor.triggerEvent(tEvt);
+
+
+        SCXMLExecutionContext ctx = executor.getExctx();
+
+        dispatcher.send(ctx.RootTid, ctx.Tid, "", "", MessageMode.UNICAST, "GuestOrder", "", SCXMLIOProcessor.DEFAULT_EVENT_PROCESSOR,
+                "submit", null, "", 0);
         System.out.println("send submit");
 
-        tEvt = new TriggerEvent("produced", TriggerEvent.SIGNAL_EVENT, null);
-        executor.triggerEvent(tEvt);
+        dispatcher.send(ctx.RootTid, ctx.Tid, "", "", MessageMode.TO_CHILD, "KitchenOrder", "", SCXMLIOProcessor.DEFAULT_EVENT_PROCESSOR,
+                "produced", null, "", 0);
         System.out.println("send produced");
 
         EventDataPackage edp = new EventDataPackage();
         edp.passed = "1";
-        tEvt = new TriggerEvent("testCompleted", TriggerEvent.SIGNAL_EVENT, edp);
-        executor.triggerEvent(tEvt);
+        dispatcher.send(ctx.RootTid, ctx.Tid, "", "", MessageMode.TO_CHILD, "KitchenOrder", "", SCXMLIOProcessor.DEFAULT_EVENT_PROCESSOR,
+                "testCompleted", edp, "", 0);
         System.out.println("send testCompleted");
 
-        tEvt = new TriggerEvent("delivered", TriggerEvent.SIGNAL_EVENT, null);
-        executor.triggerEvent(tEvt);
+        dispatcher.send(ctx.RootTid, ctx.Tid, "", "", MessageMode.TO_CHILD, "KitchenOrder", "", SCXMLIOProcessor.DEFAULT_EVENT_PROCESSOR,
+                "delivered", null, "", 0);
         System.out.println("send delivered");
 
-        tEvt = new TriggerEvent("archived", TriggerEvent.SIGNAL_EVENT, null);
-        executor.triggerEvent(tEvt);
+        dispatcher.send(ctx.RootTid, ctx.Tid, "", "", MessageMode.TO_CHILD, "KitchenOrder", "", SCXMLIOProcessor.DEFAULT_EVENT_PROCESSOR,
+                "archived", null, "", 0);
         System.out.println("send archived");
 
-        tEvt = new TriggerEvent("requestCheck", TriggerEvent.SIGNAL_EVENT, null);
-        executor.triggerEvent(tEvt);
+        dispatcher.send(ctx.RootTid, ctx.Tid, "", "", MessageMode.UNICAST, "GuestOrder", "", SCXMLIOProcessor.DEFAULT_EVENT_PROCESSOR,
+                "requestCheck", null, "", 0);
         System.out.println("send requestCheck");
 
-        tEvt = new TriggerEvent("calculated", TriggerEvent.SIGNAL_EVENT, null);
-        executor.triggerEvent(tEvt);
+        dispatcher.send(ctx.RootTid, ctx.Tid, "", "", MessageMode.TO_CHILD, "GuestCheck", "", SCXMLIOProcessor.DEFAULT_EVENT_PROCESSOR,
+                "calculated", null, "", 0);
         System.out.println("send calculated");
 
-        tEvt = new TriggerEvent("paid", TriggerEvent.SIGNAL_EVENT, null);
-        executor.triggerEvent(tEvt);
+        dispatcher.send(ctx.RootTid, ctx.Tid, "", "", MessageMode.TO_CHILD, "GuestCheck", "", SCXMLIOProcessor.DEFAULT_EVENT_PROCESSOR,
+                "paid", null, "", 0);
         System.out.println("send paid");
 
-        tEvt = new TriggerEvent("archived", TriggerEvent.SIGNAL_EVENT, null);
-        executor.triggerEvent(tEvt);
+        dispatcher.send(ctx.RootTid, ctx.Tid, "", "", MessageMode.TO_CHILD, "GuestCheck", "", SCXMLIOProcessor.DEFAULT_EVENT_PROCESSOR,
+                "archived", null, "", 0);
         System.out.println("send archived");
 
         Assert.assertNotNull(scxml);
