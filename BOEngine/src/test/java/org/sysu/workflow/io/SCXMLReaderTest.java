@@ -91,18 +91,18 @@ public class SCXMLReaderTest {
 //        System.out.println("COST TIME： " + (endTime-startTime) + "ms");
 
         Datamodel dm = scxml.getDatamodel();
-        System.out.println("guest order的data");
+        System.out.println("## guest order的data");
         for(Data data:dm.getData()){
             System.out.println(data.getId() + ":" + data.getExpr());
         }
 
         InheritableContext inheritableContext = scxml.getInheritedContext();
         Tasks tasks = inheritableContext.getInheritedTasks();
-        System.out.println("guest order的可继承上下文的tasks");
+        System.out.println("## guest order的可继承上下文的tasks");
         for(Task task:tasks.getTaskList()){
             System.out.println(task.getName()+":"+task.getId());
         }
-        System.out.println("guest order本身的tasks");
+        System.out.println("## guest order本身的tasks");
         for(Task task:scxml.getTasks().getTaskList()){
             System.out.println(task.getName()+":"+task.getId());
         }

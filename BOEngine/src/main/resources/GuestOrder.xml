@@ -1,7 +1,7 @@
 <businessclass
         initial="Initial"
         name="GuestOrder"
-        extends="GuestCheck"
+        extends="BaseOrder"
         version="1.0"
         xmlns="http://www.w3.org/2005/07/scxml">
  <datamodel>
