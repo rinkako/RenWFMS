@@ -137,26 +137,29 @@ public class SubStateMachine extends NamelistHolder implements PathResolverHolde
 
 
             SCXMLExecutionContext currentExecutionContext = (SCXMLExecutionContext) exctx.getInternalIOProcessor();
-//            //Ariana:get the serialized BO from the database and deserialize it into SCXML object
-//            String boName = getSrc().split(".")[0];
-//            Session session = HibernateUtil.GetLocalThreadSession();
-//            Transaction transaction = session.beginTransaction();
-//            try{
-//                List boList = session.createQuery(String.format("FROM RenBoEntity WHERE pid = '%s'", currentExecutionContext.Pid)).list();
-//                for(Object bo:boList) {
-//                    RenBoEntity boEntity = (RenBoEntity)bo;
-//                    if(boEntity.getBoName().equals(boName)) {
-//                        byte[] serializedBO = boEntity.getSerialized();
-//                        scxml = SerializationUtil.DeserializationSCXMLByByteArray(serializedBO);
-//                        break;
-//                    }
-//                }
-//            }catch(Exception e) {
-//                e.printStackTrace();
-//                transaction.rollback();
-//                LogUtil.Log("When read bo by rtid, exception occurred, " + e.toString() + ", service rollback",
-//                        LaunchProcessService.class.getName(), LogUtil.LogLevelType.ERROR, currentExecutionContext.Rtid);
-//            }
+
+            if (GlobalContext.IsLocalDebug) {
+                //Ariana:get the serialized BO from the database and deserialize it into SCXML object
+                String boName = getSrc().split(".")[0];
+                Session session = HibernateUtil.GetLocalThreadSession();
+                Transaction transaction = session.beginTransaction();
+                try {
+                    List boList = session.createQuery(String.format("FROM RenBoEntity WHERE pid = '%s'", currentExecutionContext.Pid)).list();
+                    for (Object bo : boList) {
+                        RenBoEntity boEntity = (RenBoEntity) bo;
+                        if (boEntity.getBoName().equals(boName)) {
+                            byte[] serializedBO = boEntity.getSerialized();
+                            scxml = SerializationUtil.DeserializationSCXMLByByteArray(serializedBO);
+                            break;
+                        }
+                    }
+                } catch (Exception e) {
+                    e.printStackTrace();
+                    transaction.rollback();
+                    LogUtil.Log("When read bo by rtid, exception occurred, " + e.toString() + ", service rollback",
+                            LaunchProcessService.class.getName(), LogUtil.LogLevelType.ERROR, currentExecutionContext.Rtid);
+                }
+            }
 
             // launch sub state machine of the number of instances
             TimeInstanceTree iTree = InstanceManager.GetInstanceTree(currentExecutionContext.RootTid);

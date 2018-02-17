@@ -19,7 +19,7 @@ import java.util.Map;
  * Call标签类
  * Created by Rinkako on 2017/3/8.
  */
-public class Call extends NamelistHolder implements Serializable {
+public class Call extends ParamsContainer implements Serializable {
     /**
      * Serial version UID.
      */

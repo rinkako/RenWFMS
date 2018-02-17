@@ -1295,27 +1295,38 @@ public final class SCXMLReader {
         tk.setId(readRequiredAV(reader, ELEM_BOO_TASK, ATTR_ID));
         tk.setName(readAV(reader, ATTR_NAME));
         tk.setBrole(readRequiredAV(reader, ELEM_BOO_TASK, ATTR_BOO_BROLE));
-        // agent和assignee不能同时指定，但必须指定其中一个
-//        String agent = readAV(reader, ATTR_AGENT);
-//        String assignee = readAV(reader, ATTR_ASSIGNEE);
-//        if (assignee != null) {
-//            if (agent != null) {
-//                reportConflictingAttribute(reader, configuration, ELEM_BOO_TASK, ATTR_AGENT, ATTR_ASSIGNEE);
-//            } else {
-//                tk.setAssignee(assignee);
-//            }
-//        } else if (agent == null) {
-//            // force error missing required location or expr: use location attr for this
-//            tk.setAgent(readRequiredAV(reader, ELEM_BOO_TASK, ATTR_AGENT));
-//        } else {
-//            tk.setAgent(agent);
-//        }
         tk.setPrinciple(readAV(reader, ATTR_BOO_PRINCIPLE));
         tk.setEvent(readRequiredAV(reader, ELEM_BOO_TASK, ATTR_EVENT));
         tk.setInstanceExpr(readAV(reader, ATTR_BOO_INSTANCESEXPR));//实际已经没这个属性了
+
+        loop:
+        while (reader.hasNext()) {
+            String name, nsURI;
+            switch (reader.next()) {
+                case XMLStreamConstants.START_ELEMENT:
+                    pushNamespaces(reader, configuration);
+                    nsURI = reader.getNamespaceURI();
+                    name = reader.getLocalName();
+                    if (XMLNS_SCXML.equals(nsURI)) {
+                        if (ELEM_PARAM.equals(name)) {
+                            readParam(reader, configuration, tk);
+                        } else {
+                            reportIgnoredElement(reader, configuration, ELEM_DATAMODEL, nsURI, name);
+                        }
+                    } else {
+                        reportIgnoredElement(reader, configuration, ELEM_DATAMODEL, nsURI, name);
+                    }
+                    break;
+                case XMLStreamConstants.END_ELEMENT:
+                    popNamespaces(reader, configuration);
+                    break loop;
+                default:
+            }
+        }
+
         readNamespaces(configuration, tk);
         tasks.addTask(tk);
-        skipToEndElement(reader);
+        //skipToEndElement(reader);
     }
 
     /**
@@ -1448,20 +1459,21 @@ public final class SCXMLReader {
         Param param = new Param();
         param.setName(readRequiredAV(reader, ELEM_PARAM, ATTR_NAME));
         param.setType(readAV(reader, ATTR_TYPE));
-        String location = readAV(reader, ATTR_LOCATION);
+        //String location = readAV(reader, ATTR_LOCATION);
         String expr = readAV(reader, ATTR_EXPR);
-        if (expr != null) {
-            if (location != null) {
-                reportConflictingAttribute(reader, configuration, ELEM_PARAM, ATTR_LOCATION, ATTR_EXPR);
-            } else {
-                param.setExpr(expr);
-            }
-        } else if (location == null) {
-            // force error missing required location or expr: use location attr for this
-            param.setLocation(readRequiredAV(reader, ELEM_PARAM, ATTR_LOCATION));
-        } else {
-            param.setLocation(location);
-        }
+//        if (expr != null) {
+//            if (location != null) {
+//                reportConflictingAttribute(reader, configuration, ELEM_PARAM, ATTR_LOCATION, ATTR_EXPR);
+//            } else {
+//                param.setExpr(expr);
+//            }
+//        } else if (location == null) {
+//            // force error missing required location or expr: use location attr for this
+//            param.setLocation(readRequiredAV(reader, ELEM_PARAM, ATTR_LOCATION));
+//        } else {
+//            param.setLocation(location);
+//        }
+        param.setExpr(expr);
 
 
         readNamespaces(configuration, param);
@@ -2344,8 +2356,31 @@ public final class SCXMLReader {
         if(readAV(reader, ATTR_BOO_INSTANCES) != null && readAV(reader, ATTR_BOO_INSTANCES).length() > 0){
             call.setInstances(Integer.parseInt(readAV(reader, ATTR_BOO_INSTANCES)));
         }
-        call.setNamelist(readAV(reader, ATTR_NAMELIST));
 
+        loop:
+        while (reader.hasNext()) {
+            String name, nsURI;
+            switch (reader.next()) {
+                case XMLStreamConstants.START_ELEMENT:
+                    pushNamespaces(reader, configuration);
+                    nsURI = reader.getNamespaceURI();
+                    name = reader.getLocalName();
+                    if (XMLNS_SCXML.equals(nsURI)) {
+                        if (ELEM_PARAM.equals(name)) {
+                            readParam(reader, configuration, call);
+                        } else {
+                            reportIgnoredElement(reader, configuration, ELEM_DATAMODEL, nsURI, name);
+                        }
+                    } else {
+                        reportIgnoredElement(reader, configuration, ELEM_DATAMODEL, nsURI, name);
+                    }
+                    break;
+                case XMLStreamConstants.END_ELEMENT:
+                    popNamespaces(reader, configuration);
+                    break loop;
+                default:
+            }
+        }
 
         readNamespaces(configuration, call);
         call.setParent(executable);
@@ -2354,7 +2389,7 @@ public final class SCXMLReader {
         } else {
             executable.addAction(call);
         }
-        skipToEndElement(reader);
+        //skipToEndElement(reader);
     }
 
     /**

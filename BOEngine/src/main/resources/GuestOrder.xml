@@ -7,11 +7,13 @@
  <datamodel>
   <data expr="0" id="startKOCount"></data>
   <data expr="0" id="finishKOCount"></data>
+  <data expr="233" id="mytest"></data>
  </datamodel>
  <tasks>
-    <task id="addItem" brole="waiter" name="addItemTask" event="submit" principle="Random">
-    </task>
+    <task id="addItem" brole="waiter" name="addItemTask" event="submit" principle="Random"></task>
     <task id="updateDeliTime" brole="waiter" name="updateDeliTimeTask" event="updateDeliTimeComplete" principle="Random">
+      <param name="testParam1"></param>
+	  <param name="testParam2"></param>
     </task>
  </tasks>
  <state id="Initial">
@@ -34,7 +36,10 @@
    <transition event="addItem" target="Ordering"></transition>
    
    <transition event="KitchenOrder.delivered">
-     <call name="updateDeliTimeTask"></call>
+     <call name="updateDeliTimeTask">
+	   <param name="testParam1" expr="666"></param>
+	   <param name="testParam2" expr="mytest"></param>
+	 </call>
    </transition>
    <transition event="KitchenOrder.finish">
      <assign location="finishKOCount" expr="finishKOCount + 1"></assign>

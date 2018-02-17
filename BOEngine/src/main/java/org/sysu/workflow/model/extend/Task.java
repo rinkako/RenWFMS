@@ -4,6 +4,7 @@ import org.sysu.workflow.ActionExecutionContext;
 import org.sysu.workflow.SCXMLExpressionException;
 import org.sysu.workflow.model.Action;
 import org.sysu.workflow.model.ModelException;
+import org.sysu.workflow.model.ParamsContainer;
 
 import java.io.Serializable;
 
@@ -11,7 +12,7 @@ import java.io.Serializable;
  * 任务类：为业务对象提供业务方法的定义
  * Created by Rinkako on 2017/3/7.
  */
-public class Task extends Action implements Serializable {
+public class Task extends ParamsContainer implements Serializable {
     /**
      * Serial version UID.
      */
