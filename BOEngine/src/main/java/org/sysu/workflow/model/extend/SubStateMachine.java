@@ -138,7 +138,7 @@ public class SubStateMachine extends NamelistHolder implements PathResolverHolde
 
             SCXMLExecutionContext currentExecutionContext = (SCXMLExecutionContext) exctx.getInternalIOProcessor();
 
-            if (GlobalContext.IsLocalDebug) {
+            if (!GlobalContext.IsLocalDebug) {
                 //Ariana:get the serialized BO from the database and deserialize it into SCXML object
                 String boName = getSrc().split(".")[0];
                 Session session = HibernateUtil.GetLocalThreadSession();
