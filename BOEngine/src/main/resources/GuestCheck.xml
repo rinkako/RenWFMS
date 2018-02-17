@@ -1,86 +1,52 @@
-<businessclass
-        initial="Initial"
-        name="GuestCheck"
-        version="1.0"
-        xmlns="http://www.w3.org/2005/07/scxml">
-
-    <datamodel>
-        <data expr="1" id="Count"></data>
-    </datamodel>
-
-    <tasks>
-        <task id="calculate" brole="agent" name="calculateTask" event="calculated">
-        </task>
-        <task id="Payment" brole="agent" name="paymentTask" event="paid">
-        </task>
-        <task id="archive" brole="agent" name="archiveTask" event="archived">
-        </task>
-    </tasks>
-    <state id="Initial">
-        <transition target="Preparing"></transition>
-    </state>
-    <state id="Preparing">
-        <onentry>
-            <!--<call name="calculateTask"></call>-->
-            <log expr="'GC entering Preparing state'"/>
-        </onentry>
-        <transition event="calculated" target="Paying"></transition>
-        <transition event="test">
-            <log expr="'GC receive the test event from GO'"/>
-        </transition>
-        <onexit>
-            <log expr="'GC exiting Preparing state'"/>
-        </onexit>
-    </state>
-    <state id="Paying">
-        <onentry>
-            <!--<call name="paymentTask"></call>-->
-            <log expr="'GC entering Paying state'"/>
-        </onentry>
-        <transition event="test">
-            <log expr="'GC receive the test event from GO'"/>
-        </transition>
-        <transition event="paid" target="Archiving"></transition>
-        <onexit>
-            <log expr="'GC exiting Paying state'"/>
-        </onexit>
-    </state>
-    <state id="Archiving">
-        <onentry>
-            <!--<call name="archiveTask"></call>-->
-            <log expr="'GC entering Archiving state'"/>
-        </onentry>
-        <transition event="test">
-            <log expr="'GC receive the test event from GO'"/>
-        </transition>
-        <transition event="archived" target="GCFinal">
-            <send event="finish" type="scxml" messageMode="TO_PARENT"></send>
-        </transition>
-        <onexit>
-            <log expr="'GC exiting Archiving state'"/>
-        </onexit>
-    </state>
-    <final id="GCFinal">
-        <onentry>
-            <log expr="'GC entering GCFinal state'"/>
-        </onentry>
-        <onexit>
-            <log expr="'GC exiting GCFinal state'"/>
-        </onexit>
-    </final>
-    <layout h="640" w="570" x="0" y="0">
-        <workflowNode h="75" id="Initial" w="75" x="20" y="220">
-            <workflowEdge event="" source="Initial" target="Preparing"></workflowEdge>
-        </workflowNode>
-        <workflowNode h="75" id="Preparing" w="75" x="140" y="220">
-            <workflowEdge event="calculated" source="Preparing" target="Paying"></workflowEdge>
-        </workflowNode>
-        <workflowNode h="75" id="Paying" w="75" x="310" y="220">
-            <workflowEdge event="paid" source="Paying" target="Archiving"></workflowEdge>
-        </workflowNode>
-        <workflowNode h="75" id="Archiving" w="75" x="310" y="340">
-            <workflowEdge event="archived" source="Archiving" target="Final"></workflowEdge>
-        </workflowNode>
-        <workflowNode h="75" id="Final" w="75" x="140" y="340"></workflowNode>
-    </layout>
+<businessclass initial="Initial" name="GuestCheck" version="1.0" xmlns="http://www.w3.org/2005/07/scxml">
+ <datamodel>
+  <data expr="1" id="Count"></data>
+ </datamodel>
+ <tasks>
+    <task id="calculate" brole="paymentCalculator" name="calculateTask" event="calculated" principle="Random">
+    </task>
+    <task id="Payment" brole="paymentHandler" name="paymentTask" event="paid" principle="Random">
+    </task>
+    <task id="archive" brole="archiveHandler" name="archiveTask" event="archived" principle="Random">
+    </task>
+ </tasks>
+ <state id="Initial">
+  <transition target="Preparing"></transition>
+ </state>
+ <state id="Preparing">
+  <onentry>
+   <call name="calculateTask"></call>
+  </onentry>
+  <transition event="calculated" target="Paying"></transition>
+ </state>
+ <state id="Paying">
+  <onentry>
+   <call name="paymentTask"></call>
+  </onentry>
+  <transition event="paid" target="Archiving"></transition>
+ </state>
+ <state id="Archiving">
+  <onentry>
+   <call name="archiveTask"></call>
+  </onentry>
+  <transition event="archived" target="GCFinal">
+  	<send event="finish" type="scxml" messageMode="TO_PARENT"></send>
+  </transition>
+ </state>
+ <final id="GCFinal"></final>
+ <layout h="640" w="570" x="0" y="0">
+  <workflowNode h="75" id="Initial" w="75" x="20" y="220">
+   <workflowEdge event="" source="Initial" target="Preparing"></workflowEdge>
+  </workflowNode>
+  <workflowNode h="75" id="Preparing" w="75" x="140" y="220">
+   <workflowEdge event="calculated" source="Preparing" target="Paying"></workflowEdge>
+  </workflowNode>
+  <workflowNode h="75" id="Paying" w="75" x="310" y="220">
+   <workflowEdge event="paid" source="Paying" target="Archiving"></workflowEdge>
+  </workflowNode>
+  <workflowNode h="75" id="Archiving" w="75" x="310" y="340">
+   <workflowEdge event="archived" source="Archiving" target="Final"></workflowEdge>
+  </workflowNode>
+  <workflowNode h="75" id="Final" w="75" x="140" y="340"></workflowNode>
+ </layout>
 </businessclass>

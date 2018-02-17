@@ -10,10 +10,8 @@ import org.sysu.renResourcing.ResourcingEngine;
 import org.sysu.renResourcing.restful.dto.ReturnModel;
 import org.sysu.renResourcing.restful.dto.ReturnModelHelper;
 import org.sysu.renResourcing.restful.dto.StatusCode;
-import org.sysu.renResourcing.utility.SerializationUtil;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 
 /**
@@ -27,7 +25,6 @@ import java.util.List;
 public class EngineController {
     /**
      * Submit a task resourcing request from BOEngine.
-     * @param token engine signature token (required)
      * @param rtid process runtime record id (required)
      * @param boname bo name (required)
      * @param taskname task polymorphism name (required)
@@ -37,8 +34,7 @@ public class EngineController {
     @PostMapping(value = "/submitTask", produces = {"application/json", "application/xml"})
     @ResponseBody
     @Transactional
-    public ReturnModel SubmitTask(@RequestParam(value="token", required = false)String token,
-                                  @RequestParam(value="rtid", required = false)String rtid,
+    public ReturnModel SubmitTask(@RequestParam(value="rtid", required = false)String rtid,
                                   @RequestParam(value="boname", required = false)String boname,
                                   @RequestParam(value="taskname", required = false)String taskname,
                                   @RequestParam(value="args", required = false)String args) {
@@ -46,7 +42,6 @@ public class EngineController {
         try {
             // miss params
             List<String> missingParams = new ArrayList<>();
-            if (token == null) missingParams.add("token");
             if (rtid == null) missingParams.add("rtid");
             if (boname == null) missingParams.add("boname");
             if (taskname == null) missingParams.add("taskname");
@@ -66,20 +61,17 @@ public class EngineController {
 
     /**
      * Signal that a process runtime has already finished.
-     * @param token engine signature token (required)
      * @param rtid process runtime record id (required)
      * @return response package
      */
     @PostMapping(value = "/finRtid", produces = {"application/json", "application/xml"})
     @ResponseBody
     @Transactional
-    public ReturnModel FinRtid(@RequestParam(value="token", required = false)String token,
-                               @RequestParam(value="rtid", required = false)String rtid) {
+    public ReturnModel FinRtid(@RequestParam(value="rtid", required = false)String rtid) {
         ReturnModel rnModel = new ReturnModel();
         try {
             // miss params
             List<String> missingParams = new ArrayList<>();
-            if (token == null) missingParams.add("token");
             if (rtid == null) missingParams.add("rtid");
             if (missingParams.size() > 0) {
                 return ReturnModelHelper.MissingParametersResponse(missingParams);

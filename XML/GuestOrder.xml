@@ -9,9 +9,9 @@
   <data expr="0" id="finishKOCount"></data>
  </datamodel>
  <tasks>
-    <task id="addItem" brole="waiter" name="addItemTask" event="submit">
+    <task id="addItem" brole="waiter" name="addItemTask" event="submit" principle="Random">
     </task>
-    <task id="updateDeliTime" brole="waiter" name="updateDeliTimeTask" event="updateDeliTimeComplete">
+    <task id="updateDeliTime" brole="waiter" name="updateDeliTimeTask" event="updateDeliTimeComplete" principle="Random">
     </task>
  </tasks>
  <state id="Initial">

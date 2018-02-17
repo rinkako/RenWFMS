@@ -3,11 +3,11 @@
   <data expr="1" id="Count"></data>
  </datamodel>
  <tasks>
-    <task id="calculate" brole="paymentAgent" name="calculateTask" event="calculated">
+    <task id="calculate" brole="paymentCalculator" name="calculateTask" event="calculated" principle="Random">
     </task>
-    <task id="Payment" brole="paymentAgent" name="paymentTask" event="paid">
+    <task id="Payment" brole="paymentHandler" name="paymentTask" event="paid" principle="Random">
     </task>
-    <task id="archive" brole="archiveAgent" name="archiveTask" event="archived">
+    <task id="archive" brole="archiveHandler" name="archiveTask" event="archived" principle="Random">
     </task>
  </tasks>
  <state id="Initial">

@@ -8,12 +8,13 @@ import org.sysu.workflow.EvaluatorFactory;
 import org.sysu.workflow.SCXMLExecutor;
 import org.sysu.workflow.env.MulitStateMachineDispatcher;
 import org.sysu.workflow.env.SimpleErrorReporter;
-import org.sysu.workflow.env.jexl.JexlEvaluator;
 import org.sysu.workflow.io.SCXMLReader;
 import org.sysu.workflow.model.SCXML;
 import org.sysu.workflow.model.extend.Task;
+import org.sysu.workflow.model.extend.Tasks;
 import org.sysu.workflow.restful.entity.RenBoEntity;
 import org.sysu.workflow.restful.entity.RenProcessEntity;
+import org.sysu.workflow.restful.entity.RenRstaskEntity;
 import org.sysu.workflow.restful.entity.RenRuntimerecordEntity;
 import org.sysu.workflow.restful.utility.HibernateUtil;
 import org.sysu.workflow.restful.utility.LogUtil;
@@ -24,6 +25,7 @@ import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
+import java.util.UUID;
 
 import static org.sysu.workflow.restful.utility.SerializationUtil.DeserializationSCXMLByByteArray;
 
@@ -131,6 +133,20 @@ public final class LaunchProcessService {
                 retSet.addAll(oneInvolves);
                 rbe.setBroles(SerializationUtil.JsonSerialization(oneInvolves, ""));
                 rbe.setSerialized(SerializationUtil.SerializationSCXMLToByteArray(scxml));
+                Tasks tasks = scxml.getTasks();
+                for (Task t : tasks.getTaskList()) {
+                    RenRstaskEntity rrte = new RenRstaskEntity();
+                    rrte.setBoid(boid);
+                    rrte.setTaskid(String.format("TSK_%s", UUID.randomUUID().toString()));
+                    rrte.setHookdescriptor("");  // todo
+                    rrte.setEventdescriptor(String.format("{\"OnComplete\":\"%s\"}", t.getEvent()));  // todo other event
+                    rrte.setDocumentation("");  // todo
+                    rrte.setPrinciple(t.getPrinciple());
+                    rrte.setPolymorphismId(t.getId());
+                    rrte.setPolymorphismName(t.getName());
+                    rrte.setParameters("");  // todo
+                    session.save(rrte);
+                }
             }
             transaction.commit();
             return retSet;
