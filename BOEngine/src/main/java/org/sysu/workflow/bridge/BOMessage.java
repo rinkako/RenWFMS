@@ -1,4 +1,4 @@
-package org.sysu.workflow.entity;
+package org.sysu.workflow.bridge;
 
 import org.apache.commons.collections.map.HashedMap;
 

@@ -7,7 +7,6 @@ import org.sysu.workflow.ActionExecutionContext;
 import org.sysu.workflow.Context;
 import org.sysu.workflow.model.EnterableState;
 import org.sysu.workflow.model.ModelException;
-import org.sysu.workflow.model.NamelistHolder;
 import org.sysu.workflow.model.ParamsContainer;
 
 import java.io.Serializable;
@@ -68,7 +67,7 @@ public class Call extends ParamsContainer implements Serializable {
     }
 
     /**
-     * Execute RPC
+     * Execute Call, send request to resource service.
      * @param exctx The ActionExecutionContext for this execution instance
      * @throws ModelException
      * @throws SCXMLExpressionException
@@ -94,7 +93,7 @@ public class Call extends ParamsContainer implements Serializable {
                     //判断一个task的名字与当前call标签的name是否相同
                     //todo
                     if (t.getName().equals(this.name)) {
-                        // Send Message to APP
+                        // Send Message to APP  // todo send to RS
                         EngineBridge.QuickEnqueueBOMessage(scxmlExecContext.getSCXMLExecutor().getExecutorIndex(),
                                 this.name, payloadDataMap, t.getBrole(), t.getEvent());
                         successFlag = true;

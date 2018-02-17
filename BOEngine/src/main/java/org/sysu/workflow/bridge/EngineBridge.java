@@ -2,7 +2,6 @@ package org.sysu.workflow.bridge;
 
 import org.sysu.workflow.SCXMLExecutor;
 import org.sysu.workflow.TriggerEvent;
-import org.sysu.workflow.entity.BOMessage;
 import org.sysu.workflow.model.ModelException;
 
 import java.io.File;

@@ -2,13 +2,11 @@ package org.sysu.workflow.model.extend;
 
 import org.hibernate.Session;
 import org.hibernate.Transaction;
-import org.sysu.workflow.bridge.InheritableContext;
-import org.sysu.workflow.engine.InstanceManager;
-import org.sysu.workflow.engine.TimeInstanceTree;
-import org.sysu.workflow.engine.TimeTreeNode;
+import org.sysu.workflow.instanceTree.InstanceManager;
+import org.sysu.workflow.instanceTree.TimeInstanceTree;
+import org.sysu.workflow.instanceTree.TimeTreeNode;
 import org.sysu.workflow.env.MulitStateMachineDispatcher;
 import org.sysu.workflow.env.SimpleErrorReporter;
-import org.sysu.workflow.io.BOInheritHandler;
 import org.sysu.workflow.io.SCXMLReader;
 import org.sysu.workflow.*;
 import org.sysu.workflow.model.*;

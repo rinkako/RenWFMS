@@ -1,4 +1,4 @@
-package org.sysu.workflow.engine;
+package org.sysu.workflow.instanceTree;
 
 import org.sysu.workflow.SCXMLExecutionContext;
 import org.sysu.workflow.SCXMLExecutor;
