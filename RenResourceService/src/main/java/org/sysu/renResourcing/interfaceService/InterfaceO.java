@@ -37,7 +37,7 @@ public class InterfaceO {
      */
     public static HashSet<ParticipantContext> GetCurrentValidParticipant(String rtid) {
         HashSet<ParticipantContext> retSet = new HashSet<>();
-        Session session = HibernateUtil.GetLocalThreadSession();
+        Session session = HibernateUtil.GetLocalSession();
         Transaction transaction = session.beginTransaction();
         boolean cmtFlag = false;
         try {
@@ -59,6 +59,9 @@ public class InterfaceO {
                 transaction.rollback();
             }
             throw ex;
+        }
+        finally {
+            HibernateUtil.CloseLocalSession();
         }
     }
 

@@ -9,6 +9,7 @@ import org.sysu.renResourcing.context.WorkitemContext;
 
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.UUID;
 
 /**
  * Author: Rinkako
@@ -24,14 +25,20 @@ public class EmptyFilter extends RFilter {
             "nothing to a candidate set, return it as nothing happened.";
 
     /**
+     * Constructor for reflect.
+     */
+    public EmptyFilter() {
+        this("Filter_" + UUID.randomUUID().toString(), EmptyFilter.class.getName(), null);
+    }
+
+    /**
      * Create a new filter.
      *
      * @param id          unique id for selector fetching
      * @param type        type name string
-     * @param description selector description text
      * @param args        parameter dictionary in HashMap
      */
-    public EmptyFilter(String id, String type, String description, HashMap<String, String> args) {
+    public EmptyFilter(String id, String type, HashMap<String, String> args) {
         super(id, type, EmptyFilter.Descriptor, args);
     }
 

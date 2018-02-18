@@ -21,7 +21,7 @@ import java.util.Observer;
  *         Tracker is running asynchronously, and when it is needed,
  *         it will notify the main scheduler about the changes.
  */
-final class RTracker extends Observable implements Observer, Runnable {
+public class RTracker extends Observable implements Observer, Runnable {
 
     /**
      * Create a new tracker.

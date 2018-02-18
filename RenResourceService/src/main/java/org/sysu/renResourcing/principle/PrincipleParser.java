@@ -13,11 +13,6 @@ import org.sysu.renResourcing.basic.enums.PrincipleDialectType;
  */
 public final class PrincipleParser {
 
-    // set default dialect
-    static {
-        PrincipleParser.SetParser(PrincipleDialectType.RenSimplePrincipleGrammar);
-    }
-
     /**
      * Parse principle descriptor to RPrinciple object.
      * @param principleDescriptor principle descriptor string
@@ -32,7 +27,7 @@ public final class PrincipleParser {
      * @param type grammar dialect enum
      */
     public static void SetParser(PrincipleDialectType type) {
-        if (PrincipleParser.dialectType != type) {
+        if (PrincipleParser.parser == null || PrincipleParser.dialectType != type) {
             PrincipleParser.dialectType = type;
             switch (type) {
                 case RenSimplePrincipleGrammar:
@@ -47,10 +42,10 @@ public final class PrincipleParser {
     /**
      * Current parser.
      */
-    private static PrincipleGrammar parser = null;
+    private static PrincipleGrammar parser = new RenSimplePrincipleGrammar();
 
     /**
      * Current parser dialect type.
      */
-    private static PrincipleDialectType dialectType = null;
+    private static PrincipleDialectType dialectType = PrincipleDialectType.RenSimplePrincipleGrammar;
 }

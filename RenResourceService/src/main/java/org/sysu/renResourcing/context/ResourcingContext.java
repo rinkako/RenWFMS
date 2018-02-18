@@ -102,7 +102,7 @@ public class ResourcingContext implements Comparable<ResourcingContext>, Seriali
                 return cachedCtx;
             }
         }
-        Session session = HibernateUtil.GetLocalThreadSession();
+        Session session = HibernateUtil.GetLocalSession();
         Transaction transaction = session.beginTransaction();
         boolean cmtFlag = false;
         try {
@@ -141,6 +141,9 @@ public class ResourcingContext implements Comparable<ResourcingContext>, Seriali
                     TaskContext.class.getName(), LogUtil.LogLevelType.ERROR, rtid);
             return null;
         }
+        finally {
+            HibernateUtil.CloseLocalSession();
+        }
     }
 
     /**
@@ -153,7 +156,7 @@ public class ResourcingContext implements Comparable<ResourcingContext>, Seriali
                     LogUtil.LogLevelType.WARNING, "");
             return;
         }
-        Session session = HibernateUtil.GetLocalThreadSession();
+        Session session = HibernateUtil.GetLocalSession();
         Transaction transaction = session.beginTransaction();
         try {
             RenRsrecordEntity rre = session.get(RenRsrecordEntity.class, context.rstid);
@@ -168,6 +171,9 @@ public class ResourcingContext implements Comparable<ResourcingContext>, Seriali
             transaction.rollback();
             LogUtil.Log("Save resourcing request context but exception occurred, " + ex,
                     TaskContext.class.getName(), LogUtil.LogLevelType.ERROR, context.getRtid());
+        }
+        finally {
+            HibernateUtil.CloseLocalSession();
         }
     }
 

@@ -83,6 +83,27 @@ public class TaskContext implements Serializable, RCacheablesContext {
     private ArrayList<String> parameters = new ArrayList<>();
 
     /**
+     * Parse hash map into task context.
+     * @param mapObj mapped object
+     * @return context object
+     */
+    @SuppressWarnings("unchecked")
+    public static TaskContext ParseHashMap(HashMap mapObj) {
+        TaskContext tc = new TaskContext();
+        tc.taskGlobalId = (String) mapObj.get("taskGlobalId");
+        tc.taskId = (String) mapObj.get("taskId");
+        tc.taskName = (String) mapObj.get("taskName");
+        tc.principle = (String) mapObj.get("principle");
+        tc.boid = (String) mapObj.get("boid");
+        tc.pid = (String) mapObj.get("pid");
+        tc.documentation = (String) mapObj.get("documentation");
+        tc.hooks = (HashMap<String, String>) mapObj.get("notifyHooks");
+        tc.callbacks = (HashMap<String, String>) mapObj.get("callbackEvents");
+        tc.parameters = (ArrayList<String>) mapObj.get("parameters");
+        return tc;
+    }
+
+    /**
      * Get a task context by its name and belonging BO name of one runtime.
      * @param rtid runtime record id
      * @param boName belong to BO id
@@ -107,7 +128,7 @@ public class TaskContext implements Serializable, RCacheablesContext {
         if (cachedCtx != null && !forceReload) {
             return cachedCtx;
         }
-        Session session = HibernateUtil.GetLocalThreadSession();
+        Session session = HibernateUtil.GetLocalSession();
         Transaction transaction = session.beginTransaction();
         boolean cmtFlag = false;
         try {
@@ -131,6 +152,9 @@ public class TaskContext implements Serializable, RCacheablesContext {
             LogUtil.Log("When json serialization exception occurred, transaction rollback. " + ex,
                     TaskContext.class.getName(), LogUtil.LogLevelType.ERROR, rtid);
             return null;
+        }
+        finally {
+            HibernateUtil.CloseLocalSession();
         }
     }
 
@@ -229,7 +253,7 @@ public class TaskContext implements Serializable, RCacheablesContext {
      */
     @SuppressWarnings("unchecked")
     private void ParseCallbacks(String callbackJSONDescriptor) {
-        this.hooks = SerializationUtil.JsonDeserialization(callbackJSONDescriptor, HashMap.class);
+        this.callbacks = SerializationUtil.JsonDeserialization(callbackJSONDescriptor, HashMap.class);
     }
 
     /**
@@ -266,6 +290,7 @@ public class TaskContext implements Serializable, RCacheablesContext {
         if (!CommonUtil.IsNullOrEmpty(parametersDescriptor)) {
             context.ParseParameters(parametersDescriptor);
         }
+        context.taskGlobalId = rstaskEntity.getTaskid();
         return context;
     }
 
@@ -287,4 +312,10 @@ public class TaskContext implements Serializable, RCacheablesContext {
         this.principle = principle;
         this.documentation = documentation;
     }
+
+    /**
+     * Create a new context.
+     * Private constructor for preventing create context without using `{@code TaskContext.GetContext}`.
+     */
+    private TaskContext() { }
 }

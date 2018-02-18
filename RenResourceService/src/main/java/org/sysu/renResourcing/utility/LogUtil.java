@@ -112,6 +112,7 @@ public final class LogUtil {
 //                rnle.setTimestamp(lmp.Timestamp);
 //                session.save(rnle);
 //            }
+//            session.flush();
 //        }
 //        catch (Exception ex) {
 //            LogUtil.Echo("Flush log exception, " + ex, LogUtil.class.getName(), LogLevelType.ERROR);

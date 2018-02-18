@@ -15,6 +15,7 @@ import org.sysu.renResourcing.plugin.evaluator.RJexlMapContext;
 
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.UUID;
 
 /**
  * Author: Rinkako
@@ -41,14 +42,20 @@ public class QueueLengthFilter extends RFilter {
     private Expression conditionExprObj;
 
     /**
+     * Constructor for reflect.
+     */
+    public QueueLengthFilter() {
+        this("Filter_" + UUID.randomUUID().toString(), QueueLengthFilter.class.getName(), null);
+    }
+
+    /**
      * Create a new filter.
      *
      * @param id          unique id for selector fetching
      * @param type        type name string
-     * @param description selector description text
      * @param args        parameter dictionary in HashMap
      */
-    public QueueLengthFilter(String id, String type, String description, HashMap<String, String> args) {
+    public QueueLengthFilter(String id, String type, HashMap<String, String> args) {
         super(id, type, QueueLengthFilter.Descriptor, args);
     }
 

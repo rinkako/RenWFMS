@@ -10,6 +10,7 @@ import org.sysu.renResourcing.utility.CommonUtil;
 
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.UUID;
 
 /**
  * Author: Rinkako
@@ -23,6 +24,13 @@ public class RandomAllocator extends RAllocator {
      */
     public static final String Descriptor = "The random allocator chooses " +
             "from a distribution set the participant randomly.";
+
+    /**
+     * Constructor for reflect.
+     */
+    public RandomAllocator() {
+        this("Allocator_" + UUID.randomUUID().toString(), RandomAllocator.class.getName(), null);
+    }
 
     /**
      * Create a new allocator.

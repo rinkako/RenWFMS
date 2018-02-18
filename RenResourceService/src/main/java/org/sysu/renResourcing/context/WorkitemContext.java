@@ -82,7 +82,7 @@ public class WorkitemContext implements Serializable, RCacheablesContext {
         if (cachedCtx != null && !forceReload) {
             return cachedCtx;
         }
-        Session session = HibernateUtil.GetLocalThreadSession();
+        Session session = HibernateUtil.GetLocalSession();
         Transaction transaction = session.beginTransaction();
         boolean cmtFlag = false;
         try {
@@ -103,6 +103,9 @@ public class WorkitemContext implements Serializable, RCacheablesContext {
                     WorkitemContext.class.getName(), LogUtil.LogLevelType.ERROR, rtid);
             throw ex;
         }
+        finally {
+            HibernateUtil.CloseLocalSession();
+        }
     }
 
     /**
@@ -119,7 +122,7 @@ public class WorkitemContext implements Serializable, RCacheablesContext {
                     WorkitemContext.class.getName(), LogUtil.LogLevelType.ERROR, rtid);
             return null;
         }
-        Session session = HibernateUtil.GetLocalThreadSession();
+        Session session = HibernateUtil.GetLocalSession();
         Transaction transaction = session.beginTransaction();
         boolean cmtFlag = false;
         try {
@@ -153,6 +156,9 @@ public class WorkitemContext implements Serializable, RCacheablesContext {
                     WorkitemContext.class.getName(), LogUtil.LogLevelType.ERROR, rtid);
             throw ex;
         }
+        finally {
+            HibernateUtil.CloseLocalSession();
+        }
     }
 
     /**
@@ -165,7 +171,7 @@ public class WorkitemContext implements Serializable, RCacheablesContext {
                     LogUtil.LogLevelType.WARNING, "");
             return;
         }
-        Session session = HibernateUtil.GetLocalThreadSession();
+        Session session = HibernateUtil.GetLocalSession();
         Transaction transaction = session.beginTransaction();
         try {
             session.update(context.entity);
@@ -175,6 +181,9 @@ public class WorkitemContext implements Serializable, RCacheablesContext {
             transaction.rollback();
             LogUtil.Log("Save workitem context but exception occurred, " + ex,
                     WorkitemContext.class.getName(), LogUtil.LogLevelType.ERROR, context.getEntity().getRtid());
+        }
+        finally {
+            HibernateUtil.CloseLocalSession();
         }
     }
 

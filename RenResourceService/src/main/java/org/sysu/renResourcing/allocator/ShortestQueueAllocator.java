@@ -11,6 +11,7 @@ import org.sysu.renResourcing.context.WorkitemContext;
 
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.UUID;
 
 /**
  * Author: Rinkako
@@ -26,6 +27,13 @@ public class ShortestQueueAllocator extends RAllocator {
             "chooses from a distribution set the participant with the " +
             "shortest Allocated queue (i.e. the least number of workitems " +
             "in the Allocated queue).";
+
+    /**
+     * Constructor for reflect.
+     */
+    public ShortestQueueAllocator() {
+        this("Allocator_" + UUID.randomUUID().toString(), ShortestQueueAllocator.class.getName(), null);
+    }
 
     /**
      * Create a new allocator.

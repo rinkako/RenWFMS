@@ -20,7 +20,7 @@ public class CommonUtil {
      * @return boolean of result
      */
     public static boolean IsNullOrEmpty(String str) {
-        return str != null && !str.equals("");
+        return str == null || str.equals("");
     }
 
     /**

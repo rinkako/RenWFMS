@@ -36,7 +36,7 @@ public class ResourcingEngine {
      * @return response package
      */
     public static String EngineSubmitTask(String rtid, String boName, String polymorphismName, String arguments) {
-        Session session = HibernateUtil.GetLocalThreadSession();
+        Session session = HibernateUtil.GetLocalSession();
         Transaction transaction = session.beginTransaction();
         boolean cmtFlag = false;
         try {
@@ -62,6 +62,9 @@ public class ResourcingEngine {
             LogUtil.Log("Exception in EngineSubmitTask, " + ex, ResourcingEngine.class.getName(),
                     LogUtil.LogLevelType.ERROR, rtid);
             throw ex;  // rethrow to cause exception response
+        }
+        finally {
+            HibernateUtil.CloseLocalSession();
         }
     }
 

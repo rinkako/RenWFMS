@@ -22,7 +22,7 @@ import java.util.concurrent.locks.ReentrantLock;
  *         all be encapsulated as a {@code ResourcingContext}, and a {@code RTracker}
  *         will be created for controlling its lifecycle.
  */
-public final class RScheduler implements Observer {
+public class RScheduler implements Observer {
     /**
      * Global static instance.
      */
@@ -100,7 +100,7 @@ public final class RScheduler implements Observer {
      * Actually handle a workitem launching.
      * @param context resourcing request context to be fired
      */
-    private void LaunchTracker(ResourcingContext context) {
+    void LaunchTracker(ResourcingContext context) {
         RTracker tracker = new RTracker(context);
         this.trackerVectorLock.lock();
         try {
@@ -155,6 +155,9 @@ public final class RScheduler implements Observer {
                 LogUtil.Log(String.format("Achieving resourcing context but exception occurred: %s, %s", ex, ex2),
                         RScheduler.class.getName(), LogUtil.LogLevelType.ERROR, "");
             }
+        }
+        finally {
+            this.HandlePendingQueue();
         }
     }
 

@@ -22,10 +22,7 @@ import org.sysu.renResourcing.utility.HibernateUtil;
 import org.sysu.renResourcing.utility.LogUtil;
 
 import java.sql.Timestamp;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.*;
 
 /**
  * Author: Rinkako
@@ -41,10 +38,11 @@ public class InterfaceB {
      * @param ctx rs context
      */
     public static void PerformEngineSubmitTask(ResourcingContext ctx) throws Exception {
-        TaskContext taskContext = (TaskContext) ctx.getArgs().get("taskContext");
+        LinkedHashMap mapTaskCtx = (LinkedHashMap) ctx.getArgs().get("taskContext");
+        TaskContext taskContext = TaskContext.ParseHashMap(mapTaskCtx);
         // use runtime record to get the admin auth name for admin queue identifier
         RenRuntimerecordEntity runtimeRecord;
-        Session session = HibernateUtil.GetLocalThreadSession();
+        Session session = HibernateUtil.GetLocalSession();
         Transaction transaction = session.beginTransaction();
         try {
             runtimeRecord = session.get(RenRuntimerecordEntity.class, ctx.getRtid());
@@ -57,14 +55,22 @@ public class InterfaceB {
                     InterfaceB.class.getName(), LogUtil.LogLevelType.ERROR, ctx.getRtid());
             throw ex;
         }
+        finally {
+            HibernateUtil.CloseLocalSession();
+        }
         // get auth user name, session like "AUTH_admin_c880d4c9-934c-4d73-9006-22e588400000"
         String adminQueuePostfix = runtimeRecord.getSessionId().split("_")[1];
         assert taskContext != null;
         RPrinciple principle = PrincipleParser.Parse(taskContext.getPrinciple());
+        if (principle == null) {
+            LogUtil.Log(String.format("Cannot parse principle %s", taskContext.getPrinciple()), InterfaceB.class.getName(),
+                    LogUtil.LogLevelType.ERROR, ctx.getRtid());
+            return;
+        }
         // generate workitem
         WorkitemContext workitem = WorkitemContext.GenerateContext(taskContext, ctx.getRtid(), (ArrayList) ctx.getArgs().get("taskArgumentsVector"));
         assert workitem != null;
-        // get valid resources
+        // get valid resources  // TODO here should handle Business Role mapping, not all valid participant
         HashSet<ParticipantContext> validParticipants = InterfaceO.GetCurrentValidParticipant(ctx.getRtid());
         if (validParticipants.isEmpty()) {
             LogUtil.Log("A task cannot be allocated to any valid resources, so it will be put into admin unoffered queue.",
@@ -211,7 +217,7 @@ public class InterfaceB {
             // start by admin
             if (workitem.getEntity().getResourceStatus().equals(WorkitemResourcingStatusType.Unoffered.name())) {
                 RenRuntimerecordEntity runtimeRecord;
-                Session session = HibernateUtil.GetLocalThreadSession();
+                Session session = HibernateUtil.GetLocalSession();
                 Transaction transaction = session.beginTransaction();
                 try {
                     runtimeRecord = session.get(RenRuntimerecordEntity.class, workitem.getEntity().getRtid());
@@ -222,6 +228,9 @@ public class InterfaceB {
                     LogUtil.Log("ParticipantStart get Runtime record failed. " + ex2,
                             InterfaceB.class.getName(), LogUtil.LogLevelType.ERROR, workitem.getEntity().getRtid());
                     return false;
+                }
+                finally {
+                    HibernateUtil.CloseLocalSession();
                 }
                 // get admin queue for this auth user
                 String adminQueuePostfix = runtimeRecord.getSessionId().split("_")[1];

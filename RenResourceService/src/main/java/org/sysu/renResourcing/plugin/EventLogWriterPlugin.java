@@ -5,6 +5,7 @@
 package org.sysu.renResourcing.plugin;
 
 import org.hibernate.Session;
+import org.hibernate.Transaction;
 import org.sysu.renResourcing.context.steady.RenRseventlogEntity;
 import org.sysu.renResourcing.utility.HibernateUtil;
 import org.sysu.renResourcing.utility.LogUtil;
@@ -56,26 +57,29 @@ public class EventLogWriterPlugin extends AsyncRunnablePlugin {
     @Override
     public void run() {
         this.isRunning = true;
-        this.WriteWithoutTransaction();
+        this.DoWrite();
     }
 
     /**
      * Write a log to steady asynchronously.
      */
-    private void WriteWithoutTransaction() {
+    private void DoWrite() {
         if (logEvtQueue == null || logEvtQueue.isEmpty()) {
             return;
         }
+        Session session = HibernateUtil.GetLocalSession();
         while (!logEvtQueue.isEmpty()) {
             RenRseventlogEntity eventEntity = logEvtQueue.poll();
             try {
-                Session session = HibernateUtil.GetLocalThreadSession();
                 session.save(eventEntity);
-            } catch (Exception ex) {
+            }
+            catch (Exception ex) {
                 LogUtil.Echo(String.format("Fail to insert RS event log to steady. (Wid: %s, Pid: %s, WorkerId: %s, Evt: %s), %s",
                         eventEntity.getWid(), eventEntity.getProcessid(), eventEntity.getWorkerid(), eventEntity.getEvent(), ex),
                         EventLogWriterPlugin.class.getName(), LogUtil.LogLevelType.ERROR);
             }
         }
+        session.flush();
+        HibernateUtil.CloseLocalSession();
     }
 }

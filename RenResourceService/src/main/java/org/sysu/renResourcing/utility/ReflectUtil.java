@@ -56,12 +56,12 @@ public final class ReflectUtil {
     /**
      * Package path of Allocators.
      */
-    private static final String ALLOCATOR_PACKAGE_PATH = "allocator.";
+    private static final String ALLOCATOR_PACKAGE_PATH = "org.sysu.renResourcing.allocator.";
 
     /**
      * Package path of Allocators.
      */
-    private static final String FILTER_PACKAGE_PATH = "filter.";
+    private static final String FILTER_PACKAGE_PATH = "org.sysu.renResourcing.filter.";
 
     /**
      * Postfix of Allocator.

@@ -72,7 +72,7 @@ public class ParticipantContext implements Serializable, RCacheablesContext {
         if (cachedCtx != null && !forceReload) {
             return cachedCtx;
         }
-        Session session = HibernateUtil.GetLocalThreadSession();
+        Session session = HibernateUtil.GetLocalSession();
         Transaction transaction = session.beginTransaction();
         boolean cmtFlag = false;
         try {
@@ -90,6 +90,9 @@ public class ParticipantContext implements Serializable, RCacheablesContext {
             LogUtil.Log("When json serialization exception occurred, transaction rollback. " + ex,
                     TaskContext.class.getName(), LogUtil.LogLevelType.ERROR, rtid);
             return null;
+        }
+        finally {
+            HibernateUtil.CloseLocalSession();
         }
     }
 

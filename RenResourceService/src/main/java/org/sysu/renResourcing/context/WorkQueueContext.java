@@ -231,7 +231,7 @@ public class WorkQueueContext implements Serializable, RCacheablesContext {
         if (retCtx != null && !forceReload) {
             return retCtx;
         }
-        Session session = HibernateUtil.GetLocalThreadSession();
+        Session session = HibernateUtil.GetLocalSession();
         Transaction transaction = session.beginTransaction();
         boolean cmtFlag = false;
         try {
@@ -258,6 +258,9 @@ public class WorkQueueContext implements Serializable, RCacheablesContext {
             LogUtil.Log(String.format("Get WorkQueueContext (owner: %s, type: %s) exception occurred, %s", ownerWorkerId, queueType.name(), ex),
                     WorkQueueContext.class.getName(), LogUtil.LogLevelType.ERROR, "");
             throw ex;
+        }
+        finally {
+            HibernateUtil.CloseLocalSession();
         }
     }
 
@@ -346,7 +349,7 @@ public class WorkQueueContext implements Serializable, RCacheablesContext {
         if (this.type == WorkQueueType.WORKLISTED) {
             return;
         }
-        Session session = HibernateUtil.GetLocalThreadSession();
+        Session session = HibernateUtil.GetLocalSession();
         Transaction transaction = session.beginTransaction();
         try {
             for (String workitemId : removeSet) {
@@ -363,6 +366,9 @@ public class WorkQueueContext implements Serializable, RCacheablesContext {
                         this.queueId, this.ownerWorkerId, this.type.name(), ex), WorkQueueContext.class.getName(),
                         LogUtil.LogLevelType.ERROR, "");
             throw ex;
+        }
+        finally {
+            HibernateUtil.CloseLocalSession();
         }
     }
 
@@ -388,7 +394,7 @@ public class WorkQueueContext implements Serializable, RCacheablesContext {
         if (this.type == WorkQueueType.WORKLISTED) {
             return;
         }
-        Session session = HibernateUtil.GetLocalThreadSession();
+        Session session = HibernateUtil.GetLocalSession();
         Transaction transaction = session.beginTransaction();
         try {
             for (WorkitemContext workitem : addSet) {
@@ -410,6 +416,9 @@ public class WorkQueueContext implements Serializable, RCacheablesContext {
                     LogUtil.LogLevelType.ERROR, "");
             throw ex;
         }
+        finally {
+            HibernateUtil.CloseLocalSession();
+        }
     }
 
     /**
@@ -422,7 +431,7 @@ public class WorkQueueContext implements Serializable, RCacheablesContext {
         if (this.type == WorkQueueType.WORKLISTED) {
             return;
         }
-        Session session = HibernateUtil.GetLocalThreadSession();
+        Session session = HibernateUtil.GetLocalSession();
         Transaction transaction = session.beginTransaction();
         boolean cmtFlag = false;
         try {
@@ -444,6 +453,9 @@ public class WorkQueueContext implements Serializable, RCacheablesContext {
                     this.queueId, this.ownerWorkerId, this.type.name(), ex), WorkQueueContext.class.getName(),
                     LogUtil.LogLevelType.ERROR, "");
             throw ex;
+        }
+        finally {
+            HibernateUtil.CloseLocalSession();
         }
     }
 

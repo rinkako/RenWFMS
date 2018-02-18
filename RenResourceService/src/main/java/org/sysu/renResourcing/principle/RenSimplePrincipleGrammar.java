@@ -40,16 +40,18 @@ public class RenSimplePrincipleGrammar implements PrincipleGrammar {
         try {
             assert descriptor != null;
             String[] descriptorItems = descriptor.split("@");
-            assert descriptorItems.length >= 3;
+            assert descriptorItems.length >= 2;
             RPrinciple retPrinciple = new RPrinciple();
             WorkitemDistributionType distributionType = WorkitemDistributionType.valueOf(descriptorItems[0]);
-            HashMap filterArgs = SerializationUtil.JsonDeserialization(descriptorItems[2], HashMap.class);
+            HashMap filterArgs = descriptorItems.length >= 3 ? SerializationUtil.JsonDeserialization(descriptorItems[2], HashMap.class) : new HashMap();
             retPrinciple.SetParsed(distributionType, descriptorItems[1], filterArgs);
-            ArrayList constraints = SerializationUtil.JsonDeserialization(descriptorItems[3], ArrayList.class);
-            ArrayList constraintArgs = SerializationUtil.JsonDeserialization(descriptorItems[4], ArrayList.class);
-            assert constraints != null && constraintArgs != null && constraintArgs.size() == constraints.size();
-            for (int i = 0; i < constraints.size(); i++) {
-                retPrinciple.AddConstraint((String) constraints.get(i), (HashMap) constraintArgs.get(i));
+            if (descriptorItems.length > 3) {
+                ArrayList constraints = SerializationUtil.JsonDeserialization(descriptorItems[3], ArrayList.class);
+                ArrayList constraintArgs = SerializationUtil.JsonDeserialization(descriptorItems[4], ArrayList.class);
+                assert constraints != null && constraintArgs != null && constraintArgs.size() == constraints.size();
+                for (int i = 0; i < constraints.size(); i++) {
+                    retPrinciple.AddConstraint((String) constraints.get(i), (HashMap) constraintArgs.get(i));
+                }
             }
             return retPrinciple;
         }
