@@ -41,6 +41,7 @@ public abstract class PayloadProvider extends Action {
     @SuppressWarnings("unchecked")
     protected void addToPayload(final String attrName, final Object attrValue, Map<String, Object> payload) {
         DataValueList valueList = null;
+        //get the original value of the attribute
         Object value = payload.get(attrName);
         if (value != null) {
             if (value instanceof DataValueList) {

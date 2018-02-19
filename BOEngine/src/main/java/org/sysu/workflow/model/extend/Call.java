@@ -1,15 +1,17 @@
 package org.sysu.workflow.model.extend;
 
-import org.sysu.workflow.SCXMLExecutionContext;
-import org.sysu.workflow.SCXMLExpressionException;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.sysu.workflow.*;
 import org.sysu.workflow.bridge.EngineBridge;
-import org.sysu.workflow.ActionExecutionContext;
-import org.sysu.workflow.Context;
 import org.sysu.workflow.model.EnterableState;
 import org.sysu.workflow.model.ModelException;
 import org.sysu.workflow.model.ParamsContainer;
+import org.sysu.workflow.restful.utility.HttpClientUtil;
+import org.sysu.workflow.restful.utility.LogUtil;
+import org.sysu.workflow.restful.utility.SerializationUtil;
 
 import java.io.Serializable;
+import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
@@ -91,11 +93,24 @@ public class Call extends ParamsContainer implements Serializable {
             if(!taskList.isEmpty()){
                 for (Task t : taskList) {
                     //判断一个task的名字与当前call标签的name是否相同
-                    //todo
                     if (t.getName().equals(this.name)) {
-                        // Send Message to APP  // todo send to RS
-                        EngineBridge.QuickEnqueueBOMessage(scxmlExecContext.getSCXMLExecutor().getExecutorIndex(),
-                                this.name, payloadDataMap, t.getBrole(), t.getEvent());
+                        // send to RS
+                        HashMap<String, String> args = new HashMap<String, String>();
+                        args.put("taskname", this.name);
+                        args.put("boname", scxmlExecContext.getSCXMLExecutor().getStateMachine().getName());
+                        //params of the task
+                        String params = SerializationUtil.JsonSerialization(payloadDataMap, scxmlExecContext.Rtid);
+                        args.put("args", params);
+                        args.put("rtid", scxmlExecContext.Rtid);
+                        try{
+                            HttpClientUtil.SendPost(GlobalContext.URL_RS_SUBMITTASK, args, scxmlExecContext.Rtid);
+                        }catch(Exception e){
+                            LogUtil.Log("When submit task to resource service, exception occurred, " + e.toString(),
+                                    Call.class.getName(), LogUtil.LogLevelType.ERROR, scxmlExecContext.Rtid);
+                        }
+                        // Send Message to APP
+//                        EngineBridge.QuickEnqueueBOMessage(scxmlExecContext.getSCXMLExecutor().getExecutorIndex(),
+//                                this.name, payloadDataMap, t.getBrole(), t.getEvent());
                         successFlag = true;
                         break;
                     }
@@ -104,8 +119,23 @@ public class Call extends ParamsContainer implements Serializable {
                 for(SubProcess subProcess : processList){
                     //判断一个subprocess的名字与当前call标签的subprocess的name是否相同
                     if(subProcess.getName().equals(this.name)){
-                        EngineBridge.QuickEnqueueBOMessage(scxmlExecContext.getSCXMLExecutor().getExecutorIndex(),
-                                this.name, subProcess.getSrc(),payloadDataMap, subProcess.getEvents());
+                        // send to RS
+                        HashMap<String, String> args = new HashMap<String, String>();
+                        args.put("taskname", this.name);
+                        args.put("boname", scxmlExecContext.getSCXMLExecutor().getStateMachine().getName());
+                        //params of the task
+                        String params = SerializationUtil.JsonSerialization(payloadDataMap, scxmlExecContext.Rtid);
+                        args.put("args", params);
+                        args.put("rtid", scxmlExecContext.Rtid);
+                        try{
+                            HttpClientUtil.SendPost(GlobalContext.URL_RS_SUBMITTASK, args, scxmlExecContext.Rtid);
+                        }catch(Exception e){
+                            LogUtil.Log("When submit task to resource service, exception occurred, " + e.toString(),
+                                    Call.class.getName(), LogUtil.LogLevelType.ERROR, scxmlExecContext.Rtid);
+                        }
+                        // Send Message to APP
+//                        EngineBridge.QuickEnqueueBOMessage(scxmlExecContext.getSCXMLExecutor().getExecutorIndex(),
+//                                this.name, subProcess.getSrc(),payloadDataMap, subProcess.getEvents());
                         System.out.println("test : begin invoking a sub process!!!!");
                         successFlag = true;
                         break;
