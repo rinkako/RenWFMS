@@ -125,7 +125,7 @@ public class SubStateMachine extends NamelistHolder implements PathResolverHolde
             }
 
             SCXML scxml = null;
-//            // init sub state machine SCXML object
+            //read local BO
             try {
                 scxml = SCXMLReader.read(url);
             } catch (Exception e) {
@@ -136,6 +136,7 @@ public class SubStateMachine extends NamelistHolder implements PathResolverHolde
 
             SCXMLExecutionContext currentExecutionContext = (SCXMLExecutionContext) exctx.getInternalIOProcessor();
 
+            //read BO from database
             if (!GlobalContext.IsLocalDebug) {
                 //Ariana:get the serialized BO from the database and deserialize it into SCXML object
                 String boName = getSrc().split(".")[0];
