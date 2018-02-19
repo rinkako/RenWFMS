@@ -1,12 +1,12 @@
 <businessclass name="KitchenOrder" version="1.0" xmlns="http://www.w3.org/2005/07/scxml">
  <tasks>
-    <task id="produceDishes" brole="cook" name="produceDishesTask" event="produced" principle="ShorestQueue">
+    <task id="produceDishes" brole="cook" name="produceDishesTask" event="produced" principle="Allocate@ShorestQueue">
     </task>
-    <task id="testQuality" brole="cook" name="testQualityTask" event="testCompleted" principle="ShorestQueue">
+    <task id="testQuality" brole="cook" name="testQualityTask" event="testCompleted" principle="Allocate@ShorestQueue">
     </task>
-    <task id="deliver" brole="waiter" name="deliverTask" event="delivered" principle="ShorestQueue">
+    <task id="deliver" brole="waiter" name="deliverTask" event="delivered" principle="Allocate@ShorestQueue">
     </task>
-    <task id="archive" brole="archiveAgent" name="archiveTask" event="archived" principle="Random">
+    <task id="archive" brole="archiveHandler" name="archiveTask" event="archived" principle="Allocate@Random">
     </task>
  </tasks>
  <state id="Initial">

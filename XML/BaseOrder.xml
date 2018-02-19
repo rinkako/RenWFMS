@@ -3,8 +3,8 @@
   <data expr="1" id="baseData"></data>
  </datamodel>
  <tasks>
-  <task id="baseAdd" brole="waiter" name="addItemTask" event="submit" principle="Random"></task>
-  <task id="baseOnly" brole="waiter" name="baseOnlyTask" event="submit" principle="Random"></task>
+  <task id="baseAdd" brole="waiter" name="addItemTask" event="submit" principle="Allocate@Random"></task>
+  <task id="baseOnly" brole="waiter" name="baseOnlyTask" event="submit" principle="Allocate@Random"></task>
  </tasks>
  <final id="BaseFinal"></final>
 </businessclass>

@@ -44,6 +44,11 @@ public class ResourcingContext implements Comparable<ResourcingContext>, Seriali
     private int priority = 0;
 
     /**
+     * Execution duration time span in MS.
+     */
+    private long executionTimespan = 0L;
+
+    /**
      * Service type enum.
      */
     private RServiceType service;
@@ -67,6 +72,11 @@ public class ResourcingContext implements Comparable<ResourcingContext>, Seriali
      * Timestamp of request finished.
      */
     private Timestamp finishTimestamp;
+
+    /**
+     * Success flag.
+     */
+    private int isSucceed;
 
     /**
      * Execution result descriptor, not save to steady.
@@ -164,6 +174,8 @@ public class ResourcingContext implements Comparable<ResourcingContext>, Seriali
             rre.setReceiveTimestamp(context.receivedTimestamp);
             rre.setScheduledTimestamp(context.scheduledTimestamp);
             rre.setFinishTimestamp(context.finishTimestamp);
+            rre.setIsSucceed(context.isSucceed);
+            rre.setExecutionTimespan(context.executionTimespan);
             session.update(rre);
             transaction.commit();
         }
@@ -219,6 +231,22 @@ public class ResourcingContext implements Comparable<ResourcingContext>, Seriali
     }
 
     /**
+     * Get the execution time span in MS.
+     * @return execution time span ms long integer
+     */
+    public long getExecutionTimespan() {
+        return this.executionTimespan;
+    }
+
+    /**
+     * Set the execution time span in MS.
+     * @param executionTimespan time span ms long integer
+     */
+    public void setExecutionTimespan(long executionTimespan) {
+        this.executionTimespan = executionTimespan;
+    }
+
+    /**
      * Get request received timestamp.
      * @return timestamp
      */
@@ -254,6 +282,15 @@ public class ResourcingContext implements Comparable<ResourcingContext>, Seriali
      */
     public void SetFinish() {
         this.finishTimestamp = new Timestamp(System.currentTimeMillis());
+        this.executionTimespan = this.finishTimestamp.getTime() - this.scheduledTimestamp.getTime();
+    }
+
+    /**
+     * Set success flag.
+     * @param isSucceed 1 for succeed, 0 for failed
+     */
+    public void setIsSucceed(int isSucceed) {
+        this.isSucceed = isSucceed;
     }
 
     /**
@@ -261,7 +298,7 @@ public class ResourcingContext implements Comparable<ResourcingContext>, Seriali
      * @return result descriptor string.
      */
     public String getExecutionResult() {
-        return executionResult;
+        return this.executionResult;
     }
 
     /**
@@ -270,6 +307,14 @@ public class ResourcingContext implements Comparable<ResourcingContext>, Seriali
      */
     public void setExecutionResult(String executionResult) {
         this.executionResult = executionResult;
+    }
+
+    /**
+     * Get the execution success flag.
+     * @return
+     */
+    public int getIsSucceed() {
+        return this.isSucceed;
     }
 
     /**
@@ -308,6 +353,7 @@ public class ResourcingContext implements Comparable<ResourcingContext>, Seriali
         context.receivedTimestamp = rsrecordEntity.getReceiveTimestamp();
         context.scheduledTimestamp = rsrecordEntity.getScheduledTimestamp();
         context.finishTimestamp = rsrecordEntity.getFinishTimestamp();
+        context.isSucceed = rsrecordEntity.getIsSucceed();
         return context;
     }
 

@@ -62,6 +62,8 @@ public class RTracker extends Observable implements Observer, Runnable {
      */
     @Override
     public void run() {
+        // Execute the actual resourcing task algorithm
+        ObservableMessage obm = new ObservableMessage(GlobalContext.OBSERVABLE_NOTIFY_SUCCESS);
         try {
             this.ActualRun();
         }
@@ -69,9 +71,12 @@ public class RTracker extends Observable implements Observer, Runnable {
         catch (Exception ex) {
             LogUtil.Log(String.format("Tracker(%s) exception occurred, %s", this.context.getRstid(), ex),
                     RTracker.class.getName(), LogUtil.LogLevelType.ERROR, this.context.getRtid());
-            this.setChanged();
-            ObservableMessage obm = new ObservableMessage(GlobalContext.OBSERVABLE_NOTIFY_EXCEPTION);
+            obm = new ObservableMessage(GlobalContext.OBSERVABLE_NOTIFY_EXCEPTION);
             obm.AddPayload("message", ex.toString());
+        }
+        // bubble notification to Scheduler
+        finally {
+            this.setChanged();
             this.notifyObservers(obm);
         }
     }
