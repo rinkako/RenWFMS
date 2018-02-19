@@ -1,17 +1,8 @@
-/*
- * Project Ren @ 2018
- * Rinkako, Ariana, Gordan. SYSU SDCS.
- */
 package org.sysu.renResourcing.context.steady;
 
 import javax.persistence.*;
 import java.util.Objects;
 
-/**
- * Author: Rinkako
- * Date  : 2018/2/6
- * Usage :
- */
 @Entity
 @Table(name = "ren_rstask", schema = "renboengine", catalog = "")
 public class RenRstaskEntity {
@@ -19,6 +10,7 @@ public class RenRstaskEntity {
     private String boid;
     private String polymorphismName;
     private String polymorphismId;
+    private String brole;
     private String principle;
     private String eventdescriptor;
     private String hookdescriptor;
@@ -26,7 +18,7 @@ public class RenRstaskEntity {
     private String parameters;
 
     @Id
-    @Column(name = "taskid", nullable = false, length = 64)
+    @Column(name = "taskid")
     public String getTaskid() {
         return taskid;
     }
@@ -36,7 +28,7 @@ public class RenRstaskEntity {
     }
 
     @Basic
-    @Column(name = "boid", nullable = false, length = 64)
+    @Column(name = "boid")
     public String getBoid() {
         return boid;
     }
@@ -46,7 +38,7 @@ public class RenRstaskEntity {
     }
 
     @Basic
-    @Column(name = "polymorphism_name", nullable = false, length = -1)
+    @Column(name = "polymorphism_name")
     public String getPolymorphismName() {
         return polymorphismName;
     }
@@ -56,7 +48,7 @@ public class RenRstaskEntity {
     }
 
     @Basic
-    @Column(name = "polymorphism_id", nullable = false, length = -1)
+    @Column(name = "polymorphism_id")
     public String getPolymorphismId() {
         return polymorphismId;
     }
@@ -66,7 +58,17 @@ public class RenRstaskEntity {
     }
 
     @Basic
-    @Column(name = "principle", nullable = true, length = -1)
+    @Column(name = "brole")
+    public String getBrole() {
+        return brole;
+    }
+
+    public void setBrole(String brole) {
+        this.brole = brole;
+    }
+
+    @Basic
+    @Column(name = "principle")
     public String getPrinciple() {
         return principle;
     }
@@ -76,7 +78,7 @@ public class RenRstaskEntity {
     }
 
     @Basic
-    @Column(name = "eventdescriptor", nullable = false, length = -1)
+    @Column(name = "eventdescriptor")
     public String getEventdescriptor() {
         return eventdescriptor;
     }
@@ -86,7 +88,7 @@ public class RenRstaskEntity {
     }
 
     @Basic
-    @Column(name = "hookdescriptor", nullable = false, length = -1)
+    @Column(name = "hookdescriptor")
     public String getHookdescriptor() {
         return hookdescriptor;
     }
@@ -96,7 +98,7 @@ public class RenRstaskEntity {
     }
 
     @Basic
-    @Column(name = "documentation", nullable = false, length = -1)
+    @Column(name = "documentation")
     public String getDocumentation() {
         return documentation;
     }
@@ -106,7 +108,7 @@ public class RenRstaskEntity {
     }
 
     @Basic
-    @Column(name = "parameters", nullable = false, length = -1)
+    @Column(name = "parameters")
     public String getParameters() {
         return parameters;
     }
@@ -124,6 +126,7 @@ public class RenRstaskEntity {
                 Objects.equals(boid, that.boid) &&
                 Objects.equals(polymorphismName, that.polymorphismName) &&
                 Objects.equals(polymorphismId, that.polymorphismId) &&
+                Objects.equals(brole, that.brole) &&
                 Objects.equals(principle, that.principle) &&
                 Objects.equals(eventdescriptor, that.eventdescriptor) &&
                 Objects.equals(hookdescriptor, that.hookdescriptor) &&
@@ -134,6 +137,6 @@ public class RenRstaskEntity {
     @Override
     public int hashCode() {
 
-        return Objects.hash(taskid, boid, polymorphismName, polymorphismId, principle, eventdescriptor, hookdescriptor, documentation, parameters);
+        return Objects.hash(taskid, boid, polymorphismName, polymorphismId, brole, principle, eventdescriptor, hookdescriptor, documentation, parameters);
     }
 }

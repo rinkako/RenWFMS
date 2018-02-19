@@ -48,9 +48,49 @@ public class InterfaceO {
             if (CommonUtil.IsNullOrEmpty(participants)) {
                 return retSet;
             }
-            String[] participantItem = participants.split(",");
-            for (String workerId : participantItem) {
-                retSet.add(ParticipantContext.GetContext(rtid, workerId));
+            String[] participantPairItem = participants.split(",");
+            for (String workerIdBRolePair : participantPairItem) {
+                String[] workerItem = workerIdBRolePair.split(":");
+                retSet.add(ParticipantContext.GetContext(rtid, workerItem[0]));
+            }
+            return retSet;
+        }
+        catch (Exception ex) {
+            if (!cmtFlag) {
+                transaction.rollback();
+            }
+            throw ex;
+        }
+        finally {
+            HibernateUtil.CloseLocalSession();
+        }
+    }
+
+    /**
+     * Get valid participant context set according to business role in specific process runtime.
+     * @param rtid process rtid
+     * @param brole business role name
+     * @return a Hash set for current valid participant context of a business role
+     */
+    public static HashSet<ParticipantContext> GetParticipantByBRole(String rtid, String brole) {
+        HashSet<ParticipantContext> retSet = new HashSet<>();
+        Session session = HibernateUtil.GetLocalSession();
+        Transaction transaction = session.beginTransaction();
+        boolean cmtFlag = false;
+        try {
+            RenRuntimerecordEntity runtimeCtx = session.get(RenRuntimerecordEntity.class, rtid);
+            String participants = runtimeCtx.getParticipantCache();
+            transaction.commit();
+            cmtFlag = true;
+            if (CommonUtil.IsNullOrEmpty(participants)) {
+                return retSet;
+            }
+            String[] participantPairItem = participants.split(",");
+            for (String workerIdBRolePair : participantPairItem) {
+                String[] workerItem = workerIdBRolePair.split(":");
+                if (workerItem[1].equals(brole)) {
+                    retSet.add(ParticipantContext.GetContext(rtid, workerItem[0]));
+                }
             }
             return retSet;
         }

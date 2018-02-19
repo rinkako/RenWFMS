@@ -9,6 +9,7 @@ public class RenRstaskEntity {
     private String boid;
     private String polymorphismName;
     private String polymorphismId;
+    private String brole;
     private String principle;
     private String eventdescriptor;
     private String hookdescriptor;
@@ -53,6 +54,16 @@ public class RenRstaskEntity {
 
     public void setPolymorphismId(String polymorphismId) {
         this.polymorphismId = polymorphismId;
+    }
+
+    @Basic
+    @Column(name = "brole")
+    public String getBrole() {
+        return brole;
+    }
+
+    public void setBrole(String brole) {
+        this.brole = brole;
     }
 
     @Basic
@@ -118,6 +129,7 @@ public class RenRstaskEntity {
             return false;
         if (polymorphismId != null ? !polymorphismId.equals(that.polymorphismId) : that.polymorphismId != null)
             return false;
+        if (brole != null ? !brole.equals(that.brole) : that.brole != null) return false;
         if (principle != null ? !principle.equals(that.principle) : that.principle != null) return false;
         if (eventdescriptor != null ? !eventdescriptor.equals(that.eventdescriptor) : that.eventdescriptor != null)
             return false;
@@ -136,6 +148,7 @@ public class RenRstaskEntity {
         result = 31 * result + (boid != null ? boid.hashCode() : 0);
         result = 31 * result + (polymorphismName != null ? polymorphismName.hashCode() : 0);
         result = 31 * result + (polymorphismId != null ? polymorphismId.hashCode() : 0);
+        result = 31 * result + (brole != null ? brole.hashCode() : 0);
         result = 31 * result + (principle != null ? principle.hashCode() : 0);
         result = 31 * result + (eventdescriptor != null ? eventdescriptor.hashCode() : 0);
         result = 31 * result + (hookdescriptor != null ? hookdescriptor.hashCode() : 0);

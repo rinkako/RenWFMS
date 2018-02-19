@@ -70,8 +70,8 @@ public class InterfaceB {
         // generate workitem
         WorkitemContext workitem = WorkitemContext.GenerateContext(taskContext, ctx.getRtid(), (ArrayList) ctx.getArgs().get("taskArgumentsVector"));
         assert workitem != null;
-        // get valid resources  // TODO here should handle Business Role mapping, not all valid participant
-        HashSet<ParticipantContext> validParticipants = InterfaceO.GetCurrentValidParticipant(ctx.getRtid());
+        // get valid resources
+        HashSet<ParticipantContext> validParticipants = InterfaceO.GetParticipantByBRole(ctx.getRtid(), taskContext.getBrole());
         if (validParticipants.isEmpty()) {
             LogUtil.Log("A task cannot be allocated to any valid resources, so it will be put into admin unoffered queue.",
                     InterfaceB.class.getName(), LogUtil.LogLevelType.WARNING, ctx.getRtid());

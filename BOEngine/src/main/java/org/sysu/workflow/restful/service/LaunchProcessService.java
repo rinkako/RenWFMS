@@ -144,6 +144,7 @@ public final class LaunchProcessService {
                     rrte.setPrinciple(t.getPrinciple());
                     rrte.setPolymorphismId(t.getId());
                     rrte.setPolymorphismName(t.getName());
+                    rrte.setBrole(t.getBrole());
                     rrte.setParameters("");  // todo
                     session.save(rrte);
                 }

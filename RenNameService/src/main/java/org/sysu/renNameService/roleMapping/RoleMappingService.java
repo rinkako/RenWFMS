@@ -62,28 +62,40 @@ public final class RoleMappingService {
         // decompose groups and capabilities into workers
         HashMap<String, HashMap> involvedWorkers = new HashMap<>();
         HashSet<String> pendWorkers = new HashSet<>();
+        HashSet<String> pendWorkerGid = new HashSet<>();
         for (RenRolemapEntity rre : maps) {
             String mapped = rre.getMappedGid();
             if (mapped.startsWith("Human_") || mapped.startsWith("Agent_")) {
-                pendWorkers.add(mapped);
+                pendWorkers.add(mapped + ":" + rre.getBroleName());
+                pendWorkerGid.add(mapped);
             }
             else {
                 String jWorker = RoleMappingService.GetWorkerInOrganizableFromCOrgan(renid, rtid, nsid, mapped);
                 ArrayList<HashMap<String, String>> workers = SerializationUtil.JsonDeserialization(jWorker, ArrayList.class);
                 for (HashMap<String, String> worker : workers) {
-                    pendWorkers.add(worker.get("workerId"));
+                    pendWorkers.add(worker.get("workerId") + ":" + rre.getBroleName());
+                    pendWorkerGid.add(worker.get("workerId"));
                 }
             }
         }
         StringBuilder sb = new StringBuilder();
-        for (String workerGid : pendWorkers) {
-            sb.append(workerGid).append(",");
+        for (String workerPair : pendWorkers) {
+            sb.append(workerPair).append(",");
         }
         String workerList = sb.toString();
         if (workerList.length() > 0) {
             workerList = workerList.substring(0, workerList.length() - 1);
         }
-        String wes = RoleMappingService.GetWorkerEntityFromCOrgan(renid, rtid, nsid, workerList);
+        sb = new StringBuilder();
+        for (String workerGid : pendWorkerGid) {
+            sb.append(workerGid).append(",");
+        }
+        String sendToCOrgan = sb.toString();
+        if (sendToCOrgan.length() > 0) {
+            sendToCOrgan = sendToCOrgan.substring(0, sendToCOrgan.length() - 1);
+        }
+
+        String wes = RoleMappingService.GetWorkerEntityFromCOrgan(renid, rtid, nsid, sendToCOrgan);
         ArrayList<HashMap<String, String>> weMaps = SerializationUtil.JsonDeserialization(wes, ArrayList.class);
         for (HashMap<String, String> weMap : weMaps) {
             involvedWorkers.put(weMap.get("GlobalId"), weMap);

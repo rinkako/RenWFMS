@@ -63,6 +63,11 @@ public class TaskContext implements Serializable, RCacheablesContext {
     private String pid;
 
     /**
+     * Brole of this task.
+     */
+    private String brole;
+
+    /**
      * Task documentation.
      */
     private String documentation;
@@ -94,6 +99,7 @@ public class TaskContext implements Serializable, RCacheablesContext {
         tc.taskId = (String) mapObj.get("taskId");
         tc.taskName = (String) mapObj.get("taskName");
         tc.principle = (String) mapObj.get("principle");
+        tc.brole = (String) mapObj.get("brole");
         tc.boid = (String) mapObj.get("boid");
         tc.pid = (String) mapObj.get("pid");
         tc.documentation = (String) mapObj.get("documentation");
@@ -215,6 +221,14 @@ public class TaskContext implements Serializable, RCacheablesContext {
     }
 
     /**
+     * Get the business role name.
+     * @return business role name string
+     */
+    public String getBrole() {
+        return this.brole;
+    }
+
+    /**
      * Get the notification hooks dictionary.
      * @return HashMap of (ChangedName-NotifyURL)
      */
@@ -275,8 +289,8 @@ public class TaskContext implements Serializable, RCacheablesContext {
      */
     private static TaskContext GenerateTaskContext(RenRstaskEntity rstaskEntity, String pid) {
         assert rstaskEntity != null;
-        TaskContext context = new TaskContext(rstaskEntity.getPolymorphismId(),
-                rstaskEntity.getPolymorphismName(), pid, rstaskEntity.getBoid(),
+        TaskContext context = new TaskContext(rstaskEntity.getPolymorphismId(), rstaskEntity.getPolymorphismName(),
+                rstaskEntity.getBrole(), pid, rstaskEntity.getBoid(),
                 rstaskEntity.getPrinciple(), rstaskEntity.getDocumentation());
         String hookDescriptor = rstaskEntity.getHookdescriptor();
         if (!CommonUtil.IsNullOrEmpty(hookDescriptor)) {
@@ -299,14 +313,16 @@ public class TaskContext implements Serializable, RCacheablesContext {
      * Private constructor for preventing create context without using `{@code TaskContext.GetContext}`.
      * @param id task unique id
      * @param name task name
+     * @param brole business role name
      * @param pid belong to Process global id
      * @param boid belong to BO global id
      * @param principle resourcing principle
      * @param documentation task documentation text
      */
-    private TaskContext(String id, String name, String pid, String boid, String principle, String documentation) {
+    private TaskContext(String id, String name, String brole, String pid, String boid, String principle, String documentation) {
         this.taskId = id;
         this.taskName = name;
+        this.brole = brole;
         this.pid = pid;
         this.boid = boid;
         this.principle = principle;
