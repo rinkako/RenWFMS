@@ -5,6 +5,10 @@ import org.sysu.workflow.*;
 import org.sysu.workflow.invoke.Invoker;
 import org.sysu.workflow.invoke.InvokerException;
 import org.sysu.workflow.model.*;
+import org.sysu.workflow.model.extend.Call;
+import org.sysu.workflow.restful.utility.HttpClientUtil;
+import org.sysu.workflow.restful.utility.LogUtil;
+import org.sysu.workflow.restful.utility.SerializationUtil;
 import org.sysu.workflow.system.EventVariable;
 
 import java.util.*;
@@ -76,7 +80,7 @@ public class SCXMLSemanticsImpl implements SCXMLSemantics {
         // execute global script if defined
         executeGlobalScript(exctx);
 
-        //执行初始化第一步
+        //执行初始化第一步（进入初始状态）
         // enter initial states
         HashSet<TransitionalState> statesToInvoke = new HashSet<TransitionalState>();
         Step step = new Step(null);
@@ -85,7 +89,7 @@ public class SCXMLSemanticsImpl implements SCXMLSemantics {
 
         // Execute Immediate Transitions，执行即时转移
 
-        //在执行完第一次的microstep 微步之后，在看有没有在运行中，如果有，就执行即时转移
+        //在执行完第一次的microstep 微步之后，再看状态机有没有在运行中，如果有，就执行即时转移
         if (exctx.isRunning()) {
             macroStep(exctx, statesToInvoke);
         }
@@ -175,9 +179,11 @@ public class SCXMLSemanticsImpl implements SCXMLSemantics {
         ArrayList<EnterableState> configuration = new ArrayList<EnterableState>(exctx.getScInstance().getStateConfiguration().getActiveStates());
         Collections.sort(configuration, DocumentOrder.reverseDocumentOrderComparator);
         for (EnterableState es : configuration) {
+            //执行所有退出状态的onexit中的内容
             for (OnExit onexit : es.getOnExits()) {
                 executeContent(exctx, onexit);
             }
+            //取消所有正在执行的invoke
             if (es instanceof TransitionalState) {
                 // check if invokers are active in this state
                 for (Invoke inv : ((TransitionalState) es).getInvokes()) {
@@ -191,6 +197,14 @@ public class SCXMLSemanticsImpl implements SCXMLSemantics {
             }
             // else: keep final Final
             // TODO: returnDoneEvent(s.donedata)?
+            HashMap<String, String> args = new HashMap<String, String>();
+            args.put("rtid", exctx.Rtid);
+            try{
+                HttpClientUtil.SendPost(GlobalContext.URL_RS_FINISH, args, exctx.Rtid);
+            }catch(Exception e){
+                LogUtil.Log("When send finish Rtid to resource service, exception occurred, " + e.toString(),
+                        Call.class.getName(), LogUtil.LogLevelType.ERROR, exctx.Rtid);
+            }
         }
     }
 
@@ -234,7 +248,7 @@ public class SCXMLSemanticsImpl implements SCXMLSemantics {
 
     /**
      * buildStep builds the exitSet and entrySet for the current configuration given the transitionList on the step.
-     * 针对当前配置构建退出集合和进入集合，给出step的转移列表，并没有真正的执行退出，和进入操作
+     * 针对当前配置构建退出集合和进入集合，给出step的转移列表，并没有真正的执行退出和进入操作
      *
      * @param exctx The SCXML execution context
      * @param step  The step containing the list of transitions to be taken
@@ -244,18 +258,21 @@ public class SCXMLSemanticsImpl implements SCXMLSemantics {
         step.clearIntermediateState();
 
         // compute exitSet, if there is something to exit and record their History configurations if applicable
-        if (!exctx.getScInstance().getStateConfiguration().getActiveStates().isEmpty()) { //如果当前状态机配置的活跃状态不为空（状态机刚启动的时候肯定是空的），，计算退出状态集合
+        //如果当前状态机配置的活跃状态不为空（状态机刚启动的时候肯定是空的），计算退出状态集合
+        if (!exctx.getScInstance().getStateConfiguration().getActiveStates().isEmpty()) {
             computeExitSet(step, exctx.getScInstance().getStateConfiguration());
         }
-        // compute entrySet  ，计算进入状态集合
+        // compute entrySet,计算进入状态集合
         computeEntrySet(exctx, step);
 
-        // default result states to entrySet   ， 默认的进入集合
+        // default result states to entrySet,默认的进入集合
         Set<EnterableState> states = step.getEntrySet();
 
-        if (!step.getExitSet().isEmpty()) { //如果当前步的退出集合不为空，状态机刚启动的时候肯定是空的。
+        //如果当前步的退出集合不为空，状态机刚启动的时候肯定是空的。
+        if (!step.getExitSet().isEmpty()) {
             // calculate result states by taking current states, subtracting exitSet and adding entrySet
-            states = new HashSet<EnterableState>(exctx.getScInstance().getStateConfiguration().getStates());   //将当前的所有原子状态机集合放入states
+            //将当前的所有原子状态机集合放入states
+            states = new HashSet<EnterableState>(exctx.getScInstance().getStateConfiguration().getStates());
             states.removeAll(step.getExitSet());   //移除所有退出状态集合
             states.addAll(step.getEntrySet()); //再加上所有的进入状态集合
         }
