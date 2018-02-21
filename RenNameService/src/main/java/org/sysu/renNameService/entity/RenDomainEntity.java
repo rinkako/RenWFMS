@@ -1,41 +1,32 @@
-/*
- * Project Ren @ 2018
- * Rinkako, Ariana, Gordan. SYSU SDCS.
- */
 package org.sysu.renNameService.entity;
 
 import javax.persistence.*;
 import java.sql.Timestamp;
 import java.util.Objects;
 
-/**
- * Author: Rinkako
- * Date  : 2018/2/7
- * Usage :
- */
 @Entity
-@Table(name = "ren_auth", schema = "renboengine", catalog = "")
-public class RenAuthEntity {
-    private String username;
+@Table(name = "ren_domain", schema = "renboengine", catalog = "")
+public class RenDomainEntity {
+    private String name;
     private String password;
     private int level;
-    private int state;
+    private int status;
     private Timestamp createtimestamp;
     private String corganGateway;
     private String urlsafeSignature;
 
     @Id
-    @Column(name = "username", nullable = false, length = 64)
-    public String getUsername() {
-        return username;
+    @Column(name = "name")
+    public String getName() {
+        return name;
     }
 
-    public void setUsername(String username) {
-        this.username = username;
+    public void setName(String name) {
+        this.name = name;
     }
 
     @Basic
-    @Column(name = "password", nullable = false, length = 128)
+    @Column(name = "password")
     public String getPassword() {
         return password;
     }
@@ -45,7 +36,7 @@ public class RenAuthEntity {
     }
 
     @Basic
-    @Column(name = "level", nullable = false)
+    @Column(name = "level")
     public int getLevel() {
         return level;
     }
@@ -55,17 +46,17 @@ public class RenAuthEntity {
     }
 
     @Basic
-    @Column(name = "state", nullable = false)
-    public int getState() {
-        return state;
+    @Column(name = "status")
+    public int getStatus() {
+        return status;
     }
 
-    public void setState(int state) {
-        this.state = state;
+    public void setStatus(int status) {
+        this.status = status;
     }
 
     @Basic
-    @Column(name = "createtimestamp", nullable = true)
+    @Column(name = "createtimestamp")
     public Timestamp getCreatetimestamp() {
         return createtimestamp;
     }
@@ -75,7 +66,7 @@ public class RenAuthEntity {
     }
 
     @Basic
-    @Column(name = "corgan_gateway", nullable = true, length = -1)
+    @Column(name = "corgan_gateway")
     public String getCorganGateway() {
         return corganGateway;
     }
@@ -85,7 +76,7 @@ public class RenAuthEntity {
     }
 
     @Basic
-    @Column(name = "urlsafe_signature", nullable = true, length = -1)
+    @Column(name = "urlsafe_signature")
     public String getUrlsafeSignature() {
         return urlsafeSignature;
     }
@@ -98,10 +89,10 @@ public class RenAuthEntity {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        RenAuthEntity that = (RenAuthEntity) o;
+        RenDomainEntity that = (RenDomainEntity) o;
         return level == that.level &&
-                state == that.state &&
-                Objects.equals(username, that.username) &&
+                status == that.status &&
+                Objects.equals(name, that.name) &&
                 Objects.equals(password, that.password) &&
                 Objects.equals(createtimestamp, that.createtimestamp) &&
                 Objects.equals(corganGateway, that.corganGateway) &&
@@ -111,6 +102,6 @@ public class RenAuthEntity {
     @Override
     public int hashCode() {
 
-        return Objects.hash(username, password, level, state, createtimestamp, corganGateway, urlsafeSignature);
+        return Objects.hash(name, password, level, status, createtimestamp, corganGateway, urlsafeSignature);
     }
 }

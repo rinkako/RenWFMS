@@ -7,7 +7,9 @@ package org.sysu.renNameService.authorization;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
 import org.sysu.renNameService.GlobalContext;
-import org.sysu.renNameService.entity.RenAuthEntity;
+import org.sysu.renNameService.entity.RenAuthuserEntity;
+import org.sysu.renNameService.entity.RenAuthuserEntityPK;
+import org.sysu.renNameService.entity.RenDomainEntity;
 import org.sysu.renNameService.utility.EncryptUtil;
 import org.sysu.renNameService.utility.HibernateUtil;
 import org.sysu.renNameService.utility.LogUtil;
@@ -59,43 +61,43 @@ public class AuthorizationService {
     }
 
     /**
-     * Add a BO environment user.
-     * @param username user unique name
-     * @param password user password without encryption
-     * @param level user level
+     * Add a domain.
+     * @param name domain unique name
+     * @param password domain admin password
+     * @param level domain level
      * @param corganGateway binding COrgan gateway URL
-     * @return string of user ren id, empty string if failed to create
+     * @return domain private signature key
      */
-    public static String AddAuthorizationUser(String username, String password, int level, String corganGateway) {
+    public static String AddDomain(String name, String password, String level, String corganGateway) {
         Session session = HibernateUtil.GetLocalThreadSession();
         Transaction transaction = session.beginTransaction();
         try {
             // check existence
-            RenAuthEntity existRae = session.get(RenAuthEntity.class, username);
-            if (existRae != null) {
-                LogUtil.Log(String.format("AddAuthorizationUser but username already exist (%s), service rollback.", username),
+            RenDomainEntity existRae = session.get(RenDomainEntity.class, name);
+            if (existRae != null || name.trim().equals("")) {
+                LogUtil.Log(String.format("AddAuthorizationUser but username already exist (%s), service rollback.", name),
                         AuthorizationService.class.getName(), LogUtil.LogLevelType.ERROR, "");
                 transaction.commit();
-                return "#duplicate_username";
+                return "#duplicate_domain";
             }
             // create new
-            RenAuthEntity rae = new RenAuthEntity();
-            rae.setUsername(username);
-            rae.setLevel(level);
-            rae.setPassword(EncryptUtil.EncryptSHA256(password));
-            rae.setCorganGateway(corganGateway);
-            rae.setState(0);
-            rae.setCreatetimestamp(new Timestamp(System.currentTimeMillis()));
-            String signature = RSASignatureUtil.Signature(username, GlobalContext.PRIVATE_KEY);
+            RenDomainEntity rde = new RenDomainEntity();
+            rde.setName(name);
+            rde.setLevel(Integer.valueOf(level));
+            rde.setPassword(EncryptUtil.EncryptSHA256(password));
+            rde.setCorganGateway(corganGateway);
+            rde.setStatus(0);
+            rde.setCreatetimestamp(new Timestamp(System.currentTimeMillis()));
+            String signature = RSASignatureUtil.Signature(name, GlobalContext.PRIVATE_KEY);
             assert signature != null;
             String safeSignature = RSASignatureUtil.SafeUrlBase64Encode(signature);
-            rae.setUrlsafeSignature(safeSignature);
-            session.save(rae);
+            rde.setUrlsafeSignature(safeSignature);
+            session.save(rde);
             transaction.commit();
             return safeSignature;
         }
         catch (Exception ex) {
-            LogUtil.Log(String.format("AddAuthorizationUser but exception occurred (%s), service rollback, %s", username, ex),
+            LogUtil.Log(String.format("Add domain but exception occurred (%s), service rollback, %s", name, ex),
                     AuthorizationService.class.getName(), LogUtil.LogLevelType.ERROR, "");
             transaction.rollback();
             return "#exception";
@@ -103,17 +105,17 @@ public class AuthorizationService {
     }
 
     /**
-     * Disable a BO environment user, make it unable to connect.
-     * @param username user unique name
+     * Disable a domain, make it unable to connect.
+     * @param name domain unique name
      * @return boolean of whether execution success
      */
-    public static boolean RemoveAuthorizationUser(String username) {
+    public static boolean RemoveDomain(String name) {
         Session session = HibernateUtil.GetLocalThreadSession();
         Transaction transaction = session.beginTransaction();
         try {
-            RenAuthEntity are = session.get(RenAuthEntity.class, username);
-            if (are != null) {
-                are.setState(1);
+            RenDomainEntity rde = session.get(RenDomainEntity.class, name);
+            if (rde != null) {
+                rde.setStatus(1);
                 transaction.commit();
                 return true;
             }
@@ -123,7 +125,7 @@ public class AuthorizationService {
             }
         }
         catch (Exception ex) {
-            LogUtil.Log(String.format("RemoveAuthorizationUser but exception occurred (%s), service rollback, %s", username, ex),
+            LogUtil.Log(String.format("Remove domain but exception occurred (%s), service rollback, %s", name, ex),
                     AuthorizationService.class.getName(), LogUtil.LogLevelType.ERROR, "");
             transaction.rollback();
             return false;
@@ -131,16 +133,17 @@ public class AuthorizationService {
     }
 
     /**
-     * Update a BO environment user profile.
-     * @param username user unique name
+     * Update a domain.
+     * @param name domain unique name
      * @param updateArgs update argument name-value dictionary
+     * @param isAdmin is operator WFMS admin
      * @return boolean of whether execution success
      */
-    public static boolean UpdateAuthorizationUser(String username, HashMap<String, String> updateArgs, Boolean isAdmin) {
+    public static boolean UpdateDomain(String name, HashMap<String, String> updateArgs, Boolean isAdmin) {
         Session session = HibernateUtil.GetLocalThreadSession();
         Transaction transaction = session.beginTransaction();
         try {
-            RenAuthEntity are = session.get(RenAuthEntity.class, username);
+            RenDomainEntity are = session.get(RenDomainEntity.class, name);
             if (are == null) {
                 transaction.commit();
                 return false;
@@ -151,8 +154,8 @@ public class AuthorizationService {
             if (updateArgs.containsKey("corgan")) {
                 are.setCorganGateway(updateArgs.get("corgan"));
             }
-            if (updateArgs.containsKey("state") && isAdmin) {
-                are.setState(Integer.valueOf(updateArgs.get("state")));
+            if (updateArgs.containsKey("status") && isAdmin) {
+                are.setStatus(Integer.valueOf(updateArgs.get("status")));
             }
             if (updateArgs.containsKey("level") && isAdmin) {
                 are.setLevel(Integer.valueOf(updateArgs.get("level")));
@@ -161,7 +164,163 @@ public class AuthorizationService {
             return true;
         }
         catch (Exception ex) {
-            LogUtil.Log(String.format("UpdateAuthorizationUser but exception occurred (%s), service rollback, %s", username, ex),
+            LogUtil.Log(String.format("Update domain but exception occurred (%s), service rollback, %s", name, ex),
+                    AuthorizationService.class.getName(), LogUtil.LogLevelType.ERROR, "");
+            transaction.rollback();
+            return false;
+        }
+    }
+
+    /**
+     * Check if a domain is already exist.
+     * @param name domain unique name to be checked
+     * @return boolean of existence
+     */
+    public static boolean ContainDomain(String name) {
+        Session session = HibernateUtil.GetLocalThreadSession();
+        Transaction transaction = session.beginTransaction();
+        try {
+            RenDomainEntity rae = session.get(RenDomainEntity.class, name);
+            transaction.commit();
+            return rae != null;
+        }
+        catch (Exception ex) {
+            LogUtil.Log(String.format("Contain domain check but exception occurred (%s), service rollback, %s", name, ex),
+                    AuthorizationService.class.getName(), LogUtil.LogLevelType.ERROR, "");
+            transaction.rollback();
+            return true;
+        }
+    }
+
+    /**
+     * Retrieve a domain.
+     * @param name domain unique name
+     * @return {@code RenAuthEntity} instance
+     */
+    public static RenDomainEntity RetrieveDomain(String name) {
+        Session session = HibernateUtil.GetLocalThreadSession();
+        Transaction transaction = session.beginTransaction();
+        try {
+            RenDomainEntity rae = session.get(RenDomainEntity.class, name);
+            transaction.commit();
+            return rae;
+        }
+        catch (Exception ex) {
+            LogUtil.Log(String.format("Retrieve domain but exception occurred (%s), service rollback, %s", name, ex),
+                    AuthorizationService.class.getName(), LogUtil.LogLevelType.ERROR, "");
+            transaction.rollback();
+            return null;
+        }
+    }
+
+    /**
+     * Add a auth user.
+     * @param username user unique name
+     * @param password user password without encryption
+     * @param level user level
+     * @param domain domain name
+     * @return `OK` if success otherwise failed
+     */
+    public static String AddAuthUser(String username, String password, int level, String domain) {
+        Session session = HibernateUtil.GetLocalThreadSession();
+        Transaction transaction = session.beginTransaction();
+        try {
+            // check existence
+            RenAuthuserEntityPK pk = new RenAuthuserEntityPK();
+            pk.setDomain(domain);
+            pk.setUsername(username);
+            RenAuthuserEntity existRae = session.get(RenAuthuserEntity.class, pk);
+            if (existRae != null) {
+                LogUtil.Log(String.format("AddAuthorizationUser but username already exist (%s@%s), service rollback.", username, domain),
+                        AuthorizationService.class.getName(), LogUtil.LogLevelType.ERROR, "");
+                transaction.commit();
+                return "#duplicate_username";
+            }
+            // create new
+            RenAuthuserEntity rae = new RenAuthuserEntity();
+            rae.setUsername(username);
+            rae.setLevel(level);
+            rae.setPassword(EncryptUtil.EncryptSHA256(password));
+            rae.setDomain(domain);
+            rae.setCreatetimestamp(new Timestamp(System.currentTimeMillis()));
+            rae.setStatus(0);
+            session.save(rae);
+            transaction.commit();
+            return "OK";
+        }
+        catch (Exception ex) {
+            LogUtil.Log(String.format("AddAuthorizationUser but exception occurred (%s@%s), service rollback, %s", username, domain, ex),
+                    AuthorizationService.class.getName(), LogUtil.LogLevelType.ERROR, "");
+            transaction.rollback();
+            return "#exception";
+        }
+    }
+
+    /**
+     * Disable a BO environment user, make it unable to connect.
+     * @param username user unique name
+     * @param domain domain name
+     * @return boolean of whether execution success
+     */
+    public static boolean RemoveAuthorizationUser(String username, String domain) {
+        Session session = HibernateUtil.GetLocalThreadSession();
+        Transaction transaction = session.beginTransaction();
+        try {
+            RenAuthuserEntityPK pk = new RenAuthuserEntityPK();
+            pk.setUsername(username);
+            pk.setDomain(domain);
+            RenAuthuserEntity are = session.get(RenAuthuserEntity.class, pk);
+            if (are != null) {
+                are.setStatus(1);
+                transaction.commit();
+                return true;
+            }
+            else {
+                transaction.commit();
+                return false;
+            }
+        }
+        catch (Exception ex) {
+            LogUtil.Log(String.format("RemoveAuthorizationUser but exception occurred (%s@%s), service rollback, %s", username, domain, ex),
+                    AuthorizationService.class.getName(), LogUtil.LogLevelType.ERROR, "");
+            transaction.rollback();
+            return false;
+        }
+    }
+
+    /**
+     * Update a BO environment user profile.
+     * @param username user unique name
+     * @param domain domain name
+     * @param updateArgs update argument name-value dictionary
+     * @return boolean of whether execution success
+     */
+    public static boolean UpdateAuthorizationUser(String username, String domain, HashMap<String, String> updateArgs, Boolean isAdmin) {
+        Session session = HibernateUtil.GetLocalThreadSession();
+        Transaction transaction = session.beginTransaction();
+        try {
+            RenAuthuserEntityPK pk = new RenAuthuserEntityPK();
+            pk.setDomain(domain);
+            pk.setUsername(username);
+            RenAuthuserEntity rae = session.get(RenAuthuserEntity.class, pk);
+            if (rae == null) {
+                transaction.commit();
+                return false;
+            }
+            if (updateArgs.containsKey("password")) {
+                rae.setPassword(EncryptUtil.EncryptSHA256(updateArgs.get("password")));
+            }
+            if (updateArgs.containsKey("status") && isAdmin) {
+                rae.setStatus(Integer.valueOf(updateArgs.get("status")));
+            }
+            if (updateArgs.containsKey("level") && isAdmin) {
+                rae.setLevel(Integer.valueOf(updateArgs.get("level")));
+            }
+            transaction.commit();
+            return true;
+        }
+        catch (Exception ex) {
+            LogUtil.Log(String.format("UpdateAuthorizationUser but exception occurred (%s@%s), service rollback, %s", username, domain, ex),
                     AuthorizationService.class.getName(), LogUtil.LogLevelType.ERROR, "");
             transaction.rollback();
             return false;
@@ -171,18 +330,22 @@ public class AuthorizationService {
     /**
      * Check if a BO environment user is already exist.
      * @param username user unique name to be checked
+     * @param domain domain name
      * @return boolean of existence
      */
-    public static boolean ContainAuthorizationUser(String username) {
+    public static boolean ContainAuthorizationUser(String username, String domain) {
         Session session = HibernateUtil.GetLocalThreadSession();
         Transaction transaction = session.beginTransaction();
         try {
-            RenAuthEntity rae = session.get(RenAuthEntity.class, username);
+            RenAuthuserEntityPK pk = new RenAuthuserEntityPK();
+            pk.setDomain(domain);
+            pk.setUsername(username);
+            RenAuthuserEntity rae = session.get(RenAuthuserEntity.class, pk);
             transaction.commit();
             return rae != null;
         }
         catch (Exception ex) {
-            LogUtil.Log(String.format("ContainAuthorizationUser but exception occurred (%s), service rollback, %s", username, ex),
+            LogUtil.Log(String.format("ContainAuthorizationUser but exception occurred (%s@%s), service rollback, %s", username, domain, ex),
                     AuthorizationService.class.getName(), LogUtil.LogLevelType.ERROR, "");
             transaction.rollback();
             return true;
@@ -194,16 +357,19 @@ public class AuthorizationService {
      * @param username user unique name to be checked
      * @return {@code RenAuthEntity} instance
      */
-    public static RenAuthEntity RetrieveAuthorizationUser(String username) {
+    public static RenAuthuserEntity RetrieveAuthorizationUser(String username, String domain) {
         Session session = HibernateUtil.GetLocalThreadSession();
         Transaction transaction = session.beginTransaction();
         try {
-            RenAuthEntity rae = session.get(RenAuthEntity.class, username);
+            RenAuthuserEntityPK pk = new RenAuthuserEntityPK();
+            pk.setDomain(domain);
+            pk.setUsername(username);
+            RenAuthuserEntity rae = session.get(RenAuthuserEntity.class, pk);
             transaction.commit();
             return rae;
         }
         catch (Exception ex) {
-            LogUtil.Log(String.format("RetrieveAuthorizationUser but exception occurred (%s), service rollback, %s", username, ex),
+            LogUtil.Log(String.format("RetrieveAuthorizationUser but exception occurred (%s@%s), service rollback, %s", username, domain, ex),
                     AuthorizationService.class.getName(), LogUtil.LogLevelType.ERROR, "");
             transaction.rollback();
             return null;
