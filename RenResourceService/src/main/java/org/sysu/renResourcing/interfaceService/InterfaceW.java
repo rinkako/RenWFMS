@@ -9,6 +9,7 @@ import org.sysu.renResourcing.basic.enums.InitializationByType;
 import org.sysu.renResourcing.basic.enums.WorkQueueType;
 import org.sysu.renResourcing.basic.enums.WorkitemResourcingStatusType;
 import org.sysu.renResourcing.context.*;
+import org.sysu.renResourcing.utility.AuthDomainHelper;
 import org.sysu.renResourcing.utility.SerializationUtil;
 
 import java.util.HashMap;
@@ -206,8 +207,7 @@ public class InterfaceW {
         HashSet<WorkitemContext> allocateSet = (HashSet<WorkitemContext>) container.GetQueuedWorkitem(WorkQueueType.ALLOCATED);
         retMap.put(WorkQueueType.ALLOCATED.name(), new HashSet<>());
         for (WorkitemContext workitem : allocateSet) {
-            String authName = workitem.getEntity().getRtid().split("_")[1];
-            String authDomain = authName.split("@")[1];
+            String authDomain = AuthDomainHelper.GetDomainByRTID(ctx.getRtid());
             if (authDomain.equals(domain)) {
                 retMap.get(WorkQueueType.ALLOCATED.name()).add(workitem);
             }
@@ -215,8 +215,7 @@ public class InterfaceW {
         HashSet<WorkitemContext> offeredSet = (HashSet<WorkitemContext>) container.GetQueuedWorkitem(WorkQueueType.OFFERED);
         retMap.put(WorkQueueType.OFFERED.name(), new HashSet<>());
         for (WorkitemContext workitem : offeredSet) {
-            String authName = workitem.getEntity().getRtid().split("_")[1];
-            String authDomain = authName.split("@")[1];
+            String authDomain = AuthDomainHelper.GetDomainByRTID(ctx.getRtid());
             if (authDomain.equals(domain)) {
                 retMap.get(WorkQueueType.OFFERED.name()).add(workitem);
             }
@@ -224,8 +223,7 @@ public class InterfaceW {
         HashSet<WorkitemContext> startedSet = (HashSet<WorkitemContext>) container.GetQueuedWorkitem(WorkQueueType.STARTED);
         retMap.put(WorkQueueType.STARTED.name(), new HashSet<>());
         for (WorkitemContext workitem : startedSet) {
-            String authName = workitem.getEntity().getRtid().split("_")[1];
-            String authDomain = authName.split("@")[1];
+            String authDomain = AuthDomainHelper.GetDomainByRTID(ctx.getRtid());
             if (authDomain.equals(domain)) {
                 retMap.get(WorkQueueType.STARTED.name()).add(workitem);
             }
@@ -233,8 +231,7 @@ public class InterfaceW {
         HashSet<WorkitemContext> suspendSet = (HashSet<WorkitemContext>) container.GetQueuedWorkitem(WorkQueueType.SUSPENDED);
         retMap.put(WorkQueueType.SUSPENDED.name(), new HashSet<>());
         for (WorkitemContext workitem : suspendSet) {
-            String authName = workitem.getEntity().getRtid().split("_")[1];
-            String authDomain = authName.split("@")[1];
+            String authDomain = AuthDomainHelper.GetDomainByRTID(ctx.getRtid());
             if (authDomain.equals(domain)) {
                 retMap.get(WorkQueueType.SUSPENDED.name()).add(workitem);
             }
@@ -256,8 +253,7 @@ public class InterfaceW {
         HashSet<WorkitemContext> allocateSet = (HashSet<WorkitemContext>) container.GetQueuedWorkitem(wqType);
         HashSet<WorkitemContext> retSet = new HashSet<>();
         for (WorkitemContext workitem : allocateSet) {
-            String authName = workitem.getEntity().getRtid().split("_")[1];
-            String authDomain = authName.split("@")[1];
+            String authDomain = AuthDomainHelper.GetDomainByRTID(ctx.getRtid());
             if (authDomain.equals(domain)) {
                 retSet.add(workitem);
             }

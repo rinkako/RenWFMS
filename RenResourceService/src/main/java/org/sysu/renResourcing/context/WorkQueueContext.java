@@ -9,10 +9,13 @@ import org.hibernate.Transaction;
 import org.sysu.renResourcing.GlobalContext;
 import org.sysu.renResourcing.basic.enums.RSEventType;
 import org.sysu.renResourcing.basic.enums.WorkQueueType;
+import org.sysu.renResourcing.basic.enums.WorkitemResourcingStatusType;
 import org.sysu.renResourcing.consistency.ContextCachePool;
 import org.sysu.renResourcing.context.steady.RenQueueitemsEntity;
+import org.sysu.renResourcing.context.steady.RenWorkitemEntity;
 import org.sysu.renResourcing.context.steady.RenWorkqueueEntity;
 import org.sysu.renResourcing.interfaceService.InterfaceE;
+import org.sysu.renResourcing.utility.AuthDomainHelper;
 import org.sysu.renResourcing.utility.HibernateUtil;
 import org.sysu.renResourcing.utility.LogUtil;
 
@@ -428,20 +431,33 @@ public class WorkQueueContext implements Serializable, RCacheablesContext {
      */
     @SuppressWarnings("unchecked")
     private synchronized void RefreshFromSteady() {
-        if (this.type == WorkQueueType.WORKLISTED) {
-            return;
-        }
         Session session = HibernateUtil.GetLocalSession();
         Transaction transaction = session.beginTransaction();
         boolean cmtFlag = false;
         try {
-            ArrayList<RenQueueitemsEntity> inSteady = (ArrayList<RenQueueitemsEntity>) session.createQuery(String.format("FROM RenQueueitemsEntity WHERE workqueueId = '%s'", this.queueId)).list();
-            transaction.commit();
-            cmtFlag = true;
             ConcurrentHashMap<String, WorkitemContext> newMaps = new ConcurrentHashMap<>();
-            for (RenQueueitemsEntity rqe : inSteady) {
-                WorkitemContext workitem = WorkitemContext.GetContext(rqe.getWorkitemId(), "#RS_INTERNAL_" + GlobalContext.RESOURCE_SERVICE_GLOBAL_ID);
-                newMaps.put(rqe.getWorkitemId(), workitem);
+            if (this.type == WorkQueueType.WORKLISTED) {
+                ArrayList<RenWorkitemEntity> allActiveItems = (ArrayList<RenWorkitemEntity>) session.createQuery(String.format("FROM RenWorkitemEntity WHERE resourceStatus IN ('%s', '%s', '%s', '%s')", WorkitemResourcingStatusType.Allocated.name(), WorkitemResourcingStatusType.Offered.name(), WorkitemResourcingStatusType.Started.name(), WorkitemResourcingStatusType.Suspended.name())).list();
+                transaction.commit();
+                cmtFlag = true;
+                // worklisted queue owner worker id is directly equals to admin auth name
+                String myDomain = AuthDomainHelper.GetDomainByAuthName(this.ownerWorkerId);
+                for (RenWorkitemEntity workitemEntity : allActiveItems) {
+                    String authDomain = AuthDomainHelper.GetDomainByRTID(workitemEntity.getRtid());
+                    if (myDomain.equals(authDomain)) {
+                        WorkitemContext workitem = WorkitemContext.GetContext(workitemEntity.getWid(), workitemEntity.getRtid());
+                        newMaps.put(workitemEntity.getWid(), workitem);
+                    }
+                }
+            }
+            else {
+                ArrayList<RenQueueitemsEntity> inSteady = (ArrayList<RenQueueitemsEntity>) session.createQuery(String.format("FROM RenQueueitemsEntity WHERE workqueueId = '%s'", this.queueId)).list();
+                transaction.commit();
+                cmtFlag = true;
+                for (RenQueueitemsEntity rqe : inSteady) {
+                    WorkitemContext workitem = WorkitemContext.GetContext(rqe.getWorkitemId(), "#RS_INTERNAL_" + GlobalContext.RESOURCE_SERVICE_GLOBAL_ID);
+                    newMaps.put(rqe.getWorkitemId(), workitem);
+                }
             }
             this.workitems = newMaps;
         }
