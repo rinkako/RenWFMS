@@ -81,18 +81,28 @@ public class AuthorizationService {
                 return "#duplicate_domain";
             }
             // create new
+            Timestamp createTs = new Timestamp(System.currentTimeMillis());
             RenDomainEntity rde = new RenDomainEntity();
             rde.setName(name);
             rde.setLevel(Integer.valueOf(level));
-            rde.setPassword(EncryptUtil.EncryptSHA256(password));
             rde.setCorganGateway(corganGateway);
             rde.setStatus(0);
-            rde.setCreatetimestamp(new Timestamp(System.currentTimeMillis()));
+            rde.setLevel(0);
+            rde.setCreatetimestamp(createTs);
             String signature = RSASignatureUtil.Signature(name, GlobalContext.PRIVATE_KEY);
             assert signature != null;
             String safeSignature = RSASignatureUtil.SafeUrlBase64Encode(signature);
             rde.setUrlsafeSignature(safeSignature);
             session.save(rde);
+            // create admin auth user
+            RenAuthuserEntity rae = new RenAuthuserEntity();
+            rae.setUsername(GlobalContext.DOMAIN_ADMIN_NAME);
+            rae.setDomain(name);
+            rae.setStatus(0);
+            rae.setCreatetimestamp(createTs);
+            rae.setPassword(EncryptUtil.EncryptSHA256(password));
+            rae.setLevel(1);
+            session.save(rae);
             transaction.commit();
             return safeSignature;
         }
@@ -147,9 +157,6 @@ public class AuthorizationService {
             if (are == null) {
                 transaction.commit();
                 return false;
-            }
-            if (updateArgs.containsKey("password")) {
-                are.setPassword(EncryptUtil.EncryptSHA256(updateArgs.get("password")));
             }
             if (updateArgs.containsKey("corgan")) {
                 are.setCorganGateway(updateArgs.get("corgan"));

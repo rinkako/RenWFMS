@@ -47,4 +47,9 @@ public class GlobalContext {
      * Resources event log enable switch.
      */
     public static Boolean EVENTLOG_ENABLE = true;
+
+    /**
+     * Size for engine log buffer.
+     */
+    public static final int LOG_BUFFER_SIZE = 0;
 }

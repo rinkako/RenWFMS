@@ -8,7 +8,6 @@ import java.util.Objects;
 @Table(name = "ren_domain", schema = "renboengine", catalog = "")
 public class RenDomainEntity {
     private String name;
-    private String password;
     private int level;
     private int status;
     private Timestamp createtimestamp;
@@ -23,16 +22,6 @@ public class RenDomainEntity {
 
     public void setName(String name) {
         this.name = name;
-    }
-
-    @Basic
-    @Column(name = "password")
-    public String getPassword() {
-        return password;
-    }
-
-    public void setPassword(String password) {
-        this.password = password;
     }
 
     @Basic
@@ -93,7 +82,6 @@ public class RenDomainEntity {
         return level == that.level &&
                 status == that.status &&
                 Objects.equals(name, that.name) &&
-                Objects.equals(password, that.password) &&
                 Objects.equals(createtimestamp, that.createtimestamp) &&
                 Objects.equals(corganGateway, that.corganGateway) &&
                 Objects.equals(urlsafeSignature, that.urlsafeSignature);
@@ -102,6 +90,6 @@ public class RenDomainEntity {
     @Override
     public int hashCode() {
 
-        return Objects.hash(name, password, level, status, createtimestamp, corganGateway, urlsafeSignature);
+        return Objects.hash(name, level, status, createtimestamp, corganGateway, urlsafeSignature);
     }
 }

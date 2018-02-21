@@ -36,6 +36,11 @@ public final class GlobalContext {
     public static final String TRANSACTION_EXECUTOR_SUCCESS = "success";
 
     /**
+     * Name of administrator of a domain.
+     */
+    public static final String DOMAIN_ADMIN_NAME = "admin";
+
+    /**
      * Transaction executor fail flag string.
      */
     public static final String TRANSACTION_EXECUTOR_FAILED = "fail";

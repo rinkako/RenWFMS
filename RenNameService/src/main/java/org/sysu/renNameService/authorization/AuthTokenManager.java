@@ -6,7 +6,8 @@ package org.sysu.renNameService.authorization;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
 import org.sysu.renNameService.GlobalContext;
-import org.sysu.renNameService.entity.RenAuthEntity;
+import org.sysu.renNameService.entity.RenAuthuserEntity;
+import org.sysu.renNameService.entity.RenAuthuserEntityPK;
 import org.sysu.renNameService.entity.RenSessionEntity;
 import org.sysu.renNameService.utility.EncryptUtil;
 import org.sysu.renNameService.utility.HibernateUtil;
@@ -23,7 +24,7 @@ import java.util.UUID;
 public class AuthTokenManager {
     /**
      * Request for a auth token by authorization user info.
-     * @param username user unique id
+     * @param username user unique id, with domain name
      * @param password password
      * @return a token if authorization success, otherwise a string start with `#` for failure reason
      */
@@ -34,8 +35,15 @@ public class AuthTokenManager {
         try {
             // verify username and password
             String encryptedPassword = EncryptUtil.EncryptSHA256(password);
-            RenAuthEntity rae = session.get(RenAuthEntity.class, username);
-            if (rae == null || rae.getState() != 0) {
+            String[] authItem = username.split("@");
+            if (authItem.length != 2) {
+                return "#user_not_valid";
+            }
+            RenAuthuserEntityPK pk = new RenAuthuserEntityPK();
+            pk.setUsername(authItem[0]);
+            pk.setDomain(authItem[1]);
+            RenAuthuserEntity rae = session.get(RenAuthuserEntity.class, pk);
+            if (rae == null || rae.getStatus() != 0) {
                 transaction.commit();
                 return "#user_not_valid";
             }
@@ -72,6 +80,23 @@ public class AuthTokenManager {
             transaction.rollback();
             return "#exception_occurred";
         }
+    }
+
+    /**
+     * Get domain of a token.
+     * @param token auth token
+     * @return domain name, null if invalid
+     */
+    public static String GetDomain(String token) {
+        String[] tokenItem = token.split("_");
+        if (tokenItem.length != 3) {
+            return null;
+        }
+        String[] authNameItem = tokenItem[1].split("@");
+        if (authNameItem.length != 2) {
+            return null;
+        }
+        return authNameItem[1];
     }
 
     /**

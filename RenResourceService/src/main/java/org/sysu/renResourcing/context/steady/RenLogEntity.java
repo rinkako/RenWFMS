@@ -1,21 +1,12 @@
-/*
- * Project Ren @ 2018
- * Rinkako, Ariana, Gordan. SYSU SDCS.
- */
-package org.sysu.renNameService.entity;
+package org.sysu.renResourcing.context.steady;
 
 import javax.persistence.*;
 import java.sql.Timestamp;
 import java.util.Objects;
 
-/**
- * Author: Rinkako
- * Date  : 2018/2/1
- * Usage :
- */
 @Entity
-@Table(name = "ren_nslog", schema = "renboengine", catalog = "")
-public class RenNslogEntity {
+@Table(name = "ren_log", schema = "renboengine", catalog = "")
+public class RenLogEntity {
     private String logid;
     private String label;
     private String level;
@@ -24,7 +15,7 @@ public class RenNslogEntity {
     private String rtid;
 
     @Id
-    @Column(name = "logid", nullable = false, length = 64)
+    @Column(name = "logid")
     public String getLogid() {
         return logid;
     }
@@ -34,7 +25,7 @@ public class RenNslogEntity {
     }
 
     @Basic
-    @Column(name = "label", nullable = true, length = 64)
+    @Column(name = "label")
     public String getLabel() {
         return label;
     }
@@ -44,7 +35,7 @@ public class RenNslogEntity {
     }
 
     @Basic
-    @Column(name = "level", nullable = true, length = 16)
+    @Column(name = "level")
     public String getLevel() {
         return level;
     }
@@ -54,7 +45,7 @@ public class RenNslogEntity {
     }
 
     @Basic
-    @Column(name = "message", nullable = true, length = -1)
+    @Column(name = "message")
     public String getMessage() {
         return message;
     }
@@ -64,7 +55,7 @@ public class RenNslogEntity {
     }
 
     @Basic
-    @Column(name = "timestamp", nullable = true)
+    @Column(name = "timestamp")
     public Timestamp getTimestamp() {
         return timestamp;
     }
@@ -74,7 +65,7 @@ public class RenNslogEntity {
     }
 
     @Basic
-    @Column(name = "rtid", nullable = true, length = 64)
+    @Column(name = "rtid")
     public String getRtid() {
         return rtid;
     }
@@ -87,7 +78,7 @@ public class RenNslogEntity {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        RenNslogEntity that = (RenNslogEntity) o;
+        RenLogEntity that = (RenLogEntity) o;
         return Objects.equals(logid, that.logid) &&
                 Objects.equals(label, that.label) &&
                 Objects.equals(level, that.level) &&
