@@ -482,5 +482,6 @@ public class WorkQueueContext implements Serializable, RCacheablesContext {
         this.queueId = id;
         this.ownerWorkerId = ownerWorkerId;
         this.type = type;
+        // here no need for queued workitem refresh, any GET methods will refresh automatically.
     }
 }

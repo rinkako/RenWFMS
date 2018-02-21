@@ -4,6 +4,7 @@
  */
 package org.sysu.renResourcing;
 
+import org.sysu.renResourcing.basic.ObservableMessage;
 import org.sysu.renResourcing.consistency.ContextCachePool;
 import org.sysu.renResourcing.context.ResourcingContext;
 import org.sysu.renResourcing.utility.LogUtil;
@@ -74,6 +75,20 @@ public class RScheduler implements Observer {
     }
 
     /**
+     * Get pending resourcing requests count.
+     * @return length of pending queue
+     */
+    public int GetPendingCount() {
+        this.handlePendingLock.lock();
+        try {
+            return this.pendingQueue.size();
+        }
+        finally {
+            this.handlePendingLock.unlock();
+        }
+    }
+
+    /**
      * Process the pending queue, until active tracker exceed concurrent control threshold.
      */
     private void HandlePendingQueue() {
@@ -85,6 +100,7 @@ public class RScheduler implements Observer {
                     LogUtil.Log(String.format("Resourcing context(%s) is scheduled to launch.", pCtx.getRstid()),
                             RScheduler.class.getName(), LogUtil.LogLevelType.INFO, pCtx.getRtid());
                     pCtx.SetScheduled();
+                    ResourcingContext.SaveToSteady(pCtx);
                     this.LaunchTracker(pCtx);
                 } else {
                     break;
@@ -100,7 +116,7 @@ public class RScheduler implements Observer {
      * Actually handle a workitem launching.
      * @param context resourcing request context to be fired
      */
-    void LaunchTracker(ResourcingContext context) {
+    private void LaunchTracker(ResourcingContext context) {
         RTracker tracker = new RTracker(context);
         this.trackerVectorLock.lock();
         try {
@@ -109,6 +125,7 @@ public class RScheduler implements Observer {
         finally {
             this.trackerVectorLock.unlock();
         }
+        tracker.addObserver(this);
         new Thread(tracker).start();
     }
 
@@ -130,8 +147,8 @@ public class RScheduler implements Observer {
      */
     @Override
     public void update(Observable o, Object arg) {
-        assert o instanceof RTracker;
         RTracker tracker = (RTracker) o;
+        ObservableMessage obMsg = (ObservableMessage) arg;
         this.trackerVectorLock.lock();
         try {
             this.trackerVector.remove(tracker);
@@ -142,6 +159,17 @@ public class RScheduler implements Observer {
         ResourcingContext rCtx = tracker.getContext();
         try {
             rCtx.SetFinish();
+            switch (obMsg.getCode()) {
+                case GlobalContext.OBSERVABLE_NOTIFY_SUCCESS:
+                    rCtx.setIsSucceed(1);
+                    break;
+                case GlobalContext.OBSERVABLE_NOTIFY_EXCEPTION:
+                    rCtx.setIsSucceed(-1);
+                    break;
+                default:
+                    rCtx.setIsSucceed(0);
+                    break;
+            }
             ResourcingContext.SaveToSteady(rCtx);
             ContextCachePool.Remove(ResourcingContext.class, rCtx.getRstid());
         }

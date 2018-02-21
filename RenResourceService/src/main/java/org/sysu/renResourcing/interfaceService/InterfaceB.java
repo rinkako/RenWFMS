@@ -146,13 +146,15 @@ public class InterfaceB {
      * @param participant participant context
      * @param workitem workitem context
      * @param initType initialization type, a flag for engine internal call
+     * @return true for a successful workitem accept
      */
-    public static void AcceptOfferedWorkitem(ParticipantContext participant, WorkitemContext workitem, InitializationByType initType) {
+    public static boolean AcceptOfferedWorkitem(ParticipantContext participant, WorkitemContext workitem, InitializationByType initType) {
         // if internal call, means accept and start
         if (initType == InitializationByType.SYSTEM_INITIATED) {
-            boolean result = InterfaceB.StartWorkitem(participant, workitem, initType);
+            boolean result = InterfaceB.StartWorkitem(participant, workitem);
             if (!result) {
                 // todo use interfaceE log to workitem log and interfaceX for exception handle
+                return false;
             }
         }
         // otherwise workitem should be put to allocated queue
@@ -163,6 +165,7 @@ public class InterfaceB {
             InterfaceB.WorkitemChanged(workitem, WorkitemStatusType.Fired, WorkitemResourcingStatusType.Allocated);
         }
         // todo notify if agent
+        return true;
     }
 
     /**
@@ -196,10 +199,9 @@ public class InterfaceB {
      * Handle a participant start a workitem.
      * @param participant participant context
      * @param workitem workitem context
-     * @param initType initialization type, a flag for engine internal call
      * @return true for a successful workitem start
      */
-    public static boolean StartWorkitem(ParticipantContext participant, WorkitemContext workitem, InitializationByType initType) {
+    public static boolean StartWorkitem(ParticipantContext participant, WorkitemContext workitem) {
         try {
             WorkQueueContainer container = WorkQueueContainer.GetContext(participant.getWorkerId());
             container.RemoveFromQueue(workitem, WorkQueueType.ALLOCATED);
@@ -280,7 +282,7 @@ public class InterfaceB {
      * @param workitem workitem context
      * @return true for a successful workitem suspend
      */
-    public boolean SuspendWorkitem(ParticipantContext participant, WorkitemContext workitem) {
+    public static boolean SuspendWorkitem(ParticipantContext participant, WorkitemContext workitem) {
         if (InterfaceO.CheckPrivilege(participant, workitem, PrivilegeType.CAN_SUSPEND)) {
             try {
                 WorkQueueContainer container = WorkQueueContainer.GetContext(participant.getWorkerId());
@@ -307,7 +309,7 @@ public class InterfaceB {
      * @param workitem workitem context
      * @return true for a successful workitem unsuspend
      */
-    public boolean UnsuspendWorkitem(ParticipantContext participant, WorkitemContext workitem) {
+    public static boolean UnsuspendWorkitem(ParticipantContext participant, WorkitemContext workitem) {
         try {
             WorkQueueContainer container = WorkQueueContainer.GetContext(participant.getWorkerId());
             container.RemoveFromQueue(workitem, WorkQueueType.SUSPENDED);
@@ -327,7 +329,7 @@ public class InterfaceB {
      * @param workitem workitem context
      * @return true for a successful workitem skip
      */
-    public boolean SkipWorkitem(ParticipantContext participant, WorkitemContext workitem) {
+    public static boolean SkipWorkitem(ParticipantContext participant, WorkitemContext workitem) {
         if (InterfaceO.CheckPrivilege(participant, workitem, PrivilegeType.CAN_SKIP)) {
             try {
                 WorkQueueContainer container = WorkQueueContainer.GetContext(participant.getWorkerId());
@@ -354,7 +356,7 @@ public class InterfaceB {
      * @param workitem workitem context
      * @return true for a successful workitem complete
      */
-    public boolean CompleteWorkitem(ParticipantContext participant, WorkitemContext workitem) {
+    public static boolean CompleteWorkitem(ParticipantContext participant, WorkitemContext workitem) {
         try {
             RenWorkitemEntity rwe = workitem.getEntity();
             Timestamp currentTS = new Timestamp(System.currentTimeMillis());
