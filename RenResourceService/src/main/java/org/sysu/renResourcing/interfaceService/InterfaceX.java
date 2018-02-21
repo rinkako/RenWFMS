@@ -31,6 +31,14 @@ public class InterfaceX {
     }
 
     /**
+     * Handle fast fail of a process runtime.
+     * @param rtid process rtid
+     */
+    public static void HandleFastFail(String rtid) {
+
+    }
+
+    /**
      * Notify the auth user about exception happened by notify its binding hook URL.
      * @param workitem failed workitem
      */

@@ -10,6 +10,7 @@ import org.sysu.renResourcing.basic.enums.WorkQueueType;
 import org.sysu.renResourcing.basic.enums.WorkitemResourcingStatusType;
 import org.sysu.renResourcing.context.*;
 import org.sysu.renResourcing.utility.AuthDomainHelper;
+import org.sysu.renResourcing.utility.LogUtil;
 import org.sysu.renResourcing.utility.SerializationUtil;
 
 import java.util.HashMap;
@@ -18,7 +19,7 @@ import java.util.Set;
 
 /**
  * Author: Rinkako
- * Date  : 2018/2/9
+ * Date  : 2018/2/21
  * Usage : Implementation of Interface W of Resource Service.
  *         Interface W is responsible for providing services for outside clients.
  *         User sub-systems use this interface for manage work queues.
@@ -37,11 +38,17 @@ public class InterfaceW {
         WorkitemContext workitem = WorkitemContext.GetContext(workitemId, ctx.getRtid());
         ParticipantContext participant = ParticipantContext.GetContext(ctx.getRtid(), workerId);
         if (workitem == null) {
-            // todo handle it with InterfaceX
+            LogUtil.Log("Accept offer but workitem not exist, rstid: " + ctx.getRstid(),
+                    InterfaceW.class.getName(), LogUtil.LogLevelType.ERROR, ctx.getRtid());
             return false;
         }
         if (participant == null) {
-            // todo handle it with InterfaceX
+            if (InterfaceO.SenseParticipantDataChanged(ctx.getRtid())) {
+                InterfaceX.HandleFastFail(ctx.getRtid());
+            }
+            else {
+                InterfaceX.FailedRedirectToLauncherAuthPool(workitem);
+            }
             return false;
         }
         return InterfaceB.AcceptOfferedWorkitem(participant, workitem, InitializationByType.USER_INITIATED);
@@ -58,11 +65,17 @@ public class InterfaceW {
         WorkitemContext workitem = WorkitemContext.GetContext(workitemId, ctx.getRtid());
         ParticipantContext participant = ParticipantContext.GetContext(ctx.getRtid(), workerId);
         if (workitem == null) {
-            // todo handle it with InterfaceX
+            LogUtil.Log("Deallocate but workitem not exist, rstid: " + ctx.getRstid(),
+                    InterfaceW.class.getName(), LogUtil.LogLevelType.ERROR, ctx.getRtid());
             return false;
         }
         if (participant == null) {
-            // todo handle it with InterfaceX
+            if (InterfaceO.SenseParticipantDataChanged(ctx.getRtid())) {
+                InterfaceX.HandleFastFail(ctx.getRtid());
+            }
+            else {
+                InterfaceX.FailedRedirectToLauncherAuthPool(workitem);
+            }
             return false;
         }
         return InterfaceB.DeallocateWorkitem(participant, workitem);
@@ -79,11 +92,17 @@ public class InterfaceW {
         WorkitemContext workitem = WorkitemContext.GetContext(workitemId, ctx.getRtid());
         ParticipantContext participant = ParticipantContext.GetContext(ctx.getRtid(), workerId);
         if (workitem == null) {
-            // todo handle it with InterfaceX
+            LogUtil.Log("Start but workitem not exist, rstid: " + ctx.getRstid(),
+                    InterfaceW.class.getName(), LogUtil.LogLevelType.ERROR, ctx.getRtid());
             return false;
         }
         if (participant == null) {
-            // todo handle it with InterfaceX
+            if (InterfaceO.SenseParticipantDataChanged(ctx.getRtid())) {
+                InterfaceX.HandleFastFail(ctx.getRtid());
+            }
+            else {
+                InterfaceX.FailedRedirectToLauncherAuthPool(workitem);
+            }
             return false;
         }
         return InterfaceB.StartWorkitem(participant, workitem);
@@ -100,11 +119,17 @@ public class InterfaceW {
         WorkitemContext workitem = WorkitemContext.GetContext(workitemId, ctx.getRtid());
         ParticipantContext participant = ParticipantContext.GetContext(ctx.getRtid(), workerId);
         if (workitem == null) {
-            // todo handle it with InterfaceX
+            LogUtil.Log("Reallocate but workitem not exist, rstid: " + ctx.getRstid(),
+                    InterfaceW.class.getName(), LogUtil.LogLevelType.ERROR, ctx.getRtid());
             return false;
         }
         if (participant == null) {
-            // todo handle it with InterfaceX
+            if (InterfaceO.SenseParticipantDataChanged(ctx.getRtid())) {
+                InterfaceX.HandleFastFail(ctx.getRtid());
+            }
+            else {
+                InterfaceX.FailedRedirectToLauncherAuthPool(workitem);
+            }
             return false;
         }
         return InterfaceB.ReallocateWorkitem(participant, workitem);
@@ -121,11 +146,17 @@ public class InterfaceW {
         WorkitemContext workitem = WorkitemContext.GetContext(workitemId, ctx.getRtid());
         ParticipantContext participant = ParticipantContext.GetContext(ctx.getRtid(), workerId);
         if (workitem == null) {
-            // todo handle it with InterfaceX
+            LogUtil.Log("Accept and start but workitem not exist, rstid: " + ctx.getRstid(),
+                    InterfaceW.class.getName(), LogUtil.LogLevelType.ERROR, ctx.getRtid());
             return false;
         }
         if (participant == null) {
-            // todo handle it with InterfaceX
+            if (InterfaceO.SenseParticipantDataChanged(ctx.getRtid())) {
+                InterfaceX.HandleFastFail(ctx.getRtid());
+            }
+            else {
+                InterfaceX.FailedRedirectToLauncherAuthPool(workitem);
+            }
             return false;
         }
         return InterfaceB.AcceptOfferedWorkitem(participant, workitem, InitializationByType.SYSTEM_INITIATED);
@@ -142,11 +173,17 @@ public class InterfaceW {
         WorkitemContext workitem = WorkitemContext.GetContext(workitemId, ctx.getRtid());
         ParticipantContext participant = ParticipantContext.GetContext(ctx.getRtid(), workerId);
         if (workitem == null) {
-            // todo handle it with InterfaceX
+            LogUtil.Log("Skip but workitem not exist, rstid: " + ctx.getRstid(),
+                    InterfaceW.class.getName(), LogUtil.LogLevelType.ERROR, ctx.getRtid());
             return false;
         }
         if (participant == null) {
-            // todo handle it with InterfaceX
+            if (InterfaceO.SenseParticipantDataChanged(ctx.getRtid())) {
+                InterfaceX.HandleFastFail(ctx.getRtid());
+            }
+            else {
+                InterfaceX.FailedRedirectToLauncherAuthPool(workitem);
+            }
             return false;
         }
         return InterfaceB.SkipWorkitem(participant, workitem);
@@ -163,11 +200,17 @@ public class InterfaceW {
         WorkitemContext workitem = WorkitemContext.GetContext(workitemId, ctx.getRtid());
         ParticipantContext participant = ParticipantContext.GetContext(ctx.getRtid(), workerId);
         if (workitem == null) {
-            // todo handle it with InterfaceX
+            LogUtil.Log("Suspend but workitem not exist, rstid: " + ctx.getRstid(),
+                    InterfaceW.class.getName(), LogUtil.LogLevelType.ERROR, ctx.getRtid());
             return false;
         }
         if (participant == null) {
-            // todo handle it with InterfaceX
+            if (InterfaceO.SenseParticipantDataChanged(ctx.getRtid())) {
+                InterfaceX.HandleFastFail(ctx.getRtid());
+            }
+            else {
+                InterfaceX.FailedRedirectToLauncherAuthPool(workitem);
+            }
             return false;
         }
         return InterfaceB.SuspendWorkitem(participant, workitem);
@@ -184,11 +227,17 @@ public class InterfaceW {
         WorkitemContext workitem = WorkitemContext.GetContext(workitemId, ctx.getRtid());
         ParticipantContext participant = ParticipantContext.GetContext(ctx.getRtid(), workerId);
         if (workitem == null) {
-            // todo handle it with InterfaceX
+            LogUtil.Log("Unsuspend but workitem not exist, rstid: " + ctx.getRstid(),
+                    InterfaceW.class.getName(), LogUtil.LogLevelType.ERROR, ctx.getRtid());
             return false;
         }
         if (participant == null) {
-            // todo handle it with InterfaceX
+            if (InterfaceO.SenseParticipantDataChanged(ctx.getRtid())) {
+                InterfaceX.HandleFastFail(ctx.getRtid());
+            }
+            else {
+                InterfaceX.FailedRedirectToLauncherAuthPool(workitem);
+            }
             return false;
         }
         return InterfaceB.UnsuspendWorkitem(participant, workitem);

@@ -7,11 +7,13 @@ package org.sysu.renResourcing.interfaceService;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
 import org.sysu.renResourcing.basic.enums.PrivilegeType;
+import org.sysu.renResourcing.basic.enums.ResourceBindingType;
 import org.sysu.renResourcing.context.ParticipantContext;
 import org.sysu.renResourcing.context.WorkitemContext;
 import org.sysu.renResourcing.context.steady.RenRuntimerecordEntity;
 import org.sysu.renResourcing.utility.CommonUtil;
 import org.sysu.renResourcing.utility.HibernateUtil;
+import org.sysu.renResourcing.utility.LogUtil;
 
 import java.util.HashSet;
 
@@ -115,5 +117,23 @@ public class InterfaceO {
     public static boolean CheckPrivilege(ParticipantContext participant, WorkitemContext workitem, PrivilegeType privilege) {
         // todo
         return true;
+    }
+
+    /**
+     * This method is called when sensed participant in steady is changed.
+     * @param rtid process rtid
+     * @return is fail-fast when organization data changed
+     */
+    public static boolean SenseParticipantDataChanged(String rtid) {
+        LogUtil.Log("Sensed binding resources changed.", InterfaceO.class.getName(),
+                LogUtil.LogLevelType.INFO, rtid);
+        Session session = HibernateUtil.GetLocalSession();
+        try {
+            RenRuntimerecordEntity rre = session.get(RenRuntimerecordEntity.class, rtid);
+            return rre.getResourceBindingType() == ResourceBindingType.FastFail.ordinal();
+        }
+        finally {
+            HibernateUtil.CloseLocalSession();
+        }
     }
 }
