@@ -25,7 +25,7 @@ public class EngineController {
      * @param rtid the runtime record of a process
      * @return response package
      */
-    @RequestMapping(value = "/launch", produces = {"application/json", "application/xml"})
+    @RequestMapping(value = "/launchProcess", produces = {"application/json", "application/xml"})
     @ResponseBody
     @Transactional
     public ReturnModel LaunchProcess(@RequestParam(value = "rtid", required = false) String rtid) {
