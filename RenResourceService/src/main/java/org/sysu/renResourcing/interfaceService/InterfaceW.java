@@ -4,8 +4,16 @@
  */
 package org.sysu.renResourcing.interfaceService;
 
-import org.sysu.renResourcing.context.ParticipantContext;
-import org.sysu.renResourcing.context.WorkitemContext;
+import org.sysu.renResourcing.GlobalContext;
+import org.sysu.renResourcing.basic.enums.InitializationByType;
+import org.sysu.renResourcing.basic.enums.WorkQueueType;
+import org.sysu.renResourcing.basic.enums.WorkitemResourcingStatusType;
+import org.sysu.renResourcing.context.*;
+import org.sysu.renResourcing.utility.SerializationUtil;
+
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Set;
 
 /**
  * Author: Rinkako
@@ -19,138 +27,312 @@ public class InterfaceW {
 
     /**
      * Accept offer a workitem.
-     * @param workitemId workitem global id
-     * @param workerId worker global id
-     * @return execution result
+     * @param ctx rs context
+     * @return true for a successful workitem accept
      */
-    public static String AcceptOffer(String workitemId, String workerId) {
-        return "";
+    public static boolean AcceptOffer(ResourcingContext ctx) {
+        String workitemId = (String) ctx.getArgs().get("workitemId");
+        String workerId = (String) ctx.getArgs().get("workerId");
+        WorkitemContext workitem = WorkitemContext.GetContext(workitemId, ctx.getRtid());
+        ParticipantContext participant = ParticipantContext.GetContext(ctx.getRtid(), workerId);
+        if (workitem == null) {
+            // todo handle it with InterfaceX
+            return false;
+        }
+        if (participant == null) {
+            // todo handle it with InterfaceX
+            return false;
+        }
+        return InterfaceB.AcceptOfferedWorkitem(participant, workitem, InitializationByType.USER_INITIATED);
     }
 
     /**
      * Deallocate a workitem.
-     * @param workitemId workitem global id
-     * @param workerId worker global id
-     * @return execution result
+     * @param ctx rs context
+     * @return true for a successful workitem deallocate
      */
-    public static String Deallocate(String workitemId, String workerId) {
-        return "";
+    public static boolean Deallocate(ResourcingContext ctx) {
+        String workitemId = (String) ctx.getArgs().get("workitemId");
+        String workerId = (String) ctx.getArgs().get("workerId");
+        WorkitemContext workitem = WorkitemContext.GetContext(workitemId, ctx.getRtid());
+        ParticipantContext participant = ParticipantContext.GetContext(ctx.getRtid(), workerId);
+        if (workitem == null) {
+            // todo handle it with InterfaceX
+            return false;
+        }
+        if (participant == null) {
+            // todo handle it with InterfaceX
+            return false;
+        }
+        return InterfaceB.DeallocateWorkitem(participant, workitem);
     }
 
     /**
      * Start a workitem.
-     * @param workitemId workitem global id
-     * @param workerId worker global id
-     * @return execution result
+     * @param ctx rs context
+     * @return true for a successful workitem start
      */
-    public static String Start(String workitemId, String workerId) {
-        return "";
+    public static boolean Start(ResourcingContext ctx) {
+        String workitemId = (String) ctx.getArgs().get("workitemId");
+        String workerId = (String) ctx.getArgs().get("workerId");
+        WorkitemContext workitem = WorkitemContext.GetContext(workitemId, ctx.getRtid());
+        ParticipantContext participant = ParticipantContext.GetContext(ctx.getRtid(), workerId);
+        if (workitem == null) {
+            // todo handle it with InterfaceX
+            return false;
+        }
+        if (participant == null) {
+            // todo handle it with InterfaceX
+            return false;
+        }
+        return InterfaceB.StartWorkitem(participant, workitem);
     }
 
     /**
      * Reallocate a workitem.
-     * @param workitemId workitem global id
-     * @param workerId worker global id
-     * @return execution result
+     * @param ctx rs context
+     * @return true for a successful workitem reallocate
      */
-    public static String Reallocate(String workitemId, String workerId) {
-        return "";
+    public static boolean Reallocate(ResourcingContext ctx) {
+        String workitemId = (String) ctx.getArgs().get("workitemId");
+        String workerId = (String) ctx.getArgs().get("workerId");
+        WorkitemContext workitem = WorkitemContext.GetContext(workitemId, ctx.getRtid());
+        ParticipantContext participant = ParticipantContext.GetContext(ctx.getRtid(), workerId);
+        if (workitem == null) {
+            // todo handle it with InterfaceX
+            return false;
+        }
+        if (participant == null) {
+            // todo handle it with InterfaceX
+            return false;
+        }
+        return InterfaceB.ReallocateWorkitem(participant, workitem);
     }
 
     /**
      * Accept and start a workitem.
-     * @param workitemId workitem global id
-     * @param workerId worker global id
-     * @return execution result
+     * @param ctx rs context
+     * @return true for a successful workitem accept and start
      */
-    public static String AcceptAndStart(String workitemId, String workerId) {
-        return "";
+    public static boolean AcceptAndStart(ResourcingContext ctx) {
+        String workitemId = (String) ctx.getArgs().get("workitemId");
+        String workerId = (String) ctx.getArgs().get("workerId");
+        WorkitemContext workitem = WorkitemContext.GetContext(workitemId, ctx.getRtid());
+        ParticipantContext participant = ParticipantContext.GetContext(ctx.getRtid(), workerId);
+        if (workitem == null) {
+            // todo handle it with InterfaceX
+            return false;
+        }
+        if (participant == null) {
+            // todo handle it with InterfaceX
+            return false;
+        }
+        return InterfaceB.AcceptOfferedWorkitem(participant, workitem, InitializationByType.SYSTEM_INITIATED);
     }
 
     /**
      * Skip a workitem.
-     * @param workitemId workitem global id
-     * @param workerId worker global id
-     * @return execution result
+     * @param ctx rs context
+     * @return true for a successful workitem skip
      */
-    public static String Skip(String workitemId, String workerId) {
-        return "";
+    public static boolean Skip(ResourcingContext ctx) {
+        String workitemId = (String) ctx.getArgs().get("workitemId");
+        String workerId = (String) ctx.getArgs().get("workerId");
+        WorkitemContext workitem = WorkitemContext.GetContext(workitemId, ctx.getRtid());
+        ParticipantContext participant = ParticipantContext.GetContext(ctx.getRtid(), workerId);
+        if (workitem == null) {
+            // todo handle it with InterfaceX
+            return false;
+        }
+        if (participant == null) {
+            // todo handle it with InterfaceX
+            return false;
+        }
+        return InterfaceB.SkipWorkitem(participant, workitem);
     }
 
     /**
      * Suspend a workitem.
-     * @param workitemId workitem global id
-     * @param workerId worker global id
-     * @return execution result
+     * @param ctx rs context
+     * @return true for a successful workitem suspend
      */
-    public static String Suspend(String workitemId, String workerId) {
-        return "";
+    public static boolean Suspend(ResourcingContext ctx) {
+        String workitemId = (String) ctx.getArgs().get("workitemId");
+        String workerId = (String) ctx.getArgs().get("workerId");
+        WorkitemContext workitem = WorkitemContext.GetContext(workitemId, ctx.getRtid());
+        ParticipantContext participant = ParticipantContext.GetContext(ctx.getRtid(), workerId);
+        if (workitem == null) {
+            // todo handle it with InterfaceX
+            return false;
+        }
+        if (participant == null) {
+            // todo handle it with InterfaceX
+            return false;
+        }
+        return InterfaceB.SuspendWorkitem(participant, workitem);
     }
 
     /**
      * Unsuspend a workitem.
-     * @param workitemId workitem global id
-     * @param workerId worker global id
-     * @return execution result
+     * @param ctx rs context
+     * @return true for a successful workitem unsuspend
      */
-    public static String Unsuspend(String workitemId, String workerId) {
-        return "";
+    public static boolean Unsuspend(ResourcingContext ctx) {
+        String workitemId = (String) ctx.getArgs().get("workitemId");
+        String workerId = (String) ctx.getArgs().get("workerId");
+        WorkitemContext workitem = WorkitemContext.GetContext(workitemId, ctx.getRtid());
+        ParticipantContext participant = ParticipantContext.GetContext(ctx.getRtid(), workerId);
+        if (workitem == null) {
+            // todo handle it with InterfaceX
+            return false;
+        }
+        if (participant == null) {
+            // todo handle it with InterfaceX
+            return false;
+        }
+        return InterfaceB.UnsuspendWorkitem(participant, workitem);
     }
 
     /**
      * Get all workitems in all types of queue of a worker.
-     * @param workerId worker global id
-     * @param domain domain name
+     * @param ctx rs context
      * @return a dictionary of (WorkQueueType, ListOfWorkitemDescriptors)
      */
-    public static String GetWorkQueues(String workerId, String domain) {
-        return "";
+    public static String GetWorkQueues(ResourcingContext ctx) {
+        String domain = (String) ctx.getArgs().get("domain");
+        String workerId = (String) ctx.getArgs().get("workerId");
+        WorkQueueContainer container = WorkQueueContainer.GetContext(workerId);
+        HashMap<String, HashSet<WorkitemContext>> retMap = new HashMap<>();
+        HashSet<WorkitemContext> allocateSet = (HashSet<WorkitemContext>) container.GetQueuedWorkitem(WorkQueueType.ALLOCATED);
+        retMap.put(WorkQueueType.ALLOCATED.name(), new HashSet<>());
+        for (WorkitemContext workitem : allocateSet) {
+            String authName = workitem.getEntity().getRtid().split("_")[1];
+            String authDomain = authName.split("@")[1];
+            if (authDomain.equals(domain)) {
+                retMap.get(WorkQueueType.ALLOCATED.name()).add(workitem);
+            }
+        }
+        HashSet<WorkitemContext> offeredSet = (HashSet<WorkitemContext>) container.GetQueuedWorkitem(WorkQueueType.OFFERED);
+        retMap.put(WorkQueueType.OFFERED.name(), new HashSet<>());
+        for (WorkitemContext workitem : offeredSet) {
+            String authName = workitem.getEntity().getRtid().split("_")[1];
+            String authDomain = authName.split("@")[1];
+            if (authDomain.equals(domain)) {
+                retMap.get(WorkQueueType.OFFERED.name()).add(workitem);
+            }
+        }
+        HashSet<WorkitemContext> startedSet = (HashSet<WorkitemContext>) container.GetQueuedWorkitem(WorkQueueType.STARTED);
+        retMap.put(WorkQueueType.STARTED.name(), new HashSet<>());
+        for (WorkitemContext workitem : startedSet) {
+            String authName = workitem.getEntity().getRtid().split("_")[1];
+            String authDomain = authName.split("@")[1];
+            if (authDomain.equals(domain)) {
+                retMap.get(WorkQueueType.STARTED.name()).add(workitem);
+            }
+        }
+        HashSet<WorkitemContext> suspendSet = (HashSet<WorkitemContext>) container.GetQueuedWorkitem(WorkQueueType.SUSPENDED);
+        retMap.put(WorkQueueType.SUSPENDED.name(), new HashSet<>());
+        for (WorkitemContext workitem : suspendSet) {
+            String authName = workitem.getEntity().getRtid().split("_")[1];
+            String authDomain = authName.split("@")[1];
+            if (authDomain.equals(domain)) {
+                retMap.get(WorkQueueType.SUSPENDED.name()).add(workitem);
+            }
+        }
+        return SerializationUtil.JsonSerialization(retMap);
     }
 
     /**
      * Get all workitems in a specific type of queue of a worker.
-     * @param workerId worker global id
-     * @param domain auth domain name
-     * @param queueTypeName queue type name
+     * @param ctx rs context
      * @return workitem descriptors string in list
      */
-    public static String GetWorkQueue(String workerId, String domain, String queueTypeName) {
-        return "";
+    public static String GetWorkQueue(ResourcingContext ctx) {
+        String domain = (String) ctx.getArgs().get("domain");
+        String workerId = (String) ctx.getArgs().get("workerId");
+        String queueTypeName = (String) ctx.getArgs().get("queueTypeName");
+        WorkQueueType wqType = WorkQueueType.valueOf(queueTypeName.toUpperCase());
+        WorkQueueContainer container = WorkQueueContainer.GetContext(workerId);
+        HashSet<WorkitemContext> allocateSet = (HashSet<WorkitemContext>) container.GetQueuedWorkitem(wqType);
+        HashSet<WorkitemContext> retSet = new HashSet<>();
+        for (WorkitemContext workitem : allocateSet) {
+            String authName = workitem.getEntity().getRtid().split("_")[1];
+            String authDomain = authName.split("@")[1];
+            if (authDomain.equals(domain)) {
+                retSet.add(workitem);
+            }
+        }
+        return SerializationUtil.JsonSerialization(retSet);
     }
 
     /**
      * Get all workers with any non-empty work queue in a domain.
-     * @param domain auth domain name
+     * @param ctx rs context
      * @return worker gid in a list
      */
-    public static String GetNotEmptyQueueWorkers(String domain) {
-        return "";
+    public static String GetNotEmptyQueueWorkers(ResourcingContext ctx) {
+        String domain = (String) ctx.getArgs().get("domain");
+        WorkQueueContainer adminContainer = WorkQueueContainer.GetContext(GlobalContext.WORKQUEUE_ADMIN_PREFIX + domain);
+        Set<WorkitemContext> worklisted = adminContainer.GetQueue(WorkQueueType.WORKLISTED).GetQueueAsSet();
+        HashSet<String> retParticipantIds = new HashSet<>();
+        for (WorkitemContext workitem : worklisted) {
+            retParticipantIds.add(workitem.getEntity().getWid());
+        }
+        return SerializationUtil.JsonSerialization(retParticipantIds);
     }
 
     /**
      * Get all workers with a non-empty offered work queue in a domain.
-     * @param domain auth domain name
+     * @param ctx rs context
      * @return worker gid in a list
      */
-    public static String GetNotEmptyOfferedQueueWorkers(String domain) {
-        return "";
+    public static String GetNotEmptyOfferedQueueWorkers(ResourcingContext ctx) {
+        String domain = (String) ctx.getArgs().get("domain");
+        WorkQueueContainer adminContainer = WorkQueueContainer.GetContext(GlobalContext.WORKQUEUE_ADMIN_PREFIX + domain);
+        Set<WorkitemContext> worklisted = adminContainer.GetQueue(WorkQueueType.WORKLISTED).GetQueueAsSet();
+        HashSet<String> retParticipantIds = new HashSet<>();
+        for (WorkitemContext workitem : worklisted) {
+            if (workitem.getEntity().getResourceStatus().equals(WorkitemResourcingStatusType.Offered.name())) {
+                retParticipantIds.add(workitem.getEntity().getWid());
+            }
+        }
+        return SerializationUtil.JsonSerialization(retParticipantIds);
     }
 
     /**
      * Get all workers with a non-empty allocated work queue in a domain.
-     * @param domain auth domain name
+     * @param ctx rs context
      * @return worker gid in a list
      */
-    public static String GetNotEmptyAllocatedQueueWorkers(String domain) {
-        return "";
+    public static String GetNotEmptyAllocatedQueueWorkers(ResourcingContext ctx) {
+        String domain = (String) ctx.getArgs().get("domain");
+        WorkQueueContainer adminContainer = WorkQueueContainer.GetContext(GlobalContext.WORKQUEUE_ADMIN_PREFIX + domain);
+        Set<WorkitemContext> worklisted = adminContainer.GetQueue(WorkQueueType.WORKLISTED).GetQueueAsSet();
+        HashSet<String> retParticipantIds = new HashSet<>();
+        for (WorkitemContext workitem : worklisted) {
+            if (workitem.getEntity().getResourceStatus().equals(WorkitemResourcingStatusType.Allocated.name())) {
+                retParticipantIds.add(workitem.getEntity().getWid());
+            }
+        }
+        return SerializationUtil.JsonSerialization(retParticipantIds);
     }
 
     /**
      * Get all workers with a non-empty allocated or allocated work queue in a domain.
-     * @param domain auth domain name
+     * @param ctx rs context
      * @return worker gid in a list
      */
-    public static String GetNotEmptyOfferedAllocatedQueueWorkers(String domain) {
-        return "";
+    public static String GetNotEmptyOfferedAllocatedQueueWorkers(ResourcingContext ctx) {
+        String domain = (String) ctx.getArgs().get("domain");
+        WorkQueueContainer adminContainer = WorkQueueContainer.GetContext(GlobalContext.WORKQUEUE_ADMIN_PREFIX + domain);
+        Set<WorkitemContext> worklisted = adminContainer.GetQueue(WorkQueueType.WORKLISTED).GetQueueAsSet();
+        HashSet<String> retParticipantIds = new HashSet<>();
+        for (WorkitemContext workitem : worklisted) {
+            if (workitem.getEntity().getResourceStatus().equals(WorkitemResourcingStatusType.Offered.name()) ||
+                workitem.getEntity().getResourceStatus().equals(WorkitemResourcingStatusType.Allocated.name())) {
+                retParticipantIds.add(workitem.getEntity().getWid());
+            }
+        }
+        return SerializationUtil.JsonSerialization(retParticipantIds);
     }
 }

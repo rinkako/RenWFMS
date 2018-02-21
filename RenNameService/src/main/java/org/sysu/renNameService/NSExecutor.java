@@ -112,9 +112,6 @@ public class NSExecutor extends Observable {
                 case Namespacing:
                     String nsAct = (String) nst.getParameterDictionary().get(GlobalContext.TRANSACTION_ACTION_KEY);
                     switch (nsAct) {
-                        case "generateRtid":
-                            retStr = NameSpacingService.GenerateRTID();
-                            break;
                         case "createProcess":
                             retStr = NameSpacingService.CreateProcess((String) args.get("renid"), (String) args.get("name"), (String) args.get("mainbo"));
                             break;

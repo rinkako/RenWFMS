@@ -29,39 +29,6 @@ import java.util.List;
 @RestController
 @RequestMapping("/ns")
 public class NameSpacingController {
-    /**
-     * Generate a new RTID.
-     * @param token auth token
-     * @return response package
-     */
-    @RequestMapping(value = "/generateRtid", produces = {"application/json", "application/xml"})
-    @ResponseBody
-    @Transactional
-    public ReturnModel GenerateRTID(@RequestParam(value="token", required = false)String token) {
-        ReturnModel rnModel = new ReturnModel();
-        try {
-            // miss params
-            List<String> missingParams = new ArrayList<>();
-            if (token == null) missingParams.add("token");
-            if (missingParams.size() > 0) {
-                return ReturnModelHelper.MissingParametersResponse(missingParams);
-            }
-            // token check
-            if (!AuthorizationService.CheckValid(token)) {
-                return ReturnModelHelper.UnauthorizedResponse(token);
-            }
-            // logic
-            HashMap<String, String> args = new HashMap<>();
-            NameServiceTransaction t = TransactionCreator.Create(TransactionType.Namespacing, "generateRtid", args);
-            String jsonifyResult = (String) NameSpacingController.scheduler.Schedule(t);
-            // return
-            ReturnModelHelper.StandardResponse(rnModel, StatusCode.OK, jsonifyResult);
-        } catch (Exception e) {
-            ReturnModelHelper.ExceptionResponse(rnModel, e.getClass().getName());
-        }
-
-        return rnModel;
-    }
 
     /**
      * Create a new process for a ren user.

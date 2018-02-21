@@ -21,7 +21,7 @@ public class GlobalContext {
     /**
      * Prefix of admin queue.
      */
-    public static final String WORKQUEUE_ADMIN_PREFIX = "admin_";
+    public static final String WORKQUEUE_ADMIN_PREFIX = "admin@";
 
     /**
      * Success notification string of Observable object.
