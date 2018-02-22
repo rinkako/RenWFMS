@@ -4,7 +4,7 @@ import javax.persistence.*;
 import java.sql.Timestamp;
 
 @Entity
-@Table(name = "ren_process", schema = "renboengine")
+@Table(name = "ren_process", schema = "renboengine", catalog = "")
 public class RenProcessEntity {
     private String pid;
     private String processName;

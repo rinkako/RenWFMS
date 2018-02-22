@@ -342,7 +342,7 @@ public final class RoleMappingService {
         Transaction transaction = session.beginTransaction();
         boolean cmtFlag = false;
         try {
-            RenAuthEntity rae = session.get(RenAuthEntity.class, renid);
+            RenDomainEntity rae = session.get(RenDomainEntity.class, AuthDomainHelper.GetDomainByAuthName(renid));
             cmtFlag = true;
             transaction.commit();
             assert rae != null;
@@ -384,7 +384,7 @@ public final class RoleMappingService {
         Transaction transaction = session.beginTransaction();
         boolean cmtFlag = false;
         try {
-            RenAuthEntity rae = session.get(RenAuthEntity.class, renid);
+            RenDomainEntity rae = session.get(RenDomainEntity.class, AuthDomainHelper.GetDomainByAuthName(renid));
             cmtFlag = true;
             transaction.commit();
             assert rae != null;
@@ -426,7 +426,7 @@ public final class RoleMappingService {
         Transaction transaction = session.beginTransaction();
         boolean cmtFlag = false;
         try {
-            RenAuthEntity rae = session.get(RenAuthEntity.class, renid);
+            RenDomainEntity rae = session.get(RenDomainEntity.class, AuthDomainHelper.GetDomainByAuthName(renid));
             cmtFlag = true;
             transaction.commit();
             assert rae != null;
@@ -468,7 +468,7 @@ public final class RoleMappingService {
         Transaction transaction = session.beginTransaction();
         boolean cmtFlag = false;
         try {
-            RenAuthEntity rae = session.get(RenAuthEntity.class, renid);
+            RenDomainEntity rae = session.get(RenDomainEntity.class, AuthDomainHelper.GetDomainByAuthName(renid));
             cmtFlag = true;
             transaction.commit();
             assert rae != null;
@@ -508,7 +508,7 @@ public final class RoleMappingService {
         Transaction transaction = session.beginTransaction();
         boolean cmtFlag = false;
         try {
-            RenAuthEntity rae = session.get(RenAuthEntity.class, renid);
+            RenDomainEntity rae = session.get(RenDomainEntity.class, AuthDomainHelper.GetDomainByAuthName(renid));
             cmtFlag = true;
             transaction.commit();
             assert rae != null;
@@ -547,7 +547,7 @@ public final class RoleMappingService {
         Transaction transaction = session.beginTransaction();
         boolean cmtFlag = false;
         try {
-            RenAuthEntity rae = session.get(RenAuthEntity.class, renid);
+            RenDomainEntity rae = session.get(RenDomainEntity.class, AuthDomainHelper.GetDomainByAuthName(renid));
             cmtFlag = true;
             transaction.commit();
             assert rae != null;

@@ -10,7 +10,7 @@
     <packaging>jar</packaging>
 
     <name>RenNameService</name>
-    <description>Demo project for Spring Boot</description>
+    <description>RenWFMS Namespace Service</description>
 
     <parent>
         <groupId>org.springframework.boot</groupId>

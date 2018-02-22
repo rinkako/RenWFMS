@@ -4,7 +4,7 @@ import javax.persistence.*;
 import java.util.Arrays;
 
 @Entity
-@Table(name = "ren_bo", schema = "renboengine")
+@Table(name = "ren_bo", schema = "renboengine", catalog = "")
 public class RenBoEntity {
     private String boid;
     private String boName;

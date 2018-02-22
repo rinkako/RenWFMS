@@ -1,6 +1,5 @@
 package org.sysu.workflow.bridge;
 
-import org.apache.commons.collections.map.HashedMap;
 
 import java.io.File;
 import java.text.SimpleDateFormat;

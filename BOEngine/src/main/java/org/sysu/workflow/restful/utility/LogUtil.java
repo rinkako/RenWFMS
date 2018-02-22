@@ -1,9 +1,10 @@
 package org.sysu.workflow.restful.utility;
 
 import org.hibernate.Session;
-import org.sysu.workflow.restful.entity.RenNslogEntity;
+import org.sysu.workflow.restful.entity.RenLogEntity;
 
 import java.sql.Timestamp;
+import java.util.UUID;
 import java.util.concurrent.ConcurrentLinkedQueue;
 import java.util.concurrent.locks.ReentrantReadWriteLock;
 
@@ -99,13 +100,15 @@ public final class LogUtil {
         try {
             LogMessagePackage lmp;
             while ((lmp = LogUtil.logBuffer.poll()) != null) {
-                RenNslogEntity rnle = new RenNslogEntity();
+                RenLogEntity rnle = new RenLogEntity();
+                rnle.setLogid(String.format("BeLog_%s", UUID.randomUUID()));
                 rnle.setLabel(lmp.Label);
                 rnle.setLevel(lmp.Level.name());
                 rnle.setMessage(lmp.Message);
                 rnle.setTimestamp(lmp.Timestamp);
                 session.save(rnle);
             }
+            session.flush();
         }
         catch (Exception ex) {
             LogUtil.Echo("Flush log exception, " + ex, LogUtil.class.getName(), LogLevelType.ERROR);
