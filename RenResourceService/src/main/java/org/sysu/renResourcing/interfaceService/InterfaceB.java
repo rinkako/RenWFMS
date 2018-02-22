@@ -334,7 +334,7 @@ public class InterfaceB {
             try {
                 WorkQueueContainer container = WorkQueueContainer.GetContext(participant.getWorkerId());
                 container.RemoveFromQueue(workitem, WorkQueueType.ALLOCATED);
-                InterfaceB.WorkitemStatusChanged(workitem, WorkitemStatusType.valueOf(workitem.getEntity().getStatus()), WorkitemStatusType.Complete);
+                InterfaceB.WorkitemChanged(workitem, WorkitemStatusType.Complete, WorkitemResourcingStatusType.Skipped);
                 InterfaceE.WriteLog(workitem, participant.getWorkerId(), RSEventType.skip);
                 return true;
             }
@@ -367,7 +367,7 @@ public class InterfaceB {
             WorkitemContext.SaveToSteady(workitem);
             WorkQueueContainer container = WorkQueueContainer.GetContext(participant.getWorkerId());
             container.RemoveFromQueue(workitem, WorkQueueType.STARTED);
-            InterfaceB.WorkitemStatusChanged(workitem, WorkitemStatusType.valueOf(workitem.getEntity().getStatus()), WorkitemStatusType.Complete);
+            InterfaceB.WorkitemChanged(workitem, WorkitemStatusType.Complete, WorkitemResourcingStatusType.Completed);
             InterfaceE.WriteLog(workitem, participant.getWorkerId(), RSEventType.complete);
             return true;
         }

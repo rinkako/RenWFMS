@@ -55,6 +55,7 @@ public class WorkQueueContext implements Serializable, RCacheablesContext {
      * @param workitem workitem entity.
      */
     public synchronized void AddOrUpdate(WorkitemContext workitem) {
+        this.RefreshFromSteady();
         this.workitems.put(workitem.getEntity().getWid(), workitem);
         this.AddChangesToSteady(workitem);
         this.LogEvent(workitem);
@@ -65,6 +66,7 @@ public class WorkQueueContext implements Serializable, RCacheablesContext {
      * @param queueMap Map in pattern (workitemId, workitemObject)
      */
     public synchronized void AddQueue(Map<String, WorkitemContext> queueMap) {
+        this.RefreshFromSteady();
         this.workitems.putAll(queueMap);
         this.AddChangesToSteady(new HashSet<>(queueMap.values()));
         this.LogEvent(queueMap);
@@ -76,6 +78,7 @@ public class WorkQueueContext implements Serializable, RCacheablesContext {
      * @param queue queue to be added
      */
     public synchronized void AddQueue(WorkQueueContext queue) {
+        this.RefreshFromSteady();
         Map<String, WorkitemContext> qMap = queue.GetQueueAsMap();
         this.workitems.putAll(qMap);
         this.AddChangesToSteady(queue.GetQueueAsSet());
@@ -87,6 +90,7 @@ public class WorkQueueContext implements Serializable, RCacheablesContext {
      * @param workitemId workitem global id
      */
     public synchronized void Remove(String workitemId) {
+        this.RefreshFromSteady();
         this.workitems.remove(workitemId);
         this.RemoveChangesToSteady(workitemId);
     }
@@ -96,6 +100,7 @@ public class WorkQueueContext implements Serializable, RCacheablesContext {
      * @param workitem workitem context
      */
     public synchronized void Remove(WorkitemContext workitem) {
+        this.RefreshFromSteady();
         String wid = workitem.getEntity().getWid();
         this.workitems.remove(wid);
         this.RemoveChangesToSteady(wid);
@@ -106,6 +111,7 @@ public class WorkQueueContext implements Serializable, RCacheablesContext {
      * @param queue the queue of items to remove
      */
     public synchronized void RemoveQueue(WorkQueueContext queue) {
+        this.RefreshFromSteady();
         Set<WorkitemContext> qSet = queue.GetQueueAsSet();
         HashSet<String> idSet = new HashSet<>();
         for (WorkitemContext ctx : qSet) {
@@ -121,6 +127,7 @@ public class WorkQueueContext implements Serializable, RCacheablesContext {
      * @param rtid process rtid
      */
     public synchronized void RemoveByRtid(String rtid) {
+        this.RefreshFromSteady();
         // clone queue prevent iteration fault
         Set<WorkitemContext> clonedQueue = new HashSet<>(this.workitems.values());
         HashSet<String> idSet = new HashSet<>();
@@ -178,6 +185,7 @@ public class WorkQueueContext implements Serializable, RCacheablesContext {
      * Clear the queue.
      */
     public synchronized void Clear() {
+        this.RefreshFromSteady();
         HashSet<String> idSet = new HashSet<>();
         for (WorkitemContext ctx : this.workitems.values()) {
             idSet.add(ctx.getEntity().getWid());
@@ -355,12 +363,15 @@ public class WorkQueueContext implements Serializable, RCacheablesContext {
         Session session = HibernateUtil.GetLocalSession();
         Transaction transaction = session.beginTransaction();
         try {
+            StringBuilder ids = new StringBuilder();
             for (String workitemId : removeSet) {
-                RenQueueitemsEntity rqe = (RenQueueitemsEntity) session.createQuery(String.format("FROM RenQueueitemsEntity WHERE workqueueId = '%s' AND workitemId = '%s'", this.queueId, workitemId)).uniqueResult();
-                if (rqe != null) {
-                    session.delete(rqe);
-                }
+                ids.append("'").append(workitemId).append("'").append(",");
             }
+            String idStr = ids.toString();
+            if (idStr.length() > 0) {
+                idStr = idStr.substring(0, idStr.length() - 1);
+            }
+            session.createQuery(String.format("DELETE FROM RenQueueitemsEntity WHERE workqueueId = '%s' AND workitemId IN (%s)", this.queueId, idStr)).executeUpdate();
             transaction.commit();
         }
         catch (Exception ex) {

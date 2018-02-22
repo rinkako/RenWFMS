@@ -1,601 +1,424 @@
 package org.sysu.renResourcing.restful.controller.external;
 
 import org.springframework.web.bind.annotation.*;
+import org.sysu.renResourcing.RScheduler;
+import org.sysu.renResourcing.basic.enums.RServiceType;
+import org.sysu.renResourcing.context.ResourcingContext;
+import org.sysu.renResourcing.context.WorkitemContext;
 import org.sysu.renResourcing.restful.dto.ReturnModelHelper;
-import org.sysu.renResourcing.restful.dto.ReturnElement;
 import org.sysu.renResourcing.restful.dto.ReturnModel;
 import org.sysu.renResourcing.restful.dto.StatusCode;
-import org.sysu.renResourcing.utility.TimestampUtil;
 
+import javax.transaction.Transactional;
 import java.util.ArrayList;
+import java.util.Hashtable;
 import java.util.List;
 
 /**
- * Author: Gordan
- * Date  : 2017/12/14
+ * Author: Rinkako
+ * Date  : 2018/2/22
  * Usage : Handle requests about workitem.
  */
 @RestController
 @RequestMapping("/workitem")
 public class WorkitemController {
-    // Todo
-    public ReturnModel ExceptionHandlerFunction(String exception) {
-        ReturnModel rnModel = new ReturnModel();
-        rnModel.setCode(StatusCode.Exception);
-        rnModel.setRs(TimestampUtil.GetTimeStampString() + " 0");
 
-        ReturnElement returnElement = new ReturnElement();
-        returnElement.setMessage(exception);
-        rnModel.setReturnElement(returnElement);
-
-        return rnModel;
-    }
-
-    // Todo
-    public boolean CheckToken() {
-        return true;
-    }
-
-    //Todo
-    public ReturnModel UnauthorizeHandlerFunction() {
-        return null;
+    private boolean CheckToken(String token) {
+        return true;  // todo using auth server check this token (need? token check may handle in NS already?)
     }
 
     /**
-     * Get the workitem list.
-     * @param token
-     * @return
+     * Start a workitem by auth user.
+     * @param token auth token
+     * @param workerId worker global id
+     * @param workitemId workitem global id
+     * @return response package in JSON
      */
-    @PostMapping(value = "/getlist", produces = { "application/json", "application/xml"})
+    @RequestMapping(value = "/start", produces = { "application/json", "application/xml"})
     @ResponseBody
-    public ReturnModel GetWorkitemList(@RequestParam(value="token", required = false)String token) {
-        ReturnModel rnModel = new ReturnModel();
-
-        try {
-            // miss params
-            List<String> missingParams = new ArrayList<>();
-            if (token == null) missingParams.add("token");
-            if (missingParams.size() > 0) {
-                rnModel = ReturnModelHelper.MissingParametersResponse(missingParams);
-                return rnModel;
-            }
-
-            if (CheckToken()) {
-                rnModel.setCode(StatusCode.OK);
-                rnModel.setRs(TimestampUtil.GetTimeStampString() + " 0");
-                ReturnElement returnElement = new ReturnElement();
-                returnElement.setData("GetWorkitemList");
-                rnModel.setReturnElement(returnElement);
-            }
-            else {
-                rnModel = UnauthorizeHandlerFunction();
-            }
-
-        } catch (Exception e) {
-            rnModel = ExceptionHandlerFunction(e.getClass().getName());
-        }
-
-        return rnModel;
-    }
-
-    /**
-     * Get a workitem.
-     * @param token
-     * @param id
-     * @return
-     */
-    @PostMapping(value = "/get", produces = { "application/json", "application/xml"})
-    @ResponseBody
-    public ReturnModel GetWorkitem(@RequestParam(value="token", required = false)String token,
-                                   @RequestParam(value="id", required = false)String id) {
-        ReturnModel rnModel = new ReturnModel();
-
-        try {
-            // miss params
-            List<String> missingParams = new ArrayList<>();
-            if (token == null) missingParams.add("token");
-            if (id == null) missingParams.add("id");
-            if (missingParams.size() > 0) {
-                rnModel = ReturnModelHelper.MissingParametersResponse(missingParams);
-                return rnModel;
-            }
-
-            if (CheckToken()) {
-                rnModel.setCode(StatusCode.OK);
-                rnModel.setRs(TimestampUtil.GetTimeStampString() + " 0");
-                ReturnElement returnElement = new ReturnElement();
-                returnElement.setData("GetWorkitem");
-                rnModel.setReturnElement(returnElement);
-            }
-            else {
-                rnModel = UnauthorizeHandlerFunction();
-            }
-
-        } catch (Exception e) {
-            rnModel = ExceptionHandlerFunction(e.getClass().getName());
-        }
-
-        return rnModel;
-    }
-
-    /**
-     * Set a workitem.
-     * @param token
-     * @param id
-     * @return
-     */
-    @PostMapping(value = "/set", produces = { "application/json", "application/xml"})
-    @ResponseBody
-    public ReturnModel SetWorkitem(@RequestParam(value="token", required = false)String token,
-                                   @RequestParam(value="id", required = false)String id) {
-        ReturnModel rnModel = new ReturnModel();
-
-        try {
-            // miss params
-            List<String> missingParams = new ArrayList<>();
-            if (token == null) missingParams.add("token");
-            if (id == null) missingParams.add("id");
-            if (missingParams.size() > 0) {
-                rnModel = ReturnModelHelper.MissingParametersResponse(missingParams);
-                return rnModel;
-            }
-
-            if (CheckToken()) {
-                rnModel.setCode(StatusCode.OK);
-                rnModel.setRs(TimestampUtil.GetTimeStampString() + " 0");
-                ReturnElement returnElement = new ReturnElement();
-                returnElement.setData("SetWorkitem");
-                rnModel.setReturnElement(returnElement);
-            }
-            else {
-                rnModel = UnauthorizeHandlerFunction();
-            }
-
-        } catch (Exception e) {
-            rnModel = ExceptionHandlerFunction(e.getClass().getName());
-        }
-
-        return rnModel;
-    }
-
-    /**
-     * Start the workitem.
-     * @param token
-     * @param id
-     * @return
-     */
-    @PostMapping(value = "/start", produces = { "application/json", "application/xml"})
-    @ResponseBody
+    @Transactional
     public ReturnModel StartWorkitem(@RequestParam(value="token", required = false)String token,
-                                     @RequestParam(value="id", required = false)String id) {
+                                     @RequestParam(value="workerId", required = false)String workerId,
+                                     @RequestParam(value="workitemId", required = false)String workitemId) {
         ReturnModel rnModel = new ReturnModel();
-
         try {
             // miss params
             List<String> missingParams = new ArrayList<>();
             if (token == null) missingParams.add("token");
-            if (id == null) missingParams.add("id");
+            if (workerId == null) missingParams.add("workerId");
+            if (workitemId == null) missingParams.add("workitemId");
             if (missingParams.size() > 0) {
-                rnModel = ReturnModelHelper.MissingParametersResponse(missingParams);
-                return rnModel;
+                return ReturnModelHelper.MissingParametersResponse(missingParams);
             }
-
-            if (CheckToken()) {
-                rnModel.setCode(StatusCode.OK);
-                rnModel.setRs(TimestampUtil.GetTimeStampString() + " 0");
-                ReturnElement returnElement = new ReturnElement();
-                returnElement.setData("StartWorkitem");
-                rnModel.setReturnElement(returnElement);
+            // check authorization
+            if (!CheckToken(token)) {
+                return ReturnModelHelper.UnauthorizedResponse(token);
             }
-            else {
-                rnModel = UnauthorizeHandlerFunction();
-            }
+            // logic
+            WorkitemContext workitem = WorkitemContext.GetContext(workitemId, null);
+            Hashtable<String, Object> args = new Hashtable<>();
+            args.put("workitemId", workitemId);
+            args.put("workerId", workerId);
+            ResourcingContext rCtx = ResourcingContext.GetContext(null, workitem.getEntity().getRtid(), RServiceType.StartWorkitem, args);
+            String jsonifyResult = RScheduler.GetInstance().ScheduleSync(rCtx);
+            // return
+            ReturnModelHelper.StandardResponse(rnModel, StatusCode.OK, jsonifyResult);
 
         } catch (Exception e) {
-            rnModel = ExceptionHandlerFunction(e.getClass().getName());
+            ReturnModelHelper.ExceptionResponse(rnModel, e.getClass().getName());
         }
-
         return rnModel;
     }
 
     /**
-     * Restart the workitem.
-     * @param token
-     * @param id
-     * @return
+     * Accept a workitem by auth user.
+     * @param token auth token
+     * @param workerId worker global id
+     * @param workitemId workitem global id
+     * @return response package in JSON
      */
-    @PostMapping(value = "/restart", produces = { "application/json", "application/xml"})
+    @RequestMapping(value = "/accept", produces = { "application/json", "application/xml"})
     @ResponseBody
-    public ReturnModel RestartWorkitem(@RequestParam(value="token", required = false)String token,
-                                       @RequestParam(value="id", required = false)String id) {
-        ReturnModel rnModel = new ReturnModel();
-
-        try {
-            // miss params
-            List<String> missingParams = new ArrayList<>();
-            if (token == null) missingParams.add("token");
-            if (id == null) missingParams.add("id");
-            if (missingParams.size() > 0) {
-                rnModel = ReturnModelHelper.MissingParametersResponse(missingParams);
-                return rnModel;
-            }
-
-            if (CheckToken()) {
-                rnModel.setCode(StatusCode.OK);
-                rnModel.setRs(TimestampUtil.GetTimeStampString() + " 0");
-                ReturnElement returnElement = new ReturnElement();
-                returnElement.setData("RestartWorkitem");
-                rnModel.setReturnElement(returnElement);
-            }
-            else {
-                rnModel = UnauthorizeHandlerFunction();
-            }
-
-        } catch (Exception e) {
-            rnModel = ExceptionHandlerFunction(e.getClass().getName());
-        }
-
-        return rnModel;
-    }
-
-    /**
-     * Complete the workitem.
-     * @param token
-     * @param id
-     * @return
-     */
-    @PostMapping(value = "/complete", produces = { "application/json", "application/xml"})
-    @ResponseBody
-    public ReturnModel CompleteWorkitem(@RequestParam(value="token", required = false)String token,
-                                        @RequestParam(value="id", required = false)String id) {
-        ReturnModel rnModel = new ReturnModel();
-
-        try {
-            // miss params
-            List<String> missingParams = new ArrayList<>();
-            if (token == null) missingParams.add("token");
-            if (id == null) missingParams.add("id");
-            if (missingParams.size() > 0) {
-                rnModel = ReturnModelHelper.MissingParametersResponse(missingParams);
-                return rnModel;
-            }
-
-            if (CheckToken()) {
-                rnModel.setCode(StatusCode.OK);
-                rnModel.setRs(TimestampUtil.GetTimeStampString() + " 0");
-                ReturnElement returnElement = new ReturnElement();
-                returnElement.setData("CompleteWorkitem");
-                rnModel.setReturnElement(returnElement);
-            }
-            else {
-                rnModel = UnauthorizeHandlerFunction();
-            }
-
-        } catch (Exception e) {
-            rnModel = ExceptionHandlerFunction(e.getClass().getName());
-        }
-
-        return rnModel;
-    }
-
-    /**
-     * Accept a workitem.
-     * @param token
-     * @param id
-     * @return
-     */
-    @PostMapping(value = "/accept", produces = { "application/json", "application/xml"})
-    @ResponseBody
+    @Transactional
     public ReturnModel AcceptWorkitem(@RequestParam(value="token", required = false)String token,
-                                      @RequestParam(value="id", required = false)String id) {
+                                      @RequestParam(value="workerId", required = false)String workerId,
+                                      @RequestParam(value="workitemId", required = false)String workitemId) {
         ReturnModel rnModel = new ReturnModel();
-
         try {
             // miss params
             List<String> missingParams = new ArrayList<>();
             if (token == null) missingParams.add("token");
-            if (id == null) missingParams.add("id");
+            if (workerId == null) missingParams.add("workerId");
+            if (workitemId == null) missingParams.add("workitemId");
             if (missingParams.size() > 0) {
-                rnModel = ReturnModelHelper.MissingParametersResponse(missingParams);
-                return rnModel;
+                return ReturnModelHelper.MissingParametersResponse(missingParams);
             }
-
-            if (CheckToken()) {
-                rnModel.setCode(StatusCode.OK);
-                rnModel.setRs(TimestampUtil.GetTimeStampString() + " 0");
-                ReturnElement returnElement = new ReturnElement();
-                returnElement.setData("AcceptWorkitem");
-                rnModel.setReturnElement(returnElement);
+            // check authorization
+            if (!CheckToken(token)) {
+                return ReturnModelHelper.UnauthorizedResponse(token);
             }
-            else {
-                rnModel = UnauthorizeHandlerFunction();
-            }
+            // logic
+            WorkitemContext workitem = WorkitemContext.GetContext(workitemId, null);
+            Hashtable<String, Object> args = new Hashtable<>();
+            args.put("workitemId", workitemId);
+            args.put("workerId", workerId);
+            ResourcingContext rCtx = ResourcingContext.GetContext(null, workitem.getEntity().getRtid(),
+                    RServiceType.AcceptWorkitem, args);
+            String jsonifyResult = RScheduler.GetInstance().ScheduleSync(rCtx);
+            // return
+            ReturnModelHelper.StandardResponse(rnModel, StatusCode.OK, jsonifyResult);
 
         } catch (Exception e) {
-            rnModel = ExceptionHandlerFunction(e.getClass().getName());
+            ReturnModelHelper.ExceptionResponse(rnModel, e.getClass().getName());
         }
-
         return rnModel;
     }
 
     /**
-     * Allocate a workitem.
-     * @param token
-     * @param id
-     * @return
+     * Accept and start a workitem by auth user.
+     * @param token auth token
+     * @param workerId worker global id
+     * @param workitemId workitem global id
+     * @return response package in JSON
      */
-    @PostMapping(value = "/allocate", produces = { "application/json", "application/xml"})
+    @RequestMapping(value = "/acceptStart", produces = { "application/json", "application/xml"})
     @ResponseBody
-    public ReturnModel AllocateWorkitem(@RequestParam(value="token", required = false)String token,
-                                        @RequestParam(value="id", required = false)String id) {
+    @Transactional
+    public ReturnModel AcceptAndStartWorkitem(@RequestParam(value="token", required = false)String token,
+                                              @RequestParam(value="workerId", required = false)String workerId,
+                                              @RequestParam(value="workitemId", required = false)String workitemId) {
         ReturnModel rnModel = new ReturnModel();
-
         try {
             // miss params
             List<String> missingParams = new ArrayList<>();
             if (token == null) missingParams.add("token");
-            if (id == null) missingParams.add("id");
+            if (workerId == null) missingParams.add("workerId");
+            if (workitemId == null) missingParams.add("workitemId");
             if (missingParams.size() > 0) {
-                rnModel = ReturnModelHelper.MissingParametersResponse(missingParams);
-                return rnModel;
+                return ReturnModelHelper.MissingParametersResponse(missingParams);
             }
-
-            if (CheckToken()) {
-                rnModel.setCode(StatusCode.OK);
-                rnModel.setRs(TimestampUtil.GetTimeStampString() + " 0");
-                ReturnElement returnElement = new ReturnElement();
-                returnElement.setData("AllocateWorkitem");
-                rnModel.setReturnElement(returnElement);
+            // check authorization
+            if (!CheckToken(token)) {
+                return ReturnModelHelper.UnauthorizedResponse(token);
             }
-            else {
-                rnModel = UnauthorizeHandlerFunction();
-            }
+            // logic
+            WorkitemContext workitem = WorkitemContext.GetContext(workitemId, null);
+            Hashtable<String, Object> args = new Hashtable<>();
+            args.put("workitemId", workitemId);
+            args.put("workerId", workerId);
+            ResourcingContext rCtx = ResourcingContext.GetContext(null, workitem.getEntity().getRtid(),
+                    RServiceType.AcceptAndStartWorkitem, args);
+            String jsonifyResult = RScheduler.GetInstance().ScheduleSync(rCtx);
+            // return
+            ReturnModelHelper.StandardResponse(rnModel, StatusCode.OK, jsonifyResult);
 
         } catch (Exception e) {
-            rnModel = ExceptionHandlerFunction(e.getClass().getName());
+            ReturnModelHelper.ExceptionResponse(rnModel, e.getClass().getName());
         }
-
         return rnModel;
     }
 
     /**
-     * Deallacate the workitem.
-     * @param token
-     * @param id
-     * @return
+     * Complete a workitem by auth user.
+     * @param token auth token
+     * @param workerId worker global id
+     * @param workitemId workitem global id
+     * @return response package in JSON
      */
-    @PostMapping(value = "/deallocate", produces = { "application/json", "application/xml"})
+    @RequestMapping(value = "/complete", produces = { "application/json", "application/xml"})
     @ResponseBody
-    public ReturnModel DeallocateWorktem(@RequestParam(value="token", required = false)String token,
-                                         @RequestParam(value="id", required = false)String id) {
+    @Transactional
+    public ReturnModel CompleteWorkitem(@RequestParam(value="token", required = false)String token,
+                                        @RequestParam(value="workerId", required = false)String workerId,
+                                        @RequestParam(value="workitemId", required = false)String workitemId) {
         ReturnModel rnModel = new ReturnModel();
-
         try {
             // miss params
             List<String> missingParams = new ArrayList<>();
             if (token == null) missingParams.add("token");
-            if (id == null) missingParams.add("id");
+            if (workerId == null) missingParams.add("workerId");
+            if (workitemId == null) missingParams.add("workitemId");
             if (missingParams.size() > 0) {
-                rnModel = ReturnModelHelper.MissingParametersResponse(missingParams);
-                return rnModel;
+                return ReturnModelHelper.MissingParametersResponse(missingParams);
             }
-
-            if (CheckToken()) {
-                rnModel.setCode(StatusCode.OK);
-                rnModel.setRs(TimestampUtil.GetTimeStampString() + " 0");
-                ReturnElement returnElement = new ReturnElement();
-                returnElement.setData("DeallocateWorktem");
-                rnModel.setReturnElement(returnElement);
+            // check authorization
+            if (!CheckToken(token)) {
+                return ReturnModelHelper.UnauthorizedResponse(token);
             }
-            else {
-                rnModel = UnauthorizeHandlerFunction();
-            }
+            // logic
+            WorkitemContext workitem = WorkitemContext.GetContext(workitemId, null);
+            Hashtable<String, Object> args = new Hashtable<>();
+            args.put("workitemId", workitemId);
+            args.put("workerId", workerId);
+            ResourcingContext rCtx = ResourcingContext.GetContext(null, workitem.getEntity().getRtid(),
+                    RServiceType.CompleteWorkitem, args);
+            String jsonifyResult = RScheduler.GetInstance().ScheduleSync(rCtx);
+            // return
+            ReturnModelHelper.StandardResponse(rnModel, StatusCode.OK, jsonifyResult);
 
         } catch (Exception e) {
-            rnModel = ExceptionHandlerFunction(e.getClass().getName());
+            ReturnModelHelper.ExceptionResponse(rnModel, e.getClass().getName());
         }
-
         return rnModel;
     }
 
     /**
-     * Skip the workitem.
-     * @param token
-     * @param id
-     * @return
+     * Suspend a workitem by auth user.
+     * @param token auth token
+     * @param workerId worker global id
+     * @param workitemId workitem global id
+     * @return response package in JSON
      */
-    @PostMapping(value = "/skip", produces = { "application/json", "application/xml"})
+    @RequestMapping(value = "/suspend", produces = { "application/json", "application/xml"})
     @ResponseBody
-    public ReturnModel SkipWorkitem(@RequestParam(value="token", required = false)String token,
-                                    @RequestParam(value="id", required = false)String id) {
-        ReturnModel rnModel = new ReturnModel();
-
-        try {
-            // miss params
-            List<String> missingParams = new ArrayList<>();
-            if (token == null) missingParams.add("token");
-            if (id == null) missingParams.add("id");
-            if (missingParams.size() > 0) {
-                rnModel = ReturnModelHelper.MissingParametersResponse(missingParams);
-                return rnModel;
-            }
-
-            if (CheckToken()) {
-                rnModel.setCode(StatusCode.OK);
-                rnModel.setRs(TimestampUtil.GetTimeStampString() + " 0");
-                ReturnElement returnElement = new ReturnElement();
-                returnElement.setData("SkipWorkitem");
-                rnModel.setReturnElement(returnElement);
-            }
-            else {
-                rnModel = UnauthorizeHandlerFunction();
-            }
-
-        } catch (Exception e) {
-            rnModel = ExceptionHandlerFunction(e.getClass().getName());
-        }
-
-        return rnModel;
-    }
-
-    /**
-     * Suspend the workitem.
-     * @param token
-     * @param id
-     * @return
-     */
-    @PostMapping(value = "/suspend", produces = { "application/json", "application/xml"})
-    @ResponseBody
+    @Transactional
     public ReturnModel SuspendWorkitem(@RequestParam(value="token", required = false)String token,
-                                       @RequestParam(value="id", required = false)String id) {
+                                       @RequestParam(value="workerId", required = false)String workerId,
+                                       @RequestParam(value="workitemId", required = false)String workitemId) {
         ReturnModel rnModel = new ReturnModel();
-
         try {
             // miss params
             List<String> missingParams = new ArrayList<>();
             if (token == null) missingParams.add("token");
-            if (id == null) missingParams.add("id");
+            if (workerId == null) missingParams.add("workerId");
+            if (workitemId == null) missingParams.add("workitemId");
             if (missingParams.size() > 0) {
-                rnModel = ReturnModelHelper.MissingParametersResponse(missingParams);
-                return rnModel;
+                return ReturnModelHelper.MissingParametersResponse(missingParams);
             }
-
-            if (CheckToken()) {
-                rnModel.setCode(StatusCode.OK);
-                rnModel.setRs(TimestampUtil.GetTimeStampString() + " 0");
-                ReturnElement returnElement = new ReturnElement();
-                returnElement.setData("SuspendWorkitem");
-                rnModel.setReturnElement(returnElement);
+            // check authorization
+            if (!CheckToken(token)) {
+                return ReturnModelHelper.UnauthorizedResponse(token);
             }
-            else {
-                rnModel = UnauthorizeHandlerFunction();
-            }
+            // logic
+            WorkitemContext workitem = WorkitemContext.GetContext(workitemId, null);
+            Hashtable<String, Object> args = new Hashtable<>();
+            args.put("workitemId", workitemId);
+            args.put("workerId", workerId);
+            ResourcingContext rCtx = ResourcingContext.GetContext(null, workitem.getEntity().getRtid(),
+                    RServiceType.SuspendWorkitem, args);
+            String jsonifyResult = RScheduler.GetInstance().ScheduleSync(rCtx);
+            // return
+            ReturnModelHelper.StandardResponse(rnModel, StatusCode.OK, jsonifyResult);
 
         } catch (Exception e) {
-            rnModel = ExceptionHandlerFunction(e.getClass().getName());
+            ReturnModelHelper.ExceptionResponse(rnModel, e.getClass().getName());
         }
-
         return rnModel;
     }
 
     /**
-     * Unsuspend the workitem.
-     * @param token
-     * @param id
-     * @return
+     * Unsuspend a workitem by auth user.
+     * @param token auth token
+     * @param workerId worker global id
+     * @param workitemId workitem global id
+     * @return response package in JSON
      */
-    @PostMapping(value = "/unsuspend", produces = { "application/json", "application/xml"})
+    @RequestMapping(value = "/unsuspend", produces = { "application/json", "application/xml"})
     @ResponseBody
+    @Transactional
     public ReturnModel UnsuspendWorkitem(@RequestParam(value="token", required = false)String token,
-                                         @RequestParam(value="id", required = false)String id) {
+                                         @RequestParam(value="workerId", required = false)String workerId,
+                                         @RequestParam(value="workitemId", required = false)String workitemId) {
         ReturnModel rnModel = new ReturnModel();
-
         try {
             // miss params
             List<String> missingParams = new ArrayList<>();
             if (token == null) missingParams.add("token");
-            if (id == null) missingParams.add("id");
+            if (workerId == null) missingParams.add("workerId");
+            if (workitemId == null) missingParams.add("workitemId");
             if (missingParams.size() > 0) {
-                rnModel = ReturnModelHelper.MissingParametersResponse(missingParams);
-                return rnModel;
+                return ReturnModelHelper.MissingParametersResponse(missingParams);
             }
-
-            if (CheckToken()) {
-                rnModel.setCode(StatusCode.OK);
-                rnModel.setRs(TimestampUtil.GetTimeStampString() + " 0");
-                ReturnElement returnElement = new ReturnElement();
-                returnElement.setData("UnsuspendWorkitem");
-                rnModel.setReturnElement(returnElement);
+            // check authorization
+            if (!CheckToken(token)) {
+                return ReturnModelHelper.UnauthorizedResponse(token);
             }
-            else {
-                rnModel = UnauthorizeHandlerFunction();
-            }
+            // logic
+            WorkitemContext workitem = WorkitemContext.GetContext(workitemId, null);
+            Hashtable<String, Object> args = new Hashtable<>();
+            args.put("workitemId", workitemId);
+            args.put("workerId", workerId);
+            ResourcingContext rCtx = ResourcingContext.GetContext(null, workitem.getEntity().getRtid(),
+                    RServiceType.UnsuspendWorkitem, args);
+            String jsonifyResult = RScheduler.GetInstance().ScheduleSync(rCtx);
+            // return
+            ReturnModelHelper.StandardResponse(rnModel, StatusCode.OK, jsonifyResult);
 
         } catch (Exception e) {
-            rnModel = ExceptionHandlerFunction(e.getClass().getName());
+            ReturnModelHelper.ExceptionResponse(rnModel, e.getClass().getName());
         }
-
         return rnModel;
     }
 
     /**
-     * Offer a workitem.
-     * @param token
-     * @param id
-     * @return
+     * Skip a workitem by auth user.
+     * @param token auth token
+     * @param workerId worker global id
+     * @param workitemId workitem global id
+     * @return response package in JSON
      */
-    @PostMapping(value = "/offer", produces = { "application/json", "application/xml"})
+    @RequestMapping(value = "/skip", produces = { "application/json", "application/xml"})
     @ResponseBody
-    public ReturnModel OfferWorkitem(@RequestParam(value="token", required = false)String token,
-                                     @RequestParam(value="id", required = false)String id) {
+    @Transactional
+    public ReturnModel SkipWorkitem(@RequestParam(value="token", required = false)String token,
+                                    @RequestParam(value="workerId", required = false)String workerId,
+                                    @RequestParam(value="workitemId", required = false)String workitemId) {
         ReturnModel rnModel = new ReturnModel();
-
         try {
             // miss params
             List<String> missingParams = new ArrayList<>();
             if (token == null) missingParams.add("token");
-            if (id == null) missingParams.add("id");
+            if (workerId == null) missingParams.add("workerId");
+            if (workitemId == null) missingParams.add("workitemId");
             if (missingParams.size() > 0) {
-                rnModel = ReturnModelHelper.MissingParametersResponse(missingParams);
-                return rnModel;
+                return ReturnModelHelper.MissingParametersResponse(missingParams);
             }
-
-            if (CheckToken()) {
-                rnModel.setCode(StatusCode.OK);
-                rnModel.setRs(TimestampUtil.GetTimeStampString() + " 0");
-                ReturnElement returnElement = new ReturnElement();
-                returnElement.setData("OfferWorkitem");
-                rnModel.setReturnElement(returnElement);
+            // check authorization
+            if (!CheckToken(token)) {
+                return ReturnModelHelper.UnauthorizedResponse(token);
             }
-            else {
-                rnModel = UnauthorizeHandlerFunction();
-            }
+            // logic
+            WorkitemContext workitem = WorkitemContext.GetContext(workitemId, null);
+            Hashtable<String, Object> args = new Hashtable<>();
+            args.put("workitemId", workitemId);
+            args.put("workerId", workerId);
+            ResourcingContext rCtx = ResourcingContext.GetContext(null, workitem.getEntity().getRtid(),
+                    RServiceType.SkipWorkitem, args);
+            String jsonifyResult = RScheduler.GetInstance().ScheduleSync(rCtx);
+            // return
+            ReturnModelHelper.StandardResponse(rnModel, StatusCode.OK, jsonifyResult);
 
         } catch (Exception e) {
-            rnModel = ExceptionHandlerFunction(e.getClass().getName());
+            ReturnModelHelper.ExceptionResponse(rnModel, e.getClass().getName());
         }
-
         return rnModel;
     }
 
     /**
-     * Unoffer the workitem.
-     * @param token
-     * @param id
-     * @return
+     * Reallocate a workitem by auth user.
+     * @param token auth token
+     * @param workerId worker global id
+     * @param workitemId workitem global id
+     * @return response package in JSON
      */
-    @PostMapping(value = "/unoffer", produces = { "application/json", "application/xml"})
+    @RequestMapping(value = "/reallocate", produces = { "application/json", "application/xml"})
     @ResponseBody
-    public ReturnModel UnofferWorkitem(@RequestParam(value="token", required = false)String token,
-                                       @RequestParam(value="id", required = false)String id) {
+    @Transactional
+    public ReturnModel ReallocateWorkitem(@RequestParam(value="token", required = false)String token,
+                                          @RequestParam(value="workerId", required = false)String workerId,
+                                          @RequestParam(value="workitemId", required = false)String workitemId) {
         ReturnModel rnModel = new ReturnModel();
-
         try {
             // miss params
             List<String> missingParams = new ArrayList<>();
             if (token == null) missingParams.add("token");
-            if (id == null) missingParams.add("id");
+            if (workerId == null) missingParams.add("workerId");
+            if (workitemId == null) missingParams.add("workitemId");
             if (missingParams.size() > 0) {
-                rnModel = ReturnModelHelper.MissingParametersResponse(missingParams);
-                return rnModel;
+                return ReturnModelHelper.MissingParametersResponse(missingParams);
             }
-
-            if (CheckToken()) {
-                rnModel.setCode(StatusCode.OK);
-                rnModel.setRs(TimestampUtil.GetTimeStampString() + " 0");
-                ReturnElement returnElement = new ReturnElement();
-                returnElement.setData("UnofferWorkitem");
-                rnModel.setReturnElement(returnElement);
+            // check authorization
+            if (!CheckToken(token)) {
+                return ReturnModelHelper.UnauthorizedResponse(token);
             }
-            else {
-                rnModel = UnauthorizeHandlerFunction();
-            }
+            // logic
+            WorkitemContext workitem = WorkitemContext.GetContext(workitemId, null);
+            Hashtable<String, Object> args = new Hashtable<>();
+            args.put("workitemId", workitemId);
+            args.put("workerId", workerId);
+            ResourcingContext rCtx = ResourcingContext.GetContext(null, workitem.getEntity().getRtid(),
+                    RServiceType.ReallocateWorkitem, args);
+            String jsonifyResult = RScheduler.GetInstance().ScheduleSync(rCtx);
+            // return
+            ReturnModelHelper.StandardResponse(rnModel, StatusCode.OK, jsonifyResult);
 
         } catch (Exception e) {
-            rnModel = ExceptionHandlerFunction(e.getClass().getName());
+            ReturnModelHelper.ExceptionResponse(rnModel, e.getClass().getName());
         }
-
         return rnModel;
     }
 
+    /**
+     * Deallocate a workitem by auth user.
+     * @param token auth token
+     * @param workerId worker global id
+     * @param workitemId workitem global id
+     * @return response package in JSON
+     */
+    @RequestMapping(value = "/deallocate", produces = { "application/json", "application/xml"})
+    @ResponseBody
+    @Transactional
+    public ReturnModel DeallocateWorkitem(@RequestParam(value="token", required = false)String token,
+                                          @RequestParam(value="workerId", required = false)String workerId,
+                                          @RequestParam(value="workitemId", required = false)String workitemId) {
+        ReturnModel rnModel = new ReturnModel();
+        try {
+            // miss params
+            List<String> missingParams = new ArrayList<>();
+            if (token == null) missingParams.add("token");
+            if (workerId == null) missingParams.add("workerId");
+            if (workitemId == null) missingParams.add("workitemId");
+            if (missingParams.size() > 0) {
+                return ReturnModelHelper.MissingParametersResponse(missingParams);
+            }
+            // check authorization
+            if (!CheckToken(token)) {
+                return ReturnModelHelper.UnauthorizedResponse(token);
+            }
+            // logic
+            WorkitemContext workitem = WorkitemContext.GetContext(workitemId, null);
+            Hashtable<String, Object> args = new Hashtable<>();
+            args.put("workitemId", workitemId);
+            args.put("workerId", workerId);
+            ResourcingContext rCtx = ResourcingContext.GetContext(null, workitem.getEntity().getRtid(),
+                    RServiceType.DeallocateWorkitem, args);
+            String jsonifyResult = RScheduler.GetInstance().ScheduleSync(rCtx);
+            // return
+            ReturnModelHelper.StandardResponse(rnModel, StatusCode.OK, jsonifyResult);
+
+        } catch (Exception e) {
+            ReturnModelHelper.ExceptionResponse(rnModel, e.getClass().getName());
+        }
+        return rnModel;
+    }
 }
