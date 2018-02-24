@@ -76,7 +76,7 @@ public class WorkQueueContainer implements RCacheablesContext {
      */
     public static WorkQueueContainer GetContext(String workerId, boolean forceReload) {
         WorkQueueContainer retContainer = ContextCachePool.Retrieve(WorkQueueContainer.class, workerId);
-        // fetch cache
+        // fetch cache  读取缓存
         if (retContainer != null && !forceReload) {
             return retContainer;
         }

@@ -190,6 +190,51 @@ public class TimeInstanceTree {
     }
 
     /**
+     * 通过节点的唯一编号取得实例树上对应节点的所有兄弟节点并序列化成一个向量
+     * @param tid 当前节点的唯一编号
+     * @return 序列化的树对应的节点向量
+     */
+    public ArrayList<TimeTreeNode> GetSiblingsVector(String tid) {
+        ArrayList<TimeTreeNode>  siblings = new ArrayList<TimeTreeNode>();
+        TimeTreeNode currentNode = this.GetNodeById(tid);
+        ArrayList<TimeTreeNode> children = new ArrayList<>();
+        if(currentNode != null && currentNode.Parent != null) {
+            children = currentNode.Parent.Children;
+        }
+        if(children.size() > 1) {
+            for(TimeTreeNode node : children) {
+                if(!node.getTimeId().equals(tid)) {
+                    siblings.add(node);
+                }
+            }
+        }
+        return siblings;
+    }
+
+    /**
+     * 通过节点的唯一编号取得实例树上对应节点的符合描述文件名的所有兄弟节点并序列化成一个向量
+     * @param tid 当前节点的唯一编号
+     * @param target 要取得的目标对象的文件名（name属性）
+     * @return 序列化的树对应的节点向量
+     */
+    public ArrayList<TimeTreeNode> GetSiblingsVectorByTarget(String tid, String target) {
+        ArrayList<TimeTreeNode>  siblings = new ArrayList<TimeTreeNode>();
+        TimeTreeNode currentNode = this.GetNodeById(tid);
+        ArrayList<TimeTreeNode> children = new ArrayList<>();
+        if(currentNode != null && currentNode.Parent != null) {
+            children = currentNode.Parent.Children;
+        }
+        if(children.size() > 1) {
+            for(TimeTreeNode node : children) {
+                if(!node.getTimeId().equals(tid) && node.getFilename().equals(target)) {
+                    siblings.add(node);
+                }
+            }
+        }
+        return siblings;
+    }
+
+    /**
      * 通过节点的唯一编号取得实例树上对应节点的祖先节点并序列化成一个向量
      * @param tid 唯一编号
      * @return 得到的序列化的树对应的节点向量

@@ -75,7 +75,7 @@ public class InterfaceB {
         if (validParticipants.isEmpty()) {
             LogUtil.Log("A task cannot be allocated to any valid resources, so it will be put into admin unoffered queue.",
                     InterfaceB.class.getName(), LogUtil.LogLevelType.WARNING, ctx.getRtid());
-            // move to admin queue
+            // move workitem to admin unoffered queue
             WorkQueueContainer adminContainer = WorkQueueContainer.GetContext(GlobalContext.WORKQUEUE_ADMIN_PREFIX + adminQueuePostfix);
             adminContainer.AddToQueue(workitem, WorkQueueType.UNOFFERED);
             return;

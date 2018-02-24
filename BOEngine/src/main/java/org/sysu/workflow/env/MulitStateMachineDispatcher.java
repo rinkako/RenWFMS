@@ -165,7 +165,7 @@ public class MulitStateMachineDispatcher extends SimpleDispatcher implements Ser
                     sendToOffSpring(treeId, currentSessionId, targetName, targetState, event, data, hints, delay);
                     break;
                 case TO_SIBLING:
-                    // TODO:
+                    sendToSibling(treeId, currentSessionId, targetName, targetState, event, data, hints, delay);
                     break;
                 default:
                     //???
@@ -278,7 +278,6 @@ public class MulitStateMachineDispatcher extends SimpleDispatcher implements Ser
      */
     private boolean sendToOffSpring(String treeId, String currentSessionId, String targetName, String targetState, String event, Object data, Object hints, long delay) {
         ArrayList<TimeTreeNode> targetTreeNodeList;
-        //get the current tree node by currentSessionId
         if (targetName != null && !"".equals(targetName)) {
             //only get those offsprings whose name is equals to the targetName
             targetTreeNodeList = InstanceManager.GetInstanceTree(treeId).GetOffspringsVectorByTarget(currentSessionId, targetName);
@@ -287,6 +286,34 @@ public class MulitStateMachineDispatcher extends SimpleDispatcher implements Ser
             targetTreeNodeList = InstanceManager.GetInstanceTree(treeId).GetOffspringsVector(currentSessionId);
         }
         //get the current tree node by currentSessionId
+        TimeTreeNode currentTreeNode = InstanceManager.GetInstanceTree(treeId).GetNodeById(currentSessionId);
+        String eventPrefix = currentTreeNode != InstanceManager.GetInstanceTree(treeId).Root ? currentTreeNode.getFilename() + "." : "";
+        sendToTarget(targetTreeNodeList, targetState, eventPrefix + event, data);
+        return true;
+    }
+
+    /**
+     * send the event to all the slbings of the current node
+     * @param treeId the tree id equals to the root id of the instance tree
+     * @param currentSessionId the id of the current node
+     * @param targetName
+     * @param targetState
+     * @param event
+     * @param data
+     * @param hints
+     * @param delay
+     * @return
+     */
+    private boolean sendToSibling(String treeId, String currentSessionId, String targetName, String targetState, String event, Object data, Object hints, long delay) {
+        ArrayList<TimeTreeNode> targetTreeNodeList;
+        if(targetName != null && !"".equals(targetName)) {
+            //only get those slbings whose name is equals to the targetName
+            targetTreeNodeList = InstanceManager.GetInstanceTree(treeId).GetSiblingsVectorByTarget(currentSessionId, targetName);
+        } else {
+            //get all the slbings
+            targetTreeNodeList = InstanceManager.GetInstanceTree(treeId).GetSiblingsVector(currentSessionId);
+        }
+        // get the current tree node by currentSessionId
         TimeTreeNode currentTreeNode = InstanceManager.GetInstanceTree(treeId).GetNodeById(currentSessionId);
         String eventPrefix = currentTreeNode != InstanceManager.GetInstanceTree(treeId).Root ? currentTreeNode.getFilename() + "." : "";
         sendToTarget(targetTreeNodeList, targetState, eventPrefix + event, data);
@@ -341,7 +368,7 @@ public class MulitStateMachineDispatcher extends SimpleDispatcher implements Ser
         if(targetName != null && !"".equals(targetName)){
             targetTreeNodeList = InstanceManager.GetInstanceTree(treeId).GetNodeVectorByTarget(targetName);
         }else{
-            return true;
+            return false;
         }
         //get the current tree node by currentSessionId
         TimeTreeNode currentTreeNode = InstanceManager.GetInstanceTree(treeId).GetNodeById(currentSessionId);
