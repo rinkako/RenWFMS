@@ -244,6 +244,33 @@ public class InterfaceW {
     }
 
     /**
+     * Complete a workitem.
+     * @param ctx rs context
+     * @return true for a successful workitem complete
+     */
+    public static boolean Complete(ResourcingContext ctx) {
+        String workitemId = (String) ctx.getArgs().get("workitemId");
+        String workerId = (String) ctx.getArgs().get("workerId");
+        WorkitemContext workitem = WorkitemContext.GetContext(workitemId, ctx.getRtid());
+        ParticipantContext participant = ParticipantContext.GetContext(ctx.getRtid(), workerId);
+        if (workitem == null) {
+            LogUtil.Log("Accept offer but workitem not exist, rstid: " + ctx.getRstid(),
+                    InterfaceW.class.getName(), LogUtil.LogLevelType.ERROR, ctx.getRtid());
+            return false;
+        }
+        if (participant == null) {
+            if (InterfaceO.SenseParticipantDataChanged(ctx.getRtid())) {
+                InterfaceX.HandleFastFail(ctx.getRtid());
+            }
+            else {
+                InterfaceX.FailedRedirectToLauncherAuthPool(workitem);
+            }
+            return false;
+        }
+        return InterfaceB.CompleteWorkitem(participant, workitem);
+    }
+
+    /**
      * Get all workitems in all types of queue of a worker.
      * @param ctx rs context
      * @return a dictionary of (WorkQueueType, ListOfWorkitemDescriptors)

@@ -75,6 +75,31 @@ public class RScheduler implements Observer {
     }
 
     /**
+     * Schedule a resourcing context synchronously and wait for return value.
+     * @param context resourcing request context to be scheduled
+     * @return response package in json encoded string
+     */
+    public String ScheduleSync(ResourcingContext context) {
+        if (context == null) {
+            LogUtil.Log("Schedule null context, ignored.",
+                    RScheduler.class.getName(), LogUtil.LogLevelType.WARNING, "");
+            return null;
+        }
+        try {
+            context.SetScheduled();
+            RTracker tracker = new RTracker(context);
+            tracker.addObserver(this);
+            tracker.run();
+            return context.getExecutionResult();
+        }
+        catch (Exception ex) {
+            LogUtil.Log("Exception occurred when schedule context synchronously, " + ex,
+                    RScheduler.class.getName(), LogUtil.LogLevelType.ERROR, context.getRtid());
+            throw ex;
+        }
+    }
+
+    /**
      * Get pending resourcing requests count.
      * @return length of pending queue
      */

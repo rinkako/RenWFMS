@@ -7,6 +7,7 @@ package org.sysu.renResourcing.restful.controller;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 import org.sysu.renResourcing.ResourcingEngine;
+import org.sysu.renResourcing.context.ResourcingContext;
 import org.sysu.renResourcing.restful.dto.ReturnModel;
 import org.sysu.renResourcing.restful.dto.ReturnModelHelper;
 import org.sysu.renResourcing.restful.dto.StatusCode;

@@ -17,5 +17,7 @@ public enum  WorkitemResourcingStatusType implements Serializable {
     Started,
     Suspended,
     Unoffered,
-    Unresourced
+    Unresourced,
+    Completed,
+    Skipped
 }

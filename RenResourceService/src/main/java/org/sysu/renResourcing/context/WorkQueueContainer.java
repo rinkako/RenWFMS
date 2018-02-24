@@ -194,9 +194,7 @@ public class WorkQueueContainer implements RCacheablesContext {
      * @param type queue type
      */
     public void RemoveFromQueue(WorkitemContext workitem, WorkQueueType type) {
-        if (!this.IsNullOrEmptyQueue(type)) {
-            this.DirectlyGetQueue(type).Remove(workitem);
-        }
+        this.GetQueue(type).Remove(workitem);
     }
 
     /**
@@ -205,9 +203,7 @@ public class WorkQueueContainer implements RCacheablesContext {
      * @param type queue type
      */
     public void RemoveFromQueue(WorkQueueContext removeQueue, WorkQueueType type) {
-        if (!this.IsNullOrEmptyQueue(type)) {
-            this.DirectlyGetQueue(type).RemoveQueue(removeQueue);
-        }
+        this.GetQueue(type).RemoveQueue(removeQueue);
     }
 
     /**
@@ -216,9 +212,7 @@ public class WorkQueueContainer implements RCacheablesContext {
      * @param type queue type
      */
     public void RemoveFromQueueByRTID(String rtid, WorkQueueType type) {
-        if (!this.IsNullOrEmptyQueue(type)) {
-            this.DirectlyGetQueue(type).RemoveByRtid(rtid);
-        }
+        this.GetQueue(type).RemoveByRtid(rtid);
     }
 
     /**

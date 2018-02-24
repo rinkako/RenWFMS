@@ -8,7 +8,9 @@ import org.sysu.renResourcing.basic.ObservableMessage;
 import org.sysu.renResourcing.basic.enums.TrackerPhase;
 import org.sysu.renResourcing.context.ResourcingContext;
 import org.sysu.renResourcing.interfaceService.InterfaceB;
+import org.sysu.renResourcing.interfaceService.InterfaceW;
 import org.sysu.renResourcing.utility.LogUtil;
+import org.sysu.renResourcing.utility.SerializationUtil;
 
 import java.util.Observable;
 import java.util.Observer;
@@ -96,14 +98,43 @@ public class RTracker extends Observable implements Observer, Runnable {
     }
 
     /**
-     * Actually run the tracker and handle resourcing request.
+     * Actually handle resourcing request.
      */
     private void ActualRun() throws Exception {
+        Object execResult = "";
         switch (this.context.getService()) {
             case SubmitResourcingTask:
                 InterfaceB.PerformEngineSubmitTask(this.context);
                 break;
+            case AcceptWorkitem:
+                execResult = InterfaceW.AcceptOffer(this.context);
+                break;
+            case StartWorkitem:
+                execResult = InterfaceW.Start(this.context);
+                break;
+            case AcceptAndStartWorkitem:
+                execResult = InterfaceW.AcceptAndStart(this.context);
+                break;
+            case CompleteWorkitem:
+                execResult = InterfaceW.Complete(this.context);
+                break;
+            case SuspendWorkitem:
+                execResult = InterfaceW.Suspend(this.context);
+                break;
+            case UnsuspendWorkitem:
+                execResult = InterfaceW.Unsuspend(this.context);
+                break;
+            case SkipWorkitem:
+                execResult = InterfaceW.Skip(this.context);
+                break;
+            case ReallocateWorkitem:
+                execResult = InterfaceW.Reallocate(this.context);
+                break;
+            case DeallocateWorkitem:
+                execResult = InterfaceW.Deallocate(this.context);
+                break;
         }
+        this.context.setExecutionResult(SerializationUtil.JsonSerialization(execResult));
     }
 
     /**
