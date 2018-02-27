@@ -1,7 +1,8 @@
-package org.sysu.renResourcing.trigger;/*
+/*
  * Project Ren @ 2018
  * Rinkako, Ariana, Gordan. SYSU SDCS.
  */
+package org.sysu.renResourcing.trigger;
 
 /**
  * Author: Rinkako
