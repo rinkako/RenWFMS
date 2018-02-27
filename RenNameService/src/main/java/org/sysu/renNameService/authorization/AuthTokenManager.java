@@ -12,6 +12,8 @@ import org.sysu.renNameService.entity.RenSessionEntity;
 import org.sysu.renNameService.utility.EncryptUtil;
 import org.sysu.renNameService.utility.HibernateUtil;
 import org.sysu.renNameService.utility.LogUtil;
+import org.sysu.renNameService.utility.TimestampUtil;
+
 import java.sql.Timestamp;
 import java.util.List;
 import java.util.UUID;
@@ -53,7 +55,7 @@ public class AuthTokenManager {
             }
             // check if active session exist, ban it
             List<RenSessionEntity> oldRseList = session.createQuery(String.format("FROM RenSessionEntity WHERE username = '%s' AND destroy_timestamp = NULL", username)).list();
-            Timestamp currentTS = new Timestamp(System.currentTimeMillis());
+            Timestamp currentTS = TimestampUtil.GetCurrentTimestamp();
             for (RenSessionEntity rse : oldRseList) {
                 if (rse.getUntilTimestamp().after(currentTS)) {
                     rse.setDestroyTimestamp(currentTS);
@@ -111,7 +113,7 @@ public class AuthTokenManager {
             if (rse == null) {
                 return;
             }
-            rse.setDestroyTimestamp(new Timestamp(System.currentTimeMillis()));
+            rse.setDestroyTimestamp(TimestampUtil.GetCurrentTimestamp());
             transaction.commit();
         }
         catch (Exception ex) {
@@ -133,7 +135,7 @@ public class AuthTokenManager {
         try {
             RenSessionEntity rse = session.get(RenSessionEntity.class, token);
             if (rse == null || rse.getDestroyTimestamp() != null ||
-                rse.getUntilTimestamp().before(new Timestamp(System.currentTimeMillis()))) {
+                rse.getUntilTimestamp().before(TimestampUtil.GetCurrentTimestamp())) {
                 retFlag = false;
             }
             transaction.commit();
@@ -159,7 +161,7 @@ public class AuthTokenManager {
         try {
             RenSessionEntity rse = session.get(RenSessionEntity.class, token);
             if (rse == null || rse.getDestroyTimestamp() != null ||
-                    rse.getUntilTimestamp().before(new Timestamp(System.currentTimeMillis()))) {
+                    rse.getUntilTimestamp().before(TimestampUtil.GetCurrentTimestamp())) {
                 retVal = -1;
             }
             else {

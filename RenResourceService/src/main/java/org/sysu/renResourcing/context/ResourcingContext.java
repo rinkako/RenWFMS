@@ -6,10 +6,7 @@ import org.sysu.renResourcing.GlobalContext;
 import org.sysu.renResourcing.basic.enums.RServiceType;
 import org.sysu.renResourcing.consistency.ContextCachePool;
 import org.sysu.renResourcing.context.steady.RenRsrecordEntity;
-import org.sysu.renResourcing.utility.CommonUtil;
-import org.sysu.renResourcing.utility.HibernateUtil;
-import org.sysu.renResourcing.utility.LogUtil;
-import org.sysu.renResourcing.utility.SerializationUtil;
+import org.sysu.renResourcing.utility.*;
 
 import java.io.Serializable;
 import java.sql.Timestamp;
@@ -124,7 +121,7 @@ public class ResourcingContext implements Comparable<ResourcingContext>, Seriali
                 renRsrecordEntity.setRstid(rstid);
                 renRsrecordEntity.setRtid(rtid);
                 renRsrecordEntity.setPriority(0);
-                renRsrecordEntity.setReceiveTimestamp(new Timestamp(System.currentTimeMillis()));
+                renRsrecordEntity.setReceiveTimestamp(TimestampUtil.GetCurrentTimestamp());
                 renRsrecordEntity.setResourcingId(GlobalContext.RESOURCE_SERVICE_GLOBAL_ID);
                 renRsrecordEntity.setService(service.name());
                 renRsrecordEntity.setArgs(SerializationUtil.JsonSerialization(argsDict));
@@ -274,14 +271,14 @@ public class ResourcingContext implements Comparable<ResourcingContext>, Seriali
      * Set resourcing request is scheduled.
      */
     public void SetScheduled() {
-        this.scheduledTimestamp = new Timestamp(System.currentTimeMillis());
+        this.scheduledTimestamp = TimestampUtil.GetCurrentTimestamp();
     }
 
     /**
      * Set resourcing request is finished.
      */
     public void SetFinish() {
-        this.finishTimestamp = new Timestamp(System.currentTimeMillis());
+        this.finishTimestamp = TimestampUtil.GetCurrentTimestamp();
         this.executionTimespan = this.finishTimestamp.getTime() - this.scheduledTimestamp.getTime();
     }
 

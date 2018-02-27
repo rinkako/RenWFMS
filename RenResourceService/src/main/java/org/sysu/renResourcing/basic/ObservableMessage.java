@@ -4,6 +4,8 @@
  */
 package org.sysu.renResourcing.basic;
 
+import org.sysu.renResourcing.utility.TimestampUtil;
+
 import java.io.Serializable;
 import java.sql.Timestamp;
 import java.util.HashMap;
@@ -32,7 +34,7 @@ public final class ObservableMessage implements Serializable {
     /**
      * Notification timestamp.
      */
-    private Timestamp timestamp = new Timestamp(System.currentTimeMillis());
+    private Timestamp timestamp = TimestampUtil.GetCurrentTimestamp();
 
     /**
      * Create a new observable notification message.

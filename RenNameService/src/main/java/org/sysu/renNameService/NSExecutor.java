@@ -13,6 +13,7 @@ import org.sysu.renNameService.transaction.TransactionType;
 import org.sysu.renNameService.utility.HibernateUtil;
 import org.sysu.renNameService.utility.LogUtil;
 import org.sysu.renNameService.utility.SerializationUtil;
+import org.sysu.renNameService.utility.TimestampUtil;
 
 import java.sql.Timestamp;
 import java.util.ArrayList;
@@ -154,7 +155,7 @@ public class NSExecutor extends Observable {
             Session session = HibernateUtil.GetLocalThreadSession();
             Transaction dbTrans = session.beginTransaction();
             try {
-                context.setFinishTimestamp(new Timestamp(System.currentTimeMillis()));
+                context.setFinishTimestamp(TimestampUtil.GetCurrentTimestamp());
                 session.update(context);
                 dbTrans.commit();
             }

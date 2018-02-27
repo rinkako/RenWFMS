@@ -49,7 +49,7 @@ public class ClusterController {
             }
 
             rnModel.setCode(StatusCode.OK);
-            rnModel.setNs(TimestampUtil.GetTimeStampString() + " 0");
+            rnModel.setNs(TimestampUtil.GetTimestampString() + " 0");
             ReturnElement returnElement = new ReturnElement();
             returnElement.setData("Doki");
             rnModel.setReturnElement(returnElement);
@@ -84,7 +84,7 @@ public class ClusterController {
             }
 
             rnModel.setCode(StatusCode.OK);
-            rnModel.setNs(TimestampUtil.GetTimeStampString() + " 0");
+            rnModel.setNs(TimestampUtil.GetTimestampString() + " 0");
             ReturnElement returnElement = new ReturnElement();
             returnElement.setData("Sync");
             rnModel.setReturnElement(returnElement);
@@ -115,7 +115,7 @@ public class ClusterController {
             }
 
             rnModel.setCode(StatusCode.OK);
-            rnModel.setNs(TimestampUtil.GetTimeStampString() + " 0");
+            rnModel.setNs(TimestampUtil.GetTimestampString() + " 0");
             ReturnElement returnElement = new ReturnElement();
             returnElement.setData("Flush");
             rnModel.setReturnElement(returnElement);
@@ -146,7 +146,7 @@ public class ClusterController {
             }
 
             rnModel.setCode(StatusCode.OK);
-            rnModel.setNs(TimestampUtil.GetTimeStampString() + " 0");
+            rnModel.setNs(TimestampUtil.GetTimestampString() + " 0");
             ReturnElement returnElement = new ReturnElement();
             returnElement.setData("Fin");
             rnModel.setReturnElement(returnElement);

@@ -5,6 +5,7 @@
 package org.sysu.renNameService;
 import org.sysu.renNameService.transaction.NameServiceTransaction;
 import org.sysu.renNameService.utility.LogUtil;
+import org.sysu.renNameService.utility.TimestampUtil;
 
 import java.sql.Timestamp;
 import java.util.HashSet;
@@ -80,7 +81,7 @@ public class NSScheduler implements Observer {
     private Object LaunchTransactionDirectly(NameServiceTransaction nst) {
         LogUtil.Log(String.format("NSTransaction is scheduled to execute: %s", nst.getTransactionContext().getNsid()),
                 NSScheduler.class.getName(), nst.getTransactionContext().getRtid());
-        nst.getTransactionContext().setScheduledTimestamp(new Timestamp(System.currentTimeMillis()));
+        nst.getTransactionContext().setScheduledTimestamp(TimestampUtil.GetCurrentTimestamp());
         NSExecutor executor = new NSExecutor(this);
         this.executingSetLock.lock();
         this.ExecutingTransactionSet.add(nst);

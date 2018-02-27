@@ -23,7 +23,7 @@ public class HumanController {
     public ReturnModel ExceptionHandlerFunction(String exception) {
         ReturnModel rnModel = new ReturnModel();
         rnModel.setCode(StatusCode.Exception);
-        rnModel.setRs(TimestampUtil.GetTimeStampString() + " 0");
+        rnModel.setRs(TimestampUtil.GetTimestampString() + " 0");
 
         ReturnElement returnElement = new ReturnElement();
         returnElement.setMessage(exception);
@@ -66,7 +66,7 @@ public class HumanController {
 
             if (CheckToken()) {
                 rnModel.setCode(StatusCode.OK);
-                rnModel.setRs(TimestampUtil.GetTimeStampString() + " 0");
+                rnModel.setRs(TimestampUtil.GetTimestampString() + " 0");
                 ReturnElement returnElement = new ReturnElement();
                 returnElement.setData("GetHuman");
                 rnModel.setReturnElement(returnElement);
@@ -115,7 +115,7 @@ public class HumanController {
 
             if (CheckToken()) {
                 rnModel.setCode(StatusCode.OK);
-                rnModel.setRs(TimestampUtil.GetTimeStampString() + " 0");
+                rnModel.setRs(TimestampUtil.GetTimestampString() + " 0");
                 ReturnElement returnElement = new ReturnElement();
                 returnElement.setData("SetHuman");
                 rnModel.setReturnElement(returnElement);
@@ -155,7 +155,7 @@ public class HumanController {
 
             if (CheckToken()) {
                 rnModel.setCode(StatusCode.OK);
-                rnModel.setRs(TimestampUtil.GetTimeStampString() + " 0");
+                rnModel.setRs(TimestampUtil.GetTimestampString() + " 0");
                 ReturnElement returnElement = new ReturnElement();
                 returnElement.setData("ContainHuman");
                 rnModel.setReturnElement(returnElement);
@@ -202,7 +202,7 @@ public class HumanController {
 
             if (CheckToken()) {
                 rnModel.setCode(StatusCode.OK);
-                rnModel.setRs(TimestampUtil.GetTimeStampString() + " 0");
+                rnModel.setRs(TimestampUtil.GetTimestampString() + " 0");
                 ReturnElement returnElement = new ReturnElement();
                 returnElement.setData("AddHuman");
                 rnModel.setReturnElement(returnElement);
@@ -242,7 +242,7 @@ public class HumanController {
 
             if (CheckToken()) {
                 rnModel.setCode(StatusCode.OK);
-                rnModel.setRs(TimestampUtil.GetTimeStampString() + " 0");
+                rnModel.setRs(TimestampUtil.GetTimestampString() + " 0");
                 ReturnElement returnElement = new ReturnElement();
                 returnElement.setData("RemoveHuman");
                 rnModel.setReturnElement(returnElement);
@@ -285,7 +285,7 @@ public class HumanController {
 
             if (CheckToken()) {
                 rnModel.setCode(StatusCode.OK);
-                rnModel.setRs(TimestampUtil.GetTimeStampString() + " 0");
+                rnModel.setRs(TimestampUtil.GetTimestampString() + " 0");
                 ReturnElement returnElement = new ReturnElement();
                 returnElement.setData("AddHumanRole");
                 rnModel.setReturnElement(returnElement);
@@ -328,7 +328,7 @@ public class HumanController {
 
             if (CheckToken()) {
                 rnModel.setCode(StatusCode.OK);
-                rnModel.setRs(TimestampUtil.GetTimeStampString() + " 0");
+                rnModel.setRs(TimestampUtil.GetTimestampString() + " 0");
                 ReturnElement returnElement = new ReturnElement();
                 returnElement.setData("RemoveHumanRole");
                 rnModel.setReturnElement(returnElement);

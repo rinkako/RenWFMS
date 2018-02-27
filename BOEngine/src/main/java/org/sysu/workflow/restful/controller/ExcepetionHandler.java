@@ -17,7 +17,7 @@ public final class ExcepetionHandler {
     public static ReturnModel HandleException(String exception) {
         ReturnModel rnModel = new ReturnModel();
         rnModel.setCode(StatusCode.Exception);
-        rnModel.setRs(TimestampUtil.GetTimeStamp() + " 0");
+        rnModel.setRs(TimestampUtil.GetTimestampString() + " 0");
 
         ReturnElement returnElement = new ReturnElement();
         returnElement.setMessage(exception);
@@ -35,7 +35,7 @@ public final class ExcepetionHandler {
         //参数在缺少时应该以Fail的状态码返回
         rnModel.setCode(StatusCode.Fail);
         //设置返回的时间戳
-        rnModel.setRs(TimestampUtil.GetTimeStamp() + " 0");
+        rnModel.setRs(TimestampUtil.GetTimestampString() + " 0");
         //将缺失的参数添加到returnElement的message中
         ReturnElement returnElement = new ReturnElement();
         StringBuffer sb = new StringBuffer();

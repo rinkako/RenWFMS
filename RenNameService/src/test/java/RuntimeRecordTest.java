@@ -11,6 +11,7 @@ import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.context.web.WebAppConfiguration;
 import org.sysu.renNameService.RenNameServiceApplication;
 import org.sysu.renNameService.entity.RenRuntimerecordEntity;
+import org.sysu.renNameService.utility.TimestampUtil;
 
 import java.sql.Timestamp;
 import java.util.Date;
@@ -38,7 +39,7 @@ public class RuntimeRecordTest {
     public void insert() {
         RenRuntimerecordEntity ue = new RenRuntimerecordEntity();
         ue.setRtid(testId);
-        ue.setLaunchTimestamp(new Timestamp((new Date()).getTime()));
+        ue.setLaunchTimestamp(TimestampUtil.GetCurrentTimestamp());
         ue.setLaunchFrom("insert func");
         session.save(ue);
         tx.commit();

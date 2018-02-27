@@ -5,6 +5,7 @@
 package org.sysu.renResourcing.trigger;
 
 import org.sysu.renResourcing.utility.CommonUtil;
+import org.sysu.renResourcing.utility.TimestampUtil;
 
 import java.io.Serializable;
 import java.sql.Timestamp;
@@ -147,7 +148,7 @@ public abstract class RTrigger implements Serializable {
      */
     public final void Run() {
         this.active = true;
-        this.lastBeginTimestamp = new Timestamp(System.currentTimeMillis());
+        this.lastBeginTimestamp = TimestampUtil.GetCurrentTimestamp();
         this.ActualRun();
     }
 
@@ -156,7 +157,7 @@ public abstract class RTrigger implements Serializable {
      */
     public final void Stop() {
         this.ActualStop();
-        this.lastStopTimestamp = new Timestamp(System.currentTimeMillis());
+        this.lastStopTimestamp = TimestampUtil.GetCurrentTimestamp();
         this.active = false;
     }
 
@@ -164,7 +165,7 @@ public abstract class RTrigger implements Serializable {
      * Signal that the trigger has successfully triggered anything.
      */
     protected final void SuccessfullyTriggered() {
-        this.lastTriggerTimestamp = new Timestamp(System.currentTimeMillis());
+        this.lastTriggerTimestamp = TimestampUtil.GetCurrentTimestamp();
     }
 
     /**

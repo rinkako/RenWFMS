@@ -23,7 +23,7 @@ public class RoleController {
     public ReturnModel ExceptionHandlerFunction(String exception) {
         ReturnModel rnModel = new ReturnModel();
         rnModel.setCode(StatusCode.Exception);
-        rnModel.setRs(TimestampUtil.GetTimeStampString() + " 0");
+        rnModel.setRs(TimestampUtil.GetTimestampString() + " 0");
 
         ReturnElement returnElement = new ReturnElement();
         returnElement.setMessage(exception);
@@ -66,7 +66,7 @@ public class RoleController {
 
             if (CheckToken()) {
                 rnModel.setCode(StatusCode.OK);
-                rnModel.setRs(TimestampUtil.GetTimeStampString() + " 0");
+                rnModel.setRs(TimestampUtil.GetTimestampString() + " 0");
                 ReturnElement returnElement = new ReturnElement();
                 returnElement.setData("GetRole");
                 rnModel.setReturnElement(returnElement);
@@ -109,7 +109,7 @@ public class RoleController {
 
             if (CheckToken()) {
                 rnModel.setCode(StatusCode.OK);
-                rnModel.setRs(TimestampUtil.GetTimeStampString() + " 0");
+                rnModel.setRs(TimestampUtil.GetTimestampString() + " 0");
                 ReturnElement returnElement = new ReturnElement();
                 returnElement.setData("SetRole");
                 rnModel.setReturnElement(returnElement);
@@ -149,7 +149,7 @@ public class RoleController {
 
             if (CheckToken()) {
                 rnModel.setCode(StatusCode.OK);
-                rnModel.setRs(TimestampUtil.GetTimeStampString() + " 0");
+                rnModel.setRs(TimestampUtil.GetTimestampString() + " 0");
                 ReturnElement returnElement = new ReturnElement();
                 returnElement.setData("ContainRole");
                 rnModel.setReturnElement(returnElement);
@@ -192,7 +192,7 @@ public class RoleController {
 
             if (CheckToken()) {
                 rnModel.setCode(StatusCode.OK);
-                rnModel.setRs(TimestampUtil.GetTimeStampString() + " 0");
+                rnModel.setRs(TimestampUtil.GetTimestampString() + " 0");
                 ReturnElement returnElement = new ReturnElement();
                 returnElement.setData("AddRole");
                 rnModel.setReturnElement(returnElement);
@@ -232,7 +232,7 @@ public class RoleController {
 
             if (CheckToken()) {
                 rnModel.setCode(StatusCode.OK);
-                rnModel.setRs(TimestampUtil.GetTimeStampString() + " 0");
+                rnModel.setRs(TimestampUtil.GetTimestampString() + " 0");
                 ReturnElement returnElement = new ReturnElement();
                 returnElement.setData("RemoveRole");
                 rnModel.setReturnElement(returnElement);
@@ -272,7 +272,7 @@ public class RoleController {
 
             if (CheckToken()) {
                 rnModel.setCode(StatusCode.OK);
-                rnModel.setRs(TimestampUtil.GetTimeStampString() + " 0");
+                rnModel.setRs(TimestampUtil.GetTimestampString() + " 0");
                 ReturnElement returnElement = new ReturnElement();
                 returnElement.setData("GetInRole");
                 rnModel.setReturnElement(returnElement);
@@ -312,7 +312,7 @@ public class RoleController {
 
             if (CheckToken()) {
                 rnModel.setCode(StatusCode.OK);
-                rnModel.setRs(TimestampUtil.GetTimeStampString() + " 0");
+                rnModel.setRs(TimestampUtil.GetTimestampString() + " 0");
                 ReturnElement returnElement = new ReturnElement();
                 returnElement.setData("GetHumanInRole");
                 rnModel.setReturnElement(returnElement);
@@ -352,7 +352,7 @@ public class RoleController {
 
             if (CheckToken()) {
                 rnModel.setCode(StatusCode.OK);
-                rnModel.setRs(TimestampUtil.GetTimeStampString() + " 0");
+                rnModel.setRs(TimestampUtil.GetTimestampString() + " 0");
                 ReturnElement returnElement = new ReturnElement();
                 returnElement.setData("GetAgentInRole");
                 rnModel.setReturnElement(returnElement);

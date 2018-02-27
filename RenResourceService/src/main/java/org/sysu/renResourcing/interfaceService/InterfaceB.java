@@ -20,6 +20,7 @@ import org.sysu.renResourcing.principle.PrincipleParser;
 import org.sysu.renResourcing.principle.RPrinciple;
 import org.sysu.renResourcing.utility.HibernateUtil;
 import org.sysu.renResourcing.utility.LogUtil;
+import org.sysu.renResourcing.utility.TimestampUtil;
 
 import java.sql.Timestamp;
 import java.util.*;
@@ -101,7 +102,7 @@ public class InterfaceB {
                     AsyncPluginRunner.AsyncRun(allocateAnp);
                 }
                 // change workitem status
-                workitem.getEntity().setFiringTime(new Timestamp(System.currentTimeMillis()));
+                workitem.getEntity().setFiringTime(TimestampUtil.GetCurrentTimestamp());
                 WorkitemContext.SaveToSteady(workitem);
                 InterfaceB.WorkitemChanged(workitem, WorkitemStatusType.Fired, WorkitemResourcingStatusType.Allocated);
                 break;
@@ -129,7 +130,7 @@ public class InterfaceB {
                     AsyncPluginRunner.AsyncRun(offerAnp);
                 }
                 // change workitem status
-                workitem.getEntity().setFiringTime(new Timestamp(System.currentTimeMillis()));
+                workitem.getEntity().setFiringTime(TimestampUtil.GetCurrentTimestamp());
                 WorkitemContext.SaveToSteady(workitem);
                 InterfaceB.WorkitemChanged(workitem, WorkitemStatusType.Fired, WorkitemResourcingStatusType.Offered);
                 break;
@@ -207,8 +208,8 @@ public class InterfaceB {
             container.RemoveFromQueue(workitem, WorkQueueType.ALLOCATED);
             container.AddToQueue(workitem, WorkQueueType.STARTED);
             RenWorkitemEntity rwe = workitem.getEntity();
-            rwe.setLatestStartTime(new Timestamp(System.currentTimeMillis()));
-            rwe.setStartTime(new Timestamp(System.currentTimeMillis()));
+            rwe.setLatestStartTime(TimestampUtil.GetCurrentTimestamp());
+            rwe.setStartTime(TimestampUtil.GetCurrentTimestamp());
             rwe.setStartedBy(participant.getWorkerId());
             WorkitemContext.SaveToSteady(workitem);
             // already started
@@ -359,7 +360,7 @@ public class InterfaceB {
     public static boolean CompleteWorkitem(ParticipantContext participant, WorkitemContext workitem) {
         try {
             RenWorkitemEntity rwe = workitem.getEntity();
-            Timestamp currentTS = new Timestamp(System.currentTimeMillis());
+            Timestamp currentTS = TimestampUtil.GetCurrentTimestamp();
             Timestamp startTS = rwe.getStartTime();
             rwe.setExecuteTime(currentTS.getTime() - startTS.getTime());
             rwe.setCompletionTime(currentTS);

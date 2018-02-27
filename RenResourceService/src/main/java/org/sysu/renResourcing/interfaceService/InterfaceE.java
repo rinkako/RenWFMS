@@ -10,6 +10,7 @@ import org.sysu.renResourcing.context.WorkitemContext;
 import org.sysu.renResourcing.context.steady.RenRseventlogEntity;
 import org.sysu.renResourcing.plugin.AsyncPluginRunner;
 import org.sysu.renResourcing.plugin.EventLogWriterPlugin;
+import org.sysu.renResourcing.utility.TimestampUtil;
 
 import java.sql.Timestamp;
 import java.util.HashSet;
@@ -83,7 +84,7 @@ public class InterfaceE {
         log.setProcessid(workitem.getEntity().getProcessId());
         log.setTaskid(workitem.getEntity().getTaskid());
         log.setWorkerid(workerId);
-        log.setTimestamp(new Timestamp(System.currentTimeMillis()));
+        log.setTimestamp(TimestampUtil.GetCurrentTimestamp());
         log.setWid(workitem.getEntity().getWid());
         writer.AddEvent(log, workitem.getEntity().getRtid());
         AsyncPluginRunner.AsyncRun(writer);

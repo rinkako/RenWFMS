@@ -9,8 +9,8 @@ import org.sysu.renNameService.GlobalContext;
 import org.sysu.renNameService.entity.RenNsTransactionEntity;
 import org.sysu.renNameService.utility.HibernateUtil;
 import org.sysu.renNameService.utility.LogUtil;
+import org.sysu.renNameService.utility.TimestampUtil;
 
-import java.sql.Timestamp;
 import java.util.HashMap;
 import java.util.UUID;
 
@@ -36,7 +36,7 @@ public class TransactionCreator {
         nst.AddParameter(args);
         nst.AddParameter(GlobalContext.TRANSACTION_ACTION_KEY, action);
         RenNsTransactionEntity rnte = nst.getTransactionContext();
-        rnte.setAcceptTimestamp(new Timestamp(System.currentTimeMillis()));
+        rnte.setAcceptTimestamp(TimestampUtil.GetCurrentTimestamp());
         rnte.setNsid(nsid);
         rnte.setRtid(rtid == null ? "" : rtid);
         rnte.setPriority(0);

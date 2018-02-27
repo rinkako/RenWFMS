@@ -23,7 +23,7 @@ public class ClusterController {
     public ReturnModel ExceptionHandlerFunction(String exception) {
         ReturnModel rnModel = new ReturnModel();
         rnModel.setCode(StatusCode.Exception);
-        rnModel.setRs(TimestampUtil.GetTimeStampString() + " 0");
+        rnModel.setRs(TimestampUtil.GetTimestampString() + " 0");
 
         ReturnElement returnElement = new ReturnElement();
         returnElement.setMessage(exception);
@@ -69,7 +69,7 @@ public class ClusterController {
 
             if (CheckToken()) {
                 rnModel.setCode(StatusCode.OK);
-                rnModel.setRs(TimestampUtil.GetTimeStampString() + " 0");
+                rnModel.setRs(TimestampUtil.GetTimestampString() + " 0");
                 ReturnElement returnElement = new ReturnElement();
                 returnElement.setData("Diki");
                 rnModel.setReturnElement(returnElement);
@@ -112,7 +112,7 @@ public class ClusterController {
 
             if (CheckToken()) {
                 rnModel.setCode(StatusCode.OK);
-                rnModel.setRs(TimestampUtil.GetTimeStampString() + " 0");
+                rnModel.setRs(TimestampUtil.GetTimestampString() + " 0");
                 ReturnElement returnElement = new ReturnElement();
                 returnElement.setData("Sync");
                 rnModel.setReturnElement(returnElement);
@@ -158,7 +158,7 @@ public class ClusterController {
 
             if (CheckToken()) {
                 rnModel.setCode(StatusCode.OK);
-                rnModel.setRs(TimestampUtil.GetTimeStampString() + " 0");
+                rnModel.setRs(TimestampUtil.GetTimestampString() + " 0");
                 ReturnElement returnElement = new ReturnElement();
                 returnElement.setData("Delegate");
                 rnModel.setReturnElement(returnElement);
@@ -198,7 +198,7 @@ public class ClusterController {
 
             if (CheckToken()) {
                 rnModel.setCode(StatusCode.OK);
-                rnModel.setRs(TimestampUtil.GetTimeStampString() + " 0");
+                rnModel.setRs(TimestampUtil.GetTimestampString() + " 0");
                 ReturnElement returnElement = new ReturnElement();
                 returnElement.setData("Flush");
                 rnModel.setReturnElement(returnElement);
@@ -238,7 +238,7 @@ public class ClusterController {
 
             if (CheckToken()) {
                 rnModel.setCode(StatusCode.OK);
-                rnModel.setRs(TimestampUtil.GetTimeStampString() + " 0");
+                rnModel.setRs(TimestampUtil.GetTimestampString() + " 0");
                 ReturnElement returnElement = new ReturnElement();
                 returnElement.setData("Fin");
                 rnModel.setReturnElement(returnElement);

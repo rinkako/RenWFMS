@@ -10,7 +10,6 @@ import org.sysu.workflow.restful.dto.StatusCode;
 
 import javax.transaction.Transactional;
 import java.util.ArrayList;
-import java.util.List;
 
 /**
  * Author: Ariana
@@ -41,7 +40,7 @@ public class EngineController {
             LaunchProcessService.LaunchProcess(rtid);
             // return
             rnModel.setCode(StatusCode.OK);
-            rnModel.setRs(TimestampUtil.GetTimeStamp() + " 0");
+            rnModel.setRs(TimestampUtil.GetTimestampString() + " 0");
             ReturnElement returnElement = new ReturnElement();
             returnElement.setData("LaunchProcess");
             rnModel.setReturnElement(returnElement);
@@ -72,7 +71,7 @@ public class EngineController {
             String jsonify = SerializationUtil.JsonSerialization(LaunchProcessService.SerializeBO(boidlist), "");
             // return
             rnModel.setCode(StatusCode.OK);
-            rnModel.setRs(TimestampUtil.GetTimeStamp() + " 0");
+            rnModel.setRs(TimestampUtil.GetTimestampString() + " 0");
             ReturnElement returnElement = new ReturnElement();
             returnElement.setData(jsonify);
             rnModel.setReturnElement(returnElement);

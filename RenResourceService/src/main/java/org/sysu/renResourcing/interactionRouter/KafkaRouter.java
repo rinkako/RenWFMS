@@ -2,18 +2,16 @@
  * Project Ren @ 2018
  * Rinkako, Ariana, Gordan. SYSU SDCS.
  */
-package org.sysu.renResourcing.interaction;
-
-import org.sysu.renResourcing.utility.HttpClientUtil;
+package org.sysu.renResourcing.interactionRouter;
 
 import java.util.Map;
 
 /**
  * Author: Rinkako
  * Date  : 2018/2/27
- * Usage : An interaction router using HTTP and Restful API for modules interaction.
+ * Usage : An interaction router using Kafka stream service for modules interaction.
  */
-public class RestfulRouter extends RInteractionRouter {
+public class KafkaRouter extends RInteractionRouter {
 
     /**
      * Send a message encoded by Key-value pair map to the destination module.
@@ -25,6 +23,6 @@ public class RestfulRouter extends RInteractionRouter {
      */
     @Override
     public String Send(String destination, Map<String, String> args, String rtid) throws Exception {
-        return HttpClientUtil.SendPost(destination, args, rtid);
+        return null;
     }
 }

@@ -12,7 +12,6 @@ import org.sysu.renNameService.entity.RenProcessEntity;
 import org.sysu.renNameService.entity.RenRuntimerecordEntity;
 import org.sysu.renNameService.utility.*;
 
-import java.sql.Timestamp;
 import java.util.AbstractMap;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -39,7 +38,7 @@ public class NameSpacingService {
             RenProcessEntity rpe = new RenProcessEntity();
             String pid = "Process_" + UUID.randomUUID().toString();
             rpe.setPid(pid);
-            rpe.setCreateTimestamp(new Timestamp(System.currentTimeMillis()));
+            rpe.setCreateTimestamp(TimestampUtil.GetCurrentTimestamp());
             rpe.setCreatorRenid(renid);
             rpe.setMainBo(mainBOName);
             rpe.setProcessName(processName);
@@ -223,7 +222,7 @@ public class NameSpacingService {
             rrte.setLaunchType(launchType);
             rrte.setFailureType(failureType);
             rrte.setResourceBinding(binding);
-            rrte.setLaunchTimestamp(new Timestamp(System.currentTimeMillis()));
+            rrte.setLaunchTimestamp(TimestampUtil.GetCurrentTimestamp());
             session.save(rrte);
             transaction.commit();
             return String.format("%s,%s", rtid, authSign);

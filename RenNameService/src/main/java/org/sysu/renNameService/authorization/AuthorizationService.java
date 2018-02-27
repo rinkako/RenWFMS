@@ -10,10 +10,7 @@ import org.sysu.renNameService.GlobalContext;
 import org.sysu.renNameService.entity.RenAuthuserEntity;
 import org.sysu.renNameService.entity.RenAuthuserEntityPK;
 import org.sysu.renNameService.entity.RenDomainEntity;
-import org.sysu.renNameService.utility.EncryptUtil;
-import org.sysu.renNameService.utility.HibernateUtil;
-import org.sysu.renNameService.utility.LogUtil;
-import org.sysu.renNameService.utility.RSASignatureUtil;
+import org.sysu.renNameService.utility.*;
 
 import java.sql.Timestamp;
 import java.util.HashMap;
@@ -81,7 +78,7 @@ public class AuthorizationService {
                 return "#duplicate_domain";
             }
             // create new
-            Timestamp createTs = new Timestamp(System.currentTimeMillis());
+            Timestamp createTs = TimestampUtil.GetCurrentTimestamp();
             RenDomainEntity rde = new RenDomainEntity();
             rde.setName(name);
             rde.setLevel(Integer.valueOf(level));
@@ -249,7 +246,7 @@ public class AuthorizationService {
             rae.setLevel(level);
             rae.setPassword(EncryptUtil.EncryptSHA256(password));
             rae.setDomain(domain);
-            rae.setCreatetimestamp(new Timestamp(System.currentTimeMillis()));
+            rae.setCreatetimestamp(TimestampUtil.GetCurrentTimestamp());
             rae.setStatus(0);
             session.save(rae);
             transaction.commit();

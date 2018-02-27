@@ -35,7 +35,7 @@ public final class LogUtil {
      * @param level message level
      */
     public static void Echo(String msg, String label, LogLevelType level) {
-        String printStr = String.format("[%s]%s-%s: %s", level.name(), TimestampUtil.GetTimeStampString(), label, msg);
+        String printStr = String.format("[%s]%s-%s: %s", level.name(), TimestampUtil.GetTimestampString(), label, msg);
         System.out.println(printStr);
     }
 
@@ -75,7 +75,7 @@ public final class LogUtil {
             // use read lock to prevent flush
             LogUtil.readWriteLock.readLock().lock();
             LogMessagePackage lmp = new LogMessagePackage(rtid, msg, label, level,
-                    new Timestamp(System.currentTimeMillis()));
+                    TimestampUtil.GetCurrentTimestamp());
             LogUtil.logBuffer.add(lmp);
         }
         catch (Exception ex) {

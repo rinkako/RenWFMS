@@ -11,10 +11,7 @@ import org.sysu.renResourcing.basic.enums.WorkitemResourcingStatusType;
 import org.sysu.renResourcing.basic.enums.WorkitemStatusType;
 import org.sysu.renResourcing.consistency.ContextCachePool;
 import org.sysu.renResourcing.context.steady.RenWorkitemEntity;
-import org.sysu.renResourcing.utility.CommonUtil;
-import org.sysu.renResourcing.utility.HibernateUtil;
-import org.sysu.renResourcing.utility.LogUtil;
-import org.sysu.renResourcing.utility.SerializationUtil;
+import org.sysu.renResourcing.utility.*;
 
 import java.io.Serializable;
 import java.sql.Timestamp;
@@ -137,7 +134,7 @@ public class WorkitemContext implements Serializable, RCacheablesContext {
             rwe.setStatus(WorkitemStatusType.Enabled.name());
             rwe.setResourceStatus(WorkitemResourcingStatusType.Unoffered.name());
             rwe.setExecuteTime(0L);
-            rwe.setEnablementTime(new Timestamp(System.currentTimeMillis()));
+            rwe.setEnablementTime(TimestampUtil.GetCurrentTimestamp());
             HashMap<String, String> taskArgsSign = CommonUtil.ZipVectorConvertString(taskContext.getParameters(), args);
             rwe.setArguments(SerializationUtil.JsonSerialization(taskArgsSign));
             session.save(rwe);

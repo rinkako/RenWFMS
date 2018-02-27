@@ -4,6 +4,7 @@
  */
 package org.sysu.renResourcing.plugin;
 
+import org.sysu.renResourcing.ResourcingEngine;
 import org.sysu.renResourcing.basic.enums.AgentReentrantType;
 import org.sysu.renResourcing.context.ParticipantContext;
 import org.sysu.renResourcing.utility.HttpClientUtil;
@@ -103,14 +104,14 @@ public class AgentNotifyPlugin extends AsyncRunnablePlugin {
         try {
             // reentrant agent: send post directly.
             if (agentContext.getAgentType() == AgentReentrantType.Reentrant) {
-                HttpClientUtil.SendPost(agentContext.getAgentLocation(), args, rtid);
+                ResourcingEngine.Interaction.Send(agentContext.getAgentLocation(), args, rtid);
                 LogUtil.Log(String.format("Send notification to agent %s(%s): %s", agentContext.getDisplayName(), agentContext.getWorkerId(), args),
                         AgentNotifyPlugin.class.getName(), LogUtil.LogLevelType.INFO, rtid);
             }
             // not reentrant agent: queue the request.
             else {
                 // todo here should use queue to send asynchronously only when the agent is free (include other RS)
-                HttpClientUtil.SendPost(agentContext.getAgentLocation(), args, rtid);
+                ResourcingEngine.Interaction.Send(agentContext.getAgentLocation(), args, rtid);
             }
         }
         catch (Exception ex) {

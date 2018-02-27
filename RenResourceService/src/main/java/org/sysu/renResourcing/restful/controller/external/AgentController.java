@@ -23,7 +23,7 @@ public class AgentController {
     public ReturnModel ExceptionHandlerFunction(String exception) {
         ReturnModel rnModel = new ReturnModel();
         rnModel.setCode(StatusCode.Exception);
-        rnModel.setRs(TimestampUtil.GetTimeStampString() + " 0");
+        rnModel.setRs(TimestampUtil.GetTimestampString() + " 0");
 
         ReturnElement returnElement = new ReturnElement();
         returnElement.setMessage(exception);
@@ -67,7 +67,7 @@ public class AgentController {
 
             if (CheckToken()) {
                 rnModel.setCode(StatusCode.OK);
-                rnModel.setRs(TimestampUtil.GetTimeStampString() + " 0");
+                rnModel.setRs(TimestampUtil.GetTimestampString() + " 0");
                 ReturnElement returnElement = new ReturnElement();
                 returnElement.setData("GetAgent");
                 rnModel.setReturnElement(returnElement);
@@ -116,7 +116,7 @@ public class AgentController {
 
             if (CheckToken()) {
                 rnModel.setCode(StatusCode.OK);
-                rnModel.setRs(TimestampUtil.GetTimeStampString() + " 0");
+                rnModel.setRs(TimestampUtil.GetTimestampString() + " 0");
                 ReturnElement returnElement = new ReturnElement();
                 returnElement.setData("SetAgent");
                 rnModel.setReturnElement(returnElement);
@@ -156,7 +156,7 @@ public class AgentController {
 
             if (CheckToken()) {
                 rnModel.setCode(StatusCode.OK);
-                rnModel.setRs(TimestampUtil.GetTimeStampString() + " 0");
+                rnModel.setRs(TimestampUtil.GetTimestampString() + " 0");
                 ReturnElement returnElement = new ReturnElement();
                 returnElement.setData("ContainAgent");
                 rnModel.setReturnElement(returnElement);
@@ -202,7 +202,7 @@ public class AgentController {
 
             if (CheckToken()) {
                 rnModel.setCode(StatusCode.OK);
-                rnModel.setRs(TimestampUtil.GetTimeStampString() + " 0");
+                rnModel.setRs(TimestampUtil.GetTimestampString() + " 0");
                 ReturnElement returnElement = new ReturnElement();
                 returnElement.setData("AddAgent");
                 rnModel.setReturnElement(returnElement);
@@ -242,7 +242,7 @@ public class AgentController {
 
             if (CheckToken()) {
                 rnModel.setCode(StatusCode.OK);
-                rnModel.setRs(TimestampUtil.GetTimeStampString() + " 0");
+                rnModel.setRs(TimestampUtil.GetTimestampString() + " 0");
                 ReturnElement returnElement = new ReturnElement();
                 returnElement.setData("RemoveAgent");
                 rnModel.setReturnElement(returnElement);
@@ -285,7 +285,7 @@ public class AgentController {
 
             if (CheckToken()) {
                 rnModel.setCode(StatusCode.OK);
-                rnModel.setRs(TimestampUtil.GetTimeStampString() + " 0");
+                rnModel.setRs(TimestampUtil.GetTimestampString() + " 0");
                 ReturnElement returnElement = new ReturnElement();
                 returnElement.setData("AddAgentRole");
                 rnModel.setReturnElement(returnElement);
@@ -328,7 +328,7 @@ public class AgentController {
 
             if (CheckToken()) {
                 rnModel.setCode(StatusCode.OK);
-                rnModel.setRs(TimestampUtil.GetTimeStampString() + " 0");
+                rnModel.setRs(TimestampUtil.GetTimestampString() + " 0");
                 ReturnElement returnElement = new ReturnElement();
                 returnElement.setData("RemoveAgentRole");
                 rnModel.setReturnElement(returnElement);

@@ -24,7 +24,7 @@ public class ReturnModelHelper {
      */
     public static void StandardResponse(ReturnModel rnModel, StatusCode code, String retStr) {
         rnModel.setCode(code);
-        rnModel.setNs(String.format("%s %s", TimestampUtil.GetTimeStampString(), GlobalContext.NAME_SERVICE_GLOBAL_ID));
+        rnModel.setNs(String.format("%s %s", TimestampUtil.GetTimestampString(), GlobalContext.NAME_SERVICE_GLOBAL_ID));
         ReturnElement returnElement = new ReturnElement();
         returnElement.setData(retStr);
         rnModel.setReturnElement(returnElement);
@@ -36,7 +36,7 @@ public class ReturnModelHelper {
      */
     public static void ExceptionResponse(ReturnModel rnModel, String exception) {
         rnModel.setCode(StatusCode.Exception);
-        rnModel.setNs(String.format("%s %s", TimestampUtil.GetTimeStampString(), GlobalContext.NAME_SERVICE_GLOBAL_ID));
+        rnModel.setNs(String.format("%s %s", TimestampUtil.GetTimestampString(), GlobalContext.NAME_SERVICE_GLOBAL_ID));
         ReturnElement returnElement = new ReturnElement();
         returnElement.setMessage(exception);
         rnModel.setReturnElement(returnElement);
@@ -50,7 +50,7 @@ public class ReturnModelHelper {
     public static ReturnModel UnauthorizedResponse(String token) {
         ReturnModel rnModel = new ReturnModel();
         rnModel.setCode(StatusCode.Unauthorized);
-        rnModel.setNs(String.format("%s %s", TimestampUtil.GetTimeStampString(), GlobalContext.NAME_SERVICE_GLOBAL_ID));
+        rnModel.setNs(String.format("%s %s", TimestampUtil.GetTimestampString(), GlobalContext.NAME_SERVICE_GLOBAL_ID));
         ReturnElement returnElement = new ReturnElement();
         returnElement.setMessage(token);
         rnModel.setReturnElement(returnElement);
@@ -67,7 +67,7 @@ public class ReturnModelHelper {
     public static ReturnModel MissingParametersResponse(List<String> params) {
         ReturnModel rnModel = new ReturnModel();
         rnModel.setCode(StatusCode.Fail);
-        rnModel.setNs(String.format("%s %s", TimestampUtil.GetTimeStampString(), GlobalContext.NAME_SERVICE_GLOBAL_ID));
+        rnModel.setNs(String.format("%s %s", TimestampUtil.GetTimestampString(), GlobalContext.NAME_SERVICE_GLOBAL_ID));
         ReturnElement returnElement = new ReturnElement();
         StringBuilder sb = new StringBuilder();
         sb.append("miss required parameters:");
