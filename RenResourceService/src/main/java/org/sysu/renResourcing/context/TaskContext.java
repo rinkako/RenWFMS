@@ -10,10 +10,10 @@ import org.sysu.renResourcing.consistency.ContextCachePool;
 import org.sysu.renResourcing.context.steady.RenBoEntity;
 import org.sysu.renResourcing.context.steady.RenRstaskEntity;
 import org.sysu.renResourcing.context.steady.RenRuntimerecordEntity;
-import org.sysu.renResourcing.utility.CommonUtil;
+import org.sysu.renCommon.utility.CommonUtil;
 import org.sysu.renResourcing.utility.HibernateUtil;
 import org.sysu.renResourcing.utility.LogUtil;
-import org.sysu.renResourcing.utility.SerializationUtil;
+import org.sysu.renCommon.utility.SerializationUtil;
 
 import java.io.Serializable;
 import java.util.ArrayList;

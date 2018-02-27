@@ -2,6 +2,9 @@ package org.sysu.renResourcing.context;
 
 import org.hibernate.Session;
 import org.hibernate.Transaction;
+import org.sysu.renCommon.utility.CommonUtil;
+import org.sysu.renCommon.utility.SerializationUtil;
+import org.sysu.renCommon.utility.TimestampUtil;
 import org.sysu.renResourcing.GlobalContext;
 import org.sysu.renResourcing.basic.enums.RServiceType;
 import org.sysu.renResourcing.consistency.ContextCachePool;

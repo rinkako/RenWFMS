@@ -10,9 +10,8 @@ import org.sysu.renResourcing.context.WorkitemContext;
 import org.sysu.renResourcing.context.steady.RenRseventlogEntity;
 import org.sysu.renResourcing.plugin.AsyncPluginRunner;
 import org.sysu.renResourcing.plugin.EventLogWriterPlugin;
-import org.sysu.renResourcing.utility.TimestampUtil;
+import org.sysu.renCommon.utility.TimestampUtil;
 
-import java.sql.Timestamp;
 import java.util.HashSet;
 import java.util.UUID;
 

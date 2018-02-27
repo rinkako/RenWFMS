@@ -20,7 +20,7 @@ import org.sysu.renResourcing.principle.PrincipleParser;
 import org.sysu.renResourcing.principle.RPrinciple;
 import org.sysu.renResourcing.utility.HibernateUtil;
 import org.sysu.renResourcing.utility.LogUtil;
-import org.sysu.renResourcing.utility.TimestampUtil;
+import org.sysu.renCommon.utility.TimestampUtil;
 
 import java.sql.Timestamp;
 import java.util.*;

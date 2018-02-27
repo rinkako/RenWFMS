@@ -15,7 +15,7 @@ import org.sysu.renResourcing.context.steady.RenQueueitemsEntity;
 import org.sysu.renResourcing.context.steady.RenWorkitemEntity;
 import org.sysu.renResourcing.context.steady.RenWorkqueueEntity;
 import org.sysu.renResourcing.interfaceService.InterfaceE;
-import org.sysu.renResourcing.utility.AuthDomainHelper;
+import org.sysu.renCommon.utility.AuthDomainHelper;
 import org.sysu.renResourcing.utility.HibernateUtil;
 import org.sysu.renResourcing.utility.LogUtil;
 

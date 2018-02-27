@@ -2,7 +2,7 @@
  * Project Ren @ 2018
  * Rinkako, Ariana, Gordan. SYSU SDCS.
  */
-package org.sysu.renResourcing.utility;
+package org.sysu.renCommon.utility;
 
 import java.util.HashMap;
 import java.util.List;

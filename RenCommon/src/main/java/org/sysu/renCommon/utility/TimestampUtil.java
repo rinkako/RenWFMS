@@ -1,4 +1,4 @@
-package org.sysu.renResourcing.utility;
+package org.sysu.renCommon.utility;
 
 import java.sql.Timestamp;
 import java.text.SimpleDateFormat;

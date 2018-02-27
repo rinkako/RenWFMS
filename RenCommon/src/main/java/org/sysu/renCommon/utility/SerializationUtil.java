@@ -2,7 +2,7 @@
  * Project Ren @ 2018
  * Rinkako, Ariana, Gordan. SYSU SDCS.
  */
-package org.sysu.renResourcing.utility;
+package org.sysu.renCommon.utility;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 /**
@@ -22,8 +22,8 @@ public class SerializationUtil {
             return mapper.writeValueAsString(serializable);
         }
         catch (Exception ex) {
-            LogUtil.Log("When json serialization exception occurred, " + ex.toString(),
-                    SerializationUtil.class.getName(), LogUtil.LogLevelType.ERROR, "");
+//            LogUtil.Log("When json serialization exception occurred, " + ex.toString(),
+//                    SerializationUtil.class.getName(), LogUtil.LogLevelType.ERROR, "");
             return null;
         }
     }
@@ -40,8 +40,8 @@ public class SerializationUtil {
             return mapper.readValue(serialized, type);
         }
         catch (Exception ex) {
-            LogUtil.Log("When un serialization exception occurred, " + ex.toString(),
-                    SerializationUtil.class.getName(), LogUtil.LogLevelType.ERROR, "");
+//            LogUtil.Log("When un serialization exception occurred, " + ex.toString(),
+//                    SerializationUtil.class.getName(), LogUtil.LogLevelType.ERROR, "");
             return null;
         }
     }

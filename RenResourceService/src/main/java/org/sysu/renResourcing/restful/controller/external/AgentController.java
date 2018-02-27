@@ -5,7 +5,7 @@ import org.sysu.renResourcing.restful.dto.ReturnElement;
 import org.sysu.renResourcing.restful.dto.ReturnModel;
 import org.sysu.renResourcing.restful.dto.ReturnModelHelper;
 import org.sysu.renResourcing.restful.dto.StatusCode;
-import org.sysu.renResourcing.utility.TimestampUtil;
+import org.sysu.renCommon.utility.TimestampUtil;
 
 import java.util.ArrayList;
 import java.util.List;

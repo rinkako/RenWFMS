@@ -6,7 +6,7 @@ package org.sysu.renResourcing.allocator;
 
 import org.sysu.renResourcing.context.ParticipantContext;
 import org.sysu.renResourcing.context.WorkitemContext;
-import org.sysu.renResourcing.utility.CommonUtil;
+import org.sysu.renCommon.utility.CommonUtil;
 
 import java.util.HashMap;
 import java.util.HashSet;

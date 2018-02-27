@@ -9,9 +9,9 @@ import org.sysu.renResourcing.basic.enums.InitializationByType;
 import org.sysu.renResourcing.basic.enums.WorkQueueType;
 import org.sysu.renResourcing.basic.enums.WorkitemResourcingStatusType;
 import org.sysu.renResourcing.context.*;
-import org.sysu.renResourcing.utility.AuthDomainHelper;
+import org.sysu.renCommon.utility.AuthDomainHelper;
 import org.sysu.renResourcing.utility.LogUtil;
-import org.sysu.renResourcing.utility.SerializationUtil;
+import org.sysu.renCommon.utility.SerializationUtil;
 
 import java.util.HashMap;
 import java.util.HashSet;

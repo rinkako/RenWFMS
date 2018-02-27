@@ -4,8 +4,8 @@
  */
 package org.sysu.renResourcing.trigger;
 
-import org.sysu.renResourcing.utility.CommonUtil;
-import org.sysu.renResourcing.utility.TimestampUtil;
+import org.sysu.renCommon.utility.CommonUtil;
+import org.sysu.renCommon.utility.TimestampUtil;
 
 import java.io.Serializable;
 import java.sql.Timestamp;

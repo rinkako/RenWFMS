@@ -5,10 +5,10 @@
 package org.sysu.renResourcing.utility;
 
 import org.hibernate.Session;
+import org.sysu.renCommon.utility.TimestampUtil;
 import org.sysu.renResourcing.GlobalContext;
 import org.sysu.renResourcing.context.steady.RenLogEntity;
 
-import java.sql.Timestamp;
 import java.util.UUID;
 import java.util.concurrent.ConcurrentLinkedQueue;
 import java.util.concurrent.locks.ReentrantReadWriteLock;

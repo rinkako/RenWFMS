@@ -11,7 +11,7 @@ import org.sysu.renResourcing.basic.enums.ResourceBindingType;
 import org.sysu.renResourcing.context.ParticipantContext;
 import org.sysu.renResourcing.context.WorkitemContext;
 import org.sysu.renResourcing.context.steady.RenRuntimerecordEntity;
-import org.sysu.renResourcing.utility.CommonUtil;
+import org.sysu.renCommon.utility.CommonUtil;
 import org.sysu.renResourcing.utility.HibernateUtil;
 import org.sysu.renResourcing.utility.LogUtil;
 

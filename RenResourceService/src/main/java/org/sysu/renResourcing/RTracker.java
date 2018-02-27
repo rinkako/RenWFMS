@@ -10,7 +10,7 @@ import org.sysu.renResourcing.context.ResourcingContext;
 import org.sysu.renResourcing.interfaceService.InterfaceB;
 import org.sysu.renResourcing.interfaceService.InterfaceW;
 import org.sysu.renResourcing.utility.LogUtil;
-import org.sysu.renResourcing.utility.SerializationUtil;
+import org.sysu.renCommon.utility.SerializationUtil;
 
 import java.util.Observable;
 import java.util.Observer;

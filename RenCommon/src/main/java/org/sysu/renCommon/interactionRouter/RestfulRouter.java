@@ -2,9 +2,9 @@
  * Project Ren @ 2018
  * Rinkako, Ariana, Gordan. SYSU SDCS.
  */
-package org.sysu.renResourcing.interactionRouter;
+package org.sysu.renCommon.interactionRouter;
 
-import org.sysu.renResourcing.utility.HttpClientUtil;
+import org.sysu.renCommon.utility.HttpClientUtil;
 
 import java.util.Map;
 

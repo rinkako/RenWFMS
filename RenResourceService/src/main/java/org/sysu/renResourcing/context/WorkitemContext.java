@@ -6,6 +6,9 @@ package org.sysu.renResourcing.context;
 
 import org.hibernate.Session;
 import org.hibernate.Transaction;
+import org.sysu.renCommon.utility.CommonUtil;
+import org.sysu.renCommon.utility.SerializationUtil;
+import org.sysu.renCommon.utility.TimestampUtil;
 import org.sysu.renResourcing.GlobalContext;
 import org.sysu.renResourcing.basic.enums.WorkitemResourcingStatusType;
 import org.sysu.renResourcing.basic.enums.WorkitemStatusType;
@@ -14,7 +17,6 @@ import org.sysu.renResourcing.context.steady.RenWorkitemEntity;
 import org.sysu.renResourcing.utility.*;
 
 import java.io.Serializable;
-import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.UUID;

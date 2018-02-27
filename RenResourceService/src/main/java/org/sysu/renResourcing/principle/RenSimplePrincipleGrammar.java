@@ -6,7 +6,7 @@ package org.sysu.renResourcing.principle;
 
 import org.sysu.renResourcing.basic.enums.WorkitemDistributionType;
 import org.sysu.renResourcing.utility.LogUtil;
-import org.sysu.renResourcing.utility.SerializationUtil;
+import org.sysu.renCommon.utility.SerializationUtil;
 
 import java.util.ArrayList;
 import java.util.HashMap;
