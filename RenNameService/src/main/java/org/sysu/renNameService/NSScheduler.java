@@ -3,11 +3,10 @@
  * Rinkako, Ariana, Gordan. SYSU SDCS.
  */
 package org.sysu.renNameService;
+import org.sysu.renCommon.utility.TimestampUtil;
 import org.sysu.renNameService.transaction.NameServiceTransaction;
 import org.sysu.renNameService.utility.LogUtil;
-import org.sysu.renNameService.utility.TimestampUtil;
 
-import java.sql.Timestamp;
 import java.util.HashSet;
 import java.util.Hashtable;
 import java.util.Observable;

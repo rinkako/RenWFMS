@@ -47,7 +47,6 @@ public class InterfaceB {
         Transaction transaction = session.beginTransaction();
         try {
             runtimeRecord = session.get(RenRuntimerecordEntity.class, ctx.getRtid());
-            assert runtimeRecord != null;
             transaction.commit();
         }
         catch (Exception ex) {
@@ -59,18 +58,18 @@ public class InterfaceB {
         finally {
             HibernateUtil.CloseLocalSession();
         }
-        // get auth user name, session like "AUTH_admin_c880d4c9-934c-4d73-9006-22e588400000"
+        // get auth user name, session like "AUTH_admin@domain_c880d4c9-934c-4d73-9006-22e588400000"
         String adminQueuePostfix = runtimeRecord.getSessionId().split("_")[1];
-        assert taskContext != null;
+        // parse resourcing principle
         RPrinciple principle = PrincipleParser.Parse(taskContext.getPrinciple());
         if (principle == null) {
             LogUtil.Log(String.format("Cannot parse principle %s", taskContext.getPrinciple()), InterfaceB.class.getName(),
                     LogUtil.LogLevelType.ERROR, ctx.getRtid());
+            // todo use interface X
             return;
         }
         // generate workitem
         WorkitemContext workitem = WorkitemContext.GenerateContext(taskContext, ctx.getRtid(), (ArrayList) ctx.getArgs().get("taskArgumentsVector"));
-        assert workitem != null;
         // get valid resources
         HashSet<ParticipantContext> validParticipants = InterfaceO.GetParticipantByBRole(ctx.getRtid(), taskContext.getBrole());
         if (validParticipants.isEmpty()) {

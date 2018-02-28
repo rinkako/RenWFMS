@@ -8,7 +8,7 @@ import org.sysu.renNameService.restful.dto.ReturnElement;
 import org.sysu.renNameService.restful.dto.ReturnModel;
 import org.sysu.renNameService.restful.dto.ReturnModelHelper;
 import org.sysu.renNameService.restful.dto.StatusCode;
-import org.sysu.renNameService.utility.TimestampUtil;
+import org.sysu.renCommon.utility.TimestampUtil;
 
 import javax.transaction.Transactional;
 import java.util.ArrayList;

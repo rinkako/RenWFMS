@@ -8,6 +8,7 @@ import org.hibernate.Transaction;
 import org.sysu.renNameService.GlobalContext;
 import org.sysu.renNameService.entity.*;
 import org.sysu.renNameService.utility.*;
+import org.sysu.renCommon.utility.AuthDomainHelper;
 
 import java.util.*;
 
@@ -359,7 +360,7 @@ public final class RoleMappingService {
             args.put("nsid", nsid);
             args.put("groupName", groupName);
             args.put("token", RSASignatureUtil.SafeUrlBase64Encode(nsSign));
-            return HttpClientUtil.SendPost(corganUrl + "ns/getworkeringroup", args, rtid);
+            return GlobalContext.Interaction.Send(corganUrl + "ns/getworkeringroup", args, rtid);
         }
         catch (Exception ex) {
             LogUtil.Log("When GetWorkerInGroupFromCOrgan role map service, exception occurred, " + ex.toString(),
@@ -401,7 +402,7 @@ public final class RoleMappingService {
             args.put("nsid", nsid);
             args.put("gids", gids);
             args.put("token", RSASignatureUtil.SafeUrlBase64Encode(nsSign));
-            return HttpClientUtil.SendPost(corganUrl + "ns/getworkerentity", args, rtid);
+            return GlobalContext.Interaction.Send(corganUrl + "ns/getworkerentity", args, rtid);
         }
         catch (Exception ex) {
             LogUtil.Log("When GetWorkerEntityFromCOrgan role map service, exception occurred, " + ex.toString(),
@@ -443,7 +444,7 @@ public final class RoleMappingService {
             args.put("nsid", nsid);
             args.put("gid", gid);
             args.put("token", RSASignatureUtil.SafeUrlBase64Encode(nsSign));
-            return HttpClientUtil.SendPost(corganUrl + "ns/getworkerinorganizable", args, rtid);
+            return GlobalContext.Interaction.Send(corganUrl + "ns/getworkerinorganizable", args, rtid);
         }
         catch (Exception ex) {
             LogUtil.Log("When GetWorkerInPositionFromCOrgan role map service, exception occurred, " + ex.toString(),
@@ -484,7 +485,7 @@ public final class RoleMappingService {
             args.put("renid", renid);
             args.put("nsid", nsid);
             args.put("token", RSASignatureUtil.SafeUrlBase64Encode(nsSign));
-            return HttpClientUtil.SendPost(corganUrl + "ns/getresources", args, "");
+            return GlobalContext.Interaction.Send(corganUrl + "ns/getresources", args, "");
         }
         catch (Exception ex) {
             LogUtil.Log("When GetAllResourceFromCOrgan role map service, exception occurred, " + ex.toString(),
@@ -524,7 +525,7 @@ public final class RoleMappingService {
             args.put("renid", renid);
             args.put("nsid", nsid);
             args.put("token", RSASignatureUtil.SafeUrlBase64Encode(nsSign));
-            return HttpClientUtil.SendPost(corganUrl + "ns/getconnections", args, rtid);
+            return GlobalContext.Interaction.Send(corganUrl + "ns/getconnections", args, rtid);
         }
         catch (Exception ex) {
             LogUtil.Log("When GetAllConnectionFromCOrgan role map service, exception occurred, " + ex.toString(),
@@ -563,7 +564,7 @@ public final class RoleMappingService {
             args.put("renid", renid);
             args.put("nsid", nsid);
             args.put("token", RSASignatureUtil.SafeUrlBase64Encode(nsSign));
-            return HttpClientUtil.SendPost(corganUrl + "ns/getdataversiongid", args, "");
+            return GlobalContext.Interaction.Send(corganUrl + "ns/getdataversiongid", args, "");
         }
         catch (Exception ex) {
             LogUtil.Log("When GetDataVersionFromCOrgan role map service, exception occurred, " + ex.toString(),

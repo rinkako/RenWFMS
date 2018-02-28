@@ -3,7 +3,8 @@
  * Rinkako, Ariana, Gordan. SYSU SDCS.
  */
 package org.sysu.renNameService;
-import org.sysu.renCommon.GlobalConfigContext;
+import org.sysu.renCommon.interactionRouter.RInteractionRouter;
+import org.sysu.renCommon.interactionRouter.RestfulRouter;
 import org.sysu.renNameService.transaction.ConcurrentControlType;
 import java.util.UUID;
 
@@ -14,7 +15,12 @@ public final class GlobalContext {
     /**
      * Name service micro-service global id.
      */
-    public static String NAME_SERVICE_GLOBAL_ID = UUID.randomUUID().toString();
+    public static final String NAME_SERVICE_GLOBAL_ID = UUID.randomUUID().toString();
+
+    /**
+     * Main internal interaction router.
+     */
+    public static final RInteractionRouter Interaction = new RestfulRouter();
 
     /**
      * Public key for data package signature.

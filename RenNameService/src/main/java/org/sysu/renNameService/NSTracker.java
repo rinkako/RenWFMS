@@ -3,6 +3,7 @@
  * Rinkako, Ariana, Gordan. SYSU SDCS.
  */
 package org.sysu.renNameService;
+import org.sysu.renCommon.enums.TrackerPhase;
 import org.sysu.renNameService.transaction.NameServiceTransaction;
 import org.sysu.renNameService.utility.LogUtil;
 
@@ -17,6 +18,7 @@ import java.util.Observer;
  *         the main scheduler.
  */
 public class NSTracker extends Observable implements Observer {
+
     /**
      * Create a new asynchronously tracker.
      * @param supervisorScheduler scheduler instance to supervise tracker
@@ -85,16 +87,4 @@ public class NSTracker extends Observable implements Observer {
      * Tracker current phase.
      */
     private TrackerPhase phase = TrackerPhase.Ready;
-}
-
-/**
- * Enum for tracker phase.
- */
-enum TrackerPhase {
-    Ready,
-    Running,
-    Steadying,
-    Finished,
-    Killed,
-    Failed
 }

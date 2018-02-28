@@ -6,7 +6,7 @@ package org.sysu.renNameService.restful.dto;
 
 import org.sysu.renNameService.GlobalContext;
 import org.sysu.renNameService.utility.LogUtil;
-import org.sysu.renNameService.utility.TimestampUtil;
+import org.sysu.renCommon.utility.TimestampUtil;
 
 import java.util.List;
 

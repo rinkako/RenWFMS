@@ -13,9 +13,8 @@ import org.sysu.renNameService.transaction.TransactionType;
 import org.sysu.renNameService.utility.HibernateUtil;
 import org.sysu.renNameService.utility.LogUtil;
 import org.sysu.renNameService.utility.SerializationUtil;
-import org.sysu.renNameService.utility.TimestampUtil;
+import org.sysu.renCommon.utility.TimestampUtil;
 
-import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.Hashtable;
 import java.util.Observable;

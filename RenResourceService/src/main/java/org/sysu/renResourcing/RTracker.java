@@ -68,6 +68,7 @@ public class RTracker extends Observable implements Observer, Runnable {
         ObservableMessage obm = new ObservableMessage(GlobalContext.OBSERVABLE_NOTIFY_SUCCESS);
         try {
             this.ActualRun();
+            this.phase = TrackerPhase.Finished;
         }
         // All exception inside tracker will be handle here, no need to throw outside since it asynchronous executed.
         catch (Exception ex) {
@@ -75,6 +76,7 @@ public class RTracker extends Observable implements Observer, Runnable {
                     RTracker.class.getName(), LogUtil.LogLevelType.ERROR, this.context.getRtid());
             obm = new ObservableMessage(GlobalContext.OBSERVABLE_NOTIFY_EXCEPTION);
             obm.AddPayload("message", ex.toString());
+            this.phase = TrackerPhase.Failed;
         }
         // bubble notification to Scheduler
         finally {

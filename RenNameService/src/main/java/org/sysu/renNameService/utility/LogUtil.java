@@ -4,6 +4,7 @@
  */
 package org.sysu.renNameService.utility;
 import org.hibernate.Session;
+import org.sysu.renCommon.utility.TimestampUtil;
 import org.sysu.renNameService.GlobalContext;
 import org.sysu.renNameService.entity.RenLogEntity;
 import java.util.UUID;

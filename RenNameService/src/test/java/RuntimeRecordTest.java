@@ -11,10 +11,8 @@ import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.context.web.WebAppConfiguration;
 import org.sysu.renNameService.RenNameServiceApplication;
 import org.sysu.renNameService.entity.RenRuntimerecordEntity;
-import org.sysu.renNameService.utility.TimestampUtil;
+import org.sysu.renCommon.utility.TimestampUtil;
 
-import java.sql.Timestamp;
-import java.util.Date;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest(classes = RenNameServiceApplication.class)

@@ -7,6 +7,7 @@ package org.sysu.renNameService.authorization;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
 import org.sysu.renCommon.utility.EncryptUtil;
+import org.sysu.renCommon.utility.TimestampUtil;
 import org.sysu.renNameService.GlobalContext;
 import org.sysu.renNameService.entity.RenAuthuserEntity;
 import org.sysu.renNameService.entity.RenAuthuserEntityPK;
@@ -15,6 +16,7 @@ import org.sysu.renNameService.utility.*;
 
 import java.sql.Timestamp;
 import java.util.HashMap;
+import java.util.List;
 
 /**
  * Author: Rinkako
@@ -219,6 +221,26 @@ public class AuthorizationService {
     }
 
     /**
+     * Retrieve all domain.
+     * @return {@code RenAuthEntity} instance
+     */
+    public static List<RenDomainEntity> RetrieveAllDomain() {
+        Session session = HibernateUtil.GetLocalThreadSession();
+        Transaction transaction = session.beginTransaction();
+        try {
+            List<RenDomainEntity> rae = session.createQuery("FROM RenDomainEntity").list();
+            transaction.commit();
+            return rae;
+        }
+        catch (Exception ex) {
+            LogUtil.Log(String.format("Retrieve all domain but exception occurred, service rollback, %s", ex),
+                    AuthorizationService.class.getName(), LogUtil.LogLevelType.ERROR, "");
+            transaction.rollback();
+            return null;
+        }
+    }
+
+    /**
      * Add a auth user.
      * @param username user unique name
      * @param password user password without encryption
@@ -360,6 +382,7 @@ public class AuthorizationService {
     /**
      * Retrieve a BO environment user.
      * @param username user unique name to be checked
+     * @param domain domain which user in
      * @return {@code RenAuthEntity} instance
      */
     public static RenAuthuserEntity RetrieveAuthorizationUser(String username, String domain) {
@@ -375,6 +398,26 @@ public class AuthorizationService {
         }
         catch (Exception ex) {
             LogUtil.Log(String.format("RetrieveAuthorizationUser but exception occurred (%s@%s), service rollback, %s", username, domain, ex),
+                    AuthorizationService.class.getName(), LogUtil.LogLevelType.ERROR, "");
+            transaction.rollback();
+            return null;
+        }
+    }
+
+    /**
+     * Retrieve all BO environment users.
+     * @return {@code RenAuthEntity} instance
+     */
+    public static List<RenAuthuserEntity> RetrieveAllAuthorizationUser(String domain) {
+        Session session = HibernateUtil.GetLocalThreadSession();
+        Transaction transaction = session.beginTransaction();
+        try {
+            List<RenAuthuserEntity> rae = session.createQuery(String.format("FROM RenAuthuserEntity WHERE domain = '%s'", domain)).list();
+            transaction.commit();
+            return rae;
+        }
+        catch (Exception ex) {
+            LogUtil.Log(String.format("RetrieveAllAuthorizationUser but exception occurred (%s), service rollback, %s", domain, ex),
                     AuthorizationService.class.getName(), LogUtil.LogLevelType.ERROR, "");
             transaction.rollback();
             return null;

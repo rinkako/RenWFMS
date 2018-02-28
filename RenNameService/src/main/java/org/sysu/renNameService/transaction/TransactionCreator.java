@@ -9,7 +9,7 @@ import org.sysu.renNameService.GlobalContext;
 import org.sysu.renNameService.entity.RenNsTransactionEntity;
 import org.sysu.renNameService.utility.HibernateUtil;
 import org.sysu.renNameService.utility.LogUtil;
-import org.sysu.renNameService.utility.TimestampUtil;
+import org.sysu.renCommon.utility.TimestampUtil;
 
 import java.util.HashMap;
 import java.util.UUID;

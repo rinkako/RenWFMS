@@ -6,6 +6,7 @@ package org.sysu.renNameService.nameSpacing;
 
 import org.hibernate.Session;
 import org.hibernate.Transaction;
+import org.sysu.renCommon.utility.TimestampUtil;
 import org.sysu.renNameService.GlobalContext;
 import org.sysu.renNameService.entity.RenBoEntity;
 import org.sysu.renNameService.entity.RenProcessEntity;
@@ -80,7 +81,7 @@ public class NameSpacingService {
             args.put("boidlist", boid);
             transaction.commit();
             cmtFlag = true;
-            String involveBRs = HttpClientUtil.SendPost(GlobalContext.URL_BOENGINE_SERIALIZEBO, args, "");
+            String involveBRs = GlobalContext.Interaction.Send(GlobalContext.URL_BOENGINE_SERIALIZEBO, args, "");
             return new AbstractMap.SimpleEntry<>(boid, involveBRs);
             //return new AbstractMap.SimpleEntry<>(boid, "TEST_INVOLVED");
         }
