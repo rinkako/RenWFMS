@@ -40,7 +40,7 @@ public final class LaunchProcessService {
      * @param rtid the runtime record of a process
      */
     public static void LaunchProcess(String rtid) {
-        Session session = HibernateUtil.GetLocalThreadSession();
+        Session session = HibernateUtil.GetLocalSession();
         Transaction transaction = session.beginTransaction();
         try {
             //根据process id从db中找到该process关联的bo(可能是多个)
@@ -85,6 +85,8 @@ public final class LaunchProcessService {
             LogUtil.Log("When read bo by rtid, exception occurred, " + e.toString() + ", service rollback",
                     LaunchProcessService.class.getName(), LogUtil.LogLevelType.ERROR, rtid);
             transaction.rollback();
+        } finally {
+            HibernateUtil.CloseLocalSession();
         }
     }
 
@@ -118,7 +120,7 @@ public final class LaunchProcessService {
      */
     public static HashSet<String> SerializeBO(String boidList) {
         HashSet<String> retSet = new HashSet<String>();
-        Session session = HibernateUtil.GetLocalThreadSession();
+        Session session = HibernateUtil.GetLocalSession();
         Transaction transaction = session.beginTransaction();
         try {
             String[] boidItems = boidList.split(",");
@@ -156,6 +158,9 @@ public final class LaunchProcessService {
             LogUtil.Log(String.format("When serialize BOList(%s), exception occurred, %s, service rollback", boidList, ex),
                     LaunchProcessService.class.getName(), LogUtil.LogLevelType.ERROR, boidList);
             transaction.rollback();
+        }
+        finally {
+            HibernateUtil.CloseLocalSession();
         }
         return retSet;
     }

@@ -1,12 +1,9 @@
 package org.sysu.workflow.model.extend;
 
-import org.springframework.web.bind.annotation.RequestParam;
 import org.sysu.workflow.*;
-import org.sysu.workflow.bridge.EngineBridge;
 import org.sysu.workflow.model.EnterableState;
 import org.sysu.workflow.model.ModelException;
 import org.sysu.workflow.model.ParamsContainer;
-import org.sysu.workflow.restful.utility.HttpClientUtil;
 import org.sysu.workflow.restful.utility.LogUtil;
 import org.sysu.workflow.restful.utility.SerializationUtil;
 
@@ -102,9 +99,9 @@ public class Call extends ParamsContainer implements Serializable {
                         String params = SerializationUtil.JsonSerialization(payloadDataMap, scxmlExecContext.Rtid);
                         args.put("args", params);
                         args.put("rtid", scxmlExecContext.Rtid);
-                        try{
-                            HttpClientUtil.SendPost(GlobalContext.URL_RS_SUBMITTASK, args, scxmlExecContext.Rtid);
-                        }catch(Exception e){
+                        try {
+                            GlobalContext.Interaction.Send(GlobalContext.URL_RS_SUBMITTASK, args, scxmlExecContext.Rtid);
+                        } catch(Exception e) {
                             LogUtil.Log("When submit task to resource service, exception occurred, " + e.toString(),
                                     Call.class.getName(), LogUtil.LogLevelType.ERROR, scxmlExecContext.Rtid);
                         }
@@ -127,9 +124,9 @@ public class Call extends ParamsContainer implements Serializable {
                         String params = SerializationUtil.JsonSerialization(payloadDataMap, scxmlExecContext.Rtid);
                         args.put("args", params);
                         args.put("rtid", scxmlExecContext.Rtid);
-                        try{
-                            HttpClientUtil.SendPost(GlobalContext.URL_RS_SUBMITTASK, args, scxmlExecContext.Rtid);
-                        }catch(Exception e){
+                        try {
+                            GlobalContext.Interaction.Send(GlobalContext.URL_RS_SUBMITTASK, args, scxmlExecContext.Rtid);
+                        } catch(Exception e) {
                             LogUtil.Log("When submit task to resource service, exception occurred, " + e.toString(),
                                     Call.class.getName(), LogUtil.LogLevelType.ERROR, scxmlExecContext.Rtid);
                         }

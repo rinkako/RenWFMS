@@ -1,5 +1,8 @@
 package org.sysu.workflow;
 
+import org.sysu.renCommon.interactionRouter.RInteractionRouter;
+import org.sysu.renCommon.interactionRouter.RestfulRouter;
+
 /**
  * Global static data container.
  */
@@ -15,4 +18,14 @@ public class GlobalContext {
      * Service URL for RS finish life cycle of BO.
      */
     public static final String URL_RS_FINISH = "http://localhost:10233/internal/finRtid";
+
+    /**
+     * Size for log buffer.
+     */
+    public static final int LOG_BUFFER_SIZE = 0;
+
+    /**
+     * Main internal interaction router.
+     */
+    public static final RInteractionRouter Interaction = new RestfulRouter();
 }

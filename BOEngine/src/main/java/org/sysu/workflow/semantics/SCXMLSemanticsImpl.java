@@ -6,26 +6,20 @@ import org.sysu.workflow.invoke.Invoker;
 import org.sysu.workflow.invoke.InvokerException;
 import org.sysu.workflow.model.*;
 import org.sysu.workflow.model.extend.Call;
-import org.sysu.workflow.restful.utility.HttpClientUtil;
 import org.sysu.workflow.restful.utility.LogUtil;
-import org.sysu.workflow.restful.utility.SerializationUtil;
 import org.sysu.workflow.system.EventVariable;
 
 import java.util.*;
 
 /**
- * 封装和实现了 SCXML解释器的算法部分
  * This class encapsulate and implements the
  * <a href="http://www.w3.org/TR/2014/CR-scxml-20140313/#AlgorithmforSCXMLInterpretation">
  * W3C SCXML Algorithm for SCXML Interpretation</a>
  * <p/>
- * 自定义语义可以通过继承这个类来实现
  * <p>Custom semantics can be created by sub-classing this implementation.</p>
  * <p/>
- * 这个实现是无状态的，所有的方法都是公共可访问的
  * <p>This implementation is full stateless and all methods are public accessible to make
  * <p/>
- * 很容易扩展，重用，测试他的行为
  * it easier to extend, reuse and test its behavior.</p>
  */
 public class SCXMLSemanticsImpl implements SCXMLSemantics {
@@ -199,9 +193,9 @@ public class SCXMLSemanticsImpl implements SCXMLSemantics {
             // TODO: returnDoneEvent(s.donedata)?
             HashMap<String, String> args = new HashMap<String, String>();
             args.put("rtid", exctx.Rtid);
-            try{
-                HttpClientUtil.SendPost(GlobalContext.URL_RS_FINISH, args, exctx.Rtid);
-            }catch(Exception e){
+            try {
+                GlobalContext.Interaction.Send(GlobalContext.URL_RS_FINISH, args, exctx.Rtid);
+            } catch(Exception e) {
                 LogUtil.Log("When send finish Rtid to resource service, exception occurred, " + e.toString(),
                         Call.class.getName(), LogUtil.LogLevelType.ERROR, exctx.Rtid);
             }
@@ -210,10 +204,8 @@ public class SCXMLSemanticsImpl implements SCXMLSemantics {
 
     /**
      * Perform a micro step in the execution of a state machine.
-     * 在执行的状态机中，执行一个微步（micro step）
      *
      * <p/>
-     * 微步相应的算法是microstep()程序
      * This micro step is corresponding to the Algorithm for SCXML processing microstep() procedure.
      *
      * <p/>
@@ -248,7 +240,6 @@ public class SCXMLSemanticsImpl implements SCXMLSemantics {
 
     /**
      * buildStep builds the exitSet and entrySet for the current configuration given the transitionList on the step.
-     * 针对当前配置构建退出集合和进入集合，给出step的转移列表，并没有真正的执行退出和进入操作
      *
      * @param exctx The SCXML execution context
      * @param step  The step containing the list of transitions to be taken
@@ -284,8 +275,6 @@ public class SCXMLSemanticsImpl implements SCXMLSemantics {
 
     /**
      * Perform a macro step in the execution of a state machine.
-     *
-     * 执行一大步，直到当前会话等待一个外部事件
      *
      * <p/>
      * This macro step is corresponding to the Algorithm for SCXML processing mainEventLoop() procedure macro step

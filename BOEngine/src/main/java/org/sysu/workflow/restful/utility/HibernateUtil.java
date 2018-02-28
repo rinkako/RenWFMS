@@ -17,6 +17,12 @@ public class HibernateUtil {
      */
     private static SessionFactory sessionFactory;
 
+
+    /**
+     * session object in thread local, thread safe.
+     */
+    private static ThreadLocal session = new ThreadLocal();
+
     /**
      * Construct hibernate utility, binding session factory.
      * @param sessionFactory session factory instance
@@ -39,8 +45,33 @@ public class HibernateUtil {
      * @return hibernate session instance
      */
     @SuppressWarnings("unchecked")
-    public static Session GetLocalThreadSession() {
-        return HibernateUtil.GetSessionFactory().getCurrentSession();
+    public static Session GetLocalSession() {
+        Session s = (Session) session.get();
+        if (s == null) {
+            s = HibernateUtil.GetSessionFactory().openSession();
+            HibernateUtil.session.set(s);
+        }
+        return s;
     }
 
+    /**
+     * Close active session in this thread.
+     * In normal situation, this method should not be called.
+     */
+    @SuppressWarnings("unchecked")
+    public static void CloseLocalSession() {
+        try {
+            Session s = (Session) session.get();
+            if (s != null) {
+                if (s.isOpen()) {
+                    s.close();
+                }
+                session.set(null);
+            }
+        }
+        catch (Exception ex) {
+            LogUtil.Echo("Close hibernate session failed, " + ex,
+                    HibernateUtil.class.getName(), LogUtil.LogLevelType.ERROR);
+        }
+    }
 }

@@ -140,7 +140,7 @@ public class SubStateMachine extends NamelistHolder implements PathResolverHolde
             if (!GlobalContext.IsLocalDebug) {
                 //Ariana:get the serialized BO from the database and deserialize it into SCXML object
                 String boName = getSrc().split(".")[0];
-                Session session = HibernateUtil.GetLocalThreadSession();
+                Session session = HibernateUtil.GetLocalSession();
                 Transaction transaction = session.beginTransaction();
                 try {
                     List boList = session.createQuery(String.format("FROM RenBoEntity WHERE pid = '%s'", currentExecutionContext.Pid)).list();
@@ -152,11 +152,15 @@ public class SubStateMachine extends NamelistHolder implements PathResolverHolde
                             break;
                         }
                     }
-                } catch (Exception e) {
+                }
+                catch (Exception e) {
                     e.printStackTrace();
                     transaction.rollback();
                     LogUtil.Log("When read bo by rtid, exception occurred, " + e.toString() + ", service rollback",
                             LaunchProcessService.class.getName(), LogUtil.LogLevelType.ERROR, currentExecutionContext.Rtid);
+                }
+                finally {
+                    HibernateUtil.CloseLocalSession();
                 }
             }
 

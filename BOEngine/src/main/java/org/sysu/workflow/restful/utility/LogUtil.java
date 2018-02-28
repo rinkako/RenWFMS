@@ -1,9 +1,10 @@
 package org.sysu.workflow.restful.utility;
 
 import org.hibernate.Session;
+import org.sysu.renCommon.utility.TimestampUtil;
+import org.sysu.workflow.GlobalContext;
 import org.sysu.workflow.restful.entity.RenLogEntity;
 
-import java.sql.Timestamp;
 import java.util.UUID;
 import java.util.concurrent.ConcurrentLinkedQueue;
 import java.util.concurrent.locks.ReentrantReadWriteLock;
@@ -96,7 +97,7 @@ public final class LogUtil {
             LogUtil.readWriteLock.writeLock().unlock();
             return;
         }
-        Session session = HibernateUtil.GetLocalThreadSession();
+        Session session = HibernateUtil.GetLocalSession();
         try {
             LogMessagePackage lmp;
             while ((lmp = LogUtil.logBuffer.poll()) != null) {
@@ -114,6 +115,7 @@ public final class LogUtil {
             LogUtil.Echo("Flush log exception, " + ex, LogUtil.class.getName(), LogLevelType.ERROR);
         }
         finally {
+            HibernateUtil.CloseLocalSession();
             LogUtil.readWriteLock.writeLock().unlock();
         }
     }

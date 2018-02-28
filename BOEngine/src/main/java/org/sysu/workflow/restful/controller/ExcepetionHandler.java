@@ -1,9 +1,9 @@
 package org.sysu.workflow.restful.controller;
 
+import org.sysu.renCommon.utility.TimestampUtil;
 import org.sysu.workflow.restful.dto.ReturnElement;
 import org.sysu.workflow.restful.dto.ReturnModel;
 import org.sysu.workflow.restful.dto.StatusCode;
-import org.sysu.workflow.restful.utility.TimestampUtil;
 
 import java.util.List;
 
