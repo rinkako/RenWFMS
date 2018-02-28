@@ -33,7 +33,7 @@ public class NameSpacingService {
      * @return process pid
      */
     public static String CreateProcess(String renid, String processName, String mainBOName) {
-        Session session = HibernateUtil.GetLocalThreadSession();
+        Session session = HibernateUtil.GetLocalSession();
         Transaction transaction = session.beginTransaction();
         try {
             RenProcessEntity rpe = new RenProcessEntity();
@@ -54,6 +54,9 @@ public class NameSpacingService {
             transaction.rollback();
             LogUtil.Log("Create process but exception occurred, service rollback, " + ex, NameSpacingService.class.getName(), LogUtil.LogLevelType.ERROR, "");
         }
+        finally {
+            HibernateUtil.CloseLocalSession();
+        }
         return "";
     }
 
@@ -65,7 +68,7 @@ public class NameSpacingService {
      * @return pair of boid - involved business role names string
      */
     public static AbstractMap.SimpleEntry<String, String> UploadBOContent(String pid, String name, String content) {
-        Session session = HibernateUtil.GetLocalThreadSession();
+        Session session = HibernateUtil.GetLocalSession();
         Transaction transaction = session.beginTransaction();
         boolean cmtFlag = false;
         try {
@@ -92,6 +95,9 @@ public class NameSpacingService {
             }
             LogUtil.Log("Upload BO but exception occurred, " + ex, NameSpacingService.class.getName(), LogUtil.LogLevelType.ERROR, "");
         }
+        finally {
+            HibernateUtil.CloseLocalSession();
+        }
         return null;
     }
 
@@ -102,7 +108,7 @@ public class NameSpacingService {
      */
     @SuppressWarnings("unchecked")
     public static ArrayList<RenProcessEntity> GetProcessByRenId(String renid) {
-        Session session = HibernateUtil.GetLocalThreadSession();
+        Session session = HibernateUtil.GetLocalSession();
         Transaction transaction = session.beginTransaction();
         try {
             ArrayList<RenProcessEntity> qRet = (ArrayList<RenProcessEntity>) session.createQuery(String.format("FROM RenProcessEntity WHERE creatorRenid = '%s' AND state = 0", renid)).list();
@@ -112,6 +118,9 @@ public class NameSpacingService {
         catch (Exception ex) {
             transaction.rollback();
             LogUtil.Log("Get Processes of Ren User but exception occurred, service rollback, " + ex, NameSpacingService.class.getName(), LogUtil.LogLevelType.ERROR, "");
+        }
+        finally {
+            HibernateUtil.CloseLocalSession();
         }
         return null;
     }
@@ -123,7 +132,7 @@ public class NameSpacingService {
      */
     @SuppressWarnings("unchecked")
     public static ArrayList<Object> GetProcessBOList(String pid) {
-        Session session = HibernateUtil.GetLocalThreadSession();
+        Session session = HibernateUtil.GetLocalSession();
         Transaction transaction = session.beginTransaction();
         try {
             ArrayList<Object> qRet = (ArrayList<Object>) session.createQuery(String.format("SELECT boid, boName FROM RenBoEntity WHERE pid = '%s'", pid)).list();
@@ -133,6 +142,9 @@ public class NameSpacingService {
         catch (Exception ex) {
             transaction.rollback();
             LogUtil.Log("Get BO in Process but exception occurred, service rollback, " + ex, NameSpacingService.class.getName(), LogUtil.LogLevelType.ERROR, "");
+        }
+        finally {
+            HibernateUtil.CloseLocalSession();
         }
         return null;
     }
@@ -145,7 +157,7 @@ public class NameSpacingService {
      */
     @SuppressWarnings("unchecked")
     public static boolean ContainProcess(String renid, String processName) {
-        Session session = HibernateUtil.GetLocalThreadSession();
+        Session session = HibernateUtil.GetLocalSession();
         Transaction transaction = session.beginTransaction();
         try {
             ArrayList<RenProcessEntity> qRet = (ArrayList<RenProcessEntity>) session.createQuery(String.format("FROM RenProcessEntity WHERE creatorRenid = '%s' AND processName = '%s", renid, processName)).list();
@@ -156,6 +168,9 @@ public class NameSpacingService {
             transaction.rollback();
             LogUtil.Log("Get BO in Process but exception occurred, service rollback, " + ex, NameSpacingService.class.getName(), LogUtil.LogLevelType.ERROR, "");
         }
+        finally {
+            HibernateUtil.CloseLocalSession();
+        }
         return false;
     }
 
@@ -165,7 +180,7 @@ public class NameSpacingService {
      * @return {@code RenBoEntity} instance
      */
     public static RenBoEntity GetBO(String boid, String rtid) {
-        Session session = HibernateUtil.GetLocalThreadSession();
+        Session session = HibernateUtil.GetLocalSession();
         Transaction transaction = session.beginTransaction();
         try {
             RenBoEntity rbe = session.get(RenBoEntity.class, boid);
@@ -175,6 +190,9 @@ public class NameSpacingService {
         catch (Exception ex) {
             transaction.rollback();
             LogUtil.Log("Get BO context but exception occurred, service rollback, " + ex, NameSpacingService.class.getName(), LogUtil.LogLevelType.ERROR, rtid);
+        }
+        finally {
+            HibernateUtil.CloseLocalSession();
         }
         return null;
     }
@@ -200,7 +218,7 @@ public class NameSpacingService {
                                        Integer failureType,
                                        Integer authType,
                                        String binding) {
-        Session session = HibernateUtil.GetLocalThreadSession();
+        Session session = HibernateUtil.GetLocalSession();
         Transaction transaction = session.beginTransaction();
         try {
             RenProcessEntity rpe = session.get(RenProcessEntity.class, pid);
@@ -231,6 +249,9 @@ public class NameSpacingService {
         catch (Exception ex) {
             transaction.rollback();
             LogUtil.Log(String.format("Submit process but exception occurred(pid: %s), service rollback, %s", pid, ex), NameSpacingService.class.getName(), LogUtil.LogLevelType.ERROR, "");
+        }
+        finally {
+            HibernateUtil.CloseLocalSession();
         }
         return null;
     }

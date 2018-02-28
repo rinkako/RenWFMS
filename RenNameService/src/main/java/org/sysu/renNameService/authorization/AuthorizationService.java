@@ -69,7 +69,7 @@ public class AuthorizationService {
      * @return domain private signature key
      */
     public static String AddDomain(String name, String password, String level, String corganGateway) {
-        Session session = HibernateUtil.GetLocalThreadSession();
+        Session session = HibernateUtil.GetLocalSession();
         Transaction transaction = session.beginTransaction();
         try {
             // check existence
@@ -112,6 +112,9 @@ public class AuthorizationService {
             transaction.rollback();
             return "#exception";
         }
+        finally {
+            HibernateUtil.CloseLocalSession();
+        }
     }
 
     /**
@@ -120,7 +123,7 @@ public class AuthorizationService {
      * @return boolean of whether execution success
      */
     public static boolean RemoveDomain(String name) {
-        Session session = HibernateUtil.GetLocalThreadSession();
+        Session session = HibernateUtil.GetLocalSession();
         Transaction transaction = session.beginTransaction();
         try {
             RenDomainEntity rde = session.get(RenDomainEntity.class, name);
@@ -140,6 +143,9 @@ public class AuthorizationService {
             transaction.rollback();
             return false;
         }
+        finally {
+            HibernateUtil.CloseLocalSession();
+        }
     }
 
     /**
@@ -150,7 +156,7 @@ public class AuthorizationService {
      * @return boolean of whether execution success
      */
     public static boolean UpdateDomain(String name, HashMap<String, String> updateArgs, Boolean isAdmin) {
-        Session session = HibernateUtil.GetLocalThreadSession();
+        Session session = HibernateUtil.GetLocalSession();
         Transaction transaction = session.beginTransaction();
         try {
             RenDomainEntity are = session.get(RenDomainEntity.class, name);
@@ -176,6 +182,9 @@ public class AuthorizationService {
             transaction.rollback();
             return false;
         }
+        finally {
+            HibernateUtil.CloseLocalSession();
+        }
     }
 
     /**
@@ -184,7 +193,7 @@ public class AuthorizationService {
      * @return boolean of existence
      */
     public static boolean ContainDomain(String name) {
-        Session session = HibernateUtil.GetLocalThreadSession();
+        Session session = HibernateUtil.GetLocalSession();
         Transaction transaction = session.beginTransaction();
         try {
             RenDomainEntity rae = session.get(RenDomainEntity.class, name);
@@ -197,6 +206,9 @@ public class AuthorizationService {
             transaction.rollback();
             return true;
         }
+        finally {
+            HibernateUtil.CloseLocalSession();
+        }
     }
 
     /**
@@ -205,7 +217,7 @@ public class AuthorizationService {
      * @return {@code RenAuthEntity} instance
      */
     public static RenDomainEntity RetrieveDomain(String name) {
-        Session session = HibernateUtil.GetLocalThreadSession();
+        Session session = HibernateUtil.GetLocalSession();
         Transaction transaction = session.beginTransaction();
         try {
             RenDomainEntity rae = session.get(RenDomainEntity.class, name);
@@ -218,6 +230,9 @@ public class AuthorizationService {
             transaction.rollback();
             return null;
         }
+        finally {
+            HibernateUtil.CloseLocalSession();
+        }
     }
 
     /**
@@ -225,7 +240,7 @@ public class AuthorizationService {
      * @return {@code RenAuthEntity} instance
      */
     public static List<RenDomainEntity> RetrieveAllDomain() {
-        Session session = HibernateUtil.GetLocalThreadSession();
+        Session session = HibernateUtil.GetLocalSession();
         Transaction transaction = session.beginTransaction();
         try {
             List<RenDomainEntity> rae = session.createQuery("FROM RenDomainEntity").list();
@@ -238,6 +253,9 @@ public class AuthorizationService {
             transaction.rollback();
             return null;
         }
+        finally {
+            HibernateUtil.CloseLocalSession();
+        }
     }
 
     /**
@@ -249,7 +267,7 @@ public class AuthorizationService {
      * @return `OK` if success otherwise failed
      */
     public static String AddAuthUser(String username, String password, int level, String domain) {
-        Session session = HibernateUtil.GetLocalThreadSession();
+        Session session = HibernateUtil.GetLocalSession();
         Transaction transaction = session.beginTransaction();
         try {
             // check existence
@@ -281,6 +299,9 @@ public class AuthorizationService {
             transaction.rollback();
             return "#exception";
         }
+        finally {
+            HibernateUtil.CloseLocalSession();
+        }
     }
 
     /**
@@ -290,7 +311,7 @@ public class AuthorizationService {
      * @return boolean of whether execution success
      */
     public static boolean RemoveAuthorizationUser(String username, String domain) {
-        Session session = HibernateUtil.GetLocalThreadSession();
+        Session session = HibernateUtil.GetLocalSession();
         Transaction transaction = session.beginTransaction();
         try {
             RenAuthuserEntityPK pk = new RenAuthuserEntityPK();
@@ -313,6 +334,9 @@ public class AuthorizationService {
             transaction.rollback();
             return false;
         }
+        finally {
+            HibernateUtil.CloseLocalSession();
+        }
     }
 
     /**
@@ -323,7 +347,7 @@ public class AuthorizationService {
      * @return boolean of whether execution success
      */
     public static boolean UpdateAuthorizationUser(String username, String domain, HashMap<String, String> updateArgs, Boolean isAdmin) {
-        Session session = HibernateUtil.GetLocalThreadSession();
+        Session session = HibernateUtil.GetLocalSession();
         Transaction transaction = session.beginTransaction();
         try {
             RenAuthuserEntityPK pk = new RenAuthuserEntityPK();
@@ -352,6 +376,9 @@ public class AuthorizationService {
             transaction.rollback();
             return false;
         }
+        finally {
+            HibernateUtil.CloseLocalSession();
+        }
     }
 
     /**
@@ -361,7 +388,7 @@ public class AuthorizationService {
      * @return boolean of existence
      */
     public static boolean ContainAuthorizationUser(String username, String domain) {
-        Session session = HibernateUtil.GetLocalThreadSession();
+        Session session = HibernateUtil.GetLocalSession();
         Transaction transaction = session.beginTransaction();
         try {
             RenAuthuserEntityPK pk = new RenAuthuserEntityPK();
@@ -377,6 +404,9 @@ public class AuthorizationService {
             transaction.rollback();
             return true;
         }
+        finally {
+            HibernateUtil.CloseLocalSession();
+        }
     }
 
     /**
@@ -386,7 +416,7 @@ public class AuthorizationService {
      * @return {@code RenAuthEntity} instance
      */
     public static RenAuthuserEntity RetrieveAuthorizationUser(String username, String domain) {
-        Session session = HibernateUtil.GetLocalThreadSession();
+        Session session = HibernateUtil.GetLocalSession();
         Transaction transaction = session.beginTransaction();
         try {
             RenAuthuserEntityPK pk = new RenAuthuserEntityPK();
@@ -402,6 +432,9 @@ public class AuthorizationService {
             transaction.rollback();
             return null;
         }
+        finally {
+            HibernateUtil.CloseLocalSession();
+        }
     }
 
     /**
@@ -409,7 +442,7 @@ public class AuthorizationService {
      * @return {@code RenAuthEntity} instance
      */
     public static List<RenAuthuserEntity> RetrieveAllAuthorizationUser(String domain) {
-        Session session = HibernateUtil.GetLocalThreadSession();
+        Session session = HibernateUtil.GetLocalSession();
         Transaction transaction = session.beginTransaction();
         try {
             List<RenAuthuserEntity> rae = session.createQuery(String.format("FROM RenAuthuserEntity WHERE domain = '%s'", domain)).list();
@@ -421,6 +454,9 @@ public class AuthorizationService {
                     AuthorizationService.class.getName(), LogUtil.LogLevelType.ERROR, "");
             transaction.rollback();
             return null;
+        }
+        finally {
+            HibernateUtil.CloseLocalSession();
         }
     }
 }

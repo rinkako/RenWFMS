@@ -30,7 +30,7 @@ public final class RoleMappingService {
         CachedRoleMap crm = RoleMapCachePool.Retrieve(rtid);
         // from steady
         if (crm == null) {
-            Session session = HibernateUtil.GetLocalThreadSession();
+            Session session = HibernateUtil.GetLocalSession();
             Transaction transaction = session.beginTransaction();
             try {
                 List<RenRolemapEntity> qRet = session.createQuery(String.format("FROM RenRolemapEntity WHERE rtid = '%s'", rtid)).list();
@@ -42,6 +42,9 @@ public final class RoleMappingService {
                         RoleMappingService.class.getName(), LogUtil.LogLevelType.ERROR, rtid);
                 transaction.rollback();
                 throw ex;
+            }
+            finally {
+                HibernateUtil.CloseLocalSession();
             }
         }
         // from cache
@@ -102,7 +105,7 @@ public final class RoleMappingService {
             involvedWorkers.put(weMap.get("GlobalId"), weMap);
         }
         // register these workers to participant
-        Session session = HibernateUtil.GetLocalThreadSession();
+        Session session = HibernateUtil.GetLocalSession();
         Transaction transaction = session.beginTransaction();
         try {
             for (Map.Entry<String, HashMap> mp : involvedWorkers.entrySet()) {
@@ -140,6 +143,9 @@ public final class RoleMappingService {
                     RoleMappingService.class.getName(), LogUtil.LogLevelType.ERROR, rtid);
             throw ex;
         }
+        finally {
+            HibernateUtil.CloseLocalSession();
+        }
     }
 
     /**
@@ -147,7 +153,7 @@ public final class RoleMappingService {
      * @param rtid process rtid
      */
     public static void UnloadParticipant(String rtid) {
-        Session session = HibernateUtil.GetLocalThreadSession();
+        Session session = HibernateUtil.GetLocalSession();
         Transaction transaction = session.beginTransaction();
         try {
             RenRuntimerecordEntity rre = session.get(RenRuntimerecordEntity.class, rtid);
@@ -168,6 +174,9 @@ public final class RoleMappingService {
                     RoleMappingService.class.getName(), LogUtil.LogLevelType.ERROR, rtid);
             throw ex;
         }
+        finally {
+            HibernateUtil.CloseLocalSession();
+        }
     }
 
     /**
@@ -182,7 +191,7 @@ public final class RoleMappingService {
         // from steady
         if (crm == null) {
             crm = new CachedRoleMap();
-            Session session = HibernateUtil.GetLocalThreadSession();
+            Session session = HibernateUtil.GetLocalSession();
             Transaction transaction = session.beginTransaction();
             try {
                 List qRet = session.createQuery(String.format("FROM RenRolemapEntity WHERE rtid = '%s' AND broleName = '%s'", rtid, bRoleName)).list();
@@ -202,6 +211,9 @@ public final class RoleMappingService {
                         RoleMappingService.class.getName(), LogUtil.LogLevelType.ERROR, rtid);
                 transaction.rollback();
                 throw ex;
+            }
+            finally {
+                HibernateUtil.CloseLocalSession();
             }
         }
         // from cache
@@ -226,7 +238,7 @@ public final class RoleMappingService {
         // from steady
         if (crm == null) {
             crm = new CachedRoleMap();
-            Session session = HibernateUtil.GetLocalThreadSession();
+            Session session = HibernateUtil.GetLocalSession();
             Transaction transaction = session.beginTransaction();
             try {
                 List qRet = session.createQuery(String.format("FROM RenRolemapEntity WHERE rtid = '%s' AND mappedGid = '%s'", rtid, globalId)).list();
@@ -246,6 +258,9 @@ public final class RoleMappingService {
                         RoleMappingService.class.getName(), LogUtil.LogLevelType.ERROR, rtid);
                 transaction.rollback();
                 throw ex;
+            }
+            finally {
+                HibernateUtil.CloseLocalSession();
             }
         }
         // from cache
@@ -268,7 +283,7 @@ public final class RoleMappingService {
         // remove cache
         RoleMapCachePool.Remove(rtid);
         // remove relations in steady memory
-        Session session = HibernateUtil.GetLocalThreadSession();
+        Session session = HibernateUtil.GetLocalSession();
         Transaction transaction = session.beginTransaction();
         try {
             List qRet = session.createQuery(String.format("FROM RenRolemapEntity WHERE rtid = '%s'", rtid)).list();
@@ -284,6 +299,9 @@ public final class RoleMappingService {
                     RoleMappingService.class.getName(), LogUtil.LogLevelType.ERROR, rtid);
             transaction.rollback();
             throw ex;
+        }
+        finally {
+            HibernateUtil.CloseLocalSession();
         }
     }
 
@@ -314,7 +332,7 @@ public final class RoleMappingService {
         }
         // save to steady
         List<RenRolemapEntity> rreList = crm.getCacheList();
-        Session session = HibernateUtil.GetLocalThreadSession();
+        Session session = HibernateUtil.GetLocalSession();
         Transaction transaction = session.beginTransaction();
         try {
             for (RenRolemapEntity t : rreList) {
@@ -328,6 +346,9 @@ public final class RoleMappingService {
             transaction.rollback();
             throw ex;
         }
+        finally {
+            HibernateUtil.CloseLocalSession();
+        }
     }
 
     /**
@@ -339,7 +360,7 @@ public final class RoleMappingService {
      * @return a list of [human, agent, group, position, capability] json string
      */
     public static String GetWorkerInGroupFromCOrgan(String renid, String rtid, String nsid, String groupName) {
-        Session session = HibernateUtil.GetLocalThreadSession();
+        Session session = HibernateUtil.GetLocalSession();
         Transaction transaction = session.beginTransaction();
         boolean cmtFlag = false;
         try {
@@ -370,6 +391,9 @@ public final class RoleMappingService {
             }
             return "";
         }
+        finally {
+            HibernateUtil.CloseLocalSession();
+        }
     }
 
     /**
@@ -381,7 +405,7 @@ public final class RoleMappingService {
      * @return a list of workers json string
      */
     public static String GetWorkerEntityFromCOrgan(String renid, String rtid, String nsid, String gids) {
-        Session session = HibernateUtil.GetLocalThreadSession();
+        Session session = HibernateUtil.GetLocalSession();
         Transaction transaction = session.beginTransaction();
         boolean cmtFlag = false;
         try {
@@ -412,6 +436,9 @@ public final class RoleMappingService {
             }
             return "";
         }
+        finally {
+            HibernateUtil.CloseLocalSession();
+        }
     }
 
     /**
@@ -423,7 +450,7 @@ public final class RoleMappingService {
      * @return a list of workers json string
      */
     public static String GetWorkerInOrganizableFromCOrgan(String renid, String rtid, String nsid, String gid) {
-        Session session = HibernateUtil.GetLocalThreadSession();
+        Session session = HibernateUtil.GetLocalSession();
         Transaction transaction = session.beginTransaction();
         boolean cmtFlag = false;
         try {
@@ -454,6 +481,9 @@ public final class RoleMappingService {
             }
             return "";
         }
+        finally {
+            HibernateUtil.CloseLocalSession();
+        }
     }
 
 
@@ -465,7 +495,7 @@ public final class RoleMappingService {
      * @return a list of [human, agent, group, position, capability] json string
      */
     public static String GetAllResourceFromCOrgan(String renid, String rtid, String nsid) {
-        Session session = HibernateUtil.GetLocalThreadSession();
+        Session session = HibernateUtil.GetLocalSession();
         Transaction transaction = session.beginTransaction();
         boolean cmtFlag = false;
         try {
@@ -495,6 +525,9 @@ public final class RoleMappingService {
             }
             return "";
         }
+        finally {
+            HibernateUtil.CloseLocalSession();
+        }
     }
 
     /**
@@ -505,7 +538,7 @@ public final class RoleMappingService {
      * @return a list of connection json string
      */
     public static String GetAllConnectionFromCOrgan(String renid, String rtid, String nsid) {
-        Session session = HibernateUtil.GetLocalThreadSession();
+        Session session = HibernateUtil.GetLocalSession();
         Transaction transaction = session.beginTransaction();
         boolean cmtFlag = false;
         try {
@@ -535,6 +568,9 @@ public final class RoleMappingService {
             }
             return "";
         }
+        finally {
+            HibernateUtil.CloseLocalSession();
+        }
     }
 
     /**
@@ -544,7 +580,7 @@ public final class RoleMappingService {
      * @return a list of connection json string
      */
     public static String GetDataVersionAndGidFromCOrgan(String renid, String nsid) {
-        Session session = HibernateUtil.GetLocalThreadSession();
+        Session session = HibernateUtil.GetLocalSession();
         Transaction transaction = session.beginTransaction();
         boolean cmtFlag = false;
         try {
@@ -573,6 +609,9 @@ public final class RoleMappingService {
                 transaction.rollback();
             }
             return "";
+        }
+        finally {
+            HibernateUtil.CloseLocalSession();
         }
     }
 

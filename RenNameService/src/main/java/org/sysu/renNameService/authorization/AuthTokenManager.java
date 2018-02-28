@@ -32,7 +32,7 @@ public class AuthTokenManager {
      */
     @SuppressWarnings("unchecked")
     public static String Auth(String username, String password) {
-        Session session = HibernateUtil.GetLocalThreadSession();
+        Session session = HibernateUtil.GetLocalSession();
         Transaction transaction = session.beginTransaction();
         try {
             // verify username and password
@@ -82,6 +82,9 @@ public class AuthTokenManager {
             transaction.rollback();
             return "#exception_occurred";
         }
+        finally {
+            HibernateUtil.CloseLocalSession();
+        }
     }
 
     /**
@@ -106,7 +109,7 @@ public class AuthTokenManager {
      * @param token auth token
      */
     public static void Destroy(String token) {
-        Session session = HibernateUtil.GetLocalThreadSession();
+        Session session = HibernateUtil.GetLocalSession();
         Transaction transaction = session.beginTransaction();
         try {
             RenSessionEntity rse = session.get(RenSessionEntity.class, token);
@@ -121,6 +124,9 @@ public class AuthTokenManager {
                     AuthTokenManager.class.getName(), LogUtil.LogLevelType.ERROR, "");
             transaction.rollback();
         }
+        finally {
+            HibernateUtil.CloseLocalSession();
+        }
     }
 
     /**
@@ -129,7 +135,7 @@ public class AuthTokenManager {
      * @return whether token is valid
      */
     public static boolean CheckValid(String token) {
-        Session session = HibernateUtil.GetLocalThreadSession();
+        Session session = HibernateUtil.GetLocalSession();
         Transaction transaction = session.beginTransaction();
         boolean retFlag = true;
         try {
@@ -146,6 +152,9 @@ public class AuthTokenManager {
             transaction.rollback();
             retFlag = false;
         }
+        finally {
+            HibernateUtil.CloseLocalSession();
+        }
         return retFlag;
     }
 
@@ -155,7 +164,7 @@ public class AuthTokenManager {
      * @return token level, -1 if token is invalid
      */
     public static int CheckValidLevel(String token) {
-        Session session = HibernateUtil.GetLocalThreadSession();
+        Session session = HibernateUtil.GetLocalSession();
         Transaction transaction = session.beginTransaction();
         int retVal;
         try {
@@ -174,6 +183,9 @@ public class AuthTokenManager {
                     AuthTokenManager.class.getName(), LogUtil.LogLevelType.ERROR, "");
             transaction.rollback();
             retVal = -1;
+        }
+        finally {
+            HibernateUtil.CloseLocalSession();
         }
         return retVal;
     }

@@ -28,23 +28,28 @@ public class TransactionCreator {
      * @return {@code NameServiceTransaction} instance
      */
     public static NameServiceTransaction Create(TransactionType type, String action, HashMap<String, String> args) {
-        Session session = HibernateUtil.GetLocalThreadSession();
+        Session session = HibernateUtil.GetLocalSession();
         Transaction dbTrans = session.beginTransaction();
-        String nsid = "NS_" + UUID.randomUUID().toString();
-        String rtid = args.get("rtid");
-        NameServiceTransaction nst = new NameServiceTransaction();
-        nst.AddParameter(args);
-        nst.AddParameter(GlobalContext.TRANSACTION_ACTION_KEY, action);
-        RenNsTransactionEntity rnte = nst.getTransactionContext();
-        rnte.setAcceptTimestamp(TimestampUtil.GetCurrentTimestamp());
-        rnte.setNsid(nsid);
-        rnte.setRtid(rtid == null ? "" : rtid);
-        rnte.setPriority(0);
-        rnte.setType(type.ordinal());
-        session.save(rnte);
-        dbTrans.commit();
-        LogUtil.Log(String.format("Name service transaction created: %s (%s, %s)", nsid, type.name(), action),
-                TransactionCreator.class.getName(), rtid == null ? "" : rtid);
-        return nst;
+        try {
+            String nsid = "NS_" + UUID.randomUUID().toString();
+            String rtid = args.get("rtid");
+            NameServiceTransaction nst = new NameServiceTransaction();
+            nst.AddParameter(args);
+            nst.AddParameter(GlobalContext.TRANSACTION_ACTION_KEY, action);
+            RenNsTransactionEntity rnte = nst.getTransactionContext();
+            rnte.setAcceptTimestamp(TimestampUtil.GetCurrentTimestamp());
+            rnte.setNsid(nsid);
+            rnte.setRtid(rtid == null ? "" : rtid);
+            rnte.setPriority(0);
+            rnte.setType(type.ordinal());
+            session.save(rnte);
+            dbTrans.commit();
+            LogUtil.Log(String.format("Name service transaction created: %s (%s, %s)", nsid, type.name(), action),
+                    TransactionCreator.class.getName(), rtid == null ? "" : rtid);
+            return nst;
+        }
+        finally {
+            HibernateUtil.CloseLocalSession();
+        }
     }
 }

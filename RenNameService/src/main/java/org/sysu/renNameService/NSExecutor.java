@@ -151,7 +151,7 @@ public class NSExecutor extends Observable {
                     break;
             }
             // write success info to db
-            Session session = HibernateUtil.GetLocalThreadSession();
+            Session session = HibernateUtil.GetLocalSession();
             Transaction dbTrans = session.beginTransaction();
             try {
                 context.setFinishTimestamp(TimestampUtil.GetCurrentTimestamp());
@@ -161,6 +161,9 @@ public class NSExecutor extends Observable {
             catch (Exception dbEx) {
                 dbTrans.rollback();
                 throw dbEx;
+            }
+            finally {
+                HibernateUtil.CloseLocalSession();
             }
             // bubble notification to scheduler or tracker which supervise this executor
             this.setChanged();

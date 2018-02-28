@@ -99,7 +99,7 @@ public final class LogUtil {
             LogUtil.readWriteLock.writeLock().unlock();
             return;
         }
-        Session session = HibernateUtil.GetLocalThreadSession();
+        Session session = HibernateUtil.GetLocalSession();
         try {
             LogMessagePackage lmp;
             while ((lmp = LogUtil.logBuffer.poll()) != null) {
@@ -117,6 +117,7 @@ public final class LogUtil {
             LogUtil.Echo("Flush log exception, " + ex, LogUtil.class.getName(), LogLevelType.ERROR);
         }
         finally {
+            HibernateUtil.CloseLocalSession();
             LogUtil.readWriteLock.writeLock().unlock();
         }
     }
