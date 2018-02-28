@@ -161,8 +161,7 @@ public class InterfaceB {
         // otherwise workitem should be put to allocated queue
         else {
             WorkQueueContainer container = WorkQueueContainer.GetContext(participant.getWorkerId());
-            container.RemoveFromQueue(workitem, WorkQueueType.OFFERED);
-            container.AddToQueue(workitem, WorkQueueType.ALLOCATED);
+            container.MoveOfferedToAllocated(workitem);
             InterfaceB.WorkitemChanged(workitem, WorkitemStatusType.Fired, WorkitemResourcingStatusType.Allocated);
         }
         // todo notify if agent
@@ -179,8 +178,7 @@ public class InterfaceB {
         if (InterfaceO.CheckPrivilege(participant, workitem, PrivilegeType.CAN_DEALLOCATE)) {
             try {
                 WorkQueueContainer container = WorkQueueContainer.GetContext(participant.getWorkerId());
-                container.RemoveFromQueue(workitem, WorkQueueType.ALLOCATED);
-                container.AddToQueue(workitem, WorkQueueType.OFFERED);
+                container.MoveAllocatedToOffered(workitem);
                 InterfaceB.WorkitemChanged(workitem, WorkitemStatusType.Fired, WorkitemResourcingStatusType.Offered);
                 return true;
             }
@@ -205,8 +203,7 @@ public class InterfaceB {
     public static boolean StartWorkitem(ParticipantContext participant, WorkitemContext workitem) {
         try {
             WorkQueueContainer container = WorkQueueContainer.GetContext(participant.getWorkerId());
-            container.RemoveFromQueue(workitem, WorkQueueType.ALLOCATED);
-            container.AddToQueue(workitem, WorkQueueType.STARTED);
+            container.MoveAllocatedToStarted(workitem);
             RenWorkitemEntity rwe = workitem.getEntity();
             rwe.setLatestStartTime(TimestampUtil.GetCurrentTimestamp());
             rwe.setStartTime(TimestampUtil.GetCurrentTimestamp());
@@ -260,8 +257,7 @@ public class InterfaceB {
         if (InterfaceO.CheckPrivilege(participant, workitem, PrivilegeType.CAN_REALLOCATE)) {
             try {
                 WorkQueueContainer container = WorkQueueContainer.GetContext(participant.getWorkerId());
-                container.RemoveFromQueue(workitem, WorkQueueType.STARTED);
-                container.AddToQueue(workitem, WorkQueueType.ALLOCATED);
+                container.MoveStartedToAllocated(workitem);
                 InterfaceB.WorkitemChanged(workitem, WorkitemStatusType.Fired, WorkitemResourcingStatusType.Allocated);
                 return true;
             }
@@ -287,8 +283,7 @@ public class InterfaceB {
         if (InterfaceO.CheckPrivilege(participant, workitem, PrivilegeType.CAN_SUSPEND)) {
             try {
                 WorkQueueContainer container = WorkQueueContainer.GetContext(participant.getWorkerId());
-                container.RemoveFromQueue(workitem, WorkQueueType.STARTED);
-                container.AddToQueue(workitem, WorkQueueType.SUSPENDED);
+                container.MoveStartedToSuspend(workitem);
                 InterfaceB.WorkitemChanged(workitem, WorkitemStatusType.Suspended, WorkitemResourcingStatusType.Suspended);
                 return true;
             }
@@ -313,8 +308,7 @@ public class InterfaceB {
     public static boolean UnsuspendWorkitem(ParticipantContext participant, WorkitemContext workitem) {
         try {
             WorkQueueContainer container = WorkQueueContainer.GetContext(participant.getWorkerId());
-            container.RemoveFromQueue(workitem, WorkQueueType.SUSPENDED);
-            container.AddToQueue(workitem, WorkQueueType.STARTED);
+            container.MoveSuspendToStarted(workitem);
             InterfaceB.WorkitemChanged(workitem, WorkitemStatusType.Executing, WorkitemResourcingStatusType.Started);
             return true;
         }
