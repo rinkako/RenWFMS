@@ -1,5 +1,7 @@
 package org.sysu.renResourcing;
 
+import org.sysu.renCommon.GlobalConfigContext;
+
 import java.util.UUID;
 
 /**
