@@ -4,7 +4,7 @@
  */
 package org.sysu.renResourcing;
 
-import org.sysu.renResourcing.basic.ObservableMessage;
+import org.sysu.renCommon.context.ObservableMessage;
 import org.sysu.renResourcing.consistency.ContextCachePool;
 import org.sysu.renResourcing.context.ResourcingContext;
 import org.sysu.renResourcing.utility.LogUtil;

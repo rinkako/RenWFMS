@@ -5,11 +5,11 @@
 package org.sysu.renNameService.authorization;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
+import org.sysu.renCommon.utility.EncryptUtil;
 import org.sysu.renNameService.GlobalContext;
 import org.sysu.renNameService.entity.RenAuthuserEntity;
 import org.sysu.renNameService.entity.RenAuthuserEntityPK;
 import org.sysu.renNameService.entity.RenSessionEntity;
-import org.sysu.renNameService.utility.EncryptUtil;
 import org.sysu.renNameService.utility.HibernateUtil;
 import org.sysu.renNameService.utility.LogUtil;
 import org.sysu.renNameService.utility.TimestampUtil;

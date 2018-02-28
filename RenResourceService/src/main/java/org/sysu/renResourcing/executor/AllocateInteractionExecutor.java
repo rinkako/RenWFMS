@@ -5,7 +5,7 @@
 package org.sysu.renResourcing.executor;
 
 import org.sysu.renResourcing.allocator.RAllocator;
-import org.sysu.renResourcing.basic.enums.InitializationByType;
+import org.sysu.renCommon.enums.InitializationByType;
 import org.sysu.renResourcing.context.ParticipantContext;
 import org.sysu.renResourcing.context.WorkitemContext;
 import org.sysu.renResourcing.principle.RPrinciple;

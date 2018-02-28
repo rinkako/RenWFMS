@@ -5,8 +5,8 @@
 package org.sysu.renResourcing.context;
 
 import org.sysu.renResourcing.GlobalContext;
-import org.sysu.renResourcing.basic.enums.WorkQueueContainerType;
-import org.sysu.renResourcing.basic.enums.WorkQueueType;
+import org.sysu.renCommon.enums.WorkQueueContainerType;
+import org.sysu.renCommon.enums.WorkQueueType;
 import org.sysu.renResourcing.consistency.ContextCachePool;
 
 import java.util.Collections;

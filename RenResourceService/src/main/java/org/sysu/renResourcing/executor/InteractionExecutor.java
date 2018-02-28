@@ -4,7 +4,7 @@
  */
 package org.sysu.renResourcing.executor;
 
-import org.sysu.renResourcing.basic.enums.InitializationByType;
+import org.sysu.renCommon.enums.InitializationByType;
 
 /**
  * Author: Rinkako

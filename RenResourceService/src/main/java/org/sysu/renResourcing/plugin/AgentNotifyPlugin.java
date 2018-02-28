@@ -5,9 +5,8 @@
 package org.sysu.renResourcing.plugin;
 
 import org.sysu.renResourcing.ResourcingEngine;
-import org.sysu.renResourcing.basic.enums.AgentReentrantType;
+import org.sysu.renCommon.enums.AgentReentrantType;
 import org.sysu.renResourcing.context.ParticipantContext;
-import org.sysu.renResourcing.utility.HttpClientUtil;
 import org.sysu.renResourcing.utility.LogUtil;
 
 import java.util.ArrayList;

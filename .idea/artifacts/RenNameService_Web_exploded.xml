@@ -1,0 +1,20 @@
+<component name="ArtifactManager">
+  <artifact type="exploded-war" name="RenNameService:Web exploded">
+    <output-path>/output/artifacts/RenNameService_Web_exploded</output-path>
+    <root id="root">
+      <element id="javaee-facet-resources" facet="RenNameService/web/Web" />
+      <element id="directory" name="WEB-INF">
+        <element id="directory" name="classes">
+          <element id="module-output" name="RenNameService" />
+          <element id="module-output" name="RenCommon" />
+        </element>
+        <element id="directory" name="lib">
+          <element id="library" level="project" name="Maven: com.fasterxml.jackson.core:jackson-annotations:2.8.0" />
+          <element id="library" level="project" name="Maven: com.fasterxml.jackson.core:jackson-core:2.8.10" />
+          <element id="library" level="project" name="Maven: com.fasterxml.jackson.core:jackson-databind:2.8.10" />
+          <element id="library" level="project" name="Maven: commons-codec:commons-codec:1.8" />
+        </element>
+      </element>
+    </root>
+  </artifact>
+</component>

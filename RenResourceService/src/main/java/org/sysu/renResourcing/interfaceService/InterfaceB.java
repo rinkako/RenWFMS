@@ -7,7 +7,7 @@ package org.sysu.renResourcing.interfaceService;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
 import org.sysu.renResourcing.GlobalContext;
-import org.sysu.renResourcing.basic.enums.*;
+import org.sysu.renCommon.enums.*;
 import org.sysu.renResourcing.consistency.ContextLockManager;
 import org.sysu.renResourcing.context.*;
 import org.sysu.renResourcing.context.steady.RenRuntimerecordEntity;

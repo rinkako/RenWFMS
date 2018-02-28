@@ -9,7 +9,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.context.web.WebAppConfiguration;
 import org.sysu.renNameService.RenNameServiceApplication;
-import org.sysu.renNameService.utility.EncryptUtil;
+import org.sysu.renCommon.utility.EncryptUtil;
 
 /**
  * Author: Rinkako

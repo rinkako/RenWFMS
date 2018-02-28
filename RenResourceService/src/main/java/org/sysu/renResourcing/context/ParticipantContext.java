@@ -6,8 +6,8 @@ package org.sysu.renResourcing.context;
 
 import org.hibernate.Session;
 import org.hibernate.Transaction;
-import org.sysu.renResourcing.basic.enums.AgentReentrantType;
-import org.sysu.renResourcing.basic.enums.WorkerType;
+import org.sysu.renCommon.enums.AgentReentrantType;
+import org.sysu.renCommon.enums.WorkerType;
 import org.sysu.renResourcing.consistency.ContextCachePool;
 import org.sysu.renResourcing.context.steady.RenRsparticipantEntity;
 import org.sysu.renResourcing.utility.HibernateUtil;

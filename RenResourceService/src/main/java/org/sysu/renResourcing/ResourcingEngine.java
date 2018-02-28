@@ -8,7 +8,7 @@ import org.hibernate.Session;
 import org.hibernate.Transaction;
 import org.sysu.renCommon.interactionRouter.RInteractionRouter;
 import org.sysu.renCommon.interactionRouter.RestfulRouter;
-import org.sysu.renResourcing.basic.enums.*;
+import org.sysu.renCommon.enums.*;
 import org.sysu.renResourcing.context.*;
 import org.sysu.renResourcing.context.steady.RenRuntimerecordEntity;
 import org.sysu.renResourcing.utility.HibernateUtil;

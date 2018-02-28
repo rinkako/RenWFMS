@@ -4,7 +4,7 @@
  */
 package org.sysu.renResourcing.principle;
 
-import org.sysu.renResourcing.basic.enums.PrincipleDialectType;
+import org.sysu.renCommon.enums.PrincipleDialectType;
 
 /**
  * Author: Rinkako

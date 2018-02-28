@@ -5,7 +5,7 @@
 package org.sysu.renResourcing.filter;
 
 import org.apache.commons.jexl2.Expression;
-import org.sysu.renResourcing.basic.enums.WorkQueueType;
+import org.sysu.renCommon.enums.WorkQueueType;
 import org.sysu.renResourcing.context.ParticipantContext;
 import org.sysu.renResourcing.context.WorkQueueContainer;
 import org.sysu.renResourcing.context.WorkQueueContext;

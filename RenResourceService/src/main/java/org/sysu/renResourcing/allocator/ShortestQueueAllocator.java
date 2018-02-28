@@ -4,7 +4,7 @@
  */
 package org.sysu.renResourcing.allocator;
 
-import org.sysu.renResourcing.basic.enums.WorkQueueType;
+import org.sysu.renCommon.enums.WorkQueueType;
 import org.sysu.renResourcing.context.ParticipantContext;
 import org.sysu.renResourcing.context.WorkQueueContainer;
 import org.sysu.renResourcing.context.WorkitemContext;

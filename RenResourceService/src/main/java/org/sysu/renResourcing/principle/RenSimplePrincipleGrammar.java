@@ -4,7 +4,7 @@
  */
 package org.sysu.renResourcing.principle;
 
-import org.sysu.renResourcing.basic.enums.WorkitemDistributionType;
+import org.sysu.renCommon.enums.WorkitemDistributionType;
 import org.sysu.renResourcing.utility.LogUtil;
 import org.sysu.renCommon.utility.SerializationUtil;
 

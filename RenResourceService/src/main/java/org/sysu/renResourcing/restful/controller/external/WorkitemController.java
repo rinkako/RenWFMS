@@ -2,7 +2,7 @@ package org.sysu.renResourcing.restful.controller.external;
 
 import org.springframework.web.bind.annotation.*;
 import org.sysu.renResourcing.RScheduler;
-import org.sysu.renResourcing.basic.enums.RServiceType;
+import org.sysu.renCommon.enums.RServiceType;
 import org.sysu.renResourcing.context.ResourcingContext;
 import org.sysu.renResourcing.context.WorkitemContext;
 import org.sysu.renResourcing.restful.dto.ReturnModelHelper;

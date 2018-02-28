@@ -4,7 +4,7 @@
  */
 package org.sysu.renResourcing.filter;
 
-import org.sysu.renResourcing.basic.RSelector;
+import org.sysu.renResourcing.RSelector;
 import org.sysu.renResourcing.context.ParticipantContext;
 import org.sysu.renResourcing.context.WorkitemContext;
 

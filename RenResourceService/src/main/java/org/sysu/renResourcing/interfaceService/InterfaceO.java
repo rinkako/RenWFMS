@@ -6,8 +6,8 @@ package org.sysu.renResourcing.interfaceService;
 
 import org.hibernate.Session;
 import org.hibernate.Transaction;
-import org.sysu.renResourcing.basic.enums.PrivilegeType;
-import org.sysu.renResourcing.basic.enums.ResourceBindingType;
+import org.sysu.renCommon.enums.PrivilegeType;
+import org.sysu.renCommon.enums.ResourceBindingType;
 import org.sysu.renResourcing.context.ParticipantContext;
 import org.sysu.renResourcing.context.WorkitemContext;
 import org.sysu.renResourcing.context.steady.RenRuntimerecordEntity;

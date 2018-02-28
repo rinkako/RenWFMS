@@ -4,7 +4,7 @@
  */
 package org.sysu.renResourcing.executor;
 
-import org.sysu.renResourcing.basic.enums.InitializationByType;
+import org.sysu.renCommon.enums.InitializationByType;
 import org.sysu.renResourcing.context.ParticipantContext;
 import org.sysu.renResourcing.context.WorkitemContext;
 import org.sysu.renResourcing.filter.RFilter;

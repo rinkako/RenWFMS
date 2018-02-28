@@ -5,7 +5,7 @@
 package org.sysu.renResourcing.interfaceService;
 
 import org.sysu.renResourcing.GlobalContext;
-import org.sysu.renResourcing.basic.enums.RSEventType;
+import org.sysu.renCommon.enums.RSEventType;
 import org.sysu.renResourcing.context.WorkitemContext;
 import org.sysu.renResourcing.context.steady.RenRseventlogEntity;
 import org.sysu.renResourcing.plugin.AsyncPluginRunner;

@@ -2,7 +2,7 @@
  * Project Ren @ 2018
  * Rinkako, Ariana, Gordan. SYSU SDCS.
  */
-package org.sysu.renResourcing.basic.enums;
+package org.sysu.renCommon.enums;
 
 /**
  * Author: Rinkako

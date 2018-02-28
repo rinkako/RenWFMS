@@ -1,6 +1,6 @@
 package org.sysu.renResourcing.allocator;
 
-import org.sysu.renResourcing.basic.RSelector;
+import org.sysu.renResourcing.RSelector;
 import org.sysu.renResourcing.context.ParticipantContext;
 import org.sysu.renResourcing.context.WorkitemContext;
 

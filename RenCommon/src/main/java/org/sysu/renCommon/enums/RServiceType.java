@@ -1,4 +1,4 @@
-package org.sysu.renResourcing.basic.enums;
+package org.sysu.renCommon.enums;
 
 import java.io.Serializable;
 

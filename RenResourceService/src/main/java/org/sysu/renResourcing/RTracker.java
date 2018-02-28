@@ -4,8 +4,8 @@
  */
 package org.sysu.renResourcing;
 
-import org.sysu.renResourcing.basic.ObservableMessage;
-import org.sysu.renResourcing.basic.enums.TrackerPhase;
+import org.sysu.renCommon.context.ObservableMessage;
+import org.sysu.renCommon.enums.TrackerPhase;
 import org.sysu.renResourcing.context.ResourcingContext;
 import org.sysu.renResourcing.interfaceService.InterfaceB;
 import org.sysu.renResourcing.interfaceService.InterfaceW;

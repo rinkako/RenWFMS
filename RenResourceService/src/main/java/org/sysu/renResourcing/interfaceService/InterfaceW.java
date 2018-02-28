@@ -5,9 +5,9 @@
 package org.sysu.renResourcing.interfaceService;
 
 import org.sysu.renResourcing.GlobalContext;
-import org.sysu.renResourcing.basic.enums.InitializationByType;
-import org.sysu.renResourcing.basic.enums.WorkQueueType;
-import org.sysu.renResourcing.basic.enums.WorkitemResourcingStatusType;
+import org.sysu.renCommon.enums.InitializationByType;
+import org.sysu.renCommon.enums.WorkQueueType;
+import org.sysu.renCommon.enums.WorkitemResourcingStatusType;
 import org.sysu.renResourcing.context.*;
 import org.sysu.renCommon.utility.AuthDomainHelper;
 import org.sysu.renResourcing.utility.LogUtil;
