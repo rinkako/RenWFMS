@@ -107,6 +107,7 @@ public class NSExecutor extends Observable {
                     execResult.put("context", nst);
                     execResult.put("nsid", context.getNsid());
                     execResult.put("action", act);
+                    execResult.put("content", retStr == null ? "" : retStr);
                     break;
                 case Namespacing:
                     execResult.put("execType", TransactionType.Namespacing.name());
@@ -137,9 +138,11 @@ public class NSExecutor extends Observable {
                         case "submitProcess":
                             retStr = NameSpacingService.SubmitProcess((String) args.get("pid"), (String) args.get("from"), (String) args.get("renid"), (String) args.get("authoritySession"), Integer.parseInt((String) args.get("bindingType")), Integer.parseInt((String) args.get("launchType")), Integer.parseInt((String) args.get("failureType")), Integer.parseInt((String) args.get("authType")), (String) args.get("binding"));
                             break;
-                        case "callback":
-                            NameSpacingService.TransshipCallback(args);
-                            retStr = "OK";
+                        case "transshipCallback":
+                            retStr = NameSpacingService.TransshipCallback(args);
+                            break;
+                        case "transshipWorkitem":
+                            retStr = NameSpacingService.TransshipWorkitem((String) args.get("action"), (String) args.get("workitemId"), (String) args.get("workerId"));
                             break;
                     }
                     // prepare execution result
@@ -147,6 +150,7 @@ public class NSExecutor extends Observable {
                     execResult.put("context", nst);
                     execResult.put("nsid", context.getNsid());
                     execResult.put("action", act);
+                    execResult.put("content", retStr == null ? "" : retStr);
                     break;
                 default:
                     LogUtil.Log("Execute sync failed, wrong type code", NSExecutor.class.getName(),

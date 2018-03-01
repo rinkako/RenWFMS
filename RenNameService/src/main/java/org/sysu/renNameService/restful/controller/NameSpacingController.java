@@ -377,10 +377,10 @@ public class NameSpacingController {
             if (missingParams.size() > 0) {
                 return ReturnModelHelper.MissingParametersResponse(missingParams);
             }
-            // todo signature check
-//            if (!AuthorizationService.CheckValid(token)) {
-//                return ReturnModelHelper.UnauthorizedResponse(token);
-//            }
+            // check authorization
+            if (!AuthorizationService.CheckRTIDSignature(signature, rtid)) {
+                return ReturnModelHelper.UnauthorizedResponse(signature);
+            }
             // logic
             HashMap<String, String> args = new HashMap<>();
             args.put("rtid", rtid);
@@ -388,7 +388,7 @@ public class NameSpacingController {
             args.put("bo", bo);
             args.put("event", event);
             args.put("payload", event);
-            NameServiceTransaction t = TransactionCreator.Create(TransactionType.Namespacing, "callback", args);
+            NameServiceTransaction t = TransactionCreator.Create(TransactionType.Namespacing, "transshipCallback", args);
             String jsonifyResult = (String) NameSpacingController.scheduler.ScheduleSync(t);
             // return
             ReturnModelHelper.StandardResponse(rnModel, StatusCode.OK, jsonifyResult);
@@ -424,9 +424,9 @@ public class NameSpacingController {
                 return ReturnModelHelper.MissingParametersResponse(missingParams);
             }
             // check authorization
-//            if (!CheckToken(token)) {
-//                return ReturnModelHelper.UnauthorizedResponse(signature);
-//            }
+            if (!AuthorizationService.CheckWorkitemSignature(signature, workitemId)) {
+                return ReturnModelHelper.UnauthorizedResponse(signature);
+            }
             // logic
             HashMap<String, String> args = new HashMap<>();
             args.put("action", "start");
@@ -436,7 +436,6 @@ public class NameSpacingController {
             String jsonifyResult = (String) NameSpacingController.scheduler.ScheduleSync(t);
             // return
             ReturnModelHelper.StandardResponse(rnModel, StatusCode.OK, jsonifyResult);
-
         } catch (Exception e) {
             ReturnModelHelper.ExceptionResponse(rnModel, e.getClass().getName());
         }
@@ -468,9 +467,9 @@ public class NameSpacingController {
                 return ReturnModelHelper.MissingParametersResponse(missingParams);
             }
             // check authorization
-//            if (!CheckToken(token)) {
-//                return ReturnModelHelper.UnauthorizedResponse(signature);
-//            }
+            if (!AuthorizationService.CheckWorkitemSignature(signature, workitemId)) {
+                return ReturnModelHelper.UnauthorizedResponse(signature);
+            }
             // logic
             HashMap<String, String> args = new HashMap<>();
             args.put("action", "accept");
@@ -480,7 +479,6 @@ public class NameSpacingController {
             String jsonifyResult = (String) NameSpacingController.scheduler.ScheduleSync(t);
             // return
             ReturnModelHelper.StandardResponse(rnModel, StatusCode.OK, jsonifyResult);
-
         } catch (Exception e) {
             ReturnModelHelper.ExceptionResponse(rnModel, e.getClass().getName());
         }
@@ -512,9 +510,9 @@ public class NameSpacingController {
                 return ReturnModelHelper.MissingParametersResponse(missingParams);
             }
             // check authorization
-//            if (!CheckToken(token)) {
-//                return ReturnModelHelper.UnauthorizedResponse(signature);
-//            }
+            if (!AuthorizationService.CheckWorkitemSignature(signature, workitemId)) {
+                return ReturnModelHelper.UnauthorizedResponse(signature);
+            }
             // logic
             HashMap<String, String> args = new HashMap<>();
             args.put("action", "acceptStart");
@@ -524,7 +522,6 @@ public class NameSpacingController {
             String jsonifyResult = (String) NameSpacingController.scheduler.ScheduleSync(t);
             // return
             ReturnModelHelper.StandardResponse(rnModel, StatusCode.OK, jsonifyResult);
-
         } catch (Exception e) {
             ReturnModelHelper.ExceptionResponse(rnModel, e.getClass().getName());
         }
@@ -556,9 +553,9 @@ public class NameSpacingController {
                 return ReturnModelHelper.MissingParametersResponse(missingParams);
             }
             // check authorization
-//            if (!CheckToken(token)) {
-//                return ReturnModelHelper.UnauthorizedResponse(signature);
-//            }
+            if (!AuthorizationService.CheckWorkitemSignature(signature, workitemId)) {
+                return ReturnModelHelper.UnauthorizedResponse(signature);
+            }
             // logic
             HashMap<String, String> args = new HashMap<>();
             args.put("action", "complete");
@@ -568,7 +565,6 @@ public class NameSpacingController {
             String jsonifyResult = (String) NameSpacingController.scheduler.ScheduleSync(t);
             // return
             ReturnModelHelper.StandardResponse(rnModel, StatusCode.OK, jsonifyResult);
-
         } catch (Exception e) {
             ReturnModelHelper.ExceptionResponse(rnModel, e.getClass().getName());
         }
@@ -600,9 +596,9 @@ public class NameSpacingController {
                 return ReturnModelHelper.MissingParametersResponse(missingParams);
             }
             // check authorization
-//            if (!CheckToken(token)) {
-//                return ReturnModelHelper.UnauthorizedResponse(signature);
-//            }
+            if (!AuthorizationService.CheckWorkitemSignature(signature, workitemId)) {
+                return ReturnModelHelper.UnauthorizedResponse(signature);
+            }
             // logic
             HashMap<String, String> args = new HashMap<>();
             args.put("action", "suspend");
@@ -612,7 +608,6 @@ public class NameSpacingController {
             String jsonifyResult = (String) NameSpacingController.scheduler.ScheduleSync(t);
             // return
             ReturnModelHelper.StandardResponse(rnModel, StatusCode.OK, jsonifyResult);
-
         } catch (Exception e) {
             ReturnModelHelper.ExceptionResponse(rnModel, e.getClass().getName());
         }
@@ -644,9 +639,9 @@ public class NameSpacingController {
                 return ReturnModelHelper.MissingParametersResponse(missingParams);
             }
             // check authorization
-//            if (!CheckToken(token)) {
-//                return ReturnModelHelper.UnauthorizedResponse(signature);
-//            }
+            if (!AuthorizationService.CheckWorkitemSignature(signature, workitemId)) {
+                return ReturnModelHelper.UnauthorizedResponse(signature);
+            }
             // logic
             HashMap<String, String> args = new HashMap<>();
             args.put("action", "unsuspend");
@@ -656,7 +651,6 @@ public class NameSpacingController {
             String jsonifyResult = (String) NameSpacingController.scheduler.ScheduleSync(t);
             // return
             ReturnModelHelper.StandardResponse(rnModel, StatusCode.OK, jsonifyResult);
-
         } catch (Exception e) {
             ReturnModelHelper.ExceptionResponse(rnModel, e.getClass().getName());
         }
@@ -688,9 +682,9 @@ public class NameSpacingController {
                 return ReturnModelHelper.MissingParametersResponse(missingParams);
             }
             // check authorization
-//            if (!CheckToken(token)) {
-//                return ReturnModelHelper.UnauthorizedResponse(signature);
-//            }
+            if (!AuthorizationService.CheckWorkitemSignature(signature, workitemId)) {
+                return ReturnModelHelper.UnauthorizedResponse(signature);
+            }
             // logic
             HashMap<String, String> args = new HashMap<>();
             args.put("action", "skip");
@@ -700,7 +694,6 @@ public class NameSpacingController {
             String jsonifyResult = (String) NameSpacingController.scheduler.ScheduleSync(t);
             // return
             ReturnModelHelper.StandardResponse(rnModel, StatusCode.OK, jsonifyResult);
-
         } catch (Exception e) {
             ReturnModelHelper.ExceptionResponse(rnModel, e.getClass().getName());
         }
@@ -732,9 +725,9 @@ public class NameSpacingController {
                 return ReturnModelHelper.MissingParametersResponse(missingParams);
             }
             // check authorization
-//            if (!CheckToken(token)) {
-//                return ReturnModelHelper.UnauthorizedResponse(signature);
-//            }
+            if (!AuthorizationService.CheckWorkitemSignature(signature, workitemId)) {
+                return ReturnModelHelper.UnauthorizedResponse(signature);
+            }
             // logic
             HashMap<String, String> args = new HashMap<>();
             args.put("action", "reallocate");
@@ -744,7 +737,6 @@ public class NameSpacingController {
             String jsonifyResult = (String) NameSpacingController.scheduler.ScheduleSync(t);
             // return
             ReturnModelHelper.StandardResponse(rnModel, StatusCode.OK, jsonifyResult);
-
         } catch (Exception e) {
             ReturnModelHelper.ExceptionResponse(rnModel, e.getClass().getName());
         }
@@ -776,9 +768,9 @@ public class NameSpacingController {
                 return ReturnModelHelper.MissingParametersResponse(missingParams);
             }
             // check authorization
-//            if (!CheckToken(token)) {
-//                return ReturnModelHelper.UnauthorizedResponse(signature);
-//            }
+            if (!AuthorizationService.CheckWorkitemSignature(signature, workitemId)) {
+                return ReturnModelHelper.UnauthorizedResponse(signature);
+            }
             // logic
             HashMap<String, String> args = new HashMap<>();
             args.put("action", "deallocate");
@@ -788,13 +780,11 @@ public class NameSpacingController {
             String jsonifyResult = (String) NameSpacingController.scheduler.ScheduleSync(t);
             // return
             ReturnModelHelper.StandardResponse(rnModel, StatusCode.OK, jsonifyResult);
-
         } catch (Exception e) {
             ReturnModelHelper.ExceptionResponse(rnModel, e.getClass().getName());
         }
         return rnModel;
     }
-
 
     /**
      * Transaction scheduler.

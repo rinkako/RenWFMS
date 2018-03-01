@@ -82,4 +82,9 @@ public final class GlobalContext {
      * Service URL for BO Engine event callback.
      */
     public static final String URL_BOENGINE_CALLBACK = "http://localhost:10232/gateway/callback";
+
+    /**
+     * Service URL gateway for RS workitem actions.
+     */
+    public static final String URL_RS_WORKITEM_GATEWAY = "http://localhost:10233/workitem/";
 }

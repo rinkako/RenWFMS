@@ -1,4 +1,4 @@
-package org.sysu.renResourcing.restful.controller.external;
+package org.sysu.renResourcing.restful.controller;
 
 import org.springframework.web.bind.annotation.*;
 import org.sysu.renResourcing.RScheduler;
@@ -23,13 +23,8 @@ import java.util.List;
 @RequestMapping("/workitem")
 public class WorkitemController {
 
-    private boolean CheckToken(String token) {
-        return true;  // todo using auth server check this token (need? token check may handle in NS already?)
-    }
-
     /**
      * Start a workitem by auth user.
-     * @param token auth token
      * @param workerId worker global id
      * @param workitemId workitem global id
      * @return response package in JSON
@@ -37,22 +32,16 @@ public class WorkitemController {
     @RequestMapping(value = "/start", produces = { "application/json", "application/xml"})
     @ResponseBody
     @Transactional
-    public ReturnModel StartWorkitem(@RequestParam(value="token", required = false)String token,
-                                     @RequestParam(value="workerId", required = false)String workerId,
+    public ReturnModel StartWorkitem(@RequestParam(value="workerId", required = false)String workerId,
                                      @RequestParam(value="workitemId", required = false)String workitemId) {
         ReturnModel rnModel = new ReturnModel();
         try {
             // miss params
             List<String> missingParams = new ArrayList<>();
-            if (token == null) missingParams.add("token");
             if (workerId == null) missingParams.add("workerId");
             if (workitemId == null) missingParams.add("workitemId");
             if (missingParams.size() > 0) {
                 return ReturnModelHelper.MissingParametersResponse(missingParams);
-            }
-            // check authorization
-            if (!CheckToken(token)) {
-                return ReturnModelHelper.UnauthorizedResponse(token);
             }
             // logic
             WorkitemContext workitem = WorkitemContext.GetContext(workitemId, null);
@@ -72,7 +61,6 @@ public class WorkitemController {
 
     /**
      * Accept a workitem by auth user.
-     * @param token auth token
      * @param workerId worker global id
      * @param workitemId workitem global id
      * @return response package in JSON
@@ -80,22 +68,16 @@ public class WorkitemController {
     @RequestMapping(value = "/accept", produces = { "application/json", "application/xml"})
     @ResponseBody
     @Transactional
-    public ReturnModel AcceptWorkitem(@RequestParam(value="token", required = false)String token,
-                                      @RequestParam(value="workerId", required = false)String workerId,
+    public ReturnModel AcceptWorkitem(@RequestParam(value="workerId", required = false)String workerId,
                                       @RequestParam(value="workitemId", required = false)String workitemId) {
         ReturnModel rnModel = new ReturnModel();
         try {
             // miss params
             List<String> missingParams = new ArrayList<>();
-            if (token == null) missingParams.add("token");
             if (workerId == null) missingParams.add("workerId");
             if (workitemId == null) missingParams.add("workitemId");
             if (missingParams.size() > 0) {
                 return ReturnModelHelper.MissingParametersResponse(missingParams);
-            }
-            // check authorization
-            if (!CheckToken(token)) {
-                return ReturnModelHelper.UnauthorizedResponse(token);
             }
             // logic
             WorkitemContext workitem = WorkitemContext.GetContext(workitemId, null);
@@ -116,7 +98,6 @@ public class WorkitemController {
 
     /**
      * Accept and start a workitem by auth user.
-     * @param token auth token
      * @param workerId worker global id
      * @param workitemId workitem global id
      * @return response package in JSON
@@ -124,22 +105,16 @@ public class WorkitemController {
     @RequestMapping(value = "/acceptStart", produces = { "application/json", "application/xml"})
     @ResponseBody
     @Transactional
-    public ReturnModel AcceptAndStartWorkitem(@RequestParam(value="token", required = false)String token,
-                                              @RequestParam(value="workerId", required = false)String workerId,
+    public ReturnModel AcceptAndStartWorkitem(@RequestParam(value="workerId", required = false)String workerId,
                                               @RequestParam(value="workitemId", required = false)String workitemId) {
         ReturnModel rnModel = new ReturnModel();
         try {
             // miss params
             List<String> missingParams = new ArrayList<>();
-            if (token == null) missingParams.add("token");
             if (workerId == null) missingParams.add("workerId");
             if (workitemId == null) missingParams.add("workitemId");
             if (missingParams.size() > 0) {
                 return ReturnModelHelper.MissingParametersResponse(missingParams);
-            }
-            // check authorization
-            if (!CheckToken(token)) {
-                return ReturnModelHelper.UnauthorizedResponse(token);
             }
             // logic
             WorkitemContext workitem = WorkitemContext.GetContext(workitemId, null);
@@ -160,7 +135,6 @@ public class WorkitemController {
 
     /**
      * Complete a workitem by auth user.
-     * @param token auth token
      * @param workerId worker global id
      * @param workitemId workitem global id
      * @return response package in JSON
@@ -168,22 +142,16 @@ public class WorkitemController {
     @RequestMapping(value = "/complete", produces = { "application/json", "application/xml"})
     @ResponseBody
     @Transactional
-    public ReturnModel CompleteWorkitem(@RequestParam(value="token", required = false)String token,
-                                        @RequestParam(value="workerId", required = false)String workerId,
+    public ReturnModel CompleteWorkitem(@RequestParam(value="workerId", required = false)String workerId,
                                         @RequestParam(value="workitemId", required = false)String workitemId) {
         ReturnModel rnModel = new ReturnModel();
         try {
             // miss params
             List<String> missingParams = new ArrayList<>();
-            if (token == null) missingParams.add("token");
             if (workerId == null) missingParams.add("workerId");
             if (workitemId == null) missingParams.add("workitemId");
             if (missingParams.size() > 0) {
                 return ReturnModelHelper.MissingParametersResponse(missingParams);
-            }
-            // check authorization
-            if (!CheckToken(token)) {
-                return ReturnModelHelper.UnauthorizedResponse(token);
             }
             // logic
             WorkitemContext workitem = WorkitemContext.GetContext(workitemId, null);
@@ -204,7 +172,6 @@ public class WorkitemController {
 
     /**
      * Suspend a workitem by auth user.
-     * @param token auth token
      * @param workerId worker global id
      * @param workitemId workitem global id
      * @return response package in JSON
@@ -212,22 +179,16 @@ public class WorkitemController {
     @RequestMapping(value = "/suspend", produces = { "application/json", "application/xml"})
     @ResponseBody
     @Transactional
-    public ReturnModel SuspendWorkitem(@RequestParam(value="token", required = false)String token,
-                                       @RequestParam(value="workerId", required = false)String workerId,
+    public ReturnModel SuspendWorkitem(@RequestParam(value="workerId", required = false)String workerId,
                                        @RequestParam(value="workitemId", required = false)String workitemId) {
         ReturnModel rnModel = new ReturnModel();
         try {
             // miss params
             List<String> missingParams = new ArrayList<>();
-            if (token == null) missingParams.add("token");
             if (workerId == null) missingParams.add("workerId");
             if (workitemId == null) missingParams.add("workitemId");
             if (missingParams.size() > 0) {
                 return ReturnModelHelper.MissingParametersResponse(missingParams);
-            }
-            // check authorization
-            if (!CheckToken(token)) {
-                return ReturnModelHelper.UnauthorizedResponse(token);
             }
             // logic
             WorkitemContext workitem = WorkitemContext.GetContext(workitemId, null);
@@ -248,7 +209,6 @@ public class WorkitemController {
 
     /**
      * Unsuspend a workitem by auth user.
-     * @param token auth token
      * @param workerId worker global id
      * @param workitemId workitem global id
      * @return response package in JSON
@@ -256,22 +216,16 @@ public class WorkitemController {
     @RequestMapping(value = "/unsuspend", produces = { "application/json", "application/xml"})
     @ResponseBody
     @Transactional
-    public ReturnModel UnsuspendWorkitem(@RequestParam(value="token", required = false)String token,
-                                         @RequestParam(value="workerId", required = false)String workerId,
+    public ReturnModel UnsuspendWorkitem(@RequestParam(value="workerId", required = false)String workerId,
                                          @RequestParam(value="workitemId", required = false)String workitemId) {
         ReturnModel rnModel = new ReturnModel();
         try {
             // miss params
             List<String> missingParams = new ArrayList<>();
-            if (token == null) missingParams.add("token");
             if (workerId == null) missingParams.add("workerId");
             if (workitemId == null) missingParams.add("workitemId");
             if (missingParams.size() > 0) {
                 return ReturnModelHelper.MissingParametersResponse(missingParams);
-            }
-            // check authorization
-            if (!CheckToken(token)) {
-                return ReturnModelHelper.UnauthorizedResponse(token);
             }
             // logic
             WorkitemContext workitem = WorkitemContext.GetContext(workitemId, null);
@@ -292,7 +246,6 @@ public class WorkitemController {
 
     /**
      * Skip a workitem by auth user.
-     * @param token auth token
      * @param workerId worker global id
      * @param workitemId workitem global id
      * @return response package in JSON
@@ -300,22 +253,16 @@ public class WorkitemController {
     @RequestMapping(value = "/skip", produces = { "application/json", "application/xml"})
     @ResponseBody
     @Transactional
-    public ReturnModel SkipWorkitem(@RequestParam(value="token", required = false)String token,
-                                    @RequestParam(value="workerId", required = false)String workerId,
+    public ReturnModel SkipWorkitem(@RequestParam(value="workerId", required = false)String workerId,
                                     @RequestParam(value="workitemId", required = false)String workitemId) {
         ReturnModel rnModel = new ReturnModel();
         try {
             // miss params
             List<String> missingParams = new ArrayList<>();
-            if (token == null) missingParams.add("token");
             if (workerId == null) missingParams.add("workerId");
             if (workitemId == null) missingParams.add("workitemId");
             if (missingParams.size() > 0) {
                 return ReturnModelHelper.MissingParametersResponse(missingParams);
-            }
-            // check authorization
-            if (!CheckToken(token)) {
-                return ReturnModelHelper.UnauthorizedResponse(token);
             }
             // logic
             WorkitemContext workitem = WorkitemContext.GetContext(workitemId, null);
@@ -336,7 +283,6 @@ public class WorkitemController {
 
     /**
      * Reallocate a workitem by auth user.
-     * @param token auth token
      * @param workerId worker global id
      * @param workitemId workitem global id
      * @return response package in JSON
@@ -344,22 +290,16 @@ public class WorkitemController {
     @RequestMapping(value = "/reallocate", produces = { "application/json", "application/xml"})
     @ResponseBody
     @Transactional
-    public ReturnModel ReallocateWorkitem(@RequestParam(value="token", required = false)String token,
-                                          @RequestParam(value="workerId", required = false)String workerId,
+    public ReturnModel ReallocateWorkitem(@RequestParam(value="workerId", required = false)String workerId,
                                           @RequestParam(value="workitemId", required = false)String workitemId) {
         ReturnModel rnModel = new ReturnModel();
         try {
             // miss params
             List<String> missingParams = new ArrayList<>();
-            if (token == null) missingParams.add("token");
             if (workerId == null) missingParams.add("workerId");
             if (workitemId == null) missingParams.add("workitemId");
             if (missingParams.size() > 0) {
                 return ReturnModelHelper.MissingParametersResponse(missingParams);
-            }
-            // check authorization
-            if (!CheckToken(token)) {
-                return ReturnModelHelper.UnauthorizedResponse(token);
             }
             // logic
             WorkitemContext workitem = WorkitemContext.GetContext(workitemId, null);
@@ -380,7 +320,6 @@ public class WorkitemController {
 
     /**
      * Deallocate a workitem by auth user.
-     * @param token auth token
      * @param workerId worker global id
      * @param workitemId workitem global id
      * @return response package in JSON
@@ -388,22 +327,16 @@ public class WorkitemController {
     @RequestMapping(value = "/deallocate", produces = { "application/json", "application/xml"})
     @ResponseBody
     @Transactional
-    public ReturnModel DeallocateWorkitem(@RequestParam(value="token", required = false)String token,
-                                          @RequestParam(value="workerId", required = false)String workerId,
+    public ReturnModel DeallocateWorkitem(@RequestParam(value="workerId", required = false)String workerId,
                                           @RequestParam(value="workitemId", required = false)String workitemId) {
         ReturnModel rnModel = new ReturnModel();
         try {
             // miss params
             List<String> missingParams = new ArrayList<>();
-            if (token == null) missingParams.add("token");
             if (workerId == null) missingParams.add("workerId");
             if (workitemId == null) missingParams.add("workitemId");
             if (missingParams.size() > 0) {
                 return ReturnModelHelper.MissingParametersResponse(missingParams);
-            }
-            // check authorization
-            if (!CheckToken(token)) {
-                return ReturnModelHelper.UnauthorizedResponse(token);
             }
             // logic
             WorkitemContext workitem = WorkitemContext.GetContext(workitemId, null);

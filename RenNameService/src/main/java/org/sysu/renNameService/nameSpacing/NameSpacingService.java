@@ -251,11 +251,25 @@ public class NameSpacingService {
      *
      * @param args argument map to sent
      */
-    public static void TransshipCallback(Hashtable<String, Object> args) throws Exception {
+    public static String TransshipCallback(Hashtable<String, Object> args) throws Exception {
         HashMap<String, String> argMap = new HashMap<>();
         for (Map.Entry<String, Object> kvp : args.entrySet()) {
             argMap.put(kvp.getKey(), (String) kvp.getValue());
         }
-        GlobalContext.Interaction.Send(GlobalContext.URL_BOENGINE_CALLBACK, argMap, argMap.get("rtid"));
+        return GlobalContext.Interaction.Send(GlobalContext.URL_BOENGINE_CALLBACK, argMap, argMap.get("rtid"));
+    }
+
+    /**
+     * Handle transshipment of workitem actions.
+     *
+     * @param action     action name
+     * @param workitemId workitem global id
+     * @param workerId   worker global id
+     */
+    public static String TransshipWorkitem(String action, String workitemId, String workerId) throws Exception {
+        HashMap<String, String> argMap = new HashMap<>();
+        argMap.put("workitemId", workitemId);
+        argMap.put("workerId", workerId);
+        return GlobalContext.Interaction.Send(GlobalContext.URL_RS_WORKITEM_GATEWAY + action, argMap, "");
     }
 }
