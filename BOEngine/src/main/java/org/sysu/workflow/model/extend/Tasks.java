@@ -1,3 +1,7 @@
+/*
+ * Project Ren @ 2018
+ * Rinkako, Ariana, Gordan. SYSU SDCS.
+ */
 package org.sysu.workflow.model.extend;
 
 import java.io.Serializable;
@@ -5,8 +9,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * 任务容器类：为任务标签下的业务流程对象提供容器
- * Created by Rinkako on 2017/3/7.
+ * Author: Rinkako
+ * Date  : 2017/3/7
+ * Usage : Label context of Tasks.
  */
 public class Tasks implements Serializable {
     /**

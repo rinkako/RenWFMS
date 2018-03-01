@@ -1,3 +1,7 @@
+/*
+ * Project Ren @ 2018
+ * Rinkako, Ariana, Gordan. SYSU SDCS.
+ */
 package org.sysu.workflow.env;
 
 import org.sysu.workflow.EventDispatcher;
@@ -15,29 +19,22 @@ import java.io.Serializable;
 import java.util.*;
 
 /**
- * Created with IntelliJ IDEA
- * Date: 2016/1/4
- * Time: 20:29
- * User: zhengshouzi
- * GitHub: <a>https://github.com/ThinerZQ</a>
- * Blog: <a>http://blog.csdn.net/c601097836</a>
- * Email: 601097836@qq.com
- * <p/>
- * ?????????????????????????? ????????????
- * ?????????????????????????????????????????????scxml?????????????????? J2SE ?? Timer
- * ????????????????-
+ * Author: Rinkako
+ * Date  : 2017/7/20
+ * Usage : Handle event dispatching on the instance tree.
  */
-public class MulitStateMachineDispatcher extends SimpleDispatcher implements Serializable {
-
+public class MultiStateMachineDispatcher extends SimpleDispatcher implements Serializable {
 
     /**
      * Serial version UID.
      */
     private static final long serialVersionUID = 1L;
+
     /**
      * Implementation independent log category.
      */
     private Log log = LogFactory.getLog(EventDispatcher.class);
+
     /**
      * The <code>Map</code> of active <code>Timer</code>s, keyed by
      * &lt;send&gt; element <code>id</code>s.
@@ -98,12 +95,11 @@ public class MulitStateMachineDispatcher extends SimpleDispatcher implements Ser
     }
 
     @Override
-    public void send(String treeId, String currentSessionId, String id, String target, MessageMode messageMode, String targetName, String targetState, String type, String event, Object data, Object hints, long delay) {
+    public void send(String treeId, String currentSessionId, String id, MessageMode messageMode, String targetName, String targetState, String type, String event, Object data, Object hints, long delay) {
 
         if (log.isInfoEnabled()) {
             StringBuilder buf = new StringBuilder();
             buf.append("send ( id: ").append(id);
-            buf.append(", target: ").append(target);
             buf.append(", messageMode: ").append(messageMode);
             buf.append(", targetName: ").append(targetName);
             buf.append(", targetState: ").append(targetState);
@@ -147,10 +143,7 @@ public class MulitStateMachineDispatcher extends SimpleDispatcher implements Ser
                     sendBroadCast(treeId, currentSessionId, targetName, targetState, event, data, hints, delay);
                     break;
                 case MULTICAST:
-                    // TODO:
-                    break;
-                case UNICAST:
-                    sendUniCast(treeId, currentSessionId, targetName, targetState, event, data, hints, delay);
+                    sendMulticast(treeId, currentSessionId, targetName, targetState, event, data, hints, delay);
                     break;
                 case TO_PARENT:
                     sendToParent(treeId, currentSessionId, targetName, targetState, event, data, hints, delay);
@@ -167,18 +160,13 @@ public class MulitStateMachineDispatcher extends SimpleDispatcher implements Ser
                 case TO_SIBLING:
                     sendToSibling(treeId, currentSessionId, targetName, targetState, event, data, hints, delay);
                     break;
+                case UNICAST:
+                    sendUnicast(treeId, currentSessionId, targetName, targetState, event, data, hints, delay);
+                    break;
                 default:
-                    //???
-                    System.out.println("???????????");
+                    System.out.println("Unknown message mode");
                     break;
             }
-        } else {
-            //????????????? I/O ??????
-          /*  if (log.isWarnEnabled()) {
-                log.warn("<send>: Unsupported type - " + type);
-            }
-            ioProcessors.get(SCXMLIOProcessor.INTERNAL_EVENT_PROCESSOR).
-                    addEvent(new TriggerEvent(TriggerEvent.ERROR_EXECUTION, TriggerEvent.ERROR_EVENT));*/
         }
     }
 
@@ -293,7 +281,7 @@ public class MulitStateMachineDispatcher extends SimpleDispatcher implements Ser
     }
 
     /**
-     * send the event to all the slbings of the current node
+     * send the event to all the siblings of the current node
      * @param treeId the tree id equals to the root id of the instance tree
      * @param currentSessionId the id of the current node
      * @param targetName
@@ -307,16 +295,36 @@ public class MulitStateMachineDispatcher extends SimpleDispatcher implements Ser
     private boolean sendToSibling(String treeId, String currentSessionId, String targetName, String targetState, String event, Object data, Object hints, long delay) {
         ArrayList<RTreeNode> targetTreeNodeList;
         if(targetName != null && !"".equals(targetName)) {
-            //only get those slbings whose name is equals to the targetName
+            //only get those siblings whose name is equals to the targetName
             targetTreeNodeList = InstanceManager.GetInstanceTree(treeId).GetSiblingsVectorByTarget(currentSessionId, targetName);
         } else {
-            //get all the slbings
+            //get all the siblings
             targetTreeNodeList = InstanceManager.GetInstanceTree(treeId).GetSiblingsVector(currentSessionId);
         }
         // get the current tree node by currentSessionId
         RTreeNode currentTreeNode = InstanceManager.GetInstanceTree(treeId).GetNodeById(currentSessionId);
         String eventPrefix = currentTreeNode != InstanceManager.GetInstanceTree(treeId).Root ? currentTreeNode.getName() + "." : "";
         sendToTarget(targetTreeNodeList, targetState, eventPrefix + event, data);
+        return true;
+    }
+
+    /**
+     * send the event to all the siblings of the current node
+     * @param treeId the tree id equals to the root id of the instance tree
+     * @param currentSessionId the id of the current node
+     * @param targetGid target node global id
+     * @param targetState
+     * @param event
+     * @param data
+     * @param hints
+     * @param delay
+     * @return
+     */
+    private boolean sendUnicast(String treeId, String currentSessionId, String targetGid, String targetState, String event, Object data, Object hints, long delay) {
+        RTreeNode destination = InstanceManager.GetInstanceTree(treeId).GetNodeById(targetGid);
+        RTreeNode currentTreeNode = InstanceManager.GetInstanceTree(treeId).GetNodeById(currentSessionId);
+        String eventPrefix = currentTreeNode != InstanceManager.GetInstanceTree(treeId).Root ? currentTreeNode.getName() + "." : "";
+        sendToTarget(destination, targetState, eventPrefix + event, data);
         return true;
     }
 
@@ -351,7 +359,7 @@ public class MulitStateMachineDispatcher extends SimpleDispatcher implements Ser
     }
 
     /**
-     * send the event to the tree node according to the specified target name
+     * send the event to the tree node according to the specified target name.
      * @param treeId
      * @param currentSessionId
      * @param targetName
@@ -362,7 +370,7 @@ public class MulitStateMachineDispatcher extends SimpleDispatcher implements Ser
      * @param delay
      * @return
      */
-    private boolean sendUniCast(String treeId, String currentSessionId, String targetName, String targetState, String event, Object data, Object hints, long delay) {
+    private boolean sendMulticast(String treeId, String currentSessionId, String targetName, String targetState, String event, Object data, Object hints, long delay) {
         ArrayList<RTreeNode> targetTreeNodeList;
         //get the target node list by the target name
         if(targetName != null && !"".equals(targetName)){
@@ -414,7 +422,7 @@ public class MulitStateMachineDispatcher extends SimpleDispatcher implements Ser
                         e.printStackTrace();
                     }
                 } else {
-                    System.out.println("no this  scxml executor");
+                    System.out.println("no this scxml executor");
                 }
             }
         }

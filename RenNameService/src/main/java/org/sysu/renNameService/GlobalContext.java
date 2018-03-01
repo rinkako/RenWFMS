@@ -12,10 +12,11 @@ import java.util.UUID;
  * Usage : This class is used to store runtime context.
  */
 public final class GlobalContext {
+
     /**
      * Name service micro-service global id.
      */
-    public static final String NAME_SERVICE_GLOBAL_ID = UUID.randomUUID().toString();
+    public static final String NAME_SERVICE_GLOBAL_ID = String.format("WFMSComponent_NS_%s", UUID.randomUUID().toString());
 
     /**
      * Main internal interaction router.

@@ -1,7 +1,10 @@
-
+/*
+ * Project Ren @ 2018
+ * Rinkako, Ariana, Gordan. SYSU SDCS.
+ */
 package org.sysu.workflow.model;
 
-import org.sysu.workflow.env.MulitStateMachineDispatcher;
+import org.sysu.workflow.env.MultiStateMachineDispatcher;
 import org.sysu.workflow.env.SimpleDispatcher;
 import org.sysu.workflow.model.extend.MessageMode;
 import org.apache.commons.logging.Log;
@@ -11,8 +14,9 @@ import java.util.LinkedHashMap;
 import java.util.Map;
 
 /**
- *
- *
+ * Author: Rinkako
+ * Date  : 2017/7/20
+ * Usage : Label context of Send.
  */
 public class Send extends NamelistHolder implements ContentContainer {
 
@@ -22,17 +26,17 @@ public class Send extends NamelistHolder implements ContentContainer {
     private static final long serialVersionUID = 1L;
 
     /**
-     * 延时时间后缀：毫秒
+     * Millisecond unit string.
      */
     private static final String MILLIS = "ms";
 
     /**
-     * 延时时间后缀：秒
+     * Second unit string.
      */
     private static final String SECONDS = "s";
 
     /**
-     * 延时时间后缀：分钟
+     * Minute unit string.
      */
     private static final String MINUTES = "m";
 
@@ -58,8 +62,6 @@ public class Send extends NamelistHolder implements ContentContainer {
 
     /**
      * The target location of the event.
-     *
-     * 事件的目标位置
      */
     private String target;
 
@@ -71,8 +73,6 @@ public class Send extends NamelistHolder implements ContentContainer {
 
     /**
      * The type of the Event I/O Processor that the event should be dispatched to.
-     *
-     * 事件I/O 处理器类型，，scxml/ http
      */
     private String type;
 
@@ -83,8 +83,6 @@ public class Send extends NamelistHolder implements ContentContainer {
 
     /**
      * The delay the event is dispatched after.
-     * 事件的延时
-     *
      */
     private String delay;
 
@@ -94,39 +92,37 @@ public class Send extends NamelistHolder implements ContentContainer {
     private String delayexpr;
 
     /**
-     * The data containing information which may be used by the implementing platform to configure the event processor.、
-     * 平台相关的
+     * The data containing information which may be used by the implementing platform to configure the event processor.
      */
     private String hints;
 
     /**
      * The type of event being generated.
-     *
-     * 生成的事件
      */
     private String event;
 
     /**
      * An expression defining the type of event being generated.
-     * 类型表达式
      */
     private String eventexpr;
 
-
     /**
-     * BOO引擎的消息发送机制扩展的内容
+     * Message spreading mode on instance tree.
      */
     private String messageMode;
 
+    /**
+     * Target BO Name.
+     */
     private String targetName;
 
+    /**
+     * Target BO State.
+     */
     private String targetState;
-
-
 
     /**
      * The &lt;content/&gt; of this send
-     * 发送的内容
      */
     private Content content;
 
@@ -470,10 +466,10 @@ public class Send extends NamelistHolder implements ContentContainer {
                     + typeValue + "' with suggested delay of " + wait
                     + "ms");
         }
-        if (exctx.getEventDispatcher() instanceof MulitStateMachineDispatcher){
+        if (exctx.getEventDispatcher() instanceof MultiStateMachineDispatcher){
             if (messageModeValue != null) {
                 SCXMLExecutionContext execctx = (SCXMLExecutionContext)exctx.getInternalIOProcessor();
-                exctx.getEventDispatcher().send(execctx.RootTid, execctx.Tid, id, targetValue, messageModeValue,
+                exctx.getEventDispatcher().send(execctx.RootTid, execctx.Tid, id, messageModeValue,
                         targetNameValue, targetStateValue, typeValue, eventValue, payloadDataMap, hintsValue, wait);
             } else {
                 exctx.getEventDispatcher().send(ioProcessors, id, targetValue, typeValue, eventValue,
@@ -500,12 +496,9 @@ public class Send extends NamelistHolder implements ContentContainer {
      */
     private long parseDelay(final String delayString, final Log appLog)
             throws SCXMLExpressionException {
-
         long wait = 0L;
         long multiplier = 1L;
-
         if (delayString != null && delayString.trim().length() > 0) {
-
             String trimDelay = delayString.trim();
             String numericDelay = trimDelay;
             if (trimDelay.endsWith(MILLIS)) {
@@ -517,7 +510,6 @@ public class Send extends NamelistHolder implements ContentContainer {
                 multiplier = MILLIS_IN_A_MINUTE;
                 numericDelay = trimDelay.substring(0, trimDelay.length() - 1);
             }
-
             try {
                 wait = Long.parseLong(numericDelay);
             } catch (NumberFormatException nfe) {
@@ -525,7 +517,6 @@ public class Send extends NamelistHolder implements ContentContainer {
                 throw new SCXMLExpressionException(nfe.getMessage(), nfe);
             }
             wait *= multiplier;
-
         }
         return wait;
     }

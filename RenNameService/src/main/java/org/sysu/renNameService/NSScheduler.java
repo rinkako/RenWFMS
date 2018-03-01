@@ -35,7 +35,7 @@ public class NSScheduler implements Observer {
     public Object Schedule(NameServiceTransaction nst) {
         switch (GlobalContext.CONCURRENT_CONTROL_TYPE) {
             case None:
-                return this.LaunchTransactionDirectly(nst);
+                return this.ScheduleSync(nst);
             case StandaloneControl:
                 this.TransactionQueue.add(nst);
                 LogUtil.Log(String.format("Schedule NSTransaction to queue: %s", nst.getTransactionContext().getNsid()),
@@ -77,7 +77,7 @@ public class NSScheduler implements Observer {
      * @param nst NameServiceTransaction instance
      * @return execution result
      */
-    private Object LaunchTransactionDirectly(NameServiceTransaction nst) {
+    public Object ScheduleSync(NameServiceTransaction nst) {
         LogUtil.Log(String.format("NSTransaction is scheduled to execute: %s", nst.getTransactionContext().getNsid()),
                 NSScheduler.class.getName(), nst.getTransactionContext().getRtid());
         nst.getTransactionContext().setScheduledTimestamp(TimestampUtil.GetCurrentTimestamp());

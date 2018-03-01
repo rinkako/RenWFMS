@@ -1,5 +1,5 @@
 package org.sysu.workflow.io;
-import org.sysu.workflow.bridge.InheritableContext;
+import org.sysu.workflow.model.extend.InheritableContext;
 import org.sysu.workflow.model.SCXML;
 
 import java.net.URL;

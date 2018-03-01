@@ -3,7 +3,7 @@ package org.sysu.workflow.io;
 
 import org.sysu.workflow.Evaluator;
 import org.sysu.workflow.PathResolver;
-import org.sysu.workflow.bridge.InheritableContext;
+import org.sysu.workflow.model.extend.InheritableContext;
 import org.sysu.workflow.env.SimpleErrorHandler;
 import org.sysu.workflow.env.URLResolver;
 import org.apache.commons.logging.LogFactory;
@@ -1297,7 +1297,6 @@ public final class SCXMLReader {
         tk.setBrole(readRequiredAV(reader, ELEM_BOO_TASK, ATTR_BOO_BROLE));
         tk.setPrinciple(readAV(reader, ATTR_BOO_PRINCIPLE));
         tk.setEvent(readRequiredAV(reader, ELEM_BOO_TASK, ATTR_EVENT));
-        tk.setInstanceExpr(readAV(reader, ATTR_BOO_INSTANCESEXPR));//实际已经没这个属性了
 
         loop:
         while (reader.hasNext()) {

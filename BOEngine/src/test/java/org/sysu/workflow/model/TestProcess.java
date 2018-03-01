@@ -1,7 +1,7 @@
 package org.sysu.workflow.model;
 
 import org.sysu.workflow.*;
-import org.sysu.workflow.env.MulitStateMachineDispatcher;
+import org.sysu.workflow.env.MultiStateMachineDispatcher;
 import org.sysu.workflow.env.SimpleErrorReporter;
 import org.sysu.workflow.env.jexl.JexlEvaluator;
 import org.sysu.workflow.io.SCXMLReader;
@@ -21,7 +21,7 @@ public class TestProcess {
             //实例化数据模型解析器
             Evaluator evaluator = new JexlEvaluator();
             //实例化引擎
-            SCXMLExecutor executor = new SCXMLExecutor(evaluator, new MulitStateMachineDispatcher(), new SimpleErrorReporter());
+            SCXMLExecutor executor = new SCXMLExecutor(evaluator, new MultiStateMachineDispatcher(), new SimpleErrorReporter());
 
             executor.setStateMachine(scxml);
             Context rootConext = evaluator.newContext(null);

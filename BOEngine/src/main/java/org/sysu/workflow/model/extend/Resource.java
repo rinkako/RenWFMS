@@ -1,16 +1,21 @@
+/*
+ * Project Ren @ 2018
+ * Rinkako, Ariana, Gordan. SYSU SDCS.
+ */
 package org.sysu.workflow.model.extend;
 
 import org.sysu.workflow.ActionExecutionContext;
-import org.sysu.workflow.SCXMLExpressionException;
 import org.sysu.workflow.model.Action;
-import org.sysu.workflow.model.ModelException;
 
 import java.io.Serializable;
 
 /**
- * Created by Rinkako on 2017/6/15.
+ * Author: Rinkako
+ * Date  : 2017/6/15
+ * Usage : Label context of Resource.
  */
 public class Resource extends Action implements Serializable {
+
     /**
      * Serial version UID.
      */

@@ -1,3 +1,7 @@
+/*
+ * Project Ren @ 2018
+ * Rinkako, Ariana, Gordan. SYSU SDCS.
+ */
 package org.sysu.workflow.model.extend;
 
 import org.sysu.workflow.*;
@@ -14,8 +18,9 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * Call标签类
- * Created by Rinkako on 2017/3/8.
+ * Author: Rinkako
+ * Date  : 2017/3/8
+ * Usage : Label context of Call.
  */
 public class Call extends ParamsContainer implements Serializable {
     /**

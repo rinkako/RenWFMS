@@ -1,3 +1,7 @@
+/*
+ * Project Ren @ 2018
+ * Rinkako, Ariana, Gordan. SYSU SDCS.
+ */
 package org.sysu.workflow.model.extend;
 
 import org.sysu.workflow.ActionExecutionContext;
@@ -10,9 +14,12 @@ import java.util.LinkedList;
 import java.util.List;
 
 /**
- * Created by Rinkako on 2017/6/15.
+ * Author: Rinkako
+ * Date  : 2017/6/15
+ * Usage : Label context of Resources.
  */
 public class Resources extends ParamsContainer implements Serializable {
+
     /**
      * Serial version UID.
      */

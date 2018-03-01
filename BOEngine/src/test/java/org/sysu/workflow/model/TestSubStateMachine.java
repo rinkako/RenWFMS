@@ -22,7 +22,7 @@ public class TestSubStateMachine {
             Evaluator evaluator = new JexlEvaluator();
 
             //ʵ��������
-            SCXMLExecutor executor = new SCXMLExecutor(evaluator, new MulitStateMachineDispatcher(), new SimpleErrorReporter());
+            SCXMLExecutor executor = new SCXMLExecutor(evaluator, new MultiStateMachineDispatcher(), new SimpleErrorReporter());
 
             executor.setStateMachine(scxml);
 

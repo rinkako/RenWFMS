@@ -6,7 +6,7 @@ import org.sysu.workflow.Context;
 import org.sysu.workflow.Evaluator;
 import org.sysu.workflow.EvaluatorFactory;
 import org.sysu.workflow.SCXMLExecutor;
-import org.sysu.workflow.env.MulitStateMachineDispatcher;
+import org.sysu.workflow.env.MultiStateMachineDispatcher;
 import org.sysu.workflow.env.SimpleErrorReporter;
 import org.sysu.workflow.io.SCXMLReader;
 import org.sysu.workflow.model.SCXML;
@@ -43,24 +43,6 @@ public final class LaunchProcessService {
         Session session = HibernateUtil.GetLocalSession();
         Transaction transaction = session.beginTransaction();
         try {
-            //根据process id从db中找到该process关联的bo(可能是多个)
-//            List pbResult = session.createQuery(String.format("FROM RenProcessboEntity WHERE pid = '%s'", pid)).list();
-//            for (Object pb : pbResult) {
-//                RenProcessboEntity renProcessboEntity = (RenProcessboEntity) pb;
-//                String boid = renProcessboEntity.getBoid();
-//                //根据bo id找到root bo的content
-//                if(boid.equals(roid)) {
-//                    List boResult = session.createQuery(String.format("FROM RenBoEntity WHERE boid = '%s'", boid)).list();
-//                    for (Object bo : boResult) {
-//                        RenBoEntity boEntity = (RenBoEntity) bo;
-//                        String boContent = boEntity.getBoContent();
-//                        //read bo content and then go it
-//                        LaunchProcessService.ExecuteBO(boContent);
-//                        break;
-//                    }
-//                    break;
-//                }
-//            }
             RenRuntimerecordEntity rre = session.get(RenRuntimerecordEntity.class, rtid);
             assert rre != null;
             String pid = rre.getProcessId();
@@ -71,8 +53,6 @@ public final class LaunchProcessService {
             for(Object bo:boList) {
                 RenBoEntity boEntity = (RenBoEntity) bo;
                 if(boEntity.getBoName().equals(mainBO)) {
-//                    String boContent = boEntity.getBoContent();
-//                    ExecuteBO(boContent);
                     byte[] serializedBO = boEntity.getSerialized();
                     SCXML DeserializedBO = DeserializationSCXMLByByteArray(serializedBO);
                     LaunchProcessService.ExecuteBO(DeserializedBO, rtid, pid);
@@ -100,7 +80,7 @@ public final class LaunchProcessService {
         try {
 //          Evaluator evaluator = new JexlEvaluator();
             Evaluator evaluator = EvaluatorFactory.getEvaluator(scxml);
-            SCXMLExecutor executor = new SCXMLExecutor(evaluator, new MulitStateMachineDispatcher(), new SimpleErrorReporter());
+            SCXMLExecutor executor = new SCXMLExecutor(evaluator, new MultiStateMachineDispatcher(), new SimpleErrorReporter());
             //初始化执行上下文
             Context rootContext = evaluator.newContext(null);
             executor.setRootContext(rootContext);

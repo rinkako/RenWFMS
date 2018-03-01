@@ -1,3 +1,7 @@
+/*
+ * Project Ren @ 2018
+ * Rinkako, Ariana, Gordan. SYSU SDCS.
+ */
 package org.sysu.workflow.model.extend;
 
 import org.sysu.workflow.ActionExecutionContext;
@@ -12,8 +16,9 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * 子过程类，状态转移或进入动作时调用一个子过程
- * Created by LittleHuiHui on 2017/4/15.
+ * Author: Ariana
+ * Date  : 2017/4/15
+ * Usage : Label context of SubProcess.
  */
 public class SubProcess extends Action implements Serializable {
     /**

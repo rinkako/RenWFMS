@@ -1,7 +1,7 @@
 
 package org.sysu.workflow.model;
 
-import org.sysu.workflow.bridge.InheritableContext;
+import org.sysu.workflow.model.extend.InheritableContext;
 import org.sysu.workflow.model.extend.Resources;
 import org.sysu.workflow.model.extend.Tasks;
 

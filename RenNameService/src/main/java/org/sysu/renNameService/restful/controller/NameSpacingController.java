@@ -339,42 +339,49 @@ public class NameSpacingController {
 
     /**
      * Send a callback event to engine.
-     * @param token auth token (required)
+     * @param signature domain signature key (required)
      * @param rtid process rtid (required)
+     * @param bo from which BO (required)
      * @param on which callback scene (required)
      * @param event event send to engine (required)
+     * @param payload event send to engine (required)
      * @return response package
      */
     @RequestMapping(value = "/callback", produces = {"application/json", "application/xml"})
     @ResponseBody
     @Transactional
-    public ReturnModel Callback(@RequestParam(value="token", required = false)String token,
+    public ReturnModel Callback(@RequestParam(value="signature", required = false)String signature,
                                 @RequestParam(value="rtid", required = false)String rtid,
+                                @RequestParam(value="bo", required = false)String bo,
                                 @RequestParam(value="on", required = false)String on,
-                                @RequestParam(value="event", required = false)String event) {
+                                @RequestParam(value="event", required = false)String event,
+                                @RequestParam(value="payload", required = false)String payload) {
         ReturnModel rnModel = new ReturnModel();
         try {
             // miss params
             List<String> missingParams = new ArrayList<>();
-            if (token == null) missingParams.add("token");
+            if (signature == null) missingParams.add("signature");
             if (rtid == null) missingParams.add("rtid");
+            if (bo == null) missingParams.add("bo");
             if (on == null) missingParams.add("on");
             if (event == null) missingParams.add("event");
+            if (payload == null) missingParams.add("payload");
             if (missingParams.size() > 0) {
                 return ReturnModelHelper.MissingParametersResponse(missingParams);
             }
-            // token check
-            // todo here should use signature instead?
-            if (!AuthorizationService.CheckValid(token)) {
-                return ReturnModelHelper.UnauthorizedResponse(token);
-            }
+            // todo signature check
+//            if (!AuthorizationService.CheckValid(token)) {
+//                return ReturnModelHelper.UnauthorizedResponse(token);
+//            }
             // logic
             HashMap<String, String> args = new HashMap<>();
-            args.put("on", on);
             args.put("rtid", rtid);
+            args.put("on", on);
+            args.put("bo", bo);
             args.put("event", event);
+            args.put("payload", event);
             NameServiceTransaction t = TransactionCreator.Create(TransactionType.Namespacing, "callback", args);
-            String jsonifyResult = (String) NameSpacingController.scheduler.Schedule(t);
+            String jsonifyResult = (String) NameSpacingController.scheduler.ScheduleSync(t);
             // return
             ReturnModelHelper.StandardResponse(rnModel, StatusCode.OK, jsonifyResult);
         } catch (Exception e) {

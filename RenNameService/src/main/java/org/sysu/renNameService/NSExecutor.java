@@ -42,9 +42,9 @@ public class NSExecutor extends Observable {
      */
     public Object ExecuteSync(NameServiceTransaction nst) {
         RenNsTransactionEntity context = nst.getTransactionContext();
+        Hashtable<String, Object> execResult = new Hashtable<>();
         try {
             TransactionType tType = TransactionType.values()[context.getType()];
-            Hashtable<String, Object> execResult = new Hashtable<>();
             String act = (String) nst.getParameterDictionary().get(GlobalContext.TRANSACTION_ACTION_KEY);
             Hashtable<String, Object> args = nst.getParameterDictionary();
             String retStr = null;
@@ -165,14 +165,16 @@ public class NSExecutor extends Observable {
             finally {
                 HibernateUtil.CloseLocalSession();
             }
-            // bubble notification to scheduler or tracker which supervise this executor
-            this.setChanged();
-            this.notifyObservers(execResult);
             return retStr;
         }
         catch (Exception ex) {
             LogUtil.Log("Executor Exception Occurred, " + ex, NSExecutor.class.getName(),
                     LogUtil.LogLevelType.ERROR, context.getRtid());
+        }
+        finally {
+            // bubble notification to scheduler or tracker which supervise this executor
+            this.setChanged();
+            this.notifyObservers(execResult);
         }
         return null;
     }

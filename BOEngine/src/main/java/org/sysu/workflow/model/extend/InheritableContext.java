@@ -1,16 +1,19 @@
-package org.sysu.workflow.bridge;
+/*
+ * Project Ren @ 2018
+ * Rinkako, Ariana, Gordan. SYSU SDCS.
+ */
+package org.sysu.workflow.model.extend;
 
 import org.sysu.workflow.model.Data;
 import org.sysu.workflow.model.Datamodel;
-import org.sysu.workflow.model.extend.SubProcess;
-import org.sysu.workflow.model.extend.Task;
-import org.sysu.workflow.model.extend.Tasks;
 
 import java.io.Serializable;
 import java.util.List;
+
 /**
- * Business Object Inheritable Context
- * This class is used to generate InheritableContext of the BO for the runtime.
+ * Author: Rinkako
+ * Date  : 2017/11/22
+ * Usage : This class is used to generate InheritableContext of the BO for the runtime.
  */
 public class InheritableContext implements Serializable {
 
@@ -19,20 +22,29 @@ public class InheritableContext implements Serializable {
      */
     private static final long serialVersionUID = 2L;
 
+    /**
+     * Inherited data model.
+     */
     private Datamodel InheritedDatamodel;
+
+    /**
+     * Inherited tasks.
+     */
     private Tasks InheritedTasks;
 
-    public boolean UpdateDataModel(Datamodel dm) {
-        boolean newFlag = false;
+    /**
+     * Update inherited data model.
+     * @param dm data model to add to inheritable context.
+     */
+    public void UpdateDataModel(Datamodel dm) {
         if (this.InheritedDatamodel == null) {
             this.InheritedDatamodel = dm;
-            newFlag = true;
         }
         else {
             List<Data> data = dm.getData();
             List<Data> orgData = this.InheritedDatamodel.getData();
             for (Data d : data) {
-                //如果可继承上下文的datamodel中拥有同名的data,就用当前步所得到的新data对象替换掉旧data对象
+                // 如果可继承上下文的datamodel中拥有同名的data,就用当前步所得到的新data对象替换掉旧data对象
                 boolean temp = false;
                 for (int i = 0; i < orgData.size(); i++) {
                     if (orgData.get(i).getId().equals(d.getId())) {
@@ -41,30 +53,27 @@ public class InheritableContext implements Serializable {
                         break;
                     }
                 }
-                //否则将新data插入到可继承上下文的datamodel中。
-                if(temp == false){
+                // 否则将新data插入到可继承上下文的datamodel中
+                if(!temp){
                     orgData.add(d);
                 }
             }
-            //使用新的orgData更新可继承上下文的datamodel
+            // 使用新的orgData更新可继承上下文的datamodel
             Datamodel datamodel = new Datamodel();
             for(Data d:orgData){
                 datamodel.addData(d);
             }
             this.InheritedDatamodel = datamodel;
         }
-        return newFlag;
     }
 
-    public Datamodel getInheritedDatamodel() {
-        return InheritedDatamodel;
-    }
-
-    public boolean UpdateTasks(Tasks ts) {
-        boolean newFlag = false;
+    /**
+     * Update inherited task list.
+     * @param ts Tasks to add to inheritable context.
+     */
+    public void UpdateTasks(Tasks ts) {
         if (this.InheritedTasks == null) {
             this.InheritedTasks = ts;
-            newFlag = true;
         }
         else {
             List<Task> taskList = ts.getTaskList();
@@ -80,7 +89,7 @@ public class InheritableContext implements Serializable {
                     }
                 }
                 //否则将新task插入到可继承上下文的tasks中。
-                if(temp == false){
+                if(!temp){
                     orgTaskList.add(t);
                 }
             }
@@ -98,7 +107,7 @@ public class InheritableContext implements Serializable {
                     }
                 }
                 //否则将新subprocess插入到可继承上下文的subprocess中。
-                if(temp == false){
+                if(!temp){
                     orgProcList.add(p);
                 }
             }
@@ -113,16 +122,36 @@ public class InheritableContext implements Serializable {
             }
             this.InheritedTasks = tasks;
         }
-        return newFlag;
     }
+
+    /**
+     * Get inherited data model.
+     * @return Datamodel
+     */
+    public Datamodel getInheritedDatamodel() {
+        return InheritedDatamodel;
+    }
+
+    /**
+     * Get inherited data model.
+     * @param inheritedDatamodel Datamodel to be set
+     */
     public void setInheritedDatamodel(Datamodel inheritedDatamodel) {
         InheritedDatamodel = inheritedDatamodel;
     }
 
+    /**
+     * Get inheritable tasks.
+     * @return Tasks
+     */
     public Tasks getInheritedTasks() {
         return InheritedTasks;
     }
 
+    /**
+     * Set inheritable tasks.
+     * @param inheritedTasks Tasks to be set
+     */
     public void setInheritedTasks(Tasks inheritedTasks) {
         InheritedTasks = inheritedTasks;
     }

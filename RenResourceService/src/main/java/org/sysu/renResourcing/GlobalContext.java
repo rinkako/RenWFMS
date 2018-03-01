@@ -1,7 +1,5 @@
 package org.sysu.renResourcing;
 
-import org.sysu.renCommon.GlobalConfigContext;
-
 import java.util.UUID;
 
 /**
@@ -10,10 +8,11 @@ import java.util.UUID;
  * Usage :
  */
 public class GlobalContext {
+
     /**
      * Resource service micro-service global id.
      */
-    public static String RESOURCE_SERVICE_GLOBAL_ID = UUID.randomUUID().toString();
+    public static String RESOURCE_SERVICE_GLOBAL_ID = String.format("WFMSComponent_RS_%s", UUID.randomUUID().toString());
 
     /**
      * Response message of successfully queued request.
