@@ -39,14 +39,14 @@ public final class GlobalContext {
     public static final String TRANSACTION_ACTION_KEY = "?action";
 
     /**
-     * Transaction executor success flag string.
-     */
-    public static final String TRANSACTION_EXECUTOR_SUCCESS = "success";
-
-    /**
      * Name of administrator of a domain.
      */
     public static final String DOMAIN_ADMIN_NAME = "admin";
+
+    /**
+     * Transaction executor success flag string.
+     */
+    public static final String TRANSACTION_EXECUTOR_SUCCESS = "success";
 
     /**
      * Transaction executor fail flag string.
@@ -76,5 +76,10 @@ public final class GlobalContext {
     /**
      * Service URL for BO Engine Serialization BO.
      */
-    public static final String URL_BOENGINE_SERIALIZEBO = "http://localhost:10232/boengine/serializeBO";
+    public static final String URL_BOENGINE_SERIALIZEBO = "http://localhost:10232/gateway/serializeBO";
+
+    /**
+     * Service URL for BO Engine event callback.
+     */
+    public static final String URL_BOENGINE_CALLBACK = "http://localhost:10232/gateway/callback";
 }

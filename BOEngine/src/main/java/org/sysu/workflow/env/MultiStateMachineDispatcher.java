@@ -178,6 +178,7 @@ public class MultiStateMachineDispatcher extends SimpleDispatcher implements Ser
      * @param hints         The data containing information which may be used by the implementing platform to configure the event processor
      * @param delay         The event is dispatched after the delay interval elapses
      */
+    @SuppressWarnings("all")
     private void sendToParent(String treeId, String currentNodeId, String targetName, String targetState, String event, Object data, Object hints, long delay) {
         //get the current tree node by currentNodeId
         RTreeNode currentNode = InstanceManager.GetInstanceTree(treeId).GetNodeById(currentNodeId);
@@ -202,6 +203,7 @@ public class MultiStateMachineDispatcher extends SimpleDispatcher implements Ser
      * @param hints         The data containing information which may be used by the implementing platform to configure the event processor
      * @param delay         The event is dispatched after the delay interval elapses
      */
+    @SuppressWarnings("all")
     private void sendToChild(String treeId, String currentNodeId, String targetName, String targetState, String event, Object data, Object hints, long delay) {
         ArrayList<RTreeNode> targetTreeNodeList;
         //get the current tree node by currentNodeId
@@ -229,6 +231,7 @@ public class MultiStateMachineDispatcher extends SimpleDispatcher implements Ser
      * @param hints         The data containing information which may be used by the implementing platform to configure the event processor
      * @param delay         The event is dispatched after the delay interval elapses
      */
+    @SuppressWarnings("all")
     private void sendToAncestor(String treeId, String currentNodeId, String targetName, String targetState, String event, Object data, Object hints, long delay) {
         ArrayList<RTreeNode> targetTreeNodeList;
         if (targetName != null && !"".equals(targetName)) {
@@ -256,6 +259,7 @@ public class MultiStateMachineDispatcher extends SimpleDispatcher implements Ser
      * @param hints         The data containing information which may be used by the implementing platform to configure the event processor
      * @param delay         The event is dispatched after the delay interval elapses
      */
+    @SuppressWarnings("all")
     private void sendToOffSpring(String treeId, String currentNodeId, String targetName, String targetState, String event, Object data, Object hints, long delay) {
         ArrayList<RTreeNode> targetTreeNodeList;
         if (targetName != null && !"".equals(targetName)) {
@@ -283,6 +287,7 @@ public class MultiStateMachineDispatcher extends SimpleDispatcher implements Ser
      * @param hints         The data containing information which may be used by the implementing platform to configure the event processor
      * @param delay         The event is dispatched after the delay interval elapses
      */
+    @SuppressWarnings("all")
     private void sendToSibling(String treeId, String currentNodeId, String targetName, String targetState, String event, Object data, Object hints, long delay) {
         ArrayList<RTreeNode> targetTreeNodeList;
         if (targetName != null && !"".equals(targetName)) {
@@ -310,6 +315,7 @@ public class MultiStateMachineDispatcher extends SimpleDispatcher implements Ser
      * @param hints         The data containing information which may be used by the implementing platform to configure the event processor
      * @param delay         The event is dispatched after the delay interval elapses
      */
+    @SuppressWarnings("all")
     private void sendUnicast(String treeId, String currentNodeId, String targetGid, String targetState, String event, Object data, Object hints, long delay) {
         RTreeNode destination = InstanceManager.GetInstanceTree(treeId).GetNodeById(targetGid);
         RTreeNode currentTreeNode = InstanceManager.GetInstanceTree(treeId).GetNodeById(currentNodeId);
@@ -329,6 +335,7 @@ public class MultiStateMachineDispatcher extends SimpleDispatcher implements Ser
      * @param hints         The data containing information which may be used by the implementing platform to configure the event processor
      * @param delay         The event is dispatched after the delay interval elapses
      */
+    @SuppressWarnings("all")
     private void sendBroadCast(String treeId, String currentNodeId, String targetName, String targetState, String event, Object data, Object hints, long delay) {
         ArrayList<RTreeNode> targetTreeNodeList;
         if (targetName != null && !"".equals(targetName)) {
@@ -358,6 +365,7 @@ public class MultiStateMachineDispatcher extends SimpleDispatcher implements Ser
      * @param hints         The data containing information which may be used by the implementing platform to configure the event processor
      * @param delay         The event is dispatched after the delay interval elapses
      */
+    @SuppressWarnings("all")
     private void sendMulticast(String treeId, String currentNodeId, String targetName, String targetState, String event, Object data, Object hints, long delay) {
         ArrayList<RTreeNode> targetTreeNodeList;
         // get the target node list by the target name
@@ -425,7 +433,7 @@ public class MultiStateMachineDispatcher extends SimpleDispatcher implements Ser
      * @param data        event payload
      */
     private void sendToTarget(RTreeNode treeNode, String targetState, String event, Object data) {
-        ArrayList<RTreeNode> treeNodeArrayList = new ArrayList<RTreeNode>();
+        ArrayList<RTreeNode> treeNodeArrayList = new ArrayList<>();
         treeNodeArrayList.add(treeNode);
         sendToTarget(treeNodeArrayList, targetState, event, data);
     }
@@ -479,8 +487,7 @@ public class MultiStateMachineDispatcher extends SimpleDispatcher implements Ser
             timers.remove(id);
             target.addEvent(new TriggerEvent(event, TriggerEvent.SIGNAL_EVENT, payload));
             if (log.isDebugEnabled()) {
-                log.debug("Fired event '" + event + "' as scheduled by "
-                        + "<send> with id '" + id + "'");
+                log.debug("Fired event '" + event + "' as scheduled by " + "<send> with id '" + id + "'");
             }
         }
     }

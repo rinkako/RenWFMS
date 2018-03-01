@@ -13,10 +13,7 @@ import org.sysu.renNameService.entity.RenProcessEntity;
 import org.sysu.renNameService.entity.RenRuntimerecordEntity;
 import org.sysu.renNameService.utility.*;
 
-import java.util.AbstractMap;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.UUID;
+import java.util.*;
 
 /**
  * Author: Rinkako
@@ -27,9 +24,10 @@ public class NameSpacingService {
 
     /**
      * Create a new process.
-     * @param renid creator renid
+     *
+     * @param renid       creator renid
      * @param processName process unique name for a specific renid
-     * @param mainBOName process entry point BO name
+     * @param mainBOName  process entry point BO name
      * @return process pid
      */
     public static String CreateProcess(String renid, String processName, String mainBOName) {
@@ -49,12 +47,10 @@ public class NameSpacingService {
             session.save(rpe);
             transaction.commit();
             return pid;
-        }
-        catch (Exception ex) {
+        } catch (Exception ex) {
             transaction.rollback();
             LogUtil.Log("Create process but exception occurred, service rollback, " + ex, NameSpacingService.class.getName(), LogUtil.LogLevelType.ERROR, "");
-        }
-        finally {
+        } finally {
             HibernateUtil.CloseLocalSession();
         }
         return "";
@@ -62,8 +58,9 @@ public class NameSpacingService {
 
     /**
      * Upload a BO for a specific process.
-     * @param pid belong to pid
-     * @param name BO name
+     *
+     * @param pid     belong to pid
+     * @param name    BO name
      * @param content BO content string
      * @return pair of boid - involved business role names string
      */
@@ -87,15 +84,13 @@ public class NameSpacingService {
             String involveBRs = GlobalContext.Interaction.Send(GlobalContext.URL_BOENGINE_SERIALIZEBO, args, "");
             return new AbstractMap.SimpleEntry<>(boid, involveBRs);
             //return new AbstractMap.SimpleEntry<>(boid, "TEST_INVOLVED");
-        }
-        catch (Exception ex) {
+        } catch (Exception ex) {
             if (!cmtFlag) {
                 transaction.rollback();
                 LogUtil.Log("Upload BO but exception occurred, service rollback, " + ex, NameSpacingService.class.getName(), LogUtil.LogLevelType.ERROR, "");
             }
             LogUtil.Log("Upload BO but exception occurred, " + ex, NameSpacingService.class.getName(), LogUtil.LogLevelType.ERROR, "");
-        }
-        finally {
+        } finally {
             HibernateUtil.CloseLocalSession();
         }
         return null;
@@ -103,6 +98,7 @@ public class NameSpacingService {
 
     /**
      * Get all processes of one ren user.
+     *
      * @param renid ren user id
      * @return a list of process
      */
@@ -114,12 +110,10 @@ public class NameSpacingService {
             ArrayList<RenProcessEntity> qRet = (ArrayList<RenProcessEntity>) session.createQuery(String.format("FROM RenProcessEntity WHERE creatorRenid = '%s' AND state = 0", renid)).list();
             transaction.commit();
             return qRet;
-        }
-        catch (Exception ex) {
+        } catch (Exception ex) {
             transaction.rollback();
             LogUtil.Log("Get Processes of Ren User but exception occurred, service rollback, " + ex, NameSpacingService.class.getName(), LogUtil.LogLevelType.ERROR, "");
-        }
-        finally {
+        } finally {
             HibernateUtil.CloseLocalSession();
         }
         return null;
@@ -127,6 +121,7 @@ public class NameSpacingService {
 
     /**
      * Get the BOs in a process.
+     *
      * @param pid process id
      * @return a list of BO in the specific process
      */
@@ -138,12 +133,10 @@ public class NameSpacingService {
             ArrayList<Object> qRet = (ArrayList<Object>) session.createQuery(String.format("SELECT boid, boName FROM RenBoEntity WHERE pid = '%s'", pid)).list();
             transaction.commit();
             return qRet;
-        }
-        catch (Exception ex) {
+        } catch (Exception ex) {
             transaction.rollback();
             LogUtil.Log("Get BO in Process but exception occurred, service rollback, " + ex, NameSpacingService.class.getName(), LogUtil.LogLevelType.ERROR, "");
-        }
-        finally {
+        } finally {
             HibernateUtil.CloseLocalSession();
         }
         return null;
@@ -151,7 +144,8 @@ public class NameSpacingService {
 
     /**
      * Check if a process name is already existing in a ren user process list.
-     * @param renid ren user id
+     *
+     * @param renid       ren user id
      * @param processName process name
      * @return boolean for process name existence
      */
@@ -163,12 +157,10 @@ public class NameSpacingService {
             ArrayList<RenProcessEntity> qRet = (ArrayList<RenProcessEntity>) session.createQuery(String.format("FROM RenProcessEntity WHERE creatorRenid = '%s' AND processName = '%s", renid, processName)).list();
             transaction.commit();
             return qRet.size() > 0;
-        }
-        catch (Exception ex) {
+        } catch (Exception ex) {
             transaction.rollback();
             LogUtil.Log("Get BO in Process but exception occurred, service rollback, " + ex, NameSpacingService.class.getName(), LogUtil.LogLevelType.ERROR, "");
-        }
-        finally {
+        } finally {
             HibernateUtil.CloseLocalSession();
         }
         return false;
@@ -176,6 +168,7 @@ public class NameSpacingService {
 
     /**
      * Get a BO context by its id.
+     *
      * @param boid BO unique id
      * @return {@code RenBoEntity} instance
      */
@@ -186,12 +179,10 @@ public class NameSpacingService {
             RenBoEntity rbe = session.get(RenBoEntity.class, boid);
             transaction.commit();
             return rbe;
-        }
-        catch (Exception ex) {
+        } catch (Exception ex) {
             transaction.rollback();
             LogUtil.Log("Get BO context but exception occurred, service rollback, " + ex, NameSpacingService.class.getName(), LogUtil.LogLevelType.ERROR, rtid);
-        }
-        finally {
+        } finally {
             HibernateUtil.CloseLocalSession();
         }
         return null;
@@ -199,14 +190,15 @@ public class NameSpacingService {
 
     /**
      * Submit a process launch request.
-     * @param pid process id to be launched
-     * @param from launch platform
-     * @param renid ren user id
+     *
+     * @param pid              process id to be launched
+     * @param from             launch platform
+     * @param renid            ren user id
      * @param authoritySession service authority session id
-     * @param bindingType resource binding type
-     * @param launchType process launch type
-     * @param failureType process failure catch type
-     * @param binding resource binding source, only useful when static XML binding
+     * @param bindingType      resource binding type
+     * @param launchType       process launch type
+     * @param failureType      process failure catch type
+     * @param binding          resource binding source, only useful when static XML binding
      * @return Runtime record package
      */
     public static String SubmitProcess(String pid,
@@ -245,14 +237,25 @@ public class NameSpacingService {
             session.save(rrte);
             transaction.commit();
             return String.format("%s,%s", rtid, authSign);
-        }
-        catch (Exception ex) {
+        } catch (Exception ex) {
             transaction.rollback();
             LogUtil.Log(String.format("Submit process but exception occurred(pid: %s), service rollback, %s", pid, ex), NameSpacingService.class.getName(), LogUtil.LogLevelType.ERROR, "");
-        }
-        finally {
+        } finally {
             HibernateUtil.CloseLocalSession();
         }
         return null;
+    }
+
+    /**
+     * Handle transshipment of callback event.
+     *
+     * @param args argument map to sent
+     */
+    public static void TransshipCallback(Hashtable<String, Object> args) throws Exception {
+        HashMap<String, String> argMap = new HashMap<>();
+        for (Map.Entry<String, Object> kvp : args.entrySet()) {
+            argMap.put(kvp.getKey(), (String) kvp.getValue());
+        }
+        GlobalContext.Interaction.Send(GlobalContext.URL_BOENGINE_CALLBACK, argMap, argMap.get("rtid"));
     }
 }

@@ -50,7 +50,7 @@ public class NSExecutor extends Observable {
             String retStr = null;
             switch (tType) {
                 case BusinessRoleMapping:
-
+                    execResult.put("execType", TransactionType.BusinessRoleMapping.name());
                     String rtid = (String) args.get("rtid");
                     switch (act) {
                         case "getWorkerByBRole":
@@ -104,12 +104,12 @@ public class NSExecutor extends Observable {
                     }
                     // prepare execution result
                     execResult.put("execCode", GlobalContext.TRANSACTION_EXECUTOR_SUCCESS);
-                    execResult.put("execType", TransactionType.BusinessRoleMapping.name());
                     execResult.put("context", nst);
                     execResult.put("nsid", context.getNsid());
                     execResult.put("action", act);
                     break;
                 case Namespacing:
+                    execResult.put("execType", TransactionType.Namespacing.name());
                     String nsAct = (String) nst.getParameterDictionary().get(GlobalContext.TRANSACTION_ACTION_KEY);
                     switch (nsAct) {
                         case "createProcess":
@@ -137,10 +137,13 @@ public class NSExecutor extends Observable {
                         case "submitProcess":
                             retStr = NameSpacingService.SubmitProcess((String) args.get("pid"), (String) args.get("from"), (String) args.get("renid"), (String) args.get("authoritySession"), Integer.parseInt((String) args.get("bindingType")), Integer.parseInt((String) args.get("launchType")), Integer.parseInt((String) args.get("failureType")), Integer.parseInt((String) args.get("authType")), (String) args.get("binding"));
                             break;
+                        case "callback":
+                            NameSpacingService.TransshipCallback(args);
+                            retStr = "OK";
+                            break;
                     }
                     // prepare execution result
                     execResult.put("execCode", GlobalContext.TRANSACTION_EXECUTOR_SUCCESS);
-                    execResult.put("execType", TransactionType.Namespacing.name());
                     execResult.put("context", nst);
                     execResult.put("nsid", context.getNsid());
                     execResult.put("action", act);
@@ -170,6 +173,9 @@ public class NSExecutor extends Observable {
         catch (Exception ex) {
             LogUtil.Log("Executor Exception Occurred, " + ex, NSExecutor.class.getName(),
                     LogUtil.LogLevelType.ERROR, context.getRtid());
+            execResult.put("context", nst);
+            execResult.put("nsid", context.getNsid());
+            execResult.put("execCode", GlobalContext.TRANSACTION_EXECUTOR_FAILED);
         }
         finally {
             // bubble notification to scheduler or tracker which supervise this executor

@@ -22,7 +22,7 @@ import java.util.List;
  * Usage : Handle requests from other modules.
  */
 @RestController
-@RequestMapping("/boengine")
+@RequestMapping("/gateway")
 public class EngineController {
 
     /**

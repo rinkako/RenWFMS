@@ -14,13 +14,10 @@ import java.util.concurrent.ConcurrentHashMap;
 
 /**
  * A static singleton factory for {@link EvaluatorProvider}s by supported SCXML datamodel type.
- * 一个静态的单例工厂，evaluatorProvider 提供支持的数据模型
  * <p>
  * The EvaluatorFactory is used to automatically create an {@link Evaluator} instance for an SCXML
  * statemachine when none has been pre-defined and configured for the {@link SCXMLExecutor}.
  * <p/>
- * 当SCXMLExecutor事先没有预定义或者配置过求值器，求值工厂被用来对某一个SCXML状态机自动的创建一个求值器实例，
- * </p>
  * <p>
  * The builtin supported providers are:
  * </p>
@@ -32,12 +29,10 @@ import java.util.concurrent.ConcurrentHashMap;
  * <li>datamodel="null": {@link MinimalEvaluator.MinimalEvaluatorProvider}</li>
  * </ul>
  * <p>
- * 扩展求值器
  * For adding additional or overriding the builtin Evaluator implementations use
  * {@link #registerEvaluatorProvider(EvaluatorProvider)} or {@link #unregisterEvaluatorProvider(String)}.
  * </p>
  * <p>
- * 默认的提供者能够被重载使用，setDefaultProvider，
  * The default provider can be overridden using the {@link #setDefaultProvider(EvaluatorProvider)} which will
  * register the provider under the {@link Evaluator#DEFAULT_DATA_MODEL} ("") value for the datamodel.<br>
  * Note: this is <em>not</em> the same as datamodel="null"!
@@ -46,17 +41,17 @@ import java.util.concurrent.ConcurrentHashMap;
 public class EvaluatorFactory {
 
     /**
-     * 静态的求值器工厂
+     * static factory instance.
      */
     private static EvaluatorFactory INSTANCE = new EvaluatorFactory();
 
     /**
-     *
+     * provider map.
      */
     private final Map<String, EvaluatorProvider> providers = new ConcurrentHashMap<String, EvaluatorProvider>();
 
     /**
-     * 私有的构造方法，默认求值器提供者，提供如下的求值器
+     * private constructor, add default evaluator.
      */
     private EvaluatorFactory() {
         providers.put(XPathEvaluator.SUPPORTED_DATA_MODEL, new XPathEvaluator.XPathEvaluatorProvider());
@@ -68,9 +63,9 @@ public class EvaluatorFactory {
     }
 
     /**
-     * 设置默认的提供者
+     * Set default provider.
      *
-     * @param defaultProvider
+     * @param defaultProvider default provider
      */
     public static void setDefaultProvider(EvaluatorProvider defaultProvider) {
         INSTANCE.providers.put(Evaluator.DEFAULT_DATA_MODEL, defaultProvider);
@@ -99,10 +94,6 @@ public class EvaluatorFactory {
     /**
      * Returns a dedicated Evaluator instance for a specific SCXML document its documentmodel.
      * <p>If no SCXML document is provided a default Evaluator will be returned.</p>
-     * <p/>
-     * <p/>
-     * 静态方法，返回一个专用的求值器实例，对一个指定的SCXML 文档，
-     * 如果SCXML文档为空，返回一个默认的求值器
      *
      * @param document The document to return a dedicated Evaluator for. May be null to retrieve the default Evaluator.
      * @return a new and not sharable Evaluator instance for the provided document, or a default Evaluator otherwise

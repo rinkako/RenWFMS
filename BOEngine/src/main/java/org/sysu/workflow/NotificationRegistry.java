@@ -19,20 +19,16 @@ import java.util.Set;
  * <code>SCXMLListener</code>s attached and notifies relevant
  * listeners of the events that interest them.
  * <p/>
- * 注册SCXML的监听器，
- * 通知注册跟踪所有SCXMLListener，通知所有的监听器，他们感兴趣的事件
  */
 public final class NotificationRegistry {
 
     /**
      * The Map of all listeners keyed by {@link Observable#getObservableId()}.
-     * 所有监听器的一个map,key是被监听元素的id
      */
     private final Map<Integer, Set<SCXMLListener>> regs;
 
     /**
      * Constructor.
-     * 构造函数
      */
     public NotificationRegistry() {
         this.regs = new HashMap<Integer, Set<SCXMLListener>>();
@@ -40,7 +36,6 @@ public final class NotificationRegistry {
 
     /**
      * Register this SCXMLListener for this Observable.
-     * 注册SCXMLListener 对于 可观察内容
      *
      * @param source The observable this listener wants to listen to
      * @param lst    The listener
@@ -58,7 +53,6 @@ public final class NotificationRegistry {
 
     /**
      * Deregister this SCXMLListener for this Observable.
-     * 移除SCXMLListener
      *
      * @param source The observable this listener wants to stop listening to
      * @param lst    The listener
@@ -78,7 +72,6 @@ public final class NotificationRegistry {
     /**
      * Inform all relevant listeners that a EnterableState has been
      * entered.
-     * 通知所有相关的监听器，一个EnterableState 进入了
      *
      * @param source The Observable
      * @param state  The EnterableState that was entered
@@ -98,7 +91,6 @@ public final class NotificationRegistry {
     /**
      * Inform all relevant listeners that a EnterableState has been
      * exited.
-     * 通知所有相关的监听器一个EnterableState已经退出了
      *
      * @param source The Observable
      * @param state  The EnterableState that was exited
@@ -116,8 +108,7 @@ public final class NotificationRegistry {
     }
 
     /**
-     * Inform all relevant listeners of a transition that has occured.
-     * 通知所有的监听器，转移发生了
+     * Inform all relevant listeners of a transition that has occurred.
      *
      * @param source     The Observable
      * @param from       The source EnterableState

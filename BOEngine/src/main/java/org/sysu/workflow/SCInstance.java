@@ -14,13 +14,11 @@ import java.io.Serializable;
 import java.util.*;
 
 /**
- * 一个簿记
  * <p/>
  * The <code>SCInstance</code> performs book-keeping functions for
  * a particular execution of a state chart represented by a
  * <code>SCXML</code> object.
  * <p/>
- * 一个SCXML对象的详细执行
  */
 public class SCInstance implements Serializable {
 
