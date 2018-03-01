@@ -22,7 +22,7 @@ import java.util.List;
  * Usage : Handle requests from other modules.
  */
 @RestController
-@RequestMapping("/gateway")
+@RequestMapping("/boengine")
 public class EngineController {
 
     /**
@@ -88,7 +88,7 @@ public class EngineController {
      * @param payload event send to engine (required)
      * @return response package
      */
-    @RequestMapping(value = "/serializeBO", produces = {"application/json", "application/xml"})
+    @RequestMapping(value = "/callback", produces = {"application/json", "application/xml"})
     @ResponseBody
     @Transactional
     public ReturnModel Callback(@RequestParam(value="rtid", required = false)String rtid,

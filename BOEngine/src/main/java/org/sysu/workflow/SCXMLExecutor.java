@@ -488,7 +488,7 @@ public class SCXMLExecutor implements SCXMLIOProcessor {
                 RInstanceTree myTree = new RInstanceTree();
                 RTreeNode nRoot = new RTreeNode(this.exctx.getStateMachine().getName(), this.Tid, this.exctx, null);
                 myTree.SetRoot(nRoot);
-                InstanceManager.RegisterInstanceTree(myTree);
+                InstanceManager.RegisterInstanceTree(this.Rtid, myTree);
                 this.RootTid = this.Tid;
                 this.exctx.RootTid = this.RootTid;
             }

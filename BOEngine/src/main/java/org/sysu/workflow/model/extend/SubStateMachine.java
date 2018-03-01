@@ -169,7 +169,7 @@ public class SubStateMachine extends NamelistHolder implements PathResolverHolde
             }
 
             // launch sub state machine of the number of instances
-            RInstanceTree iTree = InstanceManager.GetInstanceTree(currentExecutionContext.RootTid);
+            RInstanceTree iTree = InstanceManager.GetInstanceTree(currentExecutionContext.Rtid);
             RTreeNode curNode = iTree.GetNodeById(currentExecutionContext.Tid);
             for (int i = 0; i < getInstances(); i++) {
                 Evaluator evaluator = EvaluatorFactory.getEvaluator(scxml);

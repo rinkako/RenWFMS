@@ -6,6 +6,7 @@ package org.sysu.workflow.instanceTree;
 
 import org.sysu.workflow.SCXMLExecutionContext;
 import org.sysu.workflow.SCXMLExecutor;
+import org.sysu.workflow.restful.utility.LogUtil;
 
 import java.util.Hashtable;
 
@@ -46,24 +47,28 @@ public class InstanceManager {
             return InstanceManager.InstanceTreeTable.get(rtid);
         }
         else {
-            System.out.println("WARNING: Instance tree not found: " + rtid);
+            LogUtil.Log("Instance tree not found: " + rtid, InstanceManager.class.getName(),
+                    LogUtil.LogLevelType.WARNNING, rtid);
             return null;
         }
     }
 
     /**
      * Register a new tree.
+     * @param rtid process rtid
      * @param tree Tree reference
      */
-    public static void RegisterInstanceTree(RInstanceTree tree) {
+    public static void RegisterInstanceTree(String rtid, RInstanceTree tree) {
         if (tree == null || tree.Root == null) {
-            System.out.println("ERROR: tree and its Root must not null");
+            LogUtil.Log("Instance tree must not null: " + rtid, InstanceManager.class.getName(),
+                    LogUtil.LogLevelType.ERROR, rtid);
         }
-        else if (InstanceManager.InstanceTreeTable.containsKey(tree.Root.getGlobalId())) {
-            System.out.println("WARNING: duplicated tree id: " + tree.Root.getGlobalId());
+        else if (InstanceManager.InstanceTreeTable.containsKey(rtid)) {
+            LogUtil.Log("Duplicated Instance tree: " + rtid, InstanceManager.class.getName(),
+                    LogUtil.LogLevelType.WARNNING, rtid);
         }
         else {
-            InstanceManager.InstanceTreeTable.put(tree.Root.getGlobalId(), tree);
+            InstanceManager.InstanceTreeTable.put(rtid, tree);
         }
     }
 

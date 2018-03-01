@@ -43,8 +43,8 @@ public interface EventDispatcher {
 
     /**
      * Send a event to specific node on the instance tree.
-     * @param treeId            tree root global rtid
-     * @param currentSessionId  current tree node id
+     * @param rtid              process rtid of tree to spread event
+     * @param currentId         current tree node id
      * @param id                message id in send label
      * @param messageMode       message spreading mode on instance tree
      * @param targetName        target BO name
@@ -57,6 +57,6 @@ public interface EventDispatcher {
      *                          used by the implementing platform to configure the event processor
      * @param delay             The event is dispatched after the delay interval elapses
      */
-    void send(String treeId, String currentSessionId, String id, MessageMode messageMode, String targetName, String targetState, String type, String event, Object data, Object hints, long delay);
+    void send(String rtid, String currentId, String id, MessageMode messageMode, String targetName, String targetState, String type, String event, Object data, Object hints, long delay);
 }
 

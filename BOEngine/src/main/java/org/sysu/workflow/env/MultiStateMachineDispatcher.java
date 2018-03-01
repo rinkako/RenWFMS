@@ -36,8 +36,7 @@ public class MultiStateMachineDispatcher extends SimpleDispatcher implements Ser
     private Log log = LogFactory.getLog(EventDispatcher.class);
 
     /**
-     * The <code>Map</code> of active <code>Timer</code>s, keyed by
-     * &lt;send&gt; element <code>id</code>s.
+     * The Map of active Timers, keyed by send element id.
      */
     private Map<String, Timer> timers = Collections.synchronizedMap(new HashMap<String, Timer>());
 
@@ -89,79 +88,78 @@ public class MultiStateMachineDispatcher extends SimpleDispatcher implements Ser
         timers.remove(sendId);
     }
 
+    /**
+     * @see EventDispatcher#send(Map, String, String, String, String, Object, Object, long)
+     */
     @Override
     public void send(Map<String, SCXMLIOProcessor> ioProcessors, String id, String target, String type, String event, Object data, Object hints, long delay) {
         super.send(ioProcessors, id, target, type, event, data, hints, delay);
     }
 
+    /**
+     * @see EventDispatcher#send(String, String, String, MessageMode, String, String, String, String, Object, Object, long)
+     */
     @Override
-    public void send(String treeId, String currentSessionId, String id, MessageMode messageMode, String targetName, String targetState, String type, String event, Object data, Object hints, long delay) {
-
+    public void send(String rtid, String currentId, String id, MessageMode messageMode, String targetName, String targetState, String type, String event, Object data, Object hints, long delay) {
+        // log send action
         if (log.isInfoEnabled()) {
-            StringBuilder buf = new StringBuilder();
-            buf.append("send ( id: ").append(id);
-            buf.append(", messageMode: ").append(messageMode);
-            buf.append(", targetName: ").append(targetName);
-            buf.append(", targetState: ").append(targetState);
-            buf.append(", type: ").append(type);
-            buf.append(", event: ").append(event);
-            buf.append(", data: ").append(String.valueOf(data));
-            buf.append(", hints: ").append(String.valueOf(hints));
-            buf.append(", delay: ").append(delay);
-            buf.append(')');
-            log.info(buf.toString());
+            String buf = "send ( id: " + id +
+                    ", messageMode: " + messageMode +
+                    ", targetName: " + targetName +
+                    ", targetState: " + targetState +
+                    ", type: " + type +
+                    ", event: " + event +
+                    ", data: " + String.valueOf(data) +
+                    ", hints: " + String.valueOf(hints) +
+                    ", delay: " + delay + ')';
+            log.info(buf);
         }
-
         if (type == null || type.equalsIgnoreCase(SCXMLIOProcessor.SCXML_EVENT_PROCESSOR) ||
                 type.equals(SCXMLIOProcessor.DEFAULT_EVENT_PROCESSOR)) {
-
-            boolean internal = false;
-            SCXMLIOProcessor ioProcessor = InstanceManager.GetExecutor(treeId, currentSessionId);
-
+            SCXMLIOProcessor ioProcessor = InstanceManager.GetExecutor(rtid, currentId);
+            // null event handle
             if (event == null) {
                 if (log.isWarnEnabled()) {
                     log.warn("<send>: Cannot send without event name");
                 }
                 ioProcessor.addEvent(new TriggerEvent(TriggerEvent.ERROR_EXECUTION, TriggerEvent.ERROR_EVENT));
 
-            } else if (!internal && delay > 0L) {
-                // Need to schedule this one
+            }
+            // delay send
+            else if (delay > 0L) {
                 Timer timer = new Timer(true);
                 timer.schedule(new DelayedEventTask(id, event, data, ioProcessor), delay);
                 timers.put(id, timer);
                 if (log.isDebugEnabled()) {
-                    log.debug("Scheduled event '" + event + "' with delay "
-                            + delay + "ms, as specified by <send> with id '"
-                            + id + "'");
+                    log.debug("Scheduled event '" + event + "' with delay " + delay +
+                            "ms, as specified by <send> with id '" + id + "'");
                 }
-            } else {
-                //ioProcessor.addEvent(new TriggerEvent(event, TriggerEvent.SIGNAL_EVENT, data));
             }
-
+            // do send
             switch (messageMode) {
                 case BROADCAST:
-                    sendBroadCast(treeId, currentSessionId, targetName, targetState, event, data, hints, delay);
+                    sendBroadCast(rtid, currentId, targetName, targetState, event, data, hints, delay);
                     break;
                 case MULTICAST:
-                    sendMulticast(treeId, currentSessionId, targetName, targetState, event, data, hints, delay);
+                    sendMulticast(rtid, currentId, targetName, targetState, event, data, hints, delay);
                     break;
                 case TO_PARENT:
-                    sendToParent(treeId, currentSessionId, targetName, targetState, event, data, hints, delay);
+                    sendToParent(rtid, currentId, targetName, targetState, event, data, hints, delay);
                     break;
                 case TO_CHILD:
-                    sendToChild(treeId, currentSessionId, targetName, targetState, event, data, hints, delay);
+                    sendToChild(rtid, currentId, targetName, targetState, event, data, hints, delay);
                     break;
                 case TO_ANCESTOR:
-                    sendToAncestor(treeId, currentSessionId, targetName, targetState, event, data, hints, delay);
+                    sendToAncestor(rtid, currentId, targetName, targetState, event, data, hints, delay);
                     break;
                 case TO_OFFSPRING:
-                    sendToOffSpring(treeId, currentSessionId, targetName, targetState, event, data, hints, delay);
+                    sendToOffSpring(rtid, currentId, targetName, targetState, event, data, hints, delay);
                     break;
                 case TO_SIBLING:
-                    sendToSibling(treeId, currentSessionId, targetName, targetState, event, data, hints, delay);
+                    sendToSibling(rtid, currentId, targetName, targetState, event, data, hints, delay);
                     break;
                 case UNICAST:
-                    sendUnicast(treeId, currentSessionId, targetName, targetState, event, data, hints, delay);
+                    sendUnicast(rtid, currentId, targetName, targetState, event, data, hints, delay);
                     break;
                 default:
                     System.out.println("Unknown message mode");
@@ -171,176 +169,167 @@ public class MultiStateMachineDispatcher extends SimpleDispatcher implements Ser
     }
 
     /**
-     *
-     * @param treeId the tree id equals to the root id of the instance tree
-     * @param currentSessionId the id of the current node
-     * @param targetName the target name of the parent tree node
-     * @param targetState the target state of the parent tree node
-     * @param event the event name
-     * @param data the payload to carry parameters
-     * @param hints
-     * @param delay
-     * @return
+     * @param treeId        the tree id equals to the root id of the instance tree
+     * @param currentNodeId the id of the current node
+     * @param targetName    the target name of the parent tree node
+     * @param targetState   the target state of the parent tree node
+     * @param event         type of event being generated
+     * @param data          event payload
+     * @param hints         The data containing information which may be used by the implementing platform to configure the event processor
+     * @param delay         The event is dispatched after the delay interval elapses
      */
-    private boolean sendToParent(String treeId, String currentSessionId, String targetName, String targetState, String event, Object data, Object hints, long delay) {
-        //get the current tree node by currentSessionId
-        RTreeNode currentNode = InstanceManager.GetInstanceTree(treeId).GetNodeById(currentSessionId);
+    private void sendToParent(String treeId, String currentNodeId, String targetName, String targetState, String event, Object data, Object hints, long delay) {
+        //get the current tree node by currentNodeId
+        RTreeNode currentNode = InstanceManager.GetInstanceTree(treeId).GetNodeById(currentNodeId);
         //get the parent node of the current tree node
         RTreeNode parentNode = currentNode.Parent;
-        if(parentNode == null) {
+        if (parentNode == null) {
             System.out.println("it is root , no parent.");
-            return true;
         }
         String eventPrefix = currentNode != InstanceManager.GetInstanceTree(treeId).Root ? currentNode.getName() + "." : "";
         sendToTarget(parentNode, targetState, eventPrefix + event, data);
-        return true;
     }
 
     /**
      * send the event to the children of the current node
-     * @param treeId the tree id equals to the root id of the instance tree
-     * @param currentSessionId the id of the current node
-     * @param targetName
-     * @param targetState
-     * @param event
-     * @param data
-     * @param hints
-     * @param delay
-     * @return
+     *
+     * @param treeId        the tree id equals to the root id of the instance tree
+     * @param currentNodeId the id of the current node
+     * @param targetName    target BO name
+     * @param targetState   target state name, empty string means no limitation
+     * @param event         type of event being generated
+     * @param data          event payload
+     * @param hints         The data containing information which may be used by the implementing platform to configure the event processor
+     * @param delay         The event is dispatched after the delay interval elapses
      */
-    private boolean sendToChild(String treeId, String currentSessionId, String targetName, String targetState, String event, Object data, Object hints, long delay) {
+    private void sendToChild(String treeId, String currentNodeId, String targetName, String targetState, String event, Object data, Object hints, long delay) {
         ArrayList<RTreeNode> targetTreeNodeList;
-        //get the current tree node by currentSessionId
-        RTreeNode currentTreeNode = InstanceManager.GetInstanceTree(treeId).GetNodeById(currentSessionId);
+        //get the current tree node by currentNodeId
+        RTreeNode currentTreeNode = InstanceManager.GetInstanceTree(treeId).GetNodeById(currentNodeId);
         if (targetName != null && !"".equals(targetName)) {
             //only get those children whose name is equals to the targetName
-            targetTreeNodeList = InstanceManager.GetInstanceTree(treeId).GetChildrenVectorByTarget(currentSessionId, targetName);
+            targetTreeNodeList = InstanceManager.GetInstanceTree(treeId).GetChildrenVectorByTarget(currentNodeId, targetName);
         } else {
             //get all the children
             targetTreeNodeList = currentTreeNode.Children;
         }
         String eventPrefix = currentTreeNode != InstanceManager.GetInstanceTree(treeId).Root ? currentTreeNode.getName() + "." : "";
         sendToTarget(targetTreeNodeList, targetState, eventPrefix + event, data);
-        return true;
     }
 
     /**
      * send the event to the ancestor of the current node
-     * @param treeId the tree id equals to the root id of the instance tree
-     * @param currentSessionId the id of the current node
-     * @param targetName
-     * @param targetState
-     * @param event
-     * @param data
-     * @param hints
-     * @param delay
-     * @return
+     *
+     * @param treeId        the tree id equals to the root id of the instance tree
+     * @param currentNodeId the id of the current node
+     * @param targetName    target BO name
+     * @param targetState   target state name, empty string means no limitation
+     * @param event         type of event being generated
+     * @param data          event payload
+     * @param hints         The data containing information which may be used by the implementing platform to configure the event processor
+     * @param delay         The event is dispatched after the delay interval elapses
      */
-    private boolean sendToAncestor(String treeId, String currentSessionId, String targetName, String targetState, String event, Object data, Object hints, long delay) {
+    private void sendToAncestor(String treeId, String currentNodeId, String targetName, String targetState, String event, Object data, Object hints, long delay) {
         ArrayList<RTreeNode> targetTreeNodeList;
         if (targetName != null && !"".equals(targetName)) {
             //only get those ancestors whose name is equals to the targetName
-            targetTreeNodeList = InstanceManager.GetInstanceTree(treeId).GetAncestorsVectorByTarget(currentSessionId, targetName);
+            targetTreeNodeList = InstanceManager.GetInstanceTree(treeId).GetAncestorsVectorByTarget(currentNodeId, targetName);
         } else {
             //get all the ancestors
-            targetTreeNodeList = InstanceManager.GetInstanceTree(treeId).GetAncestorsVector(currentSessionId);
+            targetTreeNodeList = InstanceManager.GetInstanceTree(treeId).GetAncestorsVector(currentNodeId);
         }
-        //get the current tree node by currentSessionId
-        RTreeNode currentTreeNode = InstanceManager.GetInstanceTree(treeId).GetNodeById(currentSessionId);
+        //get the current tree node by currentNodeId
+        RTreeNode currentTreeNode = InstanceManager.GetInstanceTree(treeId).GetNodeById(currentNodeId);
         String eventPrefix = currentTreeNode != InstanceManager.GetInstanceTree(treeId).Root ? currentTreeNode.getName() + "." : "";
         sendToTarget(targetTreeNodeList, targetState, eventPrefix + event, data);
-        return true;
     }
 
     /**
      * send the event to all the offspring of the current node
-     * @param treeId the tree id equals to the root id of the instance tree
-     * @param currentSessionId the id of the current node
-     * @param targetName
-     * @param targetState
-     * @param event
-     * @param data
-     * @param hints
-     * @param delay
-     * @return
+     *
+     * @param treeId        the tree id equals to the root id of the instance tree
+     * @param currentNodeId the id of the current node
+     * @param targetName    target BO name
+     * @param targetState   target state name, empty string means no limitation
+     * @param event         type of event being generated
+     * @param data          event payload
+     * @param hints         The data containing information which may be used by the implementing platform to configure the event processor
+     * @param delay         The event is dispatched after the delay interval elapses
      */
-    private boolean sendToOffSpring(String treeId, String currentSessionId, String targetName, String targetState, String event, Object data, Object hints, long delay) {
+    private void sendToOffSpring(String treeId, String currentNodeId, String targetName, String targetState, String event, Object data, Object hints, long delay) {
         ArrayList<RTreeNode> targetTreeNodeList;
         if (targetName != null && !"".equals(targetName)) {
             //only get those offsprings whose name is equals to the targetName
-            targetTreeNodeList = InstanceManager.GetInstanceTree(treeId).GetOffspringsVectorByTarget(currentSessionId, targetName);
+            targetTreeNodeList = InstanceManager.GetInstanceTree(treeId).GetOffspringsVectorByTarget(currentNodeId, targetName);
         } else {
             //get all the offsprings
-            targetTreeNodeList = InstanceManager.GetInstanceTree(treeId).GetOffspringsVector(currentSessionId);
+            targetTreeNodeList = InstanceManager.GetInstanceTree(treeId).GetOffspringsVector(currentNodeId);
         }
-        //get the current tree node by currentSessionId
-        RTreeNode currentTreeNode = InstanceManager.GetInstanceTree(treeId).GetNodeById(currentSessionId);
+        //get the current tree node by currentNodeId
+        RTreeNode currentTreeNode = InstanceManager.GetInstanceTree(treeId).GetNodeById(currentNodeId);
         String eventPrefix = currentTreeNode != InstanceManager.GetInstanceTree(treeId).Root ? currentTreeNode.getName() + "." : "";
         sendToTarget(targetTreeNodeList, targetState, eventPrefix + event, data);
-        return true;
     }
 
     /**
      * send the event to all the siblings of the current node
-     * @param treeId the tree id equals to the root id of the instance tree
-     * @param currentSessionId the id of the current node
-     * @param targetName
-     * @param targetState
-     * @param event
-     * @param data
-     * @param hints
-     * @param delay
-     * @return
+     *
+     * @param treeId        the tree id equals to the root id of the instance tree
+     * @param currentNodeId the id of the current node
+     * @param targetName    target BO name
+     * @param targetState   target state name, empty string means no limitation
+     * @param event         type of event being generated
+     * @param data          event payload
+     * @param hints         The data containing information which may be used by the implementing platform to configure the event processor
+     * @param delay         The event is dispatched after the delay interval elapses
      */
-    private boolean sendToSibling(String treeId, String currentSessionId, String targetName, String targetState, String event, Object data, Object hints, long delay) {
+    private void sendToSibling(String treeId, String currentNodeId, String targetName, String targetState, String event, Object data, Object hints, long delay) {
         ArrayList<RTreeNode> targetTreeNodeList;
-        if(targetName != null && !"".equals(targetName)) {
+        if (targetName != null && !"".equals(targetName)) {
             //only get those siblings whose name is equals to the targetName
-            targetTreeNodeList = InstanceManager.GetInstanceTree(treeId).GetSiblingsVectorByTarget(currentSessionId, targetName);
+            targetTreeNodeList = InstanceManager.GetInstanceTree(treeId).GetSiblingsVectorByTarget(currentNodeId, targetName);
         } else {
             //get all the siblings
-            targetTreeNodeList = InstanceManager.GetInstanceTree(treeId).GetSiblingsVector(currentSessionId);
+            targetTreeNodeList = InstanceManager.GetInstanceTree(treeId).GetSiblingsVector(currentNodeId);
         }
-        // get the current tree node by currentSessionId
-        RTreeNode currentTreeNode = InstanceManager.GetInstanceTree(treeId).GetNodeById(currentSessionId);
+        // get the current tree node by currentNodeId
+        RTreeNode currentTreeNode = InstanceManager.GetInstanceTree(treeId).GetNodeById(currentNodeId);
         String eventPrefix = currentTreeNode != InstanceManager.GetInstanceTree(treeId).Root ? currentTreeNode.getName() + "." : "";
         sendToTarget(targetTreeNodeList, targetState, eventPrefix + event, data);
-        return true;
     }
 
     /**
      * send the event to all the siblings of the current node
-     * @param treeId the tree id equals to the root id of the instance tree
-     * @param currentSessionId the id of the current node
-     * @param targetGid target node global id
-     * @param targetState
-     * @param event
-     * @param data
-     * @param hints
-     * @param delay
-     * @return
+     *
+     * @param treeId        the tree id equals to the root id of the instance tree
+     * @param currentNodeId the id of the current node
+     * @param targetGid     target node global id
+     * @param targetState   target state name, empty string means no limitation
+     * @param event         type of event being generated
+     * @param data          event payload
+     * @param hints         The data containing information which may be used by the implementing platform to configure the event processor
+     * @param delay         The event is dispatched after the delay interval elapses
      */
-    private boolean sendUnicast(String treeId, String currentSessionId, String targetGid, String targetState, String event, Object data, Object hints, long delay) {
+    private void sendUnicast(String treeId, String currentNodeId, String targetGid, String targetState, String event, Object data, Object hints, long delay) {
         RTreeNode destination = InstanceManager.GetInstanceTree(treeId).GetNodeById(targetGid);
-        RTreeNode currentTreeNode = InstanceManager.GetInstanceTree(treeId).GetNodeById(currentSessionId);
+        RTreeNode currentTreeNode = InstanceManager.GetInstanceTree(treeId).GetNodeById(currentNodeId);
         String eventPrefix = currentTreeNode != InstanceManager.GetInstanceTree(treeId).Root ? currentTreeNode.getName() + "." : "";
         sendToTarget(destination, targetState, eventPrefix + event, data);
-        return true;
     }
 
     /**
      * send the event to all tree nodes
-     * @param treeId the tree id equals to the root id of the instance tree
-     * @param currentSessionId the id of the current node
-     * @param targetName
-     * @param targetState
-     * @param event
-     * @param data
-     * @param hints
-     * @param delay
-     * @return
+     *
+     * @param treeId        the tree id equals to the root id of the instance tree
+     * @param currentNodeId the id of the current node
+     * @param targetName    target BO name
+     * @param targetState   target state name, empty string means no limitation
+     * @param event         type of event being generated
+     * @param data          event payload
+     * @param hints         The data containing information which may be used by the implementing platform to configure the event processor
+     * @param delay         The event is dispatched after the delay interval elapses
      */
-    private boolean sendBroadCast(String treeId, String currentSessionId, String targetName, String targetState, String event, Object data, Object hints, long delay) {
+    private void sendBroadCast(String treeId, String currentNodeId, String targetName, String targetState, String event, Object data, Object hints, long delay) {
         ArrayList<RTreeNode> targetTreeNodeList;
         if (targetName != null && !"".equals(targetName)) {
             //only get those tree nodes whose name is equals to the targetName
@@ -351,57 +340,56 @@ public class MultiStateMachineDispatcher extends SimpleDispatcher implements Ser
             //treeNodeArrayList = scxmlInstanceTree.getAllTreeNode(scxmlInstanceTree.getRoot());
             targetTreeNodeList = InstanceManager.GetInstanceTree(treeId).GetAllNodeVector();
         }
-        //get the current tree node by currentSessionId
-        RTreeNode currentTreeNode = InstanceManager.GetInstanceTree(treeId).GetNodeById(currentSessionId);
+        //get the current tree node by currentNodeId
+        RTreeNode currentTreeNode = InstanceManager.GetInstanceTree(treeId).GetNodeById(currentNodeId);
         String eventPrefix = currentTreeNode != InstanceManager.GetInstanceTree(treeId).Root ? currentTreeNode.getName() + "." : "";
         sendToTarget(targetTreeNodeList, targetState, eventPrefix + event, data);
-        return true;
     }
 
     /**
      * send the event to the tree node according to the specified target name.
-     * @param treeId
-     * @param currentSessionId
-     * @param targetName
-     * @param targetState
-     * @param event
-     * @param data
-     * @param hints
-     * @param delay
-     * @return
+     *
+     * @param treeId        tree rtid
+     * @param currentNodeId the id of the current node
+     * @param targetName    target BO name
+     * @param targetState   target state name, empty string means no limitation
+     * @param event         type of event being generated
+     * @param data          event payload
+     * @param hints         The data containing information which may be used by the implementing platform to configure the event processor
+     * @param delay         The event is dispatched after the delay interval elapses
      */
-    private boolean sendMulticast(String treeId, String currentSessionId, String targetName, String targetState, String event, Object data, Object hints, long delay) {
+    private void sendMulticast(String treeId, String currentNodeId, String targetName, String targetState, String event, Object data, Object hints, long delay) {
         ArrayList<RTreeNode> targetTreeNodeList;
-        //get the target node list by the target name
-        if(targetName != null && !"".equals(targetName)){
+        // get the target node list by the target name
+        if (targetName != null && !"".equals(targetName)) {
             targetTreeNodeList = InstanceManager.GetInstanceTree(treeId).GetNodeVectorByTarget(targetName);
-        }else{
-            return false;
+        } else {
+            return;
         }
-        //get the current tree node by currentSessionId
-        RTreeNode currentTreeNode = InstanceManager.GetInstanceTree(treeId).GetNodeById(currentSessionId);
+        //get the current tree node by currentNodeId
+        RTreeNode currentTreeNode = InstanceManager.GetInstanceTree(treeId).GetNodeById(currentNodeId);
         String eventPrefix = currentTreeNode != InstanceManager.GetInstanceTree(treeId).Root ? currentTreeNode.getName() + "." : "";
         sendToTarget(targetTreeNodeList, targetState, eventPrefix + event, data);
-        return true;
     }
 
     /**
      * send event to all the target tree nodes
+     *
      * @param targetTreeNodeList the target node list
-     * @param targetState the current state of the target node
-     * @param event
-     * @param data
+     * @param targetState        target state name, empty string means no limitation
+     * @param event              type of event being generated
+     * @param data               event payload
      */
     private void sendToTarget(ArrayList<RTreeNode> targetTreeNodeList, String targetState, String event, Object data) {
-        //if the target state is not null
+        //cif the target state is not null
         if (targetState != null && !"".equals(targetState)) {
             for (RTreeNode treeNode : targetTreeNodeList) {
-                //get the unique scxml executor for each tree node
+                // get the unique scxml executor for each tree node
                 SCXMLExecutor scxmlExecutor = treeNode.getExect().getSCXMLExecutor();
                 if (scxmlExecutor != null) {
                     if (scxmlExecutor.getStatus().isInState(targetState)) {
                         try {
-                            //send the event to the current state of the target node
+                            // send the event to the current state of the target node
                             scxmlExecutor.triggerEvent(new TriggerEvent(event, TriggerEvent.SIGNAL_EVENT, data));
                         } catch (ModelException e) {
                             e.printStackTrace();
@@ -414,7 +402,7 @@ public class MultiStateMachineDispatcher extends SimpleDispatcher implements Ser
         } else {
             for (RTreeNode treeNode : targetTreeNodeList) {
                 SCXMLExecutor scxmlExecutor = treeNode.getExect().getSCXMLExecutor();
-                //put the event to the external queue no matter which state the node is in currently
+                // put the event to the external queue no matter which state the node is in currently
                 if (scxmlExecutor != null) {
                     try {
                         scxmlExecutor.triggerEvent(new TriggerEvent(event, TriggerEvent.SIGNAL_EVENT, data));
@@ -430,10 +418,11 @@ public class MultiStateMachineDispatcher extends SimpleDispatcher implements Ser
 
     /**
      * send an event to the target tree node
-     * @param treeNode the target tree node
-     * @param targetState the target state of the target tree node
-     * @param event
-     * @param data
+     *
+     * @param treeNode    the target tree node
+     * @param targetState target state name, empty string means no limitation
+     * @param event       type of event being generated
+     * @param data        event payload
      */
     private void sendToTarget(RTreeNode treeNode, String targetState, String event, Object data) {
         ArrayList<RTreeNode> treeNodeArrayList = new ArrayList<RTreeNode>();
@@ -470,7 +459,7 @@ public class MultiStateMachineDispatcher extends SimpleDispatcher implements Ser
          * Constructor for events with payload.
          *
          * @param id      The ID of the send element.
-         * @param event   The name of the event to be triggered.
+         * @param event   type of event being generated
          * @param payload The event payload, if any.
          * @param target  The target io processor
          */
