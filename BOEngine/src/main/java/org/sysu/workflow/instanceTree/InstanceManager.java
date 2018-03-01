@@ -1,3 +1,7 @@
+/*
+ * Project Ren @ 2018
+ * Rinkako, Ariana, Gordan. SYSU SDCS.
+ */
 package org.sysu.workflow.instanceTree;
 
 import org.sysu.workflow.SCXMLExecutionContext;
@@ -6,63 +10,65 @@ import org.sysu.workflow.SCXMLExecutor;
 import java.util.Hashtable;
 
 /**
- * 实例管理器类：为业务对象的实例树提供公共的上下文访问
- * Created by Rinkako on 2017/3/15.
+ * Author: Rinkako
+ * Date  : 2017/3/15
+ * Usage : Maintaining all running BO tree.
  */
 public class InstanceManager {
+
     /**
-     * 通过唯一编号获取实例树对应节点上的执行器
-     * @param tid 树的唯一编号
-     * @param nodeId 节点的唯一编号
-     * @return 对应节点上的执行器
+     * Get the executor of a tree node by tree node global id.
+     * @param tid process rtid
+     * @param nodeId tree node global id
+     * @return executor at fetched node
      */
     public static SCXMLExecutor GetExecutor(String tid, String nodeId) {
         return InstanceManager.GetExecContext(tid, nodeId).getSCXMLExecutor();
     }
 
     /**
-     * 通过唯一编号获取实例树对应节点上的执行器上下文
-     * @param tid 树的唯一编号
-     * @param nodeId 节点的唯一编号
-     * @return 对应节点上的执行器上下文
+     * Get the execution context of a tree node by tree node global id.
+     * @param rtid process rtid
+     * @param nodeId tree node global id
+     * @return execution context at fetched node
      */
-    public static SCXMLExecutionContext GetExecContext(String tid, String nodeId) {
-        return InstanceManager.GetInstanceTree(tid).GetNodeById(nodeId).getExect();
+    public static SCXMLExecutionContext GetExecContext(String rtid, String nodeId) {
+        return InstanceManager.GetInstanceTree(rtid).GetNodeById(nodeId).getExect();
     }
 
     /**
-     * 通过根节点的唯一编号获取实例树
-     * @param tid 根节点唯一编号
-     * @return 实例树的引用
+     * Get tree by its global id, means rtid.
+     * @param rtid process rtid
+     * @return tree reference
      */
-    public static TimeInstanceTree GetInstanceTree(String tid) {
-        if (InstanceManager.InstanceTreeTable.containsKey(tid)) {
-            return InstanceManager.InstanceTreeTable.get(tid);
+    public static RInstanceTree GetInstanceTree(String rtid) {
+        if (InstanceManager.InstanceTreeTable.containsKey(rtid)) {
+            return InstanceManager.InstanceTreeTable.get(rtid);
         }
         else {
-            System.out.println("WARNING: Instance tree not found: " + tid);
+            System.out.println("WARNING: Instance tree not found: " + rtid);
             return null;
         }
     }
 
     /**
-     * 注册一颗实例树
-     * @param tree 实例树的引用
+     * Register a new tree.
+     * @param tree Tree reference
      */
-    public static void RegisterInstanceTree(TimeInstanceTree tree) {
+    public static void RegisterInstanceTree(RInstanceTree tree) {
         if (tree == null || tree.Root == null) {
             System.out.println("ERROR: tree and its Root must not null");
         }
-        else if (InstanceManager.InstanceTreeTable.containsKey(tree.Root.getTimeId())) {
-            System.out.println("WARNING: duplicated tree id: " + tree.Root.getTimeId());
+        else if (InstanceManager.InstanceTreeTable.containsKey(tree.Root.getGlobalId())) {
+            System.out.println("WARNING: duplicated tree id: " + tree.Root.getGlobalId());
         }
         else {
-            InstanceManager.InstanceTreeTable.put(tree.Root.getTimeId(), tree);
+            InstanceManager.InstanceTreeTable.put(tree.Root.getGlobalId(), tree);
         }
     }
 
     /**
-     * 业务对象的实例树
+     * Forest of instance tree, mapping (RTID, Tree).
      */
-    private static Hashtable<String, TimeInstanceTree> InstanceTreeTable = new Hashtable<String, TimeInstanceTree>();
+    private static Hashtable<String, RInstanceTree> InstanceTreeTable = new Hashtable<String, RInstanceTree>();
 }

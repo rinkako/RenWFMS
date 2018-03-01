@@ -123,7 +123,7 @@ public final class LogUtil {
     /**
      * Log buffer.
      */
-    private static ConcurrentLinkedQueue<LogMessagePackage> logBuffer = new ConcurrentLinkedQueue();
+    private static ConcurrentLinkedQueue<LogMessagePackage> logBuffer = new ConcurrentLinkedQueue<>();
 
     /**
      * Buffer read write lock.

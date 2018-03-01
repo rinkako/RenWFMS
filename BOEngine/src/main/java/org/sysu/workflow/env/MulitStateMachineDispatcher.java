@@ -5,7 +5,7 @@ import org.sysu.workflow.SCXMLExecutor;
 import org.sysu.workflow.SCXMLIOProcessor;
 import org.sysu.workflow.TriggerEvent;
 import org.sysu.workflow.instanceTree.InstanceManager;
-import org.sysu.workflow.instanceTree.TimeTreeNode;
+import org.sysu.workflow.instanceTree.RTreeNode;
 import org.sysu.workflow.model.ModelException;
 import org.sysu.workflow.model.extend.MessageMode;
 import org.apache.commons.logging.Log;
@@ -196,14 +196,14 @@ public class MulitStateMachineDispatcher extends SimpleDispatcher implements Ser
      */
     private boolean sendToParent(String treeId, String currentSessionId, String targetName, String targetState, String event, Object data, Object hints, long delay) {
         //get the current tree node by currentSessionId
-        TimeTreeNode currentNode = InstanceManager.GetInstanceTree(treeId).GetNodeById(currentSessionId);
+        RTreeNode currentNode = InstanceManager.GetInstanceTree(treeId).GetNodeById(currentSessionId);
         //get the parent node of the current tree node
-        TimeTreeNode parentNode = currentNode.Parent;
+        RTreeNode parentNode = currentNode.Parent;
         if(parentNode == null) {
             System.out.println("it is root , no parent.");
             return true;
         }
-        String eventPrefix = currentNode != InstanceManager.GetInstanceTree(treeId).Root ? currentNode.getFilename() + "." : "";
+        String eventPrefix = currentNode != InstanceManager.GetInstanceTree(treeId).Root ? currentNode.getName() + "." : "";
         sendToTarget(parentNode, targetState, eventPrefix + event, data);
         return true;
     }
@@ -221,9 +221,9 @@ public class MulitStateMachineDispatcher extends SimpleDispatcher implements Ser
      * @return
      */
     private boolean sendToChild(String treeId, String currentSessionId, String targetName, String targetState, String event, Object data, Object hints, long delay) {
-        ArrayList<TimeTreeNode> targetTreeNodeList;
+        ArrayList<RTreeNode> targetTreeNodeList;
         //get the current tree node by currentSessionId
-        TimeTreeNode currentTreeNode = InstanceManager.GetInstanceTree(treeId).GetNodeById(currentSessionId);
+        RTreeNode currentTreeNode = InstanceManager.GetInstanceTree(treeId).GetNodeById(currentSessionId);
         if (targetName != null && !"".equals(targetName)) {
             //only get those children whose name is equals to the targetName
             targetTreeNodeList = InstanceManager.GetInstanceTree(treeId).GetChildrenVectorByTarget(currentSessionId, targetName);
@@ -231,7 +231,7 @@ public class MulitStateMachineDispatcher extends SimpleDispatcher implements Ser
             //get all the children
             targetTreeNodeList = currentTreeNode.Children;
         }
-        String eventPrefix = currentTreeNode != InstanceManager.GetInstanceTree(treeId).Root ? currentTreeNode.getFilename() + "." : "";
+        String eventPrefix = currentTreeNode != InstanceManager.GetInstanceTree(treeId).Root ? currentTreeNode.getName() + "." : "";
         sendToTarget(targetTreeNodeList, targetState, eventPrefix + event, data);
         return true;
     }
@@ -249,7 +249,7 @@ public class MulitStateMachineDispatcher extends SimpleDispatcher implements Ser
      * @return
      */
     private boolean sendToAncestor(String treeId, String currentSessionId, String targetName, String targetState, String event, Object data, Object hints, long delay) {
-        ArrayList<TimeTreeNode> targetTreeNodeList;
+        ArrayList<RTreeNode> targetTreeNodeList;
         if (targetName != null && !"".equals(targetName)) {
             //only get those ancestors whose name is equals to the targetName
             targetTreeNodeList = InstanceManager.GetInstanceTree(treeId).GetAncestorsVectorByTarget(currentSessionId, targetName);
@@ -258,8 +258,8 @@ public class MulitStateMachineDispatcher extends SimpleDispatcher implements Ser
             targetTreeNodeList = InstanceManager.GetInstanceTree(treeId).GetAncestorsVector(currentSessionId);
         }
         //get the current tree node by currentSessionId
-        TimeTreeNode currentTreeNode = InstanceManager.GetInstanceTree(treeId).GetNodeById(currentSessionId);
-        String eventPrefix = currentTreeNode != InstanceManager.GetInstanceTree(treeId).Root ? currentTreeNode.getFilename() + "." : "";
+        RTreeNode currentTreeNode = InstanceManager.GetInstanceTree(treeId).GetNodeById(currentSessionId);
+        String eventPrefix = currentTreeNode != InstanceManager.GetInstanceTree(treeId).Root ? currentTreeNode.getName() + "." : "";
         sendToTarget(targetTreeNodeList, targetState, eventPrefix + event, data);
         return true;
     }
@@ -277,7 +277,7 @@ public class MulitStateMachineDispatcher extends SimpleDispatcher implements Ser
      * @return
      */
     private boolean sendToOffSpring(String treeId, String currentSessionId, String targetName, String targetState, String event, Object data, Object hints, long delay) {
-        ArrayList<TimeTreeNode> targetTreeNodeList;
+        ArrayList<RTreeNode> targetTreeNodeList;
         if (targetName != null && !"".equals(targetName)) {
             //only get those offsprings whose name is equals to the targetName
             targetTreeNodeList = InstanceManager.GetInstanceTree(treeId).GetOffspringsVectorByTarget(currentSessionId, targetName);
@@ -286,8 +286,8 @@ public class MulitStateMachineDispatcher extends SimpleDispatcher implements Ser
             targetTreeNodeList = InstanceManager.GetInstanceTree(treeId).GetOffspringsVector(currentSessionId);
         }
         //get the current tree node by currentSessionId
-        TimeTreeNode currentTreeNode = InstanceManager.GetInstanceTree(treeId).GetNodeById(currentSessionId);
-        String eventPrefix = currentTreeNode != InstanceManager.GetInstanceTree(treeId).Root ? currentTreeNode.getFilename() + "." : "";
+        RTreeNode currentTreeNode = InstanceManager.GetInstanceTree(treeId).GetNodeById(currentSessionId);
+        String eventPrefix = currentTreeNode != InstanceManager.GetInstanceTree(treeId).Root ? currentTreeNode.getName() + "." : "";
         sendToTarget(targetTreeNodeList, targetState, eventPrefix + event, data);
         return true;
     }
@@ -305,7 +305,7 @@ public class MulitStateMachineDispatcher extends SimpleDispatcher implements Ser
      * @return
      */
     private boolean sendToSibling(String treeId, String currentSessionId, String targetName, String targetState, String event, Object data, Object hints, long delay) {
-        ArrayList<TimeTreeNode> targetTreeNodeList;
+        ArrayList<RTreeNode> targetTreeNodeList;
         if(targetName != null && !"".equals(targetName)) {
             //only get those slbings whose name is equals to the targetName
             targetTreeNodeList = InstanceManager.GetInstanceTree(treeId).GetSiblingsVectorByTarget(currentSessionId, targetName);
@@ -314,8 +314,8 @@ public class MulitStateMachineDispatcher extends SimpleDispatcher implements Ser
             targetTreeNodeList = InstanceManager.GetInstanceTree(treeId).GetSiblingsVector(currentSessionId);
         }
         // get the current tree node by currentSessionId
-        TimeTreeNode currentTreeNode = InstanceManager.GetInstanceTree(treeId).GetNodeById(currentSessionId);
-        String eventPrefix = currentTreeNode != InstanceManager.GetInstanceTree(treeId).Root ? currentTreeNode.getFilename() + "." : "";
+        RTreeNode currentTreeNode = InstanceManager.GetInstanceTree(treeId).GetNodeById(currentSessionId);
+        String eventPrefix = currentTreeNode != InstanceManager.GetInstanceTree(treeId).Root ? currentTreeNode.getName() + "." : "";
         sendToTarget(targetTreeNodeList, targetState, eventPrefix + event, data);
         return true;
     }
@@ -333,7 +333,7 @@ public class MulitStateMachineDispatcher extends SimpleDispatcher implements Ser
      * @return
      */
     private boolean sendBroadCast(String treeId, String currentSessionId, String targetName, String targetState, String event, Object data, Object hints, long delay) {
-        ArrayList<TimeTreeNode> targetTreeNodeList;
+        ArrayList<RTreeNode> targetTreeNodeList;
         if (targetName != null && !"".equals(targetName)) {
             //only get those tree nodes whose name is equals to the targetName
             //treeNodeArrayList = scxmlInstanceTree.getAllTreeNodeByTargetName(scxmlInstanceTree.getRoot(), targetName);
@@ -344,8 +344,8 @@ public class MulitStateMachineDispatcher extends SimpleDispatcher implements Ser
             targetTreeNodeList = InstanceManager.GetInstanceTree(treeId).GetAllNodeVector();
         }
         //get the current tree node by currentSessionId
-        TimeTreeNode currentTreeNode = InstanceManager.GetInstanceTree(treeId).GetNodeById(currentSessionId);
-        String eventPrefix = currentTreeNode != InstanceManager.GetInstanceTree(treeId).Root ? currentTreeNode.getFilename() + "." : "";
+        RTreeNode currentTreeNode = InstanceManager.GetInstanceTree(treeId).GetNodeById(currentSessionId);
+        String eventPrefix = currentTreeNode != InstanceManager.GetInstanceTree(treeId).Root ? currentTreeNode.getName() + "." : "";
         sendToTarget(targetTreeNodeList, targetState, eventPrefix + event, data);
         return true;
     }
@@ -363,7 +363,7 @@ public class MulitStateMachineDispatcher extends SimpleDispatcher implements Ser
      * @return
      */
     private boolean sendUniCast(String treeId, String currentSessionId, String targetName, String targetState, String event, Object data, Object hints, long delay) {
-        ArrayList<TimeTreeNode> targetTreeNodeList;
+        ArrayList<RTreeNode> targetTreeNodeList;
         //get the target node list by the target name
         if(targetName != null && !"".equals(targetName)){
             targetTreeNodeList = InstanceManager.GetInstanceTree(treeId).GetNodeVectorByTarget(targetName);
@@ -371,8 +371,8 @@ public class MulitStateMachineDispatcher extends SimpleDispatcher implements Ser
             return false;
         }
         //get the current tree node by currentSessionId
-        TimeTreeNode currentTreeNode = InstanceManager.GetInstanceTree(treeId).GetNodeById(currentSessionId);
-        String eventPrefix = currentTreeNode != InstanceManager.GetInstanceTree(treeId).Root ? currentTreeNode.getFilename() + "." : "";
+        RTreeNode currentTreeNode = InstanceManager.GetInstanceTree(treeId).GetNodeById(currentSessionId);
+        String eventPrefix = currentTreeNode != InstanceManager.GetInstanceTree(treeId).Root ? currentTreeNode.getName() + "." : "";
         sendToTarget(targetTreeNodeList, targetState, eventPrefix + event, data);
         return true;
     }
@@ -384,10 +384,10 @@ public class MulitStateMachineDispatcher extends SimpleDispatcher implements Ser
      * @param event
      * @param data
      */
-    private void sendToTarget(ArrayList<TimeTreeNode> targetTreeNodeList, String targetState, String event, Object data) {
+    private void sendToTarget(ArrayList<RTreeNode> targetTreeNodeList, String targetState, String event, Object data) {
         //if the target state is not null
         if (targetState != null && !"".equals(targetState)) {
-            for (TimeTreeNode treeNode : targetTreeNodeList) {
+            for (RTreeNode treeNode : targetTreeNodeList) {
                 //get the unique scxml executor for each tree node
                 SCXMLExecutor scxmlExecutor = treeNode.getExect().getSCXMLExecutor();
                 if (scxmlExecutor != null) {
@@ -404,7 +404,7 @@ public class MulitStateMachineDispatcher extends SimpleDispatcher implements Ser
                 }
             }
         } else {
-            for (TimeTreeNode treeNode : targetTreeNodeList) {
+            for (RTreeNode treeNode : targetTreeNodeList) {
                 SCXMLExecutor scxmlExecutor = treeNode.getExect().getSCXMLExecutor();
                 //put the event to the external queue no matter which state the node is in currently
                 if (scxmlExecutor != null) {
@@ -427,8 +427,8 @@ public class MulitStateMachineDispatcher extends SimpleDispatcher implements Ser
      * @param event
      * @param data
      */
-    private void sendToTarget(TimeTreeNode treeNode, String targetState, String event, Object data) {
-        ArrayList<TimeTreeNode> treeNodeArrayList = new ArrayList<TimeTreeNode>();
+    private void sendToTarget(RTreeNode treeNode, String targetState, String event, Object data) {
+        ArrayList<RTreeNode> treeNodeArrayList = new ArrayList<RTreeNode>();
         treeNodeArrayList.add(treeNode);
         sendToTarget(treeNodeArrayList, targetState, event, data);
     }

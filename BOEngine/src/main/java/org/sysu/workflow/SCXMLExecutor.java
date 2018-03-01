@@ -1,14 +1,14 @@
 
 package org.sysu.workflow;
 
-import org.sysu.workflow.instanceTree.TimeInstanceTree;
+import org.sysu.workflow.instanceTree.RInstanceTree;
 import org.sysu.workflow.invoke.Invoker;
 import org.sysu.workflow.model.*;
 import org.sysu.workflow.semantics.SCXMLSemanticsImpl;
 import org.apache.commons.logging.LogFactory;
 import org.apache.commons.logging.Log;
 import org.sysu.workflow.instanceTree.InstanceManager;
-import org.sysu.workflow.instanceTree.TimeTreeNode;
+import org.sysu.workflow.instanceTree.RTreeNode;
 
 
 import java.util.*;
@@ -56,7 +56,7 @@ public class SCXMLExecutor implements SCXMLIOProcessor {
      */
     private String executorIndex;
 
-    public String Tid = UUID.randomUUID().toString();
+    public String Tid = String.format("SCNode_%s", UUID.randomUUID().toString());
     public String RootTid = "";
     public String Rtid = "";
     public String Pid = "";
@@ -485,8 +485,8 @@ public class SCXMLExecutor implements SCXMLIOProcessor {
         // register a new instance tree if this state-machine is the root one
         try {
             if (this.RootTid.equals("") || this.RootTid.equals(this.Tid)) {
-                TimeInstanceTree myTree = new TimeInstanceTree();
-                TimeTreeNode nRoot = new TimeTreeNode(this.exctx.getStateMachine().getName(), this.Tid, this.exctx, null);
+                RInstanceTree myTree = new RInstanceTree();
+                RTreeNode nRoot = new RTreeNode(this.exctx.getStateMachine().getName(), this.Tid, this.exctx, null);
                 myTree.SetRoot(nRoot);
                 InstanceManager.RegisterInstanceTree(myTree);
                 this.RootTid = this.Tid;
@@ -587,13 +587,13 @@ public class SCXMLExecutor implements SCXMLIOProcessor {
      * @throws ModelException in case there is a fatal SCXML object model problem.
      */
     public void triggerEvents() throws ModelException {
-//        ArrayList<TimeTreeNode> childrenList = InstanceManager.GetInstanceTree(this.RootTid).GetNodeById(this.Tid).Children;
+//        ArrayList<RTreeNode> childrenList = InstanceManager.GetInstanceTree(this.RootTid).GetNodeById(this.Tid).Children;
 //        ArrayList<TriggerEvent> childrenTriggerList = new ArrayList<TriggerEvent>();
 //        Object[] eqArr = this.externalEventQueue.toArray();
 //        for (Object te : eqArr) {
 //            childrenTriggerList.add((TriggerEvent)te);
 //        }
-//        for (TimeTreeNode cNode : childrenList) {
+//        for (RTreeNode cNode : childrenList) {
 //            SCXMLExecutor tExecutor = cNode.getExect().getSCXMLExecutor();
 //            for (int i = 0; tExecutor.isRunning() && i < childrenTriggerList.size(); i++) {
 //                tExecutor.triggerEvent(childrenTriggerList.get(i));

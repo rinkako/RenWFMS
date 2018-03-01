@@ -10,7 +10,7 @@ import org.sysu.renResourcing.filter.RFilter;
 /**
  * Author: Rinkako
  * Date  : 2018/2/6
- * Usage : Some static methods for reflect.
+ * Usage : Some static methods for reflection.
  */
 public final class ReflectUtil {
     /**

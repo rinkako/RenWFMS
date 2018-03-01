@@ -3,8 +3,8 @@ package org.sysu.workflow.model.extend;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
 import org.sysu.workflow.instanceTree.InstanceManager;
-import org.sysu.workflow.instanceTree.TimeInstanceTree;
-import org.sysu.workflow.instanceTree.TimeTreeNode;
+import org.sysu.workflow.instanceTree.RTreeNode;
+import org.sysu.workflow.instanceTree.RInstanceTree;
 import org.sysu.workflow.env.MulitStateMachineDispatcher;
 import org.sysu.workflow.env.SimpleErrorReporter;
 import org.sysu.workflow.io.SCXMLReader;
@@ -135,11 +135,12 @@ public class SubStateMachine extends NamelistHolder implements PathResolverHolde
 
 
             SCXMLExecutionContext currentExecutionContext = (SCXMLExecutionContext) exctx.getInternalIOProcessor();
+            String boName = getSrc().split(".")[0];
+
 
             //read BO from database
             if (!GlobalContext.IsLocalDebug) {
                 //Ariana:get the serialized BO from the database and deserialize it into SCXML object
-                String boName = getSrc().split(".")[0];
                 Session session = HibernateUtil.GetLocalSession();
                 Transaction transaction = session.beginTransaction();
                 try {
@@ -165,8 +166,8 @@ public class SubStateMachine extends NamelistHolder implements PathResolverHolde
             }
 
             // launch sub state machine of the number of instances
-            TimeInstanceTree iTree = InstanceManager.GetInstanceTree(currentExecutionContext.RootTid);
-            TimeTreeNode curNode = iTree.GetNodeById(currentExecutionContext.Tid);
+            RInstanceTree iTree = InstanceManager.GetInstanceTree(currentExecutionContext.RootTid);
+            RTreeNode curNode = iTree.GetNodeById(currentExecutionContext.Tid);
             for (int i = 0; i < getInstances(); i++) {
                 Evaluator evaluator = EvaluatorFactory.getEvaluator(scxml);
                 SCXMLExecutor executor = new SCXMLExecutor(evaluator, new MulitStateMachineDispatcher(), new SimpleErrorReporter(), null, currentExecutionContext.RootTid);
@@ -174,18 +175,18 @@ public class SubStateMachine extends NamelistHolder implements PathResolverHolde
                 executor.setPid(currentExecutionContext.Pid);
                 executor.setStateMachine(scxml);
                 System.out.println("Create sub state machine from: " + url.getFile());
-                //初始化执行上下文
+
                 Context rootContext = evaluator.newContext(null);
                 for (Map.Entry<String,Object> entry : payloadDataMap.entrySet()){
                     rootContext.set(entry.getKey(), entry.getValue());
                 }
                 executor.setRootContext(rootContext);
                 executor.setExecutorIndex(iTree.Root.getExect().getSCXMLExecutor().getExecutorIndex());
-                // 启动状态机执行器
+
                 executor.go();
 
                 // maintain the relation of this sub state machine on the instance tree
-                TimeTreeNode subNode = new TimeTreeNode(executor.getExctx().getStateMachine().getName(), executor.Tid, executor.getExctx(), curNode);
+                RTreeNode subNode = new RTreeNode(boName, executor.Tid, executor.getExctx(), curNode);
                 curNode.AddChild(subNode);
 
                 //String currentSessionId = (String) currentExecutionContext.getScInstance().getSystemContext().get(SCXMLSystemContext.SESSIONID_KEY);
