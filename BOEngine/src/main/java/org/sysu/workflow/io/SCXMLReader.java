@@ -41,9 +41,6 @@ import java.util.*;
  * parsed is well-formed and correct. If that assumption does not hold,
  * any subsequent behavior is undefined.</p>
  * <p/>
- * SCXMLReader 提供了读写SCXML文档的能力。
- * <p/>
- * SCXMLReader 假设SCXML文档是形式良好的，正确的。
  *
  * @since 1.0
  */
@@ -56,7 +53,6 @@ public final class SCXMLReader {
      * that is intended to be parsed by this reader <b>must</b>
      * bind the SCXML elements to this namespace.
      * <p/>
-     * 必须把scxml元素绑定到这个命名空间
      */
     private static final String XMLNS_SCXML =
             "http://www.w3.org/2005/07/scxml";
@@ -73,53 +69,41 @@ public final class SCXMLReader {
 
     /**
      * The version attribute value the SCXML element <em>must</em> have as stated by the spec: 3.2.1
-     * scxml元素版本号
      */
     private static final String SCXML_REQUIRED_VERSION = "1.0";
+
     /**
      * The default namespace for attributes.
-     * 属性的默认命名空间
      */
     private static final String XMLNS_DEFAULT = null;
 
     //---- ERROR MESSAGES ----//
-    //----错误消息 -------//
     /**
      * Null URL passed as argument.
-     * <p/>
-     * 空的URL
      */
     private static final String ERR_NULL_URL = "Cannot parse null URL";
 
     /**
-     * 空的路径
-     * <p/>
      * Null path passed as argument.
      */
     private static final String ERR_NULL_PATH = "Cannot parse null path";
 
     /**
-     * 空的输入流
-     * <p/>
      * Null InputStream passed as argument.
      */
     private static final String ERR_NULL_ISTR = "Cannot parse null InputStream";
 
     /**
-     * 空的Reader
      * Null Reader passed as argument.
      */
     private static final String ERR_NULL_READ = "Cannot parse null Reader";
 
     /**
-     * 空的源文档
-     * <p/>
      * Null Source passed as argument.
      */
     private static final String ERR_NULL_SRC = "Cannot parse null Source";
 
     /**
-     * 试图顶一个自定义Action ，没有扩展SCXML Action基类
      * Error message while attempting to define a custom action which does
      * not extend the Commons SCXML Action base class.
      */
@@ -128,7 +112,6 @@ public final class SCXMLReader {
 
     /**
      * Parser configuration error while trying to parse stream to DOM node(s).
-     * 解析器配置错误
      */
     private static final String ERR_PARSER_CFG = "ParserConfigurationException while trying"
             + " to parse stream into DOM node(s).";
@@ -241,6 +224,9 @@ public final class SCXMLReader {
     private static final String ELEM_BOO_RESOURCES = "resources";
     private static final String ELEM_BOO_RESOURCE = "resource";
     private static final String ELEM_BOO_ROLE = "role";
+    private static final String ELEM_BOO_PRINCIPLE = "principle";
+    private static final String ELEM_BOO_DISTRIBUTORPARAM = "distributorParam";
+    private static final String ELEM_BOO_CONSTRAINTSPARAM = "constraintsParam";
 
 
     //---- 属性名 ----//
@@ -289,6 +275,11 @@ public final class SCXMLReader {
     private static final String ATTR_BOO_PRINCIPLE = "principle";
     /*businessclass元素扩展的属性*/
     private static final String ATTR_BOO_EXTENDS = "extends";
+    /*principle extend*/
+    private static final String ATTR_BOO_METHOD = "method";
+    private static final String ATTR_BOO_DISTRIBUTOR = "distributor";
+    private static final String ATTR_BOO_CONSTRAINTS = "constraints";
+
 
     /*
      * Public methods
