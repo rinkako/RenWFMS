@@ -6,7 +6,7 @@ import org.sysu.workflow.invoke.Invoker;
 import org.sysu.workflow.invoke.InvokerException;
 import org.sysu.workflow.model.*;
 import org.sysu.workflow.model.extend.Call;
-import org.sysu.workflow.restful.utility.LogUtil;
+import org.sysu.workflow.utility.LogUtil;
 import org.sysu.workflow.system.EventVariable;
 
 import java.util.*;

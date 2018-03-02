@@ -6,7 +6,7 @@ package org.sysu.workflow.instanceTree;
 
 import org.sysu.workflow.SCXMLExecutionContext;
 import org.sysu.workflow.SCXMLExecutor;
-import org.sysu.workflow.restful.utility.LogUtil;
+import org.sysu.workflow.utility.LogUtil;
 
 import java.util.Hashtable;
 

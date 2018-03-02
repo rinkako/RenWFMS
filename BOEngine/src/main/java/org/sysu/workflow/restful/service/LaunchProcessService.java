@@ -16,9 +16,9 @@ import org.sysu.workflow.restful.entity.RenBoEntity;
 import org.sysu.workflow.restful.entity.RenProcessEntity;
 import org.sysu.workflow.restful.entity.RenRstaskEntity;
 import org.sysu.workflow.restful.entity.RenRuntimerecordEntity;
-import org.sysu.workflow.restful.utility.HibernateUtil;
-import org.sysu.workflow.restful.utility.LogUtil;
-import org.sysu.workflow.restful.utility.SerializationUtil;
+import org.sysu.workflow.utility.HibernateUtil;
+import org.sysu.workflow.utility.LogUtil;
+import org.sysu.workflow.utility.SerializationUtil;
 
 import java.io.ByteArrayInputStream;
 import java.io.InputStream;
@@ -27,7 +27,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.UUID;
 
-import static org.sysu.workflow.restful.utility.SerializationUtil.DeserializationSCXMLByByteArray;
+import static org.sysu.workflow.utility.SerializationUtil.DeserializationSCXMLByByteArray;
 
 /**
  * Author: Ariana

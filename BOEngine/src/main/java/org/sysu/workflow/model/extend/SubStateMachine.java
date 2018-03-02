@@ -16,9 +16,9 @@ import org.sysu.workflow.*;
 import org.sysu.workflow.model.*;
 import org.sysu.workflow.restful.entity.RenBoEntity;
 import org.sysu.workflow.restful.service.LaunchProcessService;
-import org.sysu.workflow.restful.utility.HibernateUtil;
-import org.sysu.workflow.restful.utility.LogUtil;
-import org.sysu.workflow.restful.utility.SerializationUtil;
+import org.sysu.workflow.utility.HibernateUtil;
+import org.sysu.workflow.utility.LogUtil;
+import org.sysu.workflow.utility.SerializationUtil;
 
 import java.io.InputStream;
 import java.net.URL;

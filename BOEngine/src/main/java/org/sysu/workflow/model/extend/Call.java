@@ -8,8 +8,8 @@ import org.sysu.workflow.*;
 import org.sysu.workflow.model.EnterableState;
 import org.sysu.workflow.model.ModelException;
 import org.sysu.workflow.model.ParamsContainer;
-import org.sysu.workflow.restful.utility.LogUtil;
-import org.sysu.workflow.restful.utility.SerializationUtil;
+import org.sysu.workflow.utility.LogUtil;
+import org.sysu.workflow.utility.SerializationUtil;
 
 import java.io.Serializable;
 import java.util.HashMap;

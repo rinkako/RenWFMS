@@ -11,8 +11,8 @@ import org.sysu.workflow.instanceTree.InstanceManager;
 import org.sysu.workflow.instanceTree.RInstanceTree;
 import org.sysu.workflow.instanceTree.RTreeNode;
 import org.sysu.workflow.model.extend.MessageMode;
-import org.sysu.workflow.restful.utility.LogUtil;
-import org.sysu.workflow.restful.utility.SerializationUtil;
+import org.sysu.workflow.utility.LogUtil;
+import org.sysu.workflow.utility.SerializationUtil;
 
 import java.util.HashMap;
 
