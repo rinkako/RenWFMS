@@ -23,6 +23,7 @@ import java.util.UUID;
  *         event records of workitems and work queues.
  */
 public class InterfaceE {
+
     /**
      * Service blocked rtid set.
      */
@@ -44,6 +45,7 @@ public class InterfaceE {
 
     /**
      * Disable RS event log service for a specific process runtime.
+     *
      * @param rtid process rtid
      */
     public static synchronized void DisableLogServiceForRTID(String rtid) {
@@ -52,6 +54,7 @@ public class InterfaceE {
 
     /**
      * Resume RS event log service for a specific process runtime.
+     *
      * @param rtid process rtid
      */
     public static synchronized void ResumeLogServiceForRTID(String rtid) {
@@ -60,6 +63,7 @@ public class InterfaceE {
 
     /**
      * Check if RS event log service has been ban for a specific process runtime.
+     *
      * @param rtid process rtid
      */
     public static synchronized boolean IsDisabledLogServiceForRTID(String rtid) {
@@ -68,9 +72,10 @@ public class InterfaceE {
 
     /**
      * Add a event log to steady.
+     *
      * @param workitem workitem context
      * @param workerId worker global id
-     * @param event event type enum
+     * @param event    event type enum
      */
     public static void WriteLog(WorkitemContext workitem, String workerId, RSEventType event) {
         if (!GlobalContext.EVENTLOG_ENABLE || InterfaceE.IsDisabledLogServiceForRTID(workitem.getEntity().getRtid())) {
@@ -88,5 +93,4 @@ public class InterfaceE {
         writer.AddEvent(log, workitem.getEntity().getRtid());
         AsyncPluginRunner.AsyncRun(writer);
     }
-
 }

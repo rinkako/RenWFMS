@@ -47,7 +47,7 @@ public class InterfaceW {
                 InterfaceX.HandleFastFail(ctx.getRtid());
             }
             else {
-                InterfaceX.FailedRedirectToLauncherAuthPool(workitem);
+                InterfaceX.FailedRedirectToLauncherDomainPool(workitem);
             }
             return false;
         }
@@ -74,7 +74,7 @@ public class InterfaceW {
                 InterfaceX.HandleFastFail(ctx.getRtid());
             }
             else {
-                InterfaceX.FailedRedirectToLauncherAuthPool(workitem);
+                InterfaceX.FailedRedirectToLauncherDomainPool(workitem);
             }
             return false;
         }
@@ -101,7 +101,7 @@ public class InterfaceW {
                 InterfaceX.HandleFastFail(ctx.getRtid());
             }
             else {
-                InterfaceX.FailedRedirectToLauncherAuthPool(workitem);
+                InterfaceX.FailedRedirectToLauncherDomainPool(workitem);
             }
             return false;
         }
@@ -128,7 +128,7 @@ public class InterfaceW {
                 InterfaceX.HandleFastFail(ctx.getRtid());
             }
             else {
-                InterfaceX.FailedRedirectToLauncherAuthPool(workitem);
+                InterfaceX.FailedRedirectToLauncherDomainPool(workitem);
             }
             return false;
         }
@@ -155,7 +155,7 @@ public class InterfaceW {
                 InterfaceX.HandleFastFail(ctx.getRtid());
             }
             else {
-                InterfaceX.FailedRedirectToLauncherAuthPool(workitem);
+                InterfaceX.FailedRedirectToLauncherDomainPool(workitem);
             }
             return false;
         }
@@ -182,7 +182,7 @@ public class InterfaceW {
                 InterfaceX.HandleFastFail(ctx.getRtid());
             }
             else {
-                InterfaceX.FailedRedirectToLauncherAuthPool(workitem);
+                InterfaceX.FailedRedirectToLauncherDomainPool(workitem);
             }
             return false;
         }
@@ -209,7 +209,7 @@ public class InterfaceW {
                 InterfaceX.HandleFastFail(ctx.getRtid());
             }
             else {
-                InterfaceX.FailedRedirectToLauncherAuthPool(workitem);
+                InterfaceX.FailedRedirectToLauncherDomainPool(workitem);
             }
             return false;
         }
@@ -236,7 +236,7 @@ public class InterfaceW {
                 InterfaceX.HandleFastFail(ctx.getRtid());
             }
             else {
-                InterfaceX.FailedRedirectToLauncherAuthPool(workitem);
+                InterfaceX.FailedRedirectToLauncherDomainPool(workitem);
             }
             return false;
         }
@@ -263,7 +263,7 @@ public class InterfaceW {
                 InterfaceX.HandleFastFail(ctx.getRtid());
             }
             else {
-                InterfaceX.FailedRedirectToLauncherAuthPool(workitem);
+                InterfaceX.FailedRedirectToLauncherDomainPool(workitem);
             }
             return false;
         }

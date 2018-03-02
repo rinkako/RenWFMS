@@ -21,5 +21,7 @@ public enum  RSEventType {
     cancel,
     complete,
     unoffer,
-    resume
+    resume,
+    exception_principle,
+    exception_lifecycle
 }

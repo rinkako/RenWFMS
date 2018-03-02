@@ -6,6 +6,7 @@ package org.sysu.renResourcing.interfaceService;
 
 import org.hibernate.Session;
 import org.hibernate.Transaction;
+import org.sysu.renCommon.utility.AuthDomainHelper;
 import org.sysu.renResourcing.GlobalContext;
 import org.sysu.renCommon.enums.*;
 import org.sysu.renResourcing.consistency.ContextLockManager;
@@ -58,25 +59,25 @@ public class InterfaceB {
         finally {
             HibernateUtil.CloseLocalSession();
         }
-        // get auth user name, session like "AUTH_admin@domain_c880d4c9-934c-4d73-9006-22e588400000"
-        String adminQueuePostfix = runtimeRecord.getSessionId().split("_")[1];
+        // get auth user name
+        String domain = AuthDomainHelper.GetDomainByRTID(runtimeRecord.getRtid());
+        // generate workitem
+        WorkitemContext workitem = WorkitemContext.GenerateContext(taskContext, ctx.getRtid(), (ArrayList) ctx.getArgs().get("taskArgumentsVector"));
         // parse resourcing principle
         RPrinciple principle = PrincipleParser.Parse(taskContext.getPrinciple());
         if (principle == null) {
             LogUtil.Log(String.format("Cannot parse principle %s", taskContext.getPrinciple()), InterfaceB.class.getName(),
                     LogUtil.LogLevelType.ERROR, ctx.getRtid());
-            // todo use interface X
+            InterfaceX.PrincipleParseFailedRedirectToDomainPool(workitem);
             return;
         }
-        // generate workitem
-        WorkitemContext workitem = WorkitemContext.GenerateContext(taskContext, ctx.getRtid(), (ArrayList) ctx.getArgs().get("taskArgumentsVector"));
         // get valid resources
         HashSet<ParticipantContext> validParticipants = InterfaceO.GetParticipantByBRole(ctx.getRtid(), taskContext.getBrole());
         if (validParticipants.isEmpty()) {
             LogUtil.Log("A task cannot be allocated to any valid resources, so it will be put into admin unoffered queue.",
                     InterfaceB.class.getName(), LogUtil.LogLevelType.WARNING, ctx.getRtid());
             // move workitem to admin unoffered queue
-            WorkQueueContainer adminContainer = WorkQueueContainer.GetContext(GlobalContext.WORKQUEUE_ADMIN_PREFIX + adminQueuePostfix);
+            WorkQueueContainer adminContainer = WorkQueueContainer.GetContext(GlobalContext.WORKQUEUE_ADMIN_PREFIX + domain);
             adminContainer.AddToQueue(workitem, WorkQueueType.UNOFFERED);
             return;
         }

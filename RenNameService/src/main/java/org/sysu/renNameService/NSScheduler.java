@@ -73,7 +73,7 @@ public class NSScheduler implements Observer {
     }
 
     /**
-     * Actually handle a name service transaction launching process directly.
+     * Synchronously handle a name service transaction launching process.
      * @param nst NameServiceTransaction instance
      * @return execution result
      */
