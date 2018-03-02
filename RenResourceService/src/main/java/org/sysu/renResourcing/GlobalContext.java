@@ -1,3 +1,7 @@
+/*
+ * Project Ren @ 2018
+ * Rinkako, Ariana, Gordan. SYSU SDCS.
+ */
 package org.sysu.renResourcing;
 
 import java.util.UUID;
@@ -5,7 +9,7 @@ import java.util.UUID;
 /**
  * Author: Rinkako
  * Date  : 2017/11/20 0020
- * Usage :
+ * Usage : Global access data context.
  */
 public class GlobalContext {
 

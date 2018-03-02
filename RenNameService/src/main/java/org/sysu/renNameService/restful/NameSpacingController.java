@@ -405,7 +405,7 @@ public class NameSpacingController {
      * @param workitemId workitem global id
      * @return response package in JSON
      */
-    @RequestMapping(value = "/start", produces = {"application/json", "application/xml"})
+    @RequestMapping(value = "/workitem/start", produces = {"application/json", "application/xml"})
     @ResponseBody
     @Transactional
     public ReturnModel TransshipStartWorkitem(@RequestParam(value = "signature", required = false) String signature,
@@ -448,7 +448,7 @@ public class NameSpacingController {
      * @param workitemId workitem global id
      * @return response package in JSON
      */
-    @RequestMapping(value = "/accept", produces = {"application/json", "application/xml"})
+    @RequestMapping(value = "/workitem/accept", produces = {"application/json", "application/xml"})
     @ResponseBody
     @Transactional
     public ReturnModel TransshipAcceptWorkitem(@RequestParam(value = "signature", required = false) String signature,
@@ -491,7 +491,7 @@ public class NameSpacingController {
      * @param workitemId workitem global id
      * @return response package in JSON
      */
-    @RequestMapping(value = "/acceptStart", produces = {"application/json", "application/xml"})
+    @RequestMapping(value = "/workitem/acceptStart", produces = {"application/json", "application/xml"})
     @ResponseBody
     @Transactional
     public ReturnModel TransshipAcceptAndStartWorkitem(@RequestParam(value = "signature", required = false) String signature,
@@ -534,7 +534,7 @@ public class NameSpacingController {
      * @param workitemId workitem global id
      * @return response package in JSON
      */
-    @RequestMapping(value = "/complete", produces = {"application/json", "application/xml"})
+    @RequestMapping(value = "/workitem/complete", produces = {"application/json", "application/xml"})
     @ResponseBody
     @Transactional
     public ReturnModel TransshipCompleteWorkitem(@RequestParam(value = "signature", required = false) String signature,
@@ -577,7 +577,7 @@ public class NameSpacingController {
      * @param workitemId workitem global id
      * @return response package in JSON
      */
-    @RequestMapping(value = "/suspend", produces = {"application/json", "application/xml"})
+    @RequestMapping(value = "/workitem/suspend", produces = {"application/json", "application/xml"})
     @ResponseBody
     @Transactional
     public ReturnModel TransshipSuspendWorkitem(@RequestParam(value = "signature", required = false) String signature,
@@ -620,7 +620,7 @@ public class NameSpacingController {
      * @param workitemId workitem global id
      * @return response package in JSON
      */
-    @RequestMapping(value = "/unsuspend", produces = {"application/json", "application/xml"})
+    @RequestMapping(value = "/workitem/unsuspend", produces = {"application/json", "application/xml"})
     @ResponseBody
     @Transactional
     public ReturnModel TransshipUnsuspendWorkitem(@RequestParam(value = "signature", required = false) String signature,
@@ -663,7 +663,7 @@ public class NameSpacingController {
      * @param workitemId workitem global id
      * @return response package in JSON
      */
-    @RequestMapping(value = "/skip", produces = {"application/json", "application/xml"})
+    @RequestMapping(value = "/workitem/skip", produces = {"application/json", "application/xml"})
     @ResponseBody
     @Transactional
     public ReturnModel TransshipSkipWorkitem(@RequestParam(value = "signature", required = false) String signature,
@@ -706,7 +706,7 @@ public class NameSpacingController {
      * @param workitemId workitem global id
      * @return response package in JSON
      */
-    @RequestMapping(value = "/reallocate", produces = {"application/json", "application/xml"})
+    @RequestMapping(value = "/workitem/reallocate", produces = {"application/json", "application/xml"})
     @ResponseBody
     @Transactional
     public ReturnModel TransshipReallocateWorkitem(@RequestParam(value = "signature", required = false) String signature,
@@ -749,7 +749,7 @@ public class NameSpacingController {
      * @param workitemId workitem global id
      * @return response package in JSON
      */
-    @RequestMapping(value = "/deallocate", produces = {"application/json", "application/xml"})
+    @RequestMapping(value = "/workitem/deallocate", produces = {"application/json", "application/xml"})
     @ResponseBody
     @Transactional
     public ReturnModel TransshipDeallocateWorkitem(@RequestParam(value = "signature", required = false) String signature,
@@ -775,6 +775,100 @@ public class NameSpacingController {
             args.put("workitemId", workitemId);
             args.put("workerId", workerId);
             NameServiceTransaction t = TransactionCreator.Create(TransactionType.Namespacing, "transshipWorkitem", args);
+            String jsonifyResult = (String) NameSpacingController.scheduler.ScheduleSync(t);
+            // return
+            ReturnModelHelper.StandardResponse(rnModel, StatusCode.OK, jsonifyResult);
+        } catch (Exception e) {
+            ReturnModelHelper.ExceptionResponse(rnModel, e.getClass().getName());
+        }
+        return rnModel;
+    }
+
+    /**
+     * Transship request of get a queue for specific worker.
+     *
+     * @param signature auth signature
+     * @param rtid      process rtid
+     * @param workerId  worker global id
+     * @param type      queue type name
+     * @return response package
+     */
+    @RequestMapping(value = "/queue/get", produces = {"application/json", "application/xml"})
+    @ResponseBody
+    @Transactional
+    public ReturnModel TransshipGetWorkQueue(@RequestParam(value = "signature", required = false) String signature,
+                                             @RequestParam(value = "rtid", required = false) String rtid,
+                                             @RequestParam(value = "workerId", required = false) String workerId,
+                                             @RequestParam(value = "type", required = false) String type) {
+        ReturnModel rnModel = new ReturnModel();
+        try {
+            // miss params
+            List<String> missingParams = new ArrayList<>();
+            if (signature == null) missingParams.add("signature");
+            if (rtid == null) missingParams.add("rtid");
+            if (workerId == null) missingParams.add("workerId");
+            if (type == null) missingParams.add("type");
+            if (missingParams.size() > 0) {
+                return ReturnModelHelper.MissingParametersResponse(missingParams);
+            }
+            // check authorization
+            if (!AuthorizationService.CheckRTIDSignature(signature, rtid)) {
+                return ReturnModelHelper.UnauthorizedResponse(signature);
+            }
+            // logic
+            HashMap<String, String> args = new HashMap<>();
+            args.put("action", "get");
+            args.put("type", type);
+            args.put("rtid", rtid);
+            args.put("workerId", workerId);
+            NameServiceTransaction t = TransactionCreator.Create(TransactionType.Namespacing, "transshipWorkqueue", args);
+            String jsonifyResult = (String) NameSpacingController.scheduler.ScheduleSync(t);
+            // return
+            ReturnModelHelper.StandardResponse(rnModel, StatusCode.OK, jsonifyResult);
+        } catch (Exception e) {
+            ReturnModelHelper.ExceptionResponse(rnModel, e.getClass().getName());
+        }
+        return rnModel;
+    }
+
+    /**
+     * Get a specific work queue of a list of workers.
+     *
+     * @param signature    auth signature
+     * @param rtid         process rtid
+     * @param workerIdList worker global id list, split by `,`
+     * @param type         queue type name
+     * @return response package
+     */
+    @RequestMapping(value = "/queue/getlist", produces = {"application/json", "application/xml"})
+    @ResponseBody
+    @Transactional
+    public ReturnModel TransshipGetWorkQueueList(@RequestParam(value = "signature", required = false) String signature,
+                                                 @RequestParam(value = "rtid", required = false) String rtid,
+                                                 @RequestParam(value = "workerIdList", required = false) String workerIdList,
+                                                 @RequestParam(value = "type", required = false) String type) {
+        ReturnModel rnModel = new ReturnModel();
+        try {
+            // miss params
+            List<String> missingParams = new ArrayList<>();
+            if (signature == null) missingParams.add("signature");
+            if (rtid == null) missingParams.add("rtid");
+            if (workerIdList == null) missingParams.add("workerIdList");
+            if (type == null) missingParams.add("type");
+            if (missingParams.size() > 0) {
+                return ReturnModelHelper.MissingParametersResponse(missingParams);
+            }
+            // check authorization
+            if (!AuthorizationService.CheckRTIDSignature(signature, rtid)) {
+                return ReturnModelHelper.UnauthorizedResponse(signature);
+            }
+            // logic
+            HashMap<String, String> args = new HashMap<>();
+            args.put("action", "getlist");
+            args.put("rtid", rtid);
+            args.put("type", type);
+            args.put("workerIdList", workerIdList);
+            NameServiceTransaction t = TransactionCreator.Create(TransactionType.Namespacing, "transshipWorkqueue", args);
             String jsonifyResult = (String) NameSpacingController.scheduler.ScheduleSync(t);
             // return
             ReturnModelHelper.StandardResponse(rnModel, StatusCode.OK, jsonifyResult);

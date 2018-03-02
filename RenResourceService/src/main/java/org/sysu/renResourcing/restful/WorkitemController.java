@@ -1,3 +1,7 @@
+/*
+ * Project Ren @ 2018
+ * Rinkako, Ariana, Gordan. SYSU SDCS.
+ */
 package org.sysu.renResourcing.restful;
 
 import org.springframework.web.bind.annotation.*;
@@ -5,7 +9,6 @@ import org.sysu.renResourcing.RScheduler;
 import org.sysu.renCommon.enums.RServiceType;
 import org.sysu.renResourcing.context.ResourcingContext;
 import org.sysu.renResourcing.context.WorkitemContext;
-import org.sysu.renResourcing.restful.ReturnModelHelper;
 import org.sysu.renCommon.dto.ReturnModel;
 import org.sysu.renCommon.dto.StatusCode;
 

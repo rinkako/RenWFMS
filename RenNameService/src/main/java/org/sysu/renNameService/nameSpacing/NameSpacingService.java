@@ -270,6 +270,22 @@ public class NameSpacingService {
         HashMap<String, String> argMap = new HashMap<>();
         argMap.put("workitemId", workitemId);
         argMap.put("workerId", workerId);
-        return GlobalContext.Interaction.Send(GlobalContext.URL_RS_WORKITEM_GATEWAY + action, argMap, "");
+        return GlobalContext.Interaction.Send(GlobalContext.GATEWAY_RS_WORKITEM + action, argMap, "");
+    }
+
+    /**
+     * Handle transshipment of workqueue actions.
+     *
+     * @param action     action name
+     * @param rtid       process rtid
+     * @param workerId   worker global id
+     * @param type       workqueue type
+     */
+    public static String TransshipWorkqueue(String action, String rtid, String workerId, String type) throws Exception {
+        HashMap<String, String> argMap = new HashMap<>();
+        argMap.put("rtid", rtid);
+        argMap.put("type", type);
+        argMap.put("workerId", workerId);
+        return GlobalContext.Interaction.Send(GlobalContext.GATEWAY_RS_QUEUE + action, argMap, rtid);
     }
 }

@@ -321,20 +321,49 @@ public class InterfaceW {
      * @return workitem descriptors string in list
      */
     public static String GetWorkQueue(ResourcingContext ctx) {
-        String domain = (String) ctx.getArgs().get("domain");
+        String rtid = (String) ctx.getArgs().get("rtid");
         String workerId = (String) ctx.getArgs().get("workerId");
-        String queueTypeName = (String) ctx.getArgs().get("queueTypeName");
+        String queueTypeName = ((String) ctx.getArgs().get("type"));
+        String domain = AuthDomainHelper.GetDomainByRTID(rtid);
         WorkQueueType wqType = WorkQueueType.valueOf(queueTypeName.toUpperCase());
         WorkQueueContainer container = WorkQueueContainer.GetContext(workerId);
-        HashSet<WorkitemContext> allocateSet = (HashSet<WorkitemContext>) container.GetQueuedWorkitem(wqType);
+        HashSet<WorkitemContext> queueSet = (HashSet<WorkitemContext>) container.GetQueuedWorkitem(wqType);
         HashSet<WorkitemContext> retSet = new HashSet<>();
-        for (WorkitemContext workitem : allocateSet) {
+        for (WorkitemContext workitem : queueSet) {
             String authDomain = AuthDomainHelper.GetDomainByRTID(ctx.getRtid());
             if (authDomain.equals(domain)) {
                 retSet.add(workitem);
             }
         }
         return SerializationUtil.JsonSerialization(retSet);
+    }
+
+    /**
+     * Get all workitems in a specific type of queue of a list of workers.
+     * @param ctx rs context
+     * @return workitem descriptors string in map (workerId, list of workitem descriptor)
+     */
+    public static String GetWorkQueueList(ResourcingContext ctx) {
+        String workerIdList = (String) ctx.getArgs().get("workerIdList");
+        String[] workerIds = workerIdList.split(",");
+        HashMap<String, HashSet> retMap = new HashMap<>();
+        for (String workerId : workerIds) {
+            String rtid = (String) ctx.getArgs().get("rtid");
+            String queueTypeName = ((String) ctx.getArgs().get("type"));
+            String domain = AuthDomainHelper.GetDomainByRTID(rtid);
+            WorkQueueType wqType = WorkQueueType.valueOf(queueTypeName.toUpperCase());
+            WorkQueueContainer container = WorkQueueContainer.GetContext(workerId);
+            HashSet<WorkitemContext> queueSet = (HashSet<WorkitemContext>) container.GetQueuedWorkitem(wqType);
+            HashSet<WorkitemContext> retSet = new HashSet<>();
+            for (WorkitemContext workitem : queueSet) {
+                String authDomain = AuthDomainHelper.GetDomainByRTID(ctx.getRtid());
+                if (authDomain.equals(domain)) {
+                    retSet.add(workitem);
+                }
+            }
+            retMap.put(workerId, retSet);
+        }
+        return SerializationUtil.JsonSerialization(retMap);
     }
 
     /**

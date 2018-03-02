@@ -86,5 +86,10 @@ public final class GlobalContext {
     /**
      * Service URL gateway for RS workitem actions.
      */
-    public static final String URL_RS_WORKITEM_GATEWAY = "http://localhost:10233/workitem/";
+    public static final String GATEWAY_RS_WORKITEM = "http://localhost:10233/workitem/";
+
+    /**
+     * Service URL gateway for RS workqueue actions.
+     */
+    public static final String GATEWAY_RS_QUEUE = "http://localhost:10233/queue/";
 }

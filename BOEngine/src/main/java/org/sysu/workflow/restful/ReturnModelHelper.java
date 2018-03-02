@@ -21,9 +21,10 @@ import java.util.List;
 public class ReturnModelHelper {
     /**
      * Warp success response to a ReturnModel
+     *
      * @param rnModel return model package to be updated
-     * @param code status code enum
-     * @param retStr execution return data
+     * @param code    status code enum
+     * @param retStr  execution return data
      */
     public static void StandardResponse(ReturnModel rnModel, StatusCode code, String retStr) {
         rnModel.setCode(code);
@@ -35,6 +36,7 @@ public class ReturnModelHelper {
 
     /**
      * Router exception handler.
+     *
      * @param exception exception descriptor
      */
     public static void ExceptionResponse(ReturnModel rnModel, String exception) {
@@ -47,6 +49,7 @@ public class ReturnModelHelper {
 
     /**
      * Router unauthorized service request handler.
+     *
      * @param token unauthorized token
      * @return response package
      */
@@ -64,6 +67,7 @@ public class ReturnModelHelper {
 
     /**
      * Router request parameter missing handler.
+     *
      * @param params missing parameter list
      * @return response package
      */

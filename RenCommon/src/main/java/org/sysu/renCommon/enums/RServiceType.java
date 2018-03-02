@@ -17,5 +17,7 @@ public enum RServiceType implements Serializable {
     UnsuspendWorkitem,
     SkipWorkitem,
     DeallocateWorkitem,
-    ReallocateWorkitem
+    ReallocateWorkitem,
+    GetQueue,
+    GetQueueList
 }

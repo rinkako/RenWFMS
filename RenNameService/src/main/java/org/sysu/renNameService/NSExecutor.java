@@ -144,6 +144,9 @@ public class NSExecutor extends Observable {
                         case "transshipWorkitem":
                             retStr = NameSpacingService.TransshipWorkitem((String) args.get("action"), (String) args.get("workitemId"), (String) args.get("workerId"));
                             break;
+                        case "transshipWorkqueue":
+                            retStr = NameSpacingService.TransshipWorkqueue((String) args.get("action"), (String) args.get("rtid"), (String) args.get("workerId"), (String) args.get("type"));
+                            break;
                     }
                     // prepare execution result
                     execResult.put("execCode", GlobalContext.TRANSACTION_EXECUTOR_SUCCESS);
