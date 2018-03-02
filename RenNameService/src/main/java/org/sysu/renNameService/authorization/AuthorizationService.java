@@ -461,8 +461,7 @@ public class AuthorizationService {
     public static String GetSignatureOwner(String signature) {
         Session session = HibernateUtil.GetLocalSession();
         try {
-            String sign = RSASignatureUtil.SafeUrlBase64Encode(signature);
-            RenDomainEntity domain = (RenDomainEntity) session.createQuery(String.format("FROM RenDomainEntity WHERE urlsafe_signature = '%s'", sign)).uniqueResult();
+            RenDomainEntity domain = (RenDomainEntity) session.createQuery(String.format("FROM RenDomainEntity WHERE urlsafe_signature = '%s'", signature)).uniqueResult();
             if (domain == null) {
                 return null;
             }

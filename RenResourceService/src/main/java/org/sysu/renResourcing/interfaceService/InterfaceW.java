@@ -15,6 +15,7 @@ import org.sysu.renCommon.utility.SerializationUtil;
 
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Map;
 import java.util.Set;
 
 /**
@@ -47,7 +48,7 @@ public class InterfaceW {
                 InterfaceX.HandleFastFail(ctx.getRtid());
             }
             else {
-                InterfaceX.FailedRedirectToLauncherDomainPool(workitem);
+                InterfaceX.FailedRedirectToLauncherDomainPool(workitem, "Participant not exist when AcceptOffer");
             }
             return false;
         }
@@ -74,7 +75,7 @@ public class InterfaceW {
                 InterfaceX.HandleFastFail(ctx.getRtid());
             }
             else {
-                InterfaceX.FailedRedirectToLauncherDomainPool(workitem);
+                InterfaceX.FailedRedirectToLauncherDomainPool(workitem, "Participant not exist when Deallocate");
             }
             return false;
         }
@@ -101,7 +102,7 @@ public class InterfaceW {
                 InterfaceX.HandleFastFail(ctx.getRtid());
             }
             else {
-                InterfaceX.FailedRedirectToLauncherDomainPool(workitem);
+                InterfaceX.FailedRedirectToLauncherDomainPool(workitem, "Participant not exist when Start");
             }
             return false;
         }
@@ -128,7 +129,7 @@ public class InterfaceW {
                 InterfaceX.HandleFastFail(ctx.getRtid());
             }
             else {
-                InterfaceX.FailedRedirectToLauncherDomainPool(workitem);
+                InterfaceX.FailedRedirectToLauncherDomainPool(workitem, "Participant not exist when Reallocate");
             }
             return false;
         }
@@ -155,7 +156,7 @@ public class InterfaceW {
                 InterfaceX.HandleFastFail(ctx.getRtid());
             }
             else {
-                InterfaceX.FailedRedirectToLauncherDomainPool(workitem);
+                InterfaceX.FailedRedirectToLauncherDomainPool(workitem, "Participant not exist when AcceptAndStart");
             }
             return false;
         }
@@ -182,7 +183,7 @@ public class InterfaceW {
                 InterfaceX.HandleFastFail(ctx.getRtid());
             }
             else {
-                InterfaceX.FailedRedirectToLauncherDomainPool(workitem);
+                InterfaceX.FailedRedirectToLauncherDomainPool(workitem, "Participant not exist when Skip");
             }
             return false;
         }
@@ -209,7 +210,7 @@ public class InterfaceW {
                 InterfaceX.HandleFastFail(ctx.getRtid());
             }
             else {
-                InterfaceX.FailedRedirectToLauncherDomainPool(workitem);
+                InterfaceX.FailedRedirectToLauncherDomainPool(workitem, "Participant not exist when Suspend");
             }
             return false;
         }
@@ -236,7 +237,7 @@ public class InterfaceW {
                 InterfaceX.HandleFastFail(ctx.getRtid());
             }
             else {
-                InterfaceX.FailedRedirectToLauncherDomainPool(workitem);
+                InterfaceX.FailedRedirectToLauncherDomainPool(workitem, "Participant not exist when Unsuspend");
             }
             return false;
         }
@@ -263,7 +264,7 @@ public class InterfaceW {
                 InterfaceX.HandleFastFail(ctx.getRtid());
             }
             else {
-                InterfaceX.FailedRedirectToLauncherDomainPool(workitem);
+                InterfaceX.FailedRedirectToLauncherDomainPool(workitem, "Participant not exist when Complete");
             }
             return false;
         }
@@ -275,12 +276,12 @@ public class InterfaceW {
      * @param ctx rs context
      * @return a dictionary of (WorkQueueType, ListOfWorkitemDescriptors)
      */
-    public static String GetWorkQueues(ResourcingContext ctx) {
+    public static Map<String, Set<WorkitemContext>> GetWorkQueues(ResourcingContext ctx) {
         String domain = (String) ctx.getArgs().get("domain");
         String workerId = (String) ctx.getArgs().get("workerId");
         WorkQueueContainer container = WorkQueueContainer.GetContext(workerId);
-        HashMap<String, HashSet<WorkitemContext>> retMap = new HashMap<>();
-        HashSet<WorkitemContext> allocateSet = (HashSet<WorkitemContext>) container.GetQueuedWorkitem(WorkQueueType.ALLOCATED);
+        HashMap<String, Set<WorkitemContext>> retMap = new HashMap<>();
+        Set<WorkitemContext> allocateSet = container.GetQueuedWorkitem(WorkQueueType.ALLOCATED);
         retMap.put(WorkQueueType.ALLOCATED.name(), new HashSet<>());
         for (WorkitemContext workitem : allocateSet) {
             String authDomain = AuthDomainHelper.GetDomainByRTID(ctx.getRtid());
@@ -288,7 +289,7 @@ public class InterfaceW {
                 retMap.get(WorkQueueType.ALLOCATED.name()).add(workitem);
             }
         }
-        HashSet<WorkitemContext> offeredSet = (HashSet<WorkitemContext>) container.GetQueuedWorkitem(WorkQueueType.OFFERED);
+        Set<WorkitemContext> offeredSet = container.GetQueuedWorkitem(WorkQueueType.OFFERED);
         retMap.put(WorkQueueType.OFFERED.name(), new HashSet<>());
         for (WorkitemContext workitem : offeredSet) {
             String authDomain = AuthDomainHelper.GetDomainByRTID(ctx.getRtid());
@@ -296,7 +297,7 @@ public class InterfaceW {
                 retMap.get(WorkQueueType.OFFERED.name()).add(workitem);
             }
         }
-        HashSet<WorkitemContext> startedSet = (HashSet<WorkitemContext>) container.GetQueuedWorkitem(WorkQueueType.STARTED);
+        Set<WorkitemContext> startedSet = container.GetQueuedWorkitem(WorkQueueType.STARTED);
         retMap.put(WorkQueueType.STARTED.name(), new HashSet<>());
         for (WorkitemContext workitem : startedSet) {
             String authDomain = AuthDomainHelper.GetDomainByRTID(ctx.getRtid());
@@ -304,7 +305,7 @@ public class InterfaceW {
                 retMap.get(WorkQueueType.STARTED.name()).add(workitem);
             }
         }
-        HashSet<WorkitemContext> suspendSet = (HashSet<WorkitemContext>) container.GetQueuedWorkitem(WorkQueueType.SUSPENDED);
+        Set<WorkitemContext> suspendSet = container.GetQueuedWorkitem(WorkQueueType.SUSPENDED);
         retMap.put(WorkQueueType.SUSPENDED.name(), new HashSet<>());
         for (WorkitemContext workitem : suspendSet) {
             String authDomain = AuthDomainHelper.GetDomainByRTID(ctx.getRtid());
@@ -312,7 +313,7 @@ public class InterfaceW {
                 retMap.get(WorkQueueType.SUSPENDED.name()).add(workitem);
             }
         }
-        return SerializationUtil.JsonSerialization(retMap);
+        return retMap;
     }
 
     /**
@@ -320,22 +321,30 @@ public class InterfaceW {
      * @param ctx rs context
      * @return workitem descriptors string in list
      */
-    public static String GetWorkQueue(ResourcingContext ctx) {
+    public static Set GetWorkQueue(ResourcingContext ctx) {
         String rtid = (String) ctx.getArgs().get("rtid");
         String workerId = (String) ctx.getArgs().get("workerId");
         String queueTypeName = ((String) ctx.getArgs().get("type"));
         String domain = AuthDomainHelper.GetDomainByRTID(rtid);
-        WorkQueueType wqType = WorkQueueType.valueOf(queueTypeName.toUpperCase());
+        WorkQueueType wqType;
+        try {
+            wqType = WorkQueueType.valueOf(queueTypeName.toUpperCase());
+        }
+        catch (Exception ex) {
+            LogUtil.Log("Illegal queue type: " + queueTypeName, InterfaceW.class.getName(),
+                    LogUtil.LogLevelType.ERROR, rtid);
+            throw ex;
+        }
         WorkQueueContainer container = WorkQueueContainer.GetContext(workerId);
-        HashSet<WorkitemContext> queueSet = (HashSet<WorkitemContext>) container.GetQueuedWorkitem(wqType);
-        HashSet<WorkitemContext> retSet = new HashSet<>();
+        Set<WorkitemContext> queueSet = container.GetQueuedWorkitem(wqType);
+        HashSet retSet = new HashSet();
         for (WorkitemContext workitem : queueSet) {
             String authDomain = AuthDomainHelper.GetDomainByRTID(ctx.getRtid());
             if (authDomain.equals(domain)) {
-                retSet.add(workitem);
+                retSet.add(workitem.getEntity());
             }
         }
-        return SerializationUtil.JsonSerialization(retSet);
+        return retSet;
     }
 
     /**
@@ -343,7 +352,7 @@ public class InterfaceW {
      * @param ctx rs context
      * @return workitem descriptors string in map (workerId, list of workitem descriptor)
      */
-    public static String GetWorkQueueList(ResourcingContext ctx) {
+    public static Map GetWorkQueueList(ResourcingContext ctx) {
         String workerIdList = (String) ctx.getArgs().get("workerIdList");
         String[] workerIds = workerIdList.split(",");
         HashMap<String, HashSet> retMap = new HashMap<>();
@@ -354,16 +363,16 @@ public class InterfaceW {
             WorkQueueType wqType = WorkQueueType.valueOf(queueTypeName.toUpperCase());
             WorkQueueContainer container = WorkQueueContainer.GetContext(workerId);
             HashSet<WorkitemContext> queueSet = (HashSet<WorkitemContext>) container.GetQueuedWorkitem(wqType);
-            HashSet<WorkitemContext> retSet = new HashSet<>();
+            HashSet retSet = new HashSet();
             for (WorkitemContext workitem : queueSet) {
                 String authDomain = AuthDomainHelper.GetDomainByRTID(ctx.getRtid());
                 if (authDomain.equals(domain)) {
-                    retSet.add(workitem);
+                    retSet.add(workitem.getEntity());
                 }
             }
             retMap.put(workerId, retSet);
         }
-        return SerializationUtil.JsonSerialization(retMap);
+        return retMap;
     }
 
     /**

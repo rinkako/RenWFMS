@@ -11,7 +11,7 @@ public class ReturnElement {
     /**
      * a token for authentication
      */
-    private String token;
+    private String sign;
 
     /**
      * exception message
@@ -27,12 +27,12 @@ public class ReturnElement {
     }
 
     @XmlElement(required = false)
-    public String getToken() {
-        return token;
+    public String getSign() {
+        return sign;
     }
 
-    public void setToken(String token) {
-        this.token = token;
+    public void setSign(String sign) {
+        this.sign = sign;
     }
 
     @XmlElement(required = false)

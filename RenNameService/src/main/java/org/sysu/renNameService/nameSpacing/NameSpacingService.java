@@ -266,11 +266,13 @@ public class NameSpacingService {
      * @param workitemId workitem global id
      * @param workerId   worker global id
      */
-    public static String TransshipWorkitem(String action, String workitemId, String workerId) throws Exception {
+    public static Object TransshipWorkitem(String action, String workitemId, String workerId) throws Exception {
         HashMap<String, String> argMap = new HashMap<>();
         argMap.put("workitemId", workitemId);
         argMap.put("workerId", workerId);
-        return GlobalContext.Interaction.Send(GlobalContext.GATEWAY_RS_WORKITEM + action, argMap, "");
+        String ret = GlobalContext.Interaction.Send(GlobalContext.GATEWAY_RS_WORKITEM + action, argMap, "");
+        Map retObj = SerializationUtil.JsonDeserialization(ret, Map.class);
+        return ((Map) retObj.get("returnElement")).get("data");
     }
 
     /**
@@ -281,11 +283,13 @@ public class NameSpacingService {
      * @param workerId   worker global id
      * @param type       workqueue type
      */
-    public static String TransshipWorkqueue(String action, String rtid, String workerId, String type) throws Exception {
+    public static Object TransshipWorkqueue(String action, String rtid, String workerId, String type) throws Exception {
         HashMap<String, String> argMap = new HashMap<>();
         argMap.put("rtid", rtid);
         argMap.put("type", type);
         argMap.put("workerId", workerId);
-        return GlobalContext.Interaction.Send(GlobalContext.GATEWAY_RS_QUEUE + action, argMap, rtid);
+        String ret = GlobalContext.Interaction.Send(GlobalContext.GATEWAY_RS_QUEUE + action, argMap, rtid);
+        Map retObj = SerializationUtil.JsonDeserialization(ret, Map.class);
+        return ((Map) retObj.get("returnElement")).get("data");
     }
 }

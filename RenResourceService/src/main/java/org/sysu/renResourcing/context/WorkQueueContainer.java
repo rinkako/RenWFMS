@@ -238,12 +238,7 @@ public class WorkQueueContainer implements RCacheablesContext {
      * @return workitem hash set.
      */
     public Set<WorkitemContext> GetQueuedWorkitem(WorkQueueType type) {
-        if (this.IsNullOrEmptyQueue(type)) {
-            return Collections.emptySet();
-        }
-        else {
-            return this.GetQueue(type).GetQueueAsSet();
-        }
+        return this.GetQueue(type).GetQueueAsSet();
     }
 
     /**
@@ -269,7 +264,7 @@ public class WorkQueueContainer implements RCacheablesContext {
      * @return true if contains
      */
     public boolean Contains(String workitemId, WorkQueueType type) {
-        return !this.IsNullOrEmptyQueue(type) && this.DirectlyGetQueue(type).Contains(workitemId);
+        return this.GetQueue(type).Contains(workitemId);
     }
 
     /**
@@ -293,10 +288,7 @@ public class WorkQueueContainer implements RCacheablesContext {
      * @return workitem context
      */
     public WorkitemContext Retrieve(String workitemId, WorkQueueType type) {
-        if (this.IsNullOrEmptyQueue(type)) {
-            return null;
-        }
-        return this.DirectlyGetQueue(type).Retrieve(workitemId);
+        return this.GetQueue(type).Retrieve(workitemId);
     }
 
     /**
