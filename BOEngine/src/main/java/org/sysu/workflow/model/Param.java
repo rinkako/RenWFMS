@@ -1,6 +1,8 @@
 
 package org.sysu.workflow.model;
 
+import org.sysu.workflow.utility.SerializationUtil;
+
 import java.io.Serializable;
 import java.util.Map;
 
@@ -49,6 +51,14 @@ public class Param implements NamespacePrefixesHolder, Serializable {
     public Param() {
         name = null;
         expr = null;
+    }
+
+    /**
+     * Generate descriptor for this param.
+     * @return string descriptor
+     */
+    public String GenerateDescriptor() {
+        return String.format("\"%s\":\"%s\"", this.name, SerializationUtil.JsonSerialization(this.expr, ""));
     }
 
     /**

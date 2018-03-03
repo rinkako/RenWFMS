@@ -3,11 +3,14 @@
   <data expr="1" id="Count"></data>
  </datamodel>
  <tasks>
-    <task id="calculate" brole="paymentCalculator" name="calculateTask" event="calculated" principle="Allocate@Random">
+    <task id="calculate" brole="paymentCalculator" name="calculateTask" event="calculated">
+	    <principle method="Allocate" distributor="ShorestQueue"></principle>
     </task>
-    <task id="Payment" brole="paymentHandler" name="paymentTask" event="paid" principle="Allocate@Random">
+    <task id="Payment" brole="paymentHandler" name="paymentTask" event="paid">
+	    <principle method="Allocate" distributor="ShorestQueue"></principle>
     </task>
-    <task id="archive" brole="archiveHandler" name="archiveTask" event="archived" principle="Allocate@Random">
+    <task id="archive" brole="archiveHandler" name="archiveTask" event="archived">
+	    <principle method="Allocate" distributor="ShorestQueue"></principle>
     </task>
  </tasks>
  <state id="Initial">

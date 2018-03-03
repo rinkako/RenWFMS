@@ -43,7 +43,7 @@ public class Task extends ParamsContainer implements Serializable {
     /**
      * Task resourcing principle.
      */
-    private String principle;
+    private Principle principle;
 
     /**
      * Get id.
@@ -108,7 +108,7 @@ public class Task extends ParamsContainer implements Serializable {
     /**
      * Get principle.
      */
-    public String getPrinciple() {
+    public Principle getPrinciple() {
         return principle;
     }
 
@@ -116,7 +116,7 @@ public class Task extends ParamsContainer implements Serializable {
      * Set principle.
      * @param principle resourcing principle
      */
-    public void setPrinciple(String principle) {
+    public void setPrinciple(Principle principle) {
         this.principle = principle;
     }
 

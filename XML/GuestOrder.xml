@@ -10,10 +10,13 @@
   <data expr="233" id="mytest"></data>
  </datamodel>
  <tasks>
-    <task id="addItem" brole="waiter" name="addItemTask" event="submit" principle="Allocate@Random"></task>
-    <task id="updateDeliTime" brole="waiter" name="updateDeliTimeTask" event="updateDeliTimeComplete" principle="Allocate@Random">
-      <param name="testParam1"></param>
-	  <param name="testParam2"></param>
+    <task id="addItem" brole="waiter" name="addItemTask" event="submit">
+	    <principle method="Allocate" distributor="ShorestQueue"></principle>
+	</task>
+    <task id="updateDeliTime" brole="waiter" name="updateDeliTimeTask" event="updateDeliTimeComplete">
+        <param name="testParam1"></param>
+	    <param name="testParam2"></param>
+		<principle method="Allocate" distributor="ShorestQueue"></principle>
     </task>
  </tasks>
  <state id="Initial">

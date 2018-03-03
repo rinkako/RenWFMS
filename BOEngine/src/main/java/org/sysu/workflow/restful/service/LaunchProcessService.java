@@ -123,11 +123,11 @@ public final class LaunchProcessService {
                     rrte.setHookdescriptor("");  // todo
                     rrte.setEventdescriptor(String.format("{\"OnComplete\":\"%s\"}", t.getEvent()));  // todo other event
                     rrte.setDocumentation("");  // todo
-                    rrte.setPrinciple(t.getPrinciple());
+                    rrte.setPrinciple(t.getPrinciple().GenerateDescriptor());
                     rrte.setPolymorphismId(t.getId());
                     rrte.setPolymorphismName(t.getName());
                     rrte.setBrole(t.getBrole());
-                    rrte.setParameters("");  // todo
+                    rrte.setParameters(SerializationUtil.JsonSerialization(t.getParams(), ""));
                     session.save(rrte);
                 }
             }

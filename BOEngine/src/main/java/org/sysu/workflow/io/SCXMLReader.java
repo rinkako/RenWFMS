@@ -225,8 +225,7 @@ public final class SCXMLReader {
     private static final String ELEM_BOO_RESOURCE = "resource";
     private static final String ELEM_BOO_ROLE = "role";
     private static final String ELEM_BOO_PRINCIPLE = "principle";
-    private static final String ELEM_BOO_DISTRIBUTORPARAM = "distributorParam";
-    private static final String ELEM_BOO_CONSTRAINTSPARAM = "constraintsParam";
+    private static final String ELEM_BOO_CONSTRAINT = "constraint";
 
 
     //---- 属性名 ----//
@@ -278,7 +277,6 @@ public final class SCXMLReader {
     /*principle extend*/
     private static final String ATTR_BOO_METHOD = "method";
     private static final String ATTR_BOO_DISTRIBUTOR = "distributor";
-    private static final String ATTR_BOO_CONSTRAINTS = "constraints";
 
 
     /*
@@ -1286,7 +1284,6 @@ public final class SCXMLReader {
         tk.setId(readRequiredAV(reader, ELEM_BOO_TASK, ATTR_ID));
         tk.setName(readAV(reader, ATTR_NAME));
         tk.setBrole(readRequiredAV(reader, ELEM_BOO_TASK, ATTR_BOO_BROLE));
-        tk.setPrinciple(readAV(reader, ATTR_BOO_PRINCIPLE));
         tk.setEvent(readRequiredAV(reader, ELEM_BOO_TASK, ATTR_EVENT));
 
         loop:
@@ -1300,11 +1297,14 @@ public final class SCXMLReader {
                     if (XMLNS_SCXML.equals(nsURI)) {
                         if (ELEM_PARAM.equals(name)) {
                             readParam(reader, configuration, tk);
+                        }
+                        else if (ELEM_BOO_PRINCIPLE.equals(name)) {
+                            readPrinciple(reader, configuration, tk);
                         } else {
-                            reportIgnoredElement(reader, configuration, ELEM_DATAMODEL, nsURI, name);
+                            reportIgnoredElement(reader, configuration, ELEM_BOO_TASK, nsURI, name);
                         }
                     } else {
-                        reportIgnoredElement(reader, configuration, ELEM_DATAMODEL, nsURI, name);
+                        reportIgnoredElement(reader, configuration, ELEM_BOO_TASK, nsURI, name);
                     }
                     break;
                 case XMLStreamConstants.END_ELEMENT:
@@ -1316,6 +1316,93 @@ public final class SCXMLReader {
 
         readNamespaces(configuration, tk);
         tasks.addTask(tk);
+        //skipToEndElement(reader);
+    }
+
+    /**
+     * Read the contents of this &lt;principle&gt; element.
+     *
+     * @param reader        The {@link XMLStreamReader} providing the SCXML document to parse.
+     * @param configuration The {@link Configuration} to use while parsing.
+     * @param task          The parent {@link Task} for this principle.
+     * @throws XMLStreamException An exception processing the underlying {@link XMLStreamReader}.
+     */
+    private static void readPrinciple(final XMLStreamReader reader, final Configuration configuration, final Task task)
+            throws XMLStreamException, ModelException {
+        Principle pr = new Principle();
+        pr.setMethod(readRequiredAV(reader, ELEM_BOO_PRINCIPLE, ATTR_BOO_METHOD));
+        pr.setDistributor(readRequiredAV(reader, ELEM_BOO_PRINCIPLE, ATTR_BOO_DISTRIBUTOR));
+        loop:
+        while (reader.hasNext()) {
+            String name, nsURI;
+            switch (reader.next()) {
+                case XMLStreamConstants.START_ELEMENT:
+                    pushNamespaces(reader, configuration);
+                    nsURI = reader.getNamespaceURI();
+                    name = reader.getLocalName();
+                    if (XMLNS_SCXML.equals(nsURI)) {
+                        if (ELEM_PARAM.equals(name)) {
+                            readParam(reader, configuration, pr);
+                        }
+                        else if (ELEM_BOO_CONSTRAINT.equals(name)) {
+                            readConstraint(reader, configuration, pr);
+                        } else {
+                            reportIgnoredElement(reader, configuration, ELEM_BOO_PRINCIPLE, nsURI, name);
+                        }
+                    } else {
+                        reportIgnoredElement(reader, configuration, ELEM_BOO_PRINCIPLE, nsURI, name);
+                    }
+                    break;
+                case XMLStreamConstants.END_ELEMENT:
+                    popNamespaces(reader, configuration);
+                    break loop;
+                default:
+            }
+        }
+        readNamespaces(configuration, pr);
+        task.setPrinciple(pr);
+        //skipToEndElement(reader);
+    }
+
+    /**
+     * Read the contents of this &lt;constraint&gt; element.
+     *
+     * @param reader        The {@link XMLStreamReader} providing the SCXML document to parse.
+     * @param configuration The {@link Configuration} to use while parsing.
+     * @param principle     The parent {@link Principle} for this constraint.
+     * @throws XMLStreamException An exception processing the underlying {@link XMLStreamReader}.
+     */
+    private static void readConstraint(final XMLStreamReader reader, final Configuration configuration, final Principle principle)
+            throws XMLStreamException, ModelException {
+        Constraint constraint = new Constraint();
+        constraint.setName(readRequiredAV(reader, ELEM_BOO_CONSTRAINT, ATTR_NAME));
+        loop:
+        while (reader.hasNext()) {
+            String name, nsURI;
+            switch (reader.next()) {
+                case XMLStreamConstants.START_ELEMENT:
+                    pushNamespaces(reader, configuration);
+                    nsURI = reader.getNamespaceURI();
+                    name = reader.getLocalName();
+                    if (XMLNS_SCXML.equals(nsURI)) {
+                        if (ELEM_PARAM.equals(name)) {
+                            readParam(reader, configuration, constraint);
+                        }
+                        else {
+                            reportIgnoredElement(reader, configuration, ELEM_BOO_CONSTRAINT, nsURI, name);
+                        }
+                    } else {
+                        reportIgnoredElement(reader, configuration, ELEM_BOO_CONSTRAINT, nsURI, name);
+                    }
+                    break;
+                case XMLStreamConstants.END_ELEMENT:
+                    popNamespaces(reader, configuration);
+                    break loop;
+                default:
+            }
+        }
+        readNamespaces(configuration, constraint);
+        principle.AddConstraint(constraint);
         //skipToEndElement(reader);
     }
 

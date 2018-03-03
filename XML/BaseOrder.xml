@@ -1,17 +1,14 @@
-<businessclass
-        initial="BaseFinal"
-        name="BaseOrder"
-        version="1.0"
-        xmlns="http://www.w3.org/2005/07/scxml">
-
-    <datamodel>
-        <data expr="1" id="baseData"></data>
-    </datamodel>
-
-    <tasks>
-        <task id="baseAdd" brole="waiter" name="addItemTask" event="submit" principle="Random"></task>
-        <task id="baseOnly" brole="waiter" name="baseOnlyTask" event="submit" principle="Random"></task>
-    </tasks>
-
-    <final id="BaseFinal"></final>
+<businessclass initial="BaseFinal" name="BaseOrder" version="1.0" xmlns="http://www.w3.org/2005/07/scxml">
+ <datamodel>
+  <data expr="1" id="baseData"></data>
+ </datamodel>
+ <tasks>
+  <task id="baseAdd" brole="waiter" name="addItemTask" event="submit">
+    <principle method="Allocate" distributor="ShorestQueue"></principle>
+  </task>
+  <task id="baseOnly" brole="waiter" name="baseOnlyTask" event="submit">
+    <principle method="Allocate" distributor="ShorestQueue"></principle>
+  </task>
+ </tasks>
+ <final id="BaseFinal"></final>
 </businessclass>
