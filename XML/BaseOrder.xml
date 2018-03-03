@@ -3,11 +3,13 @@
   <data expr="1" id="baseData"></data>
  </datamodel>
  <tasks>
-  <task id="baseAdd" brole="waiter" name="addItemTask" event="submit">
+  <task id="baseAdd" brole="waiter" name="addItemTask">
     <principle method="Allocate" distributor="ShorestQueue"></principle>
+	<callback on="complete" event="submit"></callback>
   </task>
-  <task id="baseOnly" brole="waiter" name="baseOnlyTask" event="submit">
+  <task id="baseOnly" brole="waiter" name="baseOnlyTask">
     <principle method="Allocate" distributor="ShorestQueue"></principle>
+	<callback on="complete" event="submit"></callback>
   </task>
  </tasks>
  <final id="BaseFinal"></final>

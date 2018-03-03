@@ -1,21 +1,25 @@
 <businessclass name="KitchenOrder" version="1.0" xmlns="http://www.w3.org/2005/07/scxml">
  <tasks>
-    <task id="produceDishes" brole="cook" name="produceDishesTask" event="produced">
+    <task id="produceDishes" brole="cook" name="produceDishesTask">
 		<principle method="Offer" distributor="QueueLength">
 			<param name="testParam1"></param>
 			<constraint name="constraint1">
 			    <param name="cparam1"></param>
 			</constraint>
 		</principle>
+		<callback on="complete" event="produced"></callback>
     </task>
-    <task id="testQuality" brole="cook" name="testQualityTask" event="testCompleted">
+    <task id="testQuality" brole="cook" name="testQualityTask">
 		<principle method="Allocate" distributor="ShorestQueue"></principle>
+		<callback on="complete" event="testCompleted"></callback>
     </task>
-    <task id="deliver" brole="waiter" name="deliverTask" event="delivered" >
+    <task id="deliver" brole="waiter" name="deliverTask">
 		<principle method="Allocate" distributor="ShorestQueue"></principle>
+		<callback on="complete" event="delivered"></callback>
     </task>
-    <task id="archive" brole="archiveHandler" name="archiveTask" event="archived">
+    <task id="archive" brole="archiveHandler" name="archiveTask">
 		<principle method="Allocate" distributor="Random"></principle>
+		<callback on="complete" event="archived"></callback>
     </task>
  </tasks>
  <state id="Initial">
