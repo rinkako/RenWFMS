@@ -12,7 +12,7 @@
  <tasks>
     <task id="addItem" brole="waiter" name="addItemTask" event="submit">
 	    <principle method="Offer" distributor="QueueLength">
-			<param name="testParam1"></param>
+			<param name="length" expr="lt 3"></param>
 			<constraint name="constraint1">
 			    <param name="cparam1"></param>
 			</constraint>
