@@ -19,6 +19,7 @@ import java.util.HashSet;
  *         Filter is used to remove participants in candidate set who cannot map the filter conditions.
  */
 public abstract class RFilter extends RSelector implements Serializable {
+
     /**
      * Serial version UID.
      */

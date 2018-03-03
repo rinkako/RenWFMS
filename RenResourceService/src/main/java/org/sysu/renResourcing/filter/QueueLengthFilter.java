@@ -15,6 +15,7 @@ import org.sysu.renResourcing.plugin.evaluator.RJexlMapContext;
 
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Map;
 import java.util.UUID;
 
 /**
@@ -49,6 +50,15 @@ public class QueueLengthFilter extends RFilter {
     }
 
     /**
+     * Apply principle to configure selector.
+     */
+    @Override
+    protected void ApplyPrinciple() {
+        Map distributorArgs = this.principle.getDistributorArgsMap();
+        this.SetCondition(String.format("%s %s", QueueLengthFilter.ParameterLength, distributorArgs.get(QueueLengthFilter.ParameterLength)));
+    }
+
+    /**
      * Create a new filter.
      *
      * @param id          unique id for selector fetching
@@ -65,7 +75,7 @@ public class QueueLengthFilter extends RFilter {
      * A valid expression example: "length lt 10" means queue length less than 10
      * @param conditionExpr condition expression in JLex
      */
-    public void SetCondition(String conditionExpr) {
+    private void SetCondition(String conditionExpr) {
         this.conditionExprObj = RJexlEvaluator.CommonEngine.createExpression(conditionExpr);
     }
 

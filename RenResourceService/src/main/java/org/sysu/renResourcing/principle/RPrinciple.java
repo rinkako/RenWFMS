@@ -32,9 +32,9 @@ public final class RPrinciple implements Serializable {
     private String distributorName;
 
     /**
-     * Arguments map for filter.
+     * Arguments map for distributor.
      */
-    private HashMap filterArgsMap;
+    private HashMap distributorArgsMap;
 
     /**
      * Constraints list.
@@ -66,8 +66,8 @@ public final class RPrinciple implements Serializable {
      * Get filter condition of task.
      * @return filter condition map
      */
-    public HashMap getFilterCondition() {
-        return this.filterArgsMap;
+    public HashMap getDistributorArgsMap() {
+        return this.distributorArgsMap;
     }
 
     /**
@@ -84,12 +84,12 @@ public final class RPrinciple implements Serializable {
      * Set parsed principle data.
      * @param type distribution type enum
      * @param distributorName distributor name for reflect instance generated
-     * @param filterArgs filter arguments map
+     * @param distributorArgs filter arguments map
      */
-    public void SetParsed(WorkitemDistributionType type, String distributorName, HashMap filterArgs) {
+    public void SetParsed(WorkitemDistributionType type, String distributorName, HashMap distributorArgs) {
         this.distributionType = type == null ? WorkitemDistributionType.Allocate : type;
         this.distributorName = distributorName;
-        this.filterArgsMap = filterArgs;
+        this.distributorArgsMap = distributorArgs;
         this.constraints = new ArrayList<>();
         this.constraintsArgs = new ArrayList<>();
     }

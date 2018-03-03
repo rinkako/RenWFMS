@@ -4,6 +4,8 @@
  */
 package org.sysu.renResourcing;
 
+import org.sysu.renResourcing.principle.RPrinciple;
+
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -22,6 +24,11 @@ public abstract class RSelector implements Comparable<RSelector>, Serializable {
      * Serial version UID.
      */
     private static final long serialVersionUID = 1L;
+
+    /**
+     * Resourcing principle.
+     */
+    protected RPrinciple principle;
 
     /**
      * Create a new Selector.
@@ -59,6 +66,15 @@ public abstract class RSelector implements Comparable<RSelector>, Serializable {
         this.type = type;
         this.description = description;
         this.argsDict = args;
+    }
+
+    /**
+     * Binding principle to this selector.
+     * @param principle principle package
+     */
+    public void BindingPrinciple(RPrinciple principle) {
+        this.principle = principle;
+        this.ApplyPrinciple();
     }
 
     /**
@@ -166,6 +182,11 @@ public abstract class RSelector implements Comparable<RSelector>, Serializable {
     public void setArgsDict(HashMap<String, String> argsDict) {
         this.argsDict = argsDict;
     }
+
+    /**
+     * Apply principle to configure selector.
+     */
+    protected abstract void ApplyPrinciple();
 
     /**
      * Evaluate an ArrayList of HashSet according to a operation description string.

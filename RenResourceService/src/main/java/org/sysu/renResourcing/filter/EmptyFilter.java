@@ -32,6 +32,14 @@ public class EmptyFilter extends RFilter {
     }
 
     /**
+     * Apply principle to configure selector.
+     */
+    @Override
+    protected void ApplyPrinciple() {
+        // nothing
+    }
+
+    /**
      * Create a new filter.
      *
      * @param id          unique id for selector fetching

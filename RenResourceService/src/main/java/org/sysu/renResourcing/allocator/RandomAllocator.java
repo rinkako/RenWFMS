@@ -33,6 +33,14 @@ public class RandomAllocator extends RAllocator {
     }
 
     /**
+     * Apply principle to configure selector.
+     */
+    @Override
+    protected void ApplyPrinciple() {
+        // nothing
+    }
+
+    /**
      * Create a new allocator.
      * Allocator should not be created directly, use {@code AllocateInteractionExecutor} instead.
      *

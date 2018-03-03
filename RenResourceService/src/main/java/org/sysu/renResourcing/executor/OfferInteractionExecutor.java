@@ -62,5 +62,6 @@ public class OfferInteractionExecutor extends InteractionExecutor {
      */
     public void BindingFilter(RPrinciple principle, String rstid, String rtid) throws Exception {
         this.filter = ReflectUtil.ReflectFilter(principle.getDistributorName(), rstid, rtid);
+        this.filter.BindingPrinciple(principle);
     }
 }

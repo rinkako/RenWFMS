@@ -88,7 +88,8 @@ public class SCXMLReaderTest {
 //        endTime=System.currentTimeMillis();
 //        System.out.println("COST TIME： " + (endTime-startTime) + "ms");
 
-        String principleDesc = scxml.getTasks().getTaskList().get(0).getPrinciple().GenerateDescriptor();
+        Object principleDesc = scxml.getTasks().getTaskList().get(0).GenerateCallbackDescriptor();
+
         Datamodel dm = scxml.getDatamodel();
         System.out.println("## guest order的data");
         for(Data data:dm.getData()){

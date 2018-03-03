@@ -226,6 +226,8 @@ public final class SCXMLReader {
     private static final String ELEM_BOO_ROLE = "role";
     private static final String ELEM_BOO_PRINCIPLE = "principle";
     private static final String ELEM_BOO_CONSTRAINT = "constraint";
+    private static final String ELEM_BOO_DOCUMENTATION = "documentation";
+    private static final String ELEM_BOO_CALLBACK = "callback";
 
 
     //---- 属性名 ----//
@@ -271,7 +273,8 @@ public final class SCXMLReader {
     private static final String ATTR_BOO_TARGETSTATE="targetState";
     /*task元素的属性*/
     private static final String ATTR_BOO_BROLE = "brole";
-    private static final String ATTR_BOO_PRINCIPLE = "principle";
+    private static final String ATTR_BOO_ON = "on";
+    private static final String ATTR_BOO_HOOK = "hook";
     /*businessclass元素扩展的属性*/
     private static final String ATTR_BOO_EXTENDS = "extends";
     /*principle extend*/
@@ -1166,7 +1169,7 @@ public final class SCXMLReader {
                         break;
                     }
                 }
-                if(temp == false){
+                if(!temp){
                     task_inherit.add(task);
                 }
             }
@@ -1179,7 +1182,7 @@ public final class SCXMLReader {
                         break;
                     }
                 }
-                if(temp == false){
+                if(!temp){
                     process_inherit.add(sp);
                 }
             }
@@ -1194,13 +1197,6 @@ public final class SCXMLReader {
             inheritableContext.setInheritedTasks(tks);
             scxml.setInheritedContext(inheritableContext);
         }
-//        tasks = new Tasks();
-//        for(Task t:task_current){
-//            tasks.addTask(t);
-//        }
-//        for(SubProcess p:process_current){
-//            tasks.addProcess(p);
-//        }
         scxml.setTasks(tasks);
     }
 
@@ -1284,8 +1280,7 @@ public final class SCXMLReader {
         tk.setId(readRequiredAV(reader, ELEM_BOO_TASK, ATTR_ID));
         tk.setName(readAV(reader, ATTR_NAME));
         tk.setBrole(readRequiredAV(reader, ELEM_BOO_TASK, ATTR_BOO_BROLE));
-        tk.setEvent(readRequiredAV(reader, ELEM_BOO_TASK, ATTR_EVENT));
-
+        //tk.setEvent(readRequiredAV(reader, ELEM_BOO_TASK, ATTR_EVENT));
         loop:
         while (reader.hasNext()) {
             String name, nsURI;
@@ -1300,7 +1295,14 @@ public final class SCXMLReader {
                         }
                         else if (ELEM_BOO_PRINCIPLE.equals(name)) {
                             readPrinciple(reader, configuration, tk);
-                        } else {
+                        }
+                        else if (ELEM_BOO_CALLBACK.equals(name)) {
+                            readCallback(reader, configuration, tk);
+                        }
+                        else if (ELEM_BOO_DOCUMENTATION.equals(name)) {
+                            readDocumentation(reader, configuration, tk);
+                        }
+                        else {
                             reportIgnoredElement(reader, configuration, ELEM_BOO_TASK, nsURI, name);
                         }
                     } else {
@@ -1313,10 +1315,49 @@ public final class SCXMLReader {
                 default:
             }
         }
-
         readNamespaces(configuration, tk);
         tasks.addTask(tk);
         //skipToEndElement(reader);
+    }
+
+    /**
+     * Read the contents of this &lt;callback&gt; element.
+     *
+     * @param reader        The {@link XMLStreamReader} providing the SCXML document to parse.
+     * @param configuration The {@link Configuration} to use while parsing.
+     * @param task          The parent {@link Task} for this callback.
+     * @throws XMLStreamException An exception processing the underlying {@link XMLStreamReader}.
+     */
+    private static void readCallback(final XMLStreamReader reader, final Configuration configuration, final Task task)
+            throws XMLStreamException, ModelException {
+        Callback callback = new Callback();
+        callback.setOn(readRequiredAV(reader, ELEM_BOO_CALLBACK, ATTR_BOO_ON));
+        String event = readAV(reader, ATTR_EVENT);
+        String hook = readAV(reader, ATTR_BOO_HOOK);
+        if (event == null && hook == null) {
+            MessageFormat msgFormat = new MessageFormat(ERR_REQUIRED_ATTRIBUTE_MISSING);
+            String errMsg = msgFormat.format(new Object[]{ELEM_BOO_CALLBACK, ATTR_EVENT, reader.getLocation()});
+            throw new ModelException(errMsg);
+        }
+        callback.setEvent(event);
+        callback.setHook(hook);
+        //readNamespaces(configuration, callback);
+        task.AddCallback(callback);
+        skipToEndElement(reader);
+    }
+
+    /**
+     * Read the contents of this &lt;documentation&gt; element.
+     *
+     * @param reader        The {@link XMLStreamReader} providing the SCXML document to parse.
+     * @param configuration The {@link Configuration} to use while parsing.
+     * @param task          The parent {@link Task}.
+     * @throws XMLStreamException An exception processing the underlying {@link XMLStreamReader}.
+     */
+    private static void readDocumentation(final XMLStreamReader reader, final Configuration configuration,
+                                          final Task task) throws XMLStreamException {
+        readNamespaces(configuration, task);
+        task.setDocumentation(readBody(reader));
     }
 
     /**
@@ -2191,15 +2232,12 @@ public final class SCXMLReader {
                     name = reader.getLocalName();
                     if (XMLNS_SCXML.equals(nsURI)) {
                         if (ELEM_PARAM.equals(name)) {
-                            //读 Param里面的内容
                             if (send.getContent() == null) {
                                 readParam(reader, configuration, send);
                             } else {
                                 reportIgnoredElement(reader, configuration, ELEM_SEND, nsURI, name);
                             }
                         } else if (ELEM_CONTENT.equals(name)) {
-
-                            //读Content 里面的内容
                             if (send.getNamelist() == null && send.getParams().isEmpty()) {
                                 readContent(reader, configuration, send);
                             } else {
@@ -2929,7 +2967,6 @@ public final class SCXMLReader {
                                              final InputStream stream, final Reader reader, final Source source)
             throws IOException, XMLStreamException {
 
-        //初始化XMLInputFactory
         XMLInputFactory factory = XMLInputFactory.newInstance();
         if (configuration.factoryId != null && configuration.factoryClassLoader != null) {
             factory = XMLInputFactory.newFactory(configuration.factoryId, configuration.factoryClassLoader);
@@ -2941,7 +2978,6 @@ public final class SCXMLReader {
         factory.setXMLReporter(configuration.reporter);
         factory.setXMLResolver(configuration.resolver);
 
-        // 巩固输入流选项，得到输入流
         InputStream urlStream = null;
         if (url != null || path != null) {
             URL scxml = (url != null ? url : new URL(path));
@@ -2952,7 +2988,6 @@ public final class SCXMLReader {
             urlStream = stream;
         }
 
-        //创建 XMLStreamReader
         XMLStreamReader xsr = null;
 
         if (configuration.validate) {
@@ -2995,21 +3030,16 @@ public final class SCXMLReader {
             }
 
         } else {
-            //不需要验证直接使用XMLInputFactory 的API
-
             if (urlStream != null) {
-                //对通过字节流得到的资源，穿件XMLStreamReader
                 // systemId gets preference, then encoding if either are present
                 if (configuration.systemId != null) {
                     xsr = factory.createXMLStreamReader(configuration.systemId, urlStream);
                 } else if (configuration.encoding != null) {
                     xsr = factory.createXMLStreamReader(urlStream, configuration.encoding);
                 } else {
-                    //创建XMLStreamReader.
                     xsr = factory.createXMLStreamReader(urlStream);
                 }
             } else if (reader != null) {
-                //对通过字符流得到的资源，穿件XMLStreamReader
                 if (configuration.systemId != null) {
                     xsr = factory.createXMLStreamReader(configuration.systemId, reader);
                 } else {

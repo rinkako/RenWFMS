@@ -10,18 +10,21 @@
   <data expr="233" id="mytest"></data>
  </datamodel>
  <tasks>
-    <task id="addItem" brole="waiter" name="addItemTask" event="submit">
+    <task id="addItem" brole="waiter" name="addItemTask">
 	    <principle method="Offer" distributor="QueueLength">
 			<param name="length" expr="lt 3"></param>
 			<constraint name="constraint1">
 			    <param name="cparam1"></param>
 			</constraint>
 		</principle>
+		<callback on="complete" event="submit" hook="http://localhost:10300/hook"></callback>
+		<documentation>Test task documentation</documentation>
 	</task>
-    <task id="updateDeliTime" brole="waiter" name="updateDeliTimeTask" event="updateDeliTimeComplete">
+    <task id="updateDeliTime" brole="waiter" name="updateDeliTimeTask">
         <param name="testParam1"></param>
 	    <param name="testParam2"></param>
 		<principle method="Allocate" distributor="ShorestQueue"></principle>
+		<callback on="complete" event="updateDeliTimeComplete"></callback>
     </task>
  </tasks>
  <state id="Initial">

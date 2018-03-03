@@ -22,10 +22,7 @@ import org.sysu.workflow.utility.SerializationUtil;
 
 import java.io.ByteArrayInputStream;
 import java.io.InputStream;
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.UUID;
+import java.util.*;
 
 import static org.sysu.workflow.utility.SerializationUtil.DeserializationSCXMLByByteArray;
 
@@ -117,12 +114,13 @@ public final class LaunchProcessService {
                 rbe.setSerialized(SerializationUtil.SerializationSCXMLToByteArray(scxml));
                 Tasks tasks = scxml.getTasks();
                 for (Task t : tasks.getTaskList()) {
+                    AbstractMap.SimpleEntry<String, String> heDesc = t.GenerateCallbackDescriptor();
                     RenRstaskEntity rrte = new RenRstaskEntity();
                     rrte.setBoid(boid);
                     rrte.setTaskid(String.format("TSK_%s", UUID.randomUUID().toString()));
-                    rrte.setHookdescriptor("");  // todo
-                    rrte.setEventdescriptor(String.format("{\"OnComplete\":\"%s\"}", t.getEvent()));  // todo other event
-                    rrte.setDocumentation("");  // todo
+                    rrte.setHookdescriptor(heDesc.getKey());
+                    rrte.setEventdescriptor(heDesc.getValue());
+                    rrte.setDocumentation(t.getDocumentation());
                     rrte.setPrinciple(t.getPrinciple().GenerateDescriptor());
                     rrte.setPolymorphismId(t.getId());
                     rrte.setPolymorphismName(t.getName());

@@ -6,8 +6,13 @@ package org.sysu.workflow.model.extend;
 
 import org.sysu.workflow.ActionExecutionContext;
 import org.sysu.workflow.model.ParamsContainer;
+import org.sysu.workflow.utility.SerializationUtil;
 
 import java.io.Serializable;
+import java.util.AbstractMap;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * Author: Rinkako
@@ -36,6 +41,11 @@ public class Task extends ParamsContainer implements Serializable {
     private String brole;
 
     /**
+     * Documentation.
+     */
+    private String documentation = "";
+
+    /**
      * Call back event name.
      */
     private String event;
@@ -44,6 +54,56 @@ public class Task extends ParamsContainer implements Serializable {
      * Task resourcing principle.
      */
     private Principle principle;
+
+    /**
+     * Task callbacks.
+     */
+    private ArrayList<Callback> callbacks = new ArrayList<>();
+
+    /**
+     * Generate callback descriptors.
+     * @return a entry of (HookDescriptor, EventDescriptor)
+     */
+    public AbstractMap.SimpleEntry<String, String> GenerateCallbackDescriptor() {
+        HashMap<String, ArrayList<Callback>> callbackMap = new HashMap<>();
+        for (Callback callback : this.callbacks) {
+            callbackMap.computeIfAbsent(callback.getOn(), k -> new ArrayList<>()).add(callback);
+        }
+        StringBuilder sbHook = new StringBuilder("{");
+        StringBuilder sbEvent = new StringBuilder("{");
+        for (Map.Entry<String, ArrayList<Callback>> kvp : callbackMap.entrySet()) {
+            ArrayList<Callback> callbackForOn = kvp.getValue();
+            ArrayList<String> hooks = new ArrayList<>();
+            ArrayList<String> events = new ArrayList<>();
+            for (Callback cb : callbackForOn) {
+                hooks.add(cb.getHook());
+                events.add(cb.getEvent());
+            }
+            String onOneHooks = String.format("\"%s\":%s", kvp.getKey(), SerializationUtil.JsonSerialization(hooks, ""));
+            String onOneEvents = String.format("\"%s\":%s", kvp.getKey(), SerializationUtil.JsonSerialization(events, ""));
+            sbHook.append(onOneHooks).append(",");
+            sbEvent.append(onOneEvents).append(",");
+        }
+        String retHook = sbHook.toString();
+        String retEvent = sbEvent.toString();
+        if (retHook.length() > 1) {
+            retHook = retHook.substring(0, retHook.length() - 1);
+        }
+        if (retEvent.length() > 1) {
+            retEvent = retEvent.substring(0, retEvent.length() - 1);
+        }
+        retHook += "}";
+        retEvent += "}";
+        return new AbstractMap.SimpleEntry<>(retHook, retEvent);
+    }
+
+    /**
+     * Add a callback to this task.
+     * @param callback callback package
+     */
+    public void AddCallback(Callback callback) {
+        this.callbacks.add(callback);
+    }
 
     /**
      * Get id.
@@ -118,6 +178,18 @@ public class Task extends ParamsContainer implements Serializable {
      */
     public void setPrinciple(Principle principle) {
         this.principle = principle;
+    }
+
+    public String getDocumentation() {
+        return documentation;
+    }
+
+    public void setDocumentation(String documentation) {
+        this.documentation = documentation;
+    }
+
+    public ArrayList<Callback> getCallbacks() {
+        return callbacks;
     }
 
     /**

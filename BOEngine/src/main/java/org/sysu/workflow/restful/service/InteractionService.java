@@ -46,6 +46,8 @@ public class InteractionService {
                         bo, on, event, payload), InteractionService.class.getName(), LogUtil.LogLevelType.WARNNING, rtid);
                 return;
             }
+            LogUtil.Log(String.format("Dispatch callback(BO:%s | ON:%s | EVT:%s | P:%s )",
+                    bo, on, event, payload), InteractionService.class.getName(), LogUtil.LogLevelType.INFO, rtid);
             MultiStateMachineDispatcher dispatcher = (MultiStateMachineDispatcher) mainBONode.getExect().getEventDispatcher();
             SCXMLExecutionContext ctx = mainBONode.getExect();
             dispatcher.send(ctx.RootTid, ctx.Tid, "", MessageMode.UNICAST, bo, "",

@@ -3,14 +3,17 @@
   <data expr="1" id="Count"></data>
  </datamodel>
  <tasks>
-    <task id="calculate" brole="paymentCalculator" name="calculateTask" event="calculated">
+    <task id="calculate" brole="paymentCalculator" name="calculateTask">
 	    <principle method="Allocate" distributor="ShorestQueue"></principle>
+		<callback on="complete" event="calculated"></callback>
     </task>
-    <task id="Payment" brole="paymentHandler" name="paymentTask" event="paid">
+    <task id="Payment" brole="paymentHandler" name="paymentTask">
 	    <principle method="Allocate" distributor="ShorestQueue"></principle>
+		<callback on="complete" event="paid"></callback>
     </task>
-    <task id="archive" brole="archiveHandler" name="archiveTask" event="archived">
+    <task id="archive" brole="archiveHandler" name="archiveTask">
 	    <principle method="Allocate" distributor="ShorestQueue"></principle>
+		<callback on="complete" event="archived"></callback>
     </task>
  </tasks>
  <state id="Initial">
