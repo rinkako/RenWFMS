@@ -5,6 +5,7 @@
 package org.sysu.renResourcing.filter;
 
 import org.apache.commons.jexl2.Expression;
+import org.apache.commons.jexl2.JexlContext;
 import org.sysu.renCommon.enums.WorkQueueType;
 import org.sysu.renResourcing.context.ParticipantContext;
 import org.sysu.renResourcing.context.WorkQueueContainer;
@@ -95,7 +96,7 @@ public class QueueLengthFilter extends RFilter {
             WorkQueueContext offered = WorkQueueContainer.GetContext(workerId).DirectlyGetQueue(WorkQueueType.OFFERED);
             int queueLen = offered == null ? 0 : offered.Count();
             tmpCtx.Add(QueueLengthFilter.ParameterLength, queueLen);
-            Object condResult = this.conditionExprObj.evaluate(tmpCtx);
+            Object condResult = this.conditionExprObj.evaluate((JexlContext) tmpCtx.GetInternalContext());
             if (condResult == null ? Boolean.FALSE : (Boolean) condResult) {
                 retSet.add(p);
             }

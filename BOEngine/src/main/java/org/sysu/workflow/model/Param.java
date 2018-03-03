@@ -58,7 +58,7 @@ public class Param implements NamespacePrefixesHolder, Serializable {
      * @return string descriptor
      */
     public String GenerateDescriptor() {
-        return String.format("\"%s\":\"%s\"", this.name, SerializationUtil.JsonSerialization(this.expr, ""));
+        return String.format("\"%s\":%s", this.name, SerializationUtil.JsonSerialization(this.expr, ""));
     }
 
     /**

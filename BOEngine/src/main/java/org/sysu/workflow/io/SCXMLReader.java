@@ -1339,8 +1339,12 @@ public final class SCXMLReader {
             String errMsg = msgFormat.format(new Object[]{ELEM_BOO_CALLBACK, ATTR_EVENT, reader.getLocation()});
             throw new ModelException(errMsg);
         }
-        callback.setEvent(event);
-        callback.setHook(hook);
+        if (event != null) {
+            callback.setEvent(event);
+        }
+        if (hook != null) {
+            callback.setHook(hook);
+        }
         //readNamespaces(configuration, callback);
         task.AddCallback(callback);
         skipToEndElement(reader);

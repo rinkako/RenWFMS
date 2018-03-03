@@ -125,7 +125,7 @@ public final class LaunchProcessService {
                     rrte.setPolymorphismId(t.getId());
                     rrte.setPolymorphismName(t.getName());
                     rrte.setBrole(t.getBrole());
-                    rrte.setParameters(SerializationUtil.JsonSerialization(t.getParams(), ""));
+                    rrte.setParameters(t.GenerateParamDescriptor());
                     session.save(rrte);
                 }
             }

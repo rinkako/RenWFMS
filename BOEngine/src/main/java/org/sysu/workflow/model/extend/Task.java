@@ -4,7 +4,9 @@
  */
 package org.sysu.workflow.model.extend;
 
+import org.sysu.renCommon.utility.CommonUtil;
 import org.sysu.workflow.ActionExecutionContext;
+import org.sysu.workflow.model.Param;
 import org.sysu.workflow.model.ParamsContainer;
 import org.sysu.workflow.utility.SerializationUtil;
 
@@ -48,7 +50,7 @@ public class Task extends ParamsContainer implements Serializable {
     /**
      * Call back event name.
      */
-    private String event;
+    private String event = "";
 
     /**
      * Task resourcing principle.
@@ -59,6 +61,24 @@ public class Task extends ParamsContainer implements Serializable {
      * Task callbacks.
      */
     private ArrayList<Callback> callbacks = new ArrayList<>();
+
+    /**
+     * Generate descriptor for this constraint.
+     * @return string descriptor
+     */
+    public String GenerateParamDescriptor() {
+        StringBuilder sb = new StringBuilder();
+        sb.append("{");
+        for (Param p : this.getParams()) {
+            sb.append(p.GenerateDescriptor()).append(",");
+        }
+        String jsonifyParam = sb.toString();
+        if (jsonifyParam.length() > 1) {
+            jsonifyParam = jsonifyParam.substring(0, jsonifyParam.length() - 1);
+        }
+        jsonifyParam += "}";
+        return jsonifyParam;
+    }
 
     /**
      * Generate callback descriptors.
@@ -76,8 +96,14 @@ public class Task extends ParamsContainer implements Serializable {
             ArrayList<String> hooks = new ArrayList<>();
             ArrayList<String> events = new ArrayList<>();
             for (Callback cb : callbackForOn) {
-                hooks.add(cb.getHook());
-                events.add(cb.getEvent());
+                String hook = cb.getHook();
+                if (!CommonUtil.IsNullOrEmpty(hook)) {
+                    hooks.add(hook);
+                }
+                String event = cb.getEvent();
+                if (!CommonUtil.IsNullOrEmpty(event)) {
+                    events.add(event);
+                }
             }
             String onOneHooks = String.format("\"%s\":%s", kvp.getKey(), SerializationUtil.JsonSerialization(hooks, ""));
             String onOneEvents = String.format("\"%s\":%s", kvp.getKey(), SerializationUtil.JsonSerialization(events, ""));

@@ -161,6 +161,7 @@ public class InterfaceB {
         // otherwise workitem should be put to allocated queue
         else {
             WorkQueueContainer container = WorkQueueContainer.GetContext(participant.getWorkerId());
+            // todo remove other participant offered queue item
             container.MoveOfferedToAllocated(workitem);
             InterfaceB.WorkitemChanged(workitem, WorkitemStatusType.Fired, WorkitemResourcingStatusType.Allocated);
         }

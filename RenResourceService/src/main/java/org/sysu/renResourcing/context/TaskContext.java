@@ -75,12 +75,12 @@ public class TaskContext implements Serializable, RCacheablesContext {
     /**
      * Notification hook dictionary. (Change, NotifyURL)
      */
-    private HashMap<String, String> hooks = new HashMap<>();
+    private HashMap<String, ArrayList<String>> hooks = new HashMap<>();
 
     /**
      * Callback event dictionary. (Status, EventName)
      */
-    private HashMap<String, String> callbacks = new HashMap<>();
+    private HashMap<String, ArrayList<String>> callbacks = new HashMap<>();
 
     /**
      * Parameters vector.
@@ -103,8 +103,8 @@ public class TaskContext implements Serializable, RCacheablesContext {
         tc.boid = (String) mapObj.get("boid");
         tc.pid = (String) mapObj.get("pid");
         tc.documentation = (String) mapObj.get("documentation");
-        tc.hooks = (HashMap<String, String>) mapObj.get("notifyHooks");
-        tc.callbacks = (HashMap<String, String>) mapObj.get("callbackEvents");
+        tc.hooks = (HashMap<String, ArrayList<String>>) mapObj.get("notifyHooks");
+        tc.callbacks = (HashMap<String, ArrayList<String>>) mapObj.get("callbackEvents");
         tc.parameters = (ArrayList<String>) mapObj.get("parameters");
         return tc;
     }
@@ -232,7 +232,7 @@ public class TaskContext implements Serializable, RCacheablesContext {
      * Get the notification hooks dictionary.
      * @return HashMap of (ChangedName-NotifyURL)
      */
-    public HashMap<String, String> getNotifyHooks() {
+    public HashMap<String, ArrayList<String>> getNotifyHooks() {
         return this.hooks;
     }
 
@@ -240,7 +240,7 @@ public class TaskContext implements Serializable, RCacheablesContext {
      * Get the callback events dictionary.
      * @return HashMap of (Status-EventName)
      */
-    public HashMap<String, String> getCallbackEvents() {
+    public HashMap<String, ArrayList<String>> getCallbackEvents() {
         return this.callbacks;
     }
 
@@ -276,9 +276,9 @@ public class TaskContext implements Serializable, RCacheablesContext {
      */
     @SuppressWarnings("unchecked")
     private void ParseParameters(String parametersDescriptor) {
-        String[] paras = parametersDescriptor.split(",");
+        HashMap<String, String> paras = SerializationUtil.JsonDeserialization(parametersDescriptor, HashMap.class);
         this.parameters = new ArrayList<>();
-        this.parameters.addAll(Arrays.asList(paras));
+        this.parameters.addAll(paras.keySet());
     }
 
     /**

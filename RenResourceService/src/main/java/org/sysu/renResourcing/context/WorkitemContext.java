@@ -115,6 +115,7 @@ public class WorkitemContext implements Serializable, RCacheablesContext {
      */
     public static WorkitemContext GenerateContext(TaskContext taskContext, String rtid, ArrayList args) {
         assert args != null && taskContext.getParameters() != null;
+        //HashMap parameterMap = SerializationUtil.JsonDeserialization(taskContext.getParameters(), HashMap.class);
         if (args.size() != taskContext.getParameters().size()) {
             LogUtil.Log(String.format("Generate workitem for task %s, but arguments(%s) and parameters(%s) not equal",
                     taskContext.getTaskName(), args.size(), taskContext.getParameters().size()),

@@ -23,17 +23,17 @@ public class Callback implements Serializable {
     /**
      * On which workitem status type.
      */
-    private String on;
+    private String on = "";
 
     /**
      * Notify hook.
      */
-    private String hook;
+    private String hook = "";
 
     /**
      * Event name.
      */
-    private String event;
+    private String event = "";
 
     public String getOn() {
         return on;

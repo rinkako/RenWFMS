@@ -16,94 +16,7 @@
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="4978">
               <caret line="269" column="78" lean-forward="false" selection-start-line="269" selection-start-column="78" selection-end-line="269" selection-end-column="78" />
-              <folding>
-                <marker date="1518793128851" expanded="false" signature="6:180" ph="..." />
-                <marker date="1518793128851" expanded="true" signature="217:18589" ph="{...}" />
-                <marker date="1518793128851" expanded="true" signature="224:310" ph="/// Master Panel Controller for view model logic. ... " />
-                <marker date="1518793128851" expanded="true" signature="349:18587" ph="{...}" />
-                <marker date="1518793128851" expanded="true" signature="364:446" ph="/// Current transaction data package. ... " />
-                <marker date="1518793128851" expanded="true" signature="558:698" ph="/// Load BO from a directory. ... " />
-                <marker date="1518793128851" expanded="true" signature="769:2772" ph="{...}" />
-                <marker date="1518793128851" expanded="true" signature="1007:2762" ph="{...}" />
-                <marker date="1518793128851" expanded="true" signature="1133:2588" ph="{...}" />
-                <marker date="1518793128851" expanded="true" signature="1271:1758" ph="{...}" />
-                <marker date="1518793128851" expanded="true" signature="1783:2570" ph="{...}" />
-                <marker date="1518793128851" expanded="true" signature="2414:2546" ph="{...}" />
-                <marker date="1518793128851" expanded="true" signature="2609:2748" ph="{...}" />
-                <marker date="1518793128851" expanded="true" signature="2782:3026" ph="/// Authorization connect. ... " />
-                <marker date="1518793128851" expanded="true" signature="3115:4030" ph="{...}" />
-                <marker date="1518793128851" expanded="true" signature="3141:3790" ph="{...}" />
-                <marker date="1518793128851" expanded="true" signature="3294:3416" ph="{...}" />
-                <marker date="1518793128851" expanded="true" signature="3823:4020" ph="{...}" />
-                <marker date="1518793128851" expanded="true" signature="4040:4182" ph="/// Get processes of a ren user. ... " />
-                <marker date="1518793128851" expanded="true" signature="4250:5189" ph="{...}" />
-                <marker date="1518793128851" expanded="true" signature="4276:4985" ph="{...}" />
-                <marker date="1518793128851" expanded="true" signature="4434:4618" ph="{...}" />
-                <marker date="1518793128851" expanded="true" signature="5018:5179" ph="{...}" />
-                <marker date="1518793128851" expanded="true" signature="5199:5381" ph="/// Get BO of a process. ... " />
-                <marker date="1518793128851" expanded="true" signature="5461:6520" ph="{...}" />
-                <marker date="1518793128851" expanded="true" signature="5487:6314" ph="{...}" />
-                <marker date="1518793128851" expanded="true" signature="5645:5787" ph="{...}" />
-                <marker date="1518793128851" expanded="true" signature="6155:6268" ph="{...}" />
-                <marker date="1518793128851" expanded="true" signature="6347:6510" ph="{...}" />
-                <marker date="1518793128851" expanded="true" signature="6530:6643" ph="/// Create a new process. ... " />
-                <marker date="1518793128851" expanded="true" signature="6725:7600" ph="{...}" />
-                <marker date="1518793128851" expanded="true" signature="6751:7393" ph="{...}" />
-                <marker date="1518793128851" expanded="true" signature="6905:7188" ph="{...}" />
-                <marker date="1518793128851" expanded="true" signature="7426:7590" ph="{...}" />
-                <marker date="1518793128851" expanded="true" signature="7610:7820" ph="/// Upload a BO. ... " />
-                <marker date="1518793128851" expanded="true" signature="7909:8762" ph="{...}" />
-                <marker date="1518793128851" expanded="true" signature="7935:8560" ph="{...}" />
-                <marker date="1518793128851" expanded="true" signature="8064:8337" ph="{...}" />
-                <marker date="1518793128851" expanded="true" signature="8593:8752" ph="{...}" />
-                <marker date="1518793128851" expanded="true" signature="8772:8945" ph="/// Get all resources in the COrgan by ren auth user binding gateway. ... " />
-                <marker date="1518793128851" expanded="true" signature="9000:9772" ph="{...}" />
-                <marker date="1518793128851" expanded="true" signature="9026:9554" ph="{...}" />
-                <marker date="1518793128851" expanded="true" signature="9162:9346" ph="{...}" />
-                <marker date="1518793128851" expanded="true" signature="9587:9762" ph="{...}" />
-                <marker date="1518793128851" expanded="true" signature="9782:9884" ph="/// Get the data version of this Ren auth binding COrgan. ... " />
-                <marker date="1518793128851" expanded="true" signature="9930:10689" ph="{...}" />
-                <marker date="1518793128851" expanded="true" signature="9956:10480" ph="{...}" />
-                <marker date="1518793128851" expanded="true" signature="10091:10275" ph="{...}" />
-                <marker date="1518793128851" expanded="true" signature="10513:10679" ph="{...}" />
-                <marker date="1518793128851" expanded="true" signature="10699:10788" ph="/// Submit the process to NS and get a rtid. ... " />
-                <marker date="1518793128851" expanded="true" signature="10833:12207" ph="{...}" />
-                <marker date="1518793128851" expanded="true" signature="10859:11998" ph="{...}" />
-                <marker date="1518793128851" expanded="true" signature="10993:11793" ph="{...}" />
-                <marker date="1518793128851" expanded="true" signature="12031:12197" ph="{...}" />
-                <marker date="1518793128851" expanded="true" signature="12217:12290" ph="/// Register mappings to NS. ... " />
-                <marker date="1518793128851" expanded="true" signature="12338:13316" ph="{...}" />
-                <marker date="1518793128851" expanded="true" signature="12364:13104" ph="{...}" />
-                <marker date="1518793128851" expanded="true" signature="12498:12899" ph="{...}" />
-                <marker date="1518793128851" expanded="true" signature="13137:13306" ph="{...}" />
-                <marker date="1518793128851" expanded="true" signature="13334:13417" ph="/// Load resources participant for RS. ... " />
-                <marker date="1518793128851" expanded="true" signature="13464:14296" ph="{...}" />
-                <marker date="1518793128851" expanded="true" signature="13490:14078" ph="{...}" />
-                <marker date="1518793128851" expanded="true" signature="13626:13873" ph="{...}" />
-                <marker date="1518793128851" expanded="true" signature="14111:14286" ph="{...}" />
-                <marker date="1518793128851" expanded="true" signature="14306:14467" ph="/// Generate a string to post to NS of current mapping description. ... " />
-                <marker date="1518793128851" expanded="true" signature="14530:14870" ph="{...}" />
-                <marker date="1518793128851" expanded="true" signature="14740:14833" ph="{...}" />
-                <marker date="1518793128851" expanded="true" signature="14880:15048" ph="/// Get the name list of BOs in current transaction binding process. ... " />
-                <marker date="1518793128851" expanded="true" signature="15095:15213" ph="{...}" />
-                <marker date="1518793128851" expanded="true" signature="15223:15395" ph="/// Get BO content by its name. ... " />
-                <marker date="1518793128851" expanded="true" signature="15450:15728" ph="{...}" />
-                <marker date="1518793128851" expanded="true" signature="15533:15685" ph="{...}" />
-                <marker date="1518793128851" expanded="true" signature="15590:15671" ph="{...}" />
-                <marker date="1518793128851" expanded="true" signature="15738:15833" ph="/// Upload business role mappings to Name Service. ... " />
-                <marker date="1518793128851" expanded="true" signature="15888:15957" ph="{...}" />
-                <marker date="1518793128851" expanded="true" signature="15967:16165" ph="/// Get resource enum by its global id string prefix. ... " />
-                <marker date="1518793128851" expanded="true" signature="16233:16830" ph="{...}" />
-                <marker date="1518793128851" expanded="true" signature="16317:16820" ph="{...}" />
-                <marker date="1518793128851" expanded="true" signature="16840:17041" ph="/// Parse COrgan group type enum value to enum name. ... " />
-                <marker date="1518793128851" expanded="true" signature="17104:17614" ph="{...}" />
-                <marker date="1518793128851" expanded="true" signature="17146:17604" ph="{...}" />
-                <marker date="1518793128851" expanded="true" signature="17624:17825" ph="/// Parse COrgan agent type enum value to enum name. ... " />
-                <marker date="1518793128851" expanded="true" signature="17888:18100" ph="{...}" />
-                <marker date="1518793128851" expanded="true" signature="17930:18090" ph="{...}" />
-                <marker date="1518793128851" expanded="true" signature="18110:18384" ph="/// Find a DataRow in a DataTable by its Global id. ... " />
-                <marker date="1518793128851" expanded="true" signature="18460:18581" ph="{...}" />
-              </folding>
+              <folding />
             </state>
           </provider>
         </entry>
@@ -514,11 +427,12 @@
       <workItem from="1519281062815" duration="1206000" />
       <workItem from="1519779169639" duration="1437000" />
       <workItem from="1519954106054" duration="2436000" />
+      <workItem from="1520081168606" duration="3897000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="20780000" />
+    <option name="totallyTimeSpent" value="24677000" />
   </component>
   <component name="TodoView">
     <todo-panel id="selected-file">
@@ -536,7 +450,7 @@
       <window_info id="Errors In Solution" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32979852" sideWeight="0.5" order="7" side_tool="true" content_ui="tabs" />
       <window_info id="Unit Tests" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
-      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.20996818" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
+      <window_info id="Run" active="true" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.20996818" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="NuGet" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
@@ -608,94 +522,7 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="6156">
           <caret line="331" column="30" lean-forward="false" selection-start-line="331" selection-start-column="30" selection-end-line="331" selection-end-column="30" />
-          <folding>
-            <marker date="1518793128851" expanded="false" signature="6:180" ph="..." />
-            <marker date="1518793128851" expanded="true" signature="217:18589" ph="{...}" />
-            <marker date="1518793128851" expanded="true" signature="224:310" ph="/// Master Panel Controller for view model logic. ... " />
-            <marker date="1518793128851" expanded="true" signature="349:18587" ph="{...}" />
-            <marker date="1518793128851" expanded="true" signature="364:446" ph="/// Current transaction data package. ... " />
-            <marker date="1518793128851" expanded="true" signature="558:698" ph="/// Load BO from a directory. ... " />
-            <marker date="1518793128851" expanded="true" signature="769:2772" ph="{...}" />
-            <marker date="1518793128851" expanded="true" signature="1007:2762" ph="{...}" />
-            <marker date="1518793128851" expanded="true" signature="1133:2588" ph="{...}" />
-            <marker date="1518793128851" expanded="true" signature="1271:1758" ph="{...}" />
-            <marker date="1518793128851" expanded="true" signature="1783:2570" ph="{...}" />
-            <marker date="1518793128851" expanded="true" signature="2414:2546" ph="{...}" />
-            <marker date="1518793128851" expanded="true" signature="2609:2748" ph="{...}" />
-            <marker date="1518793128851" expanded="true" signature="2782:3026" ph="/// Authorization connect. ... " />
-            <marker date="1518793128851" expanded="true" signature="3115:4030" ph="{...}" />
-            <marker date="1518793128851" expanded="true" signature="3141:3790" ph="{...}" />
-            <marker date="1518793128851" expanded="true" signature="3294:3416" ph="{...}" />
-            <marker date="1518793128851" expanded="true" signature="3823:4020" ph="{...}" />
-            <marker date="1518793128851" expanded="true" signature="4040:4182" ph="/// Get processes of a ren user. ... " />
-            <marker date="1518793128851" expanded="true" signature="4250:5189" ph="{...}" />
-            <marker date="1518793128851" expanded="true" signature="4276:4985" ph="{...}" />
-            <marker date="1518793128851" expanded="true" signature="4434:4618" ph="{...}" />
-            <marker date="1518793128851" expanded="true" signature="5018:5179" ph="{...}" />
-            <marker date="1518793128851" expanded="true" signature="5199:5381" ph="/// Get BO of a process. ... " />
-            <marker date="1518793128851" expanded="true" signature="5461:6520" ph="{...}" />
-            <marker date="1518793128851" expanded="true" signature="5487:6314" ph="{...}" />
-            <marker date="1518793128851" expanded="true" signature="5645:5787" ph="{...}" />
-            <marker date="1518793128851" expanded="true" signature="6155:6268" ph="{...}" />
-            <marker date="1518793128851" expanded="true" signature="6347:6510" ph="{...}" />
-            <marker date="1518793128851" expanded="true" signature="6530:6643" ph="/// Create a new process. ... " />
-            <marker date="1518793128851" expanded="true" signature="6725:7600" ph="{...}" />
-            <marker date="1518793128851" expanded="true" signature="6751:7393" ph="{...}" />
-            <marker date="1518793128851" expanded="true" signature="6905:7188" ph="{...}" />
-            <marker date="1518793128851" expanded="true" signature="7426:7590" ph="{...}" />
-            <marker date="1518793128851" expanded="true" signature="7610:7820" ph="/// Upload a BO. ... " />
-            <marker date="1518793128851" expanded="true" signature="7909:8762" ph="{...}" />
-            <marker date="1518793128851" expanded="true" signature="7935:8560" ph="{...}" />
-            <marker date="1518793128851" expanded="true" signature="8064:8337" ph="{...}" />
-            <marker date="1518793128851" expanded="true" signature="8593:8752" ph="{...}" />
-            <marker date="1518793128851" expanded="true" signature="8772:8945" ph="/// Get all resources in the COrgan by ren auth user binding gateway. ... " />
-            <marker date="1518793128851" expanded="true" signature="9000:9772" ph="{...}" />
-            <marker date="1518793128851" expanded="true" signature="9026:9554" ph="{...}" />
-            <marker date="1518793128851" expanded="true" signature="9162:9346" ph="{...}" />
-            <marker date="1518793128851" expanded="true" signature="9587:9762" ph="{...}" />
-            <marker date="1518793128851" expanded="true" signature="9782:9884" ph="/// Get the data version of this Ren auth binding COrgan. ... " />
-            <marker date="1518793128851" expanded="true" signature="9930:10689" ph="{...}" />
-            <marker date="1518793128851" expanded="true" signature="9956:10480" ph="{...}" />
-            <marker date="1518793128851" expanded="true" signature="10091:10275" ph="{...}" />
-            <marker date="1518793128851" expanded="true" signature="10513:10679" ph="{...}" />
-            <marker date="1518793128851" expanded="true" signature="10699:10788" ph="/// Submit the process to NS and get a rtid. ... " />
-            <marker date="1518793128851" expanded="true" signature="10833:12207" ph="{...}" />
-            <marker date="1518793128851" expanded="true" signature="10859:11998" ph="{...}" />
-            <marker date="1518793128851" expanded="true" signature="10993:11793" ph="{...}" />
-            <marker date="1518793128851" expanded="true" signature="12031:12197" ph="{...}" />
-            <marker date="1518793128851" expanded="true" signature="12217:12290" ph="/// Register mappings to NS. ... " />
-            <marker date="1518793128851" expanded="true" signature="12338:13316" ph="{...}" />
-            <marker date="1518793128851" expanded="true" signature="12364:13104" ph="{...}" />
-            <marker date="1518793128851" expanded="true" signature="12498:12899" ph="{...}" />
-            <marker date="1518793128851" expanded="true" signature="13137:13306" ph="{...}" />
-            <marker date="1518793128851" expanded="true" signature="13334:13417" ph="/// Load resources participant for RS. ... " />
-            <marker date="1518793128851" expanded="true" signature="13464:14296" ph="{...}" />
-            <marker date="1518793128851" expanded="true" signature="13490:14078" ph="{...}" />
-            <marker date="1518793128851" expanded="true" signature="13626:13873" ph="{...}" />
-            <marker date="1518793128851" expanded="true" signature="14111:14286" ph="{...}" />
-            <marker date="1518793128851" expanded="true" signature="14306:14467" ph="/// Generate a string to post to NS of current mapping description. ... " />
-            <marker date="1518793128851" expanded="true" signature="14530:14870" ph="{...}" />
-            <marker date="1518793128851" expanded="true" signature="14740:14833" ph="{...}" />
-            <marker date="1518793128851" expanded="true" signature="14880:15048" ph="/// Get the name list of BOs in current transaction binding process. ... " />
-            <marker date="1518793128851" expanded="true" signature="15095:15213" ph="{...}" />
-            <marker date="1518793128851" expanded="true" signature="15223:15395" ph="/// Get BO content by its name. ... " />
-            <marker date="1518793128851" expanded="true" signature="15450:15728" ph="{...}" />
-            <marker date="1518793128851" expanded="true" signature="15533:15685" ph="{...}" />
-            <marker date="1518793128851" expanded="true" signature="15590:15671" ph="{...}" />
-            <marker date="1518793128851" expanded="true" signature="15738:15833" ph="/// Upload business role mappings to Name Service. ... " />
-            <marker date="1518793128851" expanded="true" signature="15888:15957" ph="{...}" />
-            <marker date="1518793128851" expanded="true" signature="15967:16165" ph="/// Get resource enum by its global id string prefix. ... " />
-            <marker date="1518793128851" expanded="true" signature="16233:16830" ph="{...}" />
-            <marker date="1518793128851" expanded="true" signature="16317:16820" ph="{...}" />
-            <marker date="1518793128851" expanded="true" signature="16840:17041" ph="/// Parse COrgan group type enum value to enum name. ... " />
-            <marker date="1518793128851" expanded="true" signature="17104:17614" ph="{...}" />
-            <marker date="1518793128851" expanded="true" signature="17146:17604" ph="{...}" />
-            <marker date="1518793128851" expanded="true" signature="17624:17825" ph="/// Parse COrgan agent type enum value to enum name. ... " />
-            <marker date="1518793128851" expanded="true" signature="17888:18100" ph="{...}" />
-            <marker date="1518793128851" expanded="true" signature="17930:18090" ph="{...}" />
-            <marker date="1518793128851" expanded="true" signature="18110:18384" ph="/// Find a DataRow in a DataTable by its Global id. ... " />
-            <marker date="1518793128851" expanded="true" signature="18460:18581" ph="{...}" />
-          </folding>
+          <folding />
         </state>
       </provider>
     </entry>
@@ -924,94 +751,7 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="6156">
           <caret line="331" column="30" lean-forward="false" selection-start-line="331" selection-start-column="30" selection-end-line="331" selection-end-column="30" />
-          <folding>
-            <marker date="1518793128851" expanded="false" signature="6:180" ph="..." />
-            <marker date="1518793128851" expanded="true" signature="217:18589" ph="{...}" />
-            <marker date="1518793128851" expanded="true" signature="224:310" ph="/// Master Panel Controller for view model logic. ... " />
-            <marker date="1518793128851" expanded="true" signature="349:18587" ph="{...}" />
-            <marker date="1518793128851" expanded="true" signature="364:446" ph="/// Current transaction data package. ... " />
-            <marker date="1518793128851" expanded="true" signature="558:698" ph="/// Load BO from a directory. ... " />
-            <marker date="1518793128851" expanded="true" signature="769:2772" ph="{...}" />
-            <marker date="1518793128851" expanded="true" signature="1007:2762" ph="{...}" />
-            <marker date="1518793128851" expanded="true" signature="1133:2588" ph="{...}" />
-            <marker date="1518793128851" expanded="true" signature="1271:1758" ph="{...}" />
-            <marker date="1518793128851" expanded="true" signature="1783:2570" ph="{...}" />
-            <marker date="1518793128851" expanded="true" signature="2414:2546" ph="{...}" />
-            <marker date="1518793128851" expanded="true" signature="2609:2748" ph="{...}" />
-            <marker date="1518793128851" expanded="true" signature="2782:3026" ph="/// Authorization connect. ... " />
-            <marker date="1518793128851" expanded="true" signature="3115:4030" ph="{...}" />
-            <marker date="1518793128851" expanded="true" signature="3141:3790" ph="{...}" />
-            <marker date="1518793128851" expanded="true" signature="3294:3416" ph="{...}" />
-            <marker date="1518793128851" expanded="true" signature="3823:4020" ph="{...}" />
-            <marker date="1518793128851" expanded="true" signature="4040:4182" ph="/// Get processes of a ren user. ... " />
-            <marker date="1518793128851" expanded="true" signature="4250:5189" ph="{...}" />
-            <marker date="1518793128851" expanded="true" signature="4276:4985" ph="{...}" />
-            <marker date="1518793128851" expanded="true" signature="4434:4618" ph="{...}" />
-            <marker date="1518793128851" expanded="true" signature="5018:5179" ph="{...}" />
-            <marker date="1518793128851" expanded="true" signature="5199:5381" ph="/// Get BO of a process. ... " />
-            <marker date="1518793128851" expanded="true" signature="5461:6520" ph="{...}" />
-            <marker date="1518793128851" expanded="true" signature="5487:6314" ph="{...}" />
-            <marker date="1518793128851" expanded="true" signature="5645:5787" ph="{...}" />
-            <marker date="1518793128851" expanded="true" signature="6155:6268" ph="{...}" />
-            <marker date="1518793128851" expanded="true" signature="6347:6510" ph="{...}" />
-            <marker date="1518793128851" expanded="true" signature="6530:6643" ph="/// Create a new process. ... " />
-            <marker date="1518793128851" expanded="true" signature="6725:7600" ph="{...}" />
-            <marker date="1518793128851" expanded="true" signature="6751:7393" ph="{...}" />
-            <marker date="1518793128851" expanded="true" signature="6905:7188" ph="{...}" />
-            <marker date="1518793128851" expanded="true" signature="7426:7590" ph="{...}" />
-            <marker date="1518793128851" expanded="true" signature="7610:7820" ph="/// Upload a BO. ... " />
-            <marker date="1518793128851" expanded="true" signature="7909:8762" ph="{...}" />
-            <marker date="1518793128851" expanded="true" signature="7935:8560" ph="{...}" />
-            <marker date="1518793128851" expanded="true" signature="8064:8337" ph="{...}" />
-            <marker date="1518793128851" expanded="true" signature="8593:8752" ph="{...}" />
-            <marker date="1518793128851" expanded="true" signature="8772:8945" ph="/// Get all resources in the COrgan by ren auth user binding gateway. ... " />
-            <marker date="1518793128851" expanded="true" signature="9000:9772" ph="{...}" />
-            <marker date="1518793128851" expanded="true" signature="9026:9554" ph="{...}" />
-            <marker date="1518793128851" expanded="true" signature="9162:9346" ph="{...}" />
-            <marker date="1518793128851" expanded="true" signature="9587:9762" ph="{...}" />
-            <marker date="1518793128851" expanded="true" signature="9782:9884" ph="/// Get the data version of this Ren auth binding COrgan. ... " />
-            <marker date="1518793128851" expanded="true" signature="9930:10689" ph="{...}" />
-            <marker date="1518793128851" expanded="true" signature="9956:10480" ph="{...}" />
-            <marker date="1518793128851" expanded="true" signature="10091:10275" ph="{...}" />
-            <marker date="1518793128851" expanded="true" signature="10513:10679" ph="{...}" />
-            <marker date="1518793128851" expanded="true" signature="10699:10788" ph="/// Submit the process to NS and get a rtid. ... " />
-            <marker date="1518793128851" expanded="true" signature="10833:12207" ph="{...}" />
-            <marker date="1518793128851" expanded="true" signature="10859:11998" ph="{...}" />
-            <marker date="1518793128851" expanded="true" signature="10993:11793" ph="{...}" />
-            <marker date="1518793128851" expanded="true" signature="12031:12197" ph="{...}" />
-            <marker date="1518793128851" expanded="true" signature="12217:12290" ph="/// Register mappings to NS. ... " />
-            <marker date="1518793128851" expanded="true" signature="12338:13316" ph="{...}" />
-            <marker date="1518793128851" expanded="true" signature="12364:13104" ph="{...}" />
-            <marker date="1518793128851" expanded="true" signature="12498:12899" ph="{...}" />
-            <marker date="1518793128851" expanded="true" signature="13137:13306" ph="{...}" />
-            <marker date="1518793128851" expanded="true" signature="13334:13417" ph="/// Load resources participant for RS. ... " />
-            <marker date="1518793128851" expanded="true" signature="13464:14296" ph="{...}" />
-            <marker date="1518793128851" expanded="true" signature="13490:14078" ph="{...}" />
-            <marker date="1518793128851" expanded="true" signature="13626:13873" ph="{...}" />
-            <marker date="1518793128851" expanded="true" signature="14111:14286" ph="{...}" />
-            <marker date="1518793128851" expanded="true" signature="14306:14467" ph="/// Generate a string to post to NS of current mapping description. ... " />
-            <marker date="1518793128851" expanded="true" signature="14530:14870" ph="{...}" />
-            <marker date="1518793128851" expanded="true" signature="14740:14833" ph="{...}" />
-            <marker date="1518793128851" expanded="true" signature="14880:15048" ph="/// Get the name list of BOs in current transaction binding process. ... " />
-            <marker date="1518793128851" expanded="true" signature="15095:15213" ph="{...}" />
-            <marker date="1518793128851" expanded="true" signature="15223:15395" ph="/// Get BO content by its name. ... " />
-            <marker date="1518793128851" expanded="true" signature="15450:15728" ph="{...}" />
-            <marker date="1518793128851" expanded="true" signature="15533:15685" ph="{...}" />
-            <marker date="1518793128851" expanded="true" signature="15590:15671" ph="{...}" />
-            <marker date="1518793128851" expanded="true" signature="15738:15833" ph="/// Upload business role mappings to Name Service. ... " />
-            <marker date="1518793128851" expanded="true" signature="15888:15957" ph="{...}" />
-            <marker date="1518793128851" expanded="true" signature="15967:16165" ph="/// Get resource enum by its global id string prefix. ... " />
-            <marker date="1518793128851" expanded="true" signature="16233:16830" ph="{...}" />
-            <marker date="1518793128851" expanded="true" signature="16317:16820" ph="{...}" />
-            <marker date="1518793128851" expanded="true" signature="16840:17041" ph="/// Parse COrgan group type enum value to enum name. ... " />
-            <marker date="1518793128851" expanded="true" signature="17104:17614" ph="{...}" />
-            <marker date="1518793128851" expanded="true" signature="17146:17604" ph="{...}" />
-            <marker date="1518793128851" expanded="true" signature="17624:17825" ph="/// Parse COrgan agent type enum value to enum name. ... " />
-            <marker date="1518793128851" expanded="true" signature="17888:18100" ph="{...}" />
-            <marker date="1518793128851" expanded="true" signature="17930:18090" ph="{...}" />
-            <marker date="1518793128851" expanded="true" signature="18110:18384" ph="/// Find a DataRow in a DataTable by its Global id. ... " />
-            <marker date="1518793128851" expanded="true" signature="18460:18581" ph="{...}" />
-          </folding>
+          <folding />
         </state>
       </provider>
     </entry>
@@ -1240,94 +980,7 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="0">
           <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-          <folding>
-            <marker date="1518793128851" expanded="false" signature="6:180" ph="..." />
-            <marker date="1518793128851" expanded="true" signature="217:18589" ph="{...}" />
-            <marker date="1518793128851" expanded="true" signature="224:310" ph="/// Master Panel Controller for view model logic. ... " />
-            <marker date="1518793128851" expanded="true" signature="349:18587" ph="{...}" />
-            <marker date="1518793128851" expanded="true" signature="364:446" ph="/// Current transaction data package. ... " />
-            <marker date="1518793128851" expanded="true" signature="558:698" ph="/// Load BO from a directory. ... " />
-            <marker date="1518793128851" expanded="true" signature="769:2772" ph="{...}" />
-            <marker date="1518793128851" expanded="true" signature="1007:2762" ph="{...}" />
-            <marker date="1518793128851" expanded="true" signature="1133:2588" ph="{...}" />
-            <marker date="1518793128851" expanded="true" signature="1271:1758" ph="{...}" />
-            <marker date="1518793128851" expanded="true" signature="1783:2570" ph="{...}" />
-            <marker date="1518793128851" expanded="true" signature="2414:2546" ph="{...}" />
-            <marker date="1518793128851" expanded="true" signature="2609:2748" ph="{...}" />
-            <marker date="1518793128851" expanded="true" signature="2782:3026" ph="/// Authorization connect. ... " />
-            <marker date="1518793128851" expanded="true" signature="3115:4030" ph="{...}" />
-            <marker date="1518793128851" expanded="true" signature="3141:3790" ph="{...}" />
-            <marker date="1518793128851" expanded="true" signature="3294:3416" ph="{...}" />
-            <marker date="1518793128851" expanded="true" signature="3823:4020" ph="{...}" />
-            <marker date="1518793128851" expanded="true" signature="4040:4182" ph="/// Get processes of a ren user. ... " />
-            <marker date="1518793128851" expanded="true" signature="4250:5189" ph="{...}" />
-            <marker date="1518793128851" expanded="true" signature="4276:4985" ph="{...}" />
-            <marker date="1518793128851" expanded="true" signature="4434:4618" ph="{...}" />
-            <marker date="1518793128851" expanded="true" signature="5018:5179" ph="{...}" />
-            <marker date="1518793128851" expanded="true" signature="5199:5381" ph="/// Get BO of a process. ... " />
-            <marker date="1518793128851" expanded="true" signature="5461:6520" ph="{...}" />
-            <marker date="1518793128851" expanded="true" signature="5487:6314" ph="{...}" />
-            <marker date="1518793128851" expanded="true" signature="5645:5787" ph="{...}" />
-            <marker date="1518793128851" expanded="true" signature="6155:6268" ph="{...}" />
-            <marker date="1518793128851" expanded="true" signature="6347:6510" ph="{...}" />
-            <marker date="1518793128851" expanded="true" signature="6530:6643" ph="/// Create a new process. ... " />
-            <marker date="1518793128851" expanded="true" signature="6725:7600" ph="{...}" />
-            <marker date="1518793128851" expanded="true" signature="6751:7393" ph="{...}" />
-            <marker date="1518793128851" expanded="true" signature="6905:7188" ph="{...}" />
-            <marker date="1518793128851" expanded="true" signature="7426:7590" ph="{...}" />
-            <marker date="1518793128851" expanded="true" signature="7610:7820" ph="/// Upload a BO. ... " />
-            <marker date="1518793128851" expanded="true" signature="7909:8762" ph="{...}" />
-            <marker date="1518793128851" expanded="true" signature="7935:8560" ph="{...}" />
-            <marker date="1518793128851" expanded="true" signature="8064:8337" ph="{...}" />
-            <marker date="1518793128851" expanded="true" signature="8593:8752" ph="{...}" />
-            <marker date="1518793128851" expanded="true" signature="8772:8945" ph="/// Get all resources in the COrgan by ren auth user binding gateway. ... " />
-            <marker date="1518793128851" expanded="true" signature="9000:9772" ph="{...}" />
-            <marker date="1518793128851" expanded="true" signature="9026:9554" ph="{...}" />
-            <marker date="1518793128851" expanded="true" signature="9162:9346" ph="{...}" />
-            <marker date="1518793128851" expanded="true" signature="9587:9762" ph="{...}" />
-            <marker date="1518793128851" expanded="true" signature="9782:9884" ph="/// Get the data version of this Ren auth binding COrgan. ... " />
-            <marker date="1518793128851" expanded="true" signature="9930:10689" ph="{...}" />
-            <marker date="1518793128851" expanded="true" signature="9956:10480" ph="{...}" />
-            <marker date="1518793128851" expanded="true" signature="10091:10275" ph="{...}" />
-            <marker date="1518793128851" expanded="true" signature="10513:10679" ph="{...}" />
-            <marker date="1518793128851" expanded="true" signature="10699:10788" ph="/// Submit the process to NS and get a rtid. ... " />
-            <marker date="1518793128851" expanded="true" signature="10833:12207" ph="{...}" />
-            <marker date="1518793128851" expanded="true" signature="10859:11998" ph="{...}" />
-            <marker date="1518793128851" expanded="true" signature="10993:11793" ph="{...}" />
-            <marker date="1518793128851" expanded="true" signature="12031:12197" ph="{...}" />
-            <marker date="1518793128851" expanded="true" signature="12217:12290" ph="/// Register mappings to NS. ... " />
-            <marker date="1518793128851" expanded="true" signature="12338:13316" ph="{...}" />
-            <marker date="1518793128851" expanded="true" signature="12364:13104" ph="{...}" />
-            <marker date="1518793128851" expanded="true" signature="12498:12899" ph="{...}" />
-            <marker date="1518793128851" expanded="true" signature="13137:13306" ph="{...}" />
-            <marker date="1518793128851" expanded="true" signature="13334:13417" ph="/// Load resources participant for RS. ... " />
-            <marker date="1518793128851" expanded="true" signature="13464:14296" ph="{...}" />
-            <marker date="1518793128851" expanded="true" signature="13490:14078" ph="{...}" />
-            <marker date="1518793128851" expanded="true" signature="13626:13873" ph="{...}" />
-            <marker date="1518793128851" expanded="true" signature="14111:14286" ph="{...}" />
-            <marker date="1518793128851" expanded="true" signature="14306:14467" ph="/// Generate a string to post to NS of current mapping description. ... " />
-            <marker date="1518793128851" expanded="true" signature="14530:14870" ph="{...}" />
-            <marker date="1518793128851" expanded="true" signature="14740:14833" ph="{...}" />
-            <marker date="1518793128851" expanded="true" signature="14880:15048" ph="/// Get the name list of BOs in current transaction binding process. ... " />
-            <marker date="1518793128851" expanded="true" signature="15095:15213" ph="{...}" />
-            <marker date="1518793128851" expanded="true" signature="15223:15395" ph="/// Get BO content by its name. ... " />
-            <marker date="1518793128851" expanded="true" signature="15450:15728" ph="{...}" />
-            <marker date="1518793128851" expanded="true" signature="15533:15685" ph="{...}" />
-            <marker date="1518793128851" expanded="true" signature="15590:15671" ph="{...}" />
-            <marker date="1518793128851" expanded="true" signature="15738:15833" ph="/// Upload business role mappings to Name Service. ... " />
-            <marker date="1518793128851" expanded="true" signature="15888:15957" ph="{...}" />
-            <marker date="1518793128851" expanded="true" signature="15967:16165" ph="/// Get resource enum by its global id string prefix. ... " />
-            <marker date="1518793128851" expanded="true" signature="16233:16830" ph="{...}" />
-            <marker date="1518793128851" expanded="true" signature="16317:16820" ph="{...}" />
-            <marker date="1518793128851" expanded="true" signature="16840:17041" ph="/// Parse COrgan group type enum value to enum name. ... " />
-            <marker date="1518793128851" expanded="true" signature="17104:17614" ph="{...}" />
-            <marker date="1518793128851" expanded="true" signature="17146:17604" ph="{...}" />
-            <marker date="1518793128851" expanded="true" signature="17624:17825" ph="/// Parse COrgan agent type enum value to enum name. ... " />
-            <marker date="1518793128851" expanded="true" signature="17888:18100" ph="{...}" />
-            <marker date="1518793128851" expanded="true" signature="17930:18090" ph="{...}" />
-            <marker date="1518793128851" expanded="true" signature="18110:18384" ph="/// Find a DataRow in a DataTable by its Global id. ... " />
-            <marker date="1518793128851" expanded="true" signature="18460:18581" ph="{...}" />
-          </folding>
+          <folding />
         </state>
       </provider>
     </entry>
@@ -1539,94 +1192,7 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="6156">
           <caret line="331" column="30" lean-forward="false" selection-start-line="331" selection-start-column="30" selection-end-line="331" selection-end-column="30" />
-          <folding>
-            <marker date="1518793128851" expanded="false" signature="6:180" ph="..." />
-            <marker date="1518793128851" expanded="true" signature="217:18589" ph="{...}" />
-            <marker date="1518793128851" expanded="true" signature="224:310" ph="/// Master Panel Controller for view model logic. ... " />
-            <marker date="1518793128851" expanded="true" signature="349:18587" ph="{...}" />
-            <marker date="1518793128851" expanded="true" signature="364:446" ph="/// Current transaction data package. ... " />
-            <marker date="1518793128851" expanded="true" signature="558:698" ph="/// Load BO from a directory. ... " />
-            <marker date="1518793128851" expanded="true" signature="769:2772" ph="{...}" />
-            <marker date="1518793128851" expanded="true" signature="1007:2762" ph="{...}" />
-            <marker date="1518793128851" expanded="true" signature="1133:2588" ph="{...}" />
-            <marker date="1518793128851" expanded="true" signature="1271:1758" ph="{...}" />
-            <marker date="1518793128851" expanded="true" signature="1783:2570" ph="{...}" />
-            <marker date="1518793128851" expanded="true" signature="2414:2546" ph="{...}" />
-            <marker date="1518793128851" expanded="true" signature="2609:2748" ph="{...}" />
-            <marker date="1518793128851" expanded="true" signature="2782:3026" ph="/// Authorization connect. ... " />
-            <marker date="1518793128851" expanded="true" signature="3115:4030" ph="{...}" />
-            <marker date="1518793128851" expanded="true" signature="3141:3790" ph="{...}" />
-            <marker date="1518793128851" expanded="true" signature="3294:3416" ph="{...}" />
-            <marker date="1518793128851" expanded="true" signature="3823:4020" ph="{...}" />
-            <marker date="1518793128851" expanded="true" signature="4040:4182" ph="/// Get processes of a ren user. ... " />
-            <marker date="1518793128851" expanded="true" signature="4250:5189" ph="{...}" />
-            <marker date="1518793128851" expanded="true" signature="4276:4985" ph="{...}" />
-            <marker date="1518793128851" expanded="true" signature="4434:4618" ph="{...}" />
-            <marker date="1518793128851" expanded="true" signature="5018:5179" ph="{...}" />
-            <marker date="1518793128851" expanded="true" signature="5199:5381" ph="/// Get BO of a process. ... " />
-            <marker date="1518793128851" expanded="true" signature="5461:6520" ph="{...}" />
-            <marker date="1518793128851" expanded="true" signature="5487:6314" ph="{...}" />
-            <marker date="1518793128851" expanded="true" signature="5645:5787" ph="{...}" />
-            <marker date="1518793128851" expanded="true" signature="6155:6268" ph="{...}" />
-            <marker date="1518793128851" expanded="true" signature="6347:6510" ph="{...}" />
-            <marker date="1518793128851" expanded="true" signature="6530:6643" ph="/// Create a new process. ... " />
-            <marker date="1518793128851" expanded="true" signature="6725:7600" ph="{...}" />
-            <marker date="1518793128851" expanded="true" signature="6751:7393" ph="{...}" />
-            <marker date="1518793128851" expanded="true" signature="6905:7188" ph="{...}" />
-            <marker date="1518793128851" expanded="true" signature="7426:7590" ph="{...}" />
-            <marker date="1518793128851" expanded="true" signature="7610:7820" ph="/// Upload a BO. ... " />
-            <marker date="1518793128851" expanded="true" signature="7909:8762" ph="{...}" />
-            <marker date="1518793128851" expanded="true" signature="7935:8560" ph="{...}" />
-            <marker date="1518793128851" expanded="true" signature="8064:8337" ph="{...}" />
-            <marker date="1518793128851" expanded="true" signature="8593:8752" ph="{...}" />
-            <marker date="1518793128851" expanded="true" signature="8772:8945" ph="/// Get all resources in the COrgan by ren auth user binding gateway. ... " />
-            <marker date="1518793128851" expanded="true" signature="9000:9772" ph="{...}" />
-            <marker date="1518793128851" expanded="true" signature="9026:9554" ph="{...}" />
-            <marker date="1518793128851" expanded="true" signature="9162:9346" ph="{...}" />
-            <marker date="1518793128851" expanded="true" signature="9587:9762" ph="{...}" />
-            <marker date="1518793128851" expanded="true" signature="9782:9884" ph="/// Get the data version of this Ren auth binding COrgan. ... " />
-            <marker date="1518793128851" expanded="true" signature="9930:10689" ph="{...}" />
-            <marker date="1518793128851" expanded="true" signature="9956:10480" ph="{...}" />
-            <marker date="1518793128851" expanded="true" signature="10091:10275" ph="{...}" />
-            <marker date="1518793128851" expanded="true" signature="10513:10679" ph="{...}" />
-            <marker date="1518793128851" expanded="true" signature="10699:10788" ph="/// Submit the process to NS and get a rtid. ... " />
-            <marker date="1518793128851" expanded="true" signature="10833:12207" ph="{...}" />
-            <marker date="1518793128851" expanded="true" signature="10859:11998" ph="{...}" />
-            <marker date="1518793128851" expanded="true" signature="10993:11793" ph="{...}" />
-            <marker date="1518793128851" expanded="true" signature="12031:12197" ph="{...}" />
-            <marker date="1518793128851" expanded="true" signature="12217:12290" ph="/// Register mappings to NS. ... " />
-            <marker date="1518793128851" expanded="true" signature="12338:13316" ph="{...}" />
-            <marker date="1518793128851" expanded="true" signature="12364:13104" ph="{...}" />
-            <marker date="1518793128851" expanded="true" signature="12498:12899" ph="{...}" />
-            <marker date="1518793128851" expanded="true" signature="13137:13306" ph="{...}" />
-            <marker date="1518793128851" expanded="true" signature="13334:13417" ph="/// Load resources participant for RS. ... " />
-            <marker date="1518793128851" expanded="true" signature="13464:14296" ph="{...}" />
-            <marker date="1518793128851" expanded="true" signature="13490:14078" ph="{...}" />
-            <marker date="1518793128851" expanded="true" signature="13626:13873" ph="{...}" />
-            <marker date="1518793128851" expanded="true" signature="14111:14286" ph="{...}" />
-            <marker date="1518793128851" expanded="true" signature="14306:14467" ph="/// Generate a string to post to NS of current mapping description. ... " />
-            <marker date="1518793128851" expanded="true" signature="14530:14870" ph="{...}" />
-            <marker date="1518793128851" expanded="true" signature="14740:14833" ph="{...}" />
-            <marker date="1518793128851" expanded="true" signature="14880:15048" ph="/// Get the name list of BOs in current transaction binding process. ... " />
-            <marker date="1518793128851" expanded="true" signature="15095:15213" ph="{...}" />
-            <marker date="1518793128851" expanded="true" signature="15223:15395" ph="/// Get BO content by its name. ... " />
-            <marker date="1518793128851" expanded="true" signature="15450:15728" ph="{...}" />
-            <marker date="1518793128851" expanded="true" signature="15533:15685" ph="{...}" />
-            <marker date="1518793128851" expanded="true" signature="15590:15671" ph="{...}" />
-            <marker date="1518793128851" expanded="true" signature="15738:15833" ph="/// Upload business role mappings to Name Service. ... " />
-            <marker date="1518793128851" expanded="true" signature="15888:15957" ph="{...}" />
-            <marker date="1518793128851" expanded="true" signature="15967:16165" ph="/// Get resource enum by its global id string prefix. ... " />
-            <marker date="1518793128851" expanded="true" signature="16233:16830" ph="{...}" />
-            <marker date="1518793128851" expanded="true" signature="16317:16820" ph="{...}" />
-            <marker date="1518793128851" expanded="true" signature="16840:17041" ph="/// Parse COrgan group type enum value to enum name. ... " />
-            <marker date="1518793128851" expanded="true" signature="17104:17614" ph="{...}" />
-            <marker date="1518793128851" expanded="true" signature="17146:17604" ph="{...}" />
-            <marker date="1518793128851" expanded="true" signature="17624:17825" ph="/// Parse COrgan agent type enum value to enum name. ... " />
-            <marker date="1518793128851" expanded="true" signature="17888:18100" ph="{...}" />
-            <marker date="1518793128851" expanded="true" signature="17930:18090" ph="{...}" />
-            <marker date="1518793128851" expanded="true" signature="18110:18384" ph="/// Find a DataRow in a DataTable by its Global id. ... " />
-            <marker date="1518793128851" expanded="true" signature="18460:18581" ph="{...}" />
-          </folding>
+          <folding />
         </state>
       </provider>
     </entry>
@@ -1838,94 +1404,7 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="315">
           <caret line="28" column="47" lean-forward="false" selection-start-line="28" selection-start-column="47" selection-end-line="28" selection-end-column="47" />
-          <folding>
-            <marker date="1518793128851" expanded="false" signature="6:180" ph="..." />
-            <marker date="1518793128851" expanded="true" signature="217:18589" ph="{...}" />
-            <marker date="1518793128851" expanded="true" signature="224:310" ph="/// Master Panel Controller for view model logic. ... " />
-            <marker date="1518793128851" expanded="true" signature="349:18587" ph="{...}" />
-            <marker date="1518793128851" expanded="true" signature="364:446" ph="/// Current transaction data package. ... " />
-            <marker date="1518793128851" expanded="true" signature="558:698" ph="/// Load BO from a directory. ... " />
-            <marker date="1518793128851" expanded="true" signature="769:2772" ph="{...}" />
-            <marker date="1518793128851" expanded="true" signature="1007:2762" ph="{...}" />
-            <marker date="1518793128851" expanded="true" signature="1133:2588" ph="{...}" />
-            <marker date="1518793128851" expanded="true" signature="1271:1758" ph="{...}" />
-            <marker date="1518793128851" expanded="true" signature="1783:2570" ph="{...}" />
-            <marker date="1518793128851" expanded="true" signature="2414:2546" ph="{...}" />
-            <marker date="1518793128851" expanded="true" signature="2609:2748" ph="{...}" />
-            <marker date="1518793128851" expanded="true" signature="2782:3026" ph="/// Authorization connect. ... " />
-            <marker date="1518793128851" expanded="true" signature="3115:4030" ph="{...}" />
-            <marker date="1518793128851" expanded="true" signature="3141:3790" ph="{...}" />
-            <marker date="1518793128851" expanded="true" signature="3294:3416" ph="{...}" />
-            <marker date="1518793128851" expanded="true" signature="3823:4020" ph="{...}" />
-            <marker date="1518793128851" expanded="true" signature="4040:4182" ph="/// Get processes of a ren user. ... " />
-            <marker date="1518793128851" expanded="true" signature="4250:5189" ph="{...}" />
-            <marker date="1518793128851" expanded="true" signature="4276:4985" ph="{...}" />
-            <marker date="1518793128851" expanded="true" signature="4434:4618" ph="{...}" />
-            <marker date="1518793128851" expanded="true" signature="5018:5179" ph="{...}" />
-            <marker date="1518793128851" expanded="true" signature="5199:5381" ph="/// Get BO of a process. ... " />
-            <marker date="1518793128851" expanded="true" signature="5461:6520" ph="{...}" />
-            <marker date="1518793128851" expanded="true" signature="5487:6314" ph="{...}" />
-            <marker date="1518793128851" expanded="true" signature="5645:5787" ph="{...}" />
-            <marker date="1518793128851" expanded="true" signature="6155:6268" ph="{...}" />
-            <marker date="1518793128851" expanded="true" signature="6347:6510" ph="{...}" />
-            <marker date="1518793128851" expanded="true" signature="6530:6643" ph="/// Create a new process. ... " />
-            <marker date="1518793128851" expanded="true" signature="6725:7600" ph="{...}" />
-            <marker date="1518793128851" expanded="true" signature="6751:7393" ph="{...}" />
-            <marker date="1518793128851" expanded="true" signature="6905:7188" ph="{...}" />
-            <marker date="1518793128851" expanded="true" signature="7426:7590" ph="{...}" />
-            <marker date="1518793128851" expanded="true" signature="7610:7820" ph="/// Upload a BO. ... " />
-            <marker date="1518793128851" expanded="true" signature="7909:8762" ph="{...}" />
-            <marker date="1518793128851" expanded="true" signature="7935:8560" ph="{...}" />
-            <marker date="1518793128851" expanded="true" signature="8064:8337" ph="{...}" />
-            <marker date="1518793128851" expanded="true" signature="8593:8752" ph="{...}" />
-            <marker date="1518793128851" expanded="true" signature="8772:8945" ph="/// Get all resources in the COrgan by ren auth user binding gateway. ... " />
-            <marker date="1518793128851" expanded="true" signature="9000:9772" ph="{...}" />
-            <marker date="1518793128851" expanded="true" signature="9026:9554" ph="{...}" />
-            <marker date="1518793128851" expanded="true" signature="9162:9346" ph="{...}" />
-            <marker date="1518793128851" expanded="true" signature="9587:9762" ph="{...}" />
-            <marker date="1518793128851" expanded="true" signature="9782:9884" ph="/// Get the data version of this Ren auth binding COrgan. ... " />
-            <marker date="1518793128851" expanded="true" signature="9930:10689" ph="{...}" />
-            <marker date="1518793128851" expanded="true" signature="9956:10480" ph="{...}" />
-            <marker date="1518793128851" expanded="true" signature="10091:10275" ph="{...}" />
-            <marker date="1518793128851" expanded="true" signature="10513:10679" ph="{...}" />
-            <marker date="1518793128851" expanded="true" signature="10699:10788" ph="/// Submit the process to NS and get a rtid. ... " />
-            <marker date="1518793128851" expanded="true" signature="10833:12207" ph="{...}" />
-            <marker date="1518793128851" expanded="true" signature="10859:11998" ph="{...}" />
-            <marker date="1518793128851" expanded="true" signature="10993:11793" ph="{...}" />
-            <marker date="1518793128851" expanded="true" signature="12031:12197" ph="{...}" />
-            <marker date="1518793128851" expanded="true" signature="12217:12290" ph="/// Register mappings to NS. ... " />
-            <marker date="1518793128851" expanded="true" signature="12338:13316" ph="{...}" />
-            <marker date="1518793128851" expanded="true" signature="12364:13104" ph="{...}" />
-            <marker date="1518793128851" expanded="true" signature="12498:12899" ph="{...}" />
-            <marker date="1518793128851" expanded="true" signature="13137:13306" ph="{...}" />
-            <marker date="1518793128851" expanded="true" signature="13334:13417" ph="/// Load resources participant for RS. ... " />
-            <marker date="1518793128851" expanded="true" signature="13464:14296" ph="{...}" />
-            <marker date="1518793128851" expanded="true" signature="13490:14078" ph="{...}" />
-            <marker date="1518793128851" expanded="true" signature="13626:13873" ph="{...}" />
-            <marker date="1518793128851" expanded="true" signature="14111:14286" ph="{...}" />
-            <marker date="1518793128851" expanded="true" signature="14306:14467" ph="/// Generate a string to post to NS of current mapping description. ... " />
-            <marker date="1518793128851" expanded="true" signature="14530:14870" ph="{...}" />
-            <marker date="1518793128851" expanded="true" signature="14740:14833" ph="{...}" />
-            <marker date="1518793128851" expanded="true" signature="14880:15048" ph="/// Get the name list of BOs in current transaction binding process. ... " />
-            <marker date="1518793128851" expanded="true" signature="15095:15213" ph="{...}" />
-            <marker date="1518793128851" expanded="true" signature="15223:15395" ph="/// Get BO content by its name. ... " />
-            <marker date="1518793128851" expanded="true" signature="15450:15728" ph="{...}" />
-            <marker date="1518793128851" expanded="true" signature="15533:15685" ph="{...}" />
-            <marker date="1518793128851" expanded="true" signature="15590:15671" ph="{...}" />
-            <marker date="1518793128851" expanded="true" signature="15738:15833" ph="/// Upload business role mappings to Name Service. ... " />
-            <marker date="1518793128851" expanded="true" signature="15888:15957" ph="{...}" />
-            <marker date="1518793128851" expanded="true" signature="15967:16165" ph="/// Get resource enum by its global id string prefix. ... " />
-            <marker date="1518793128851" expanded="true" signature="16233:16830" ph="{...}" />
-            <marker date="1518793128851" expanded="true" signature="16317:16820" ph="{...}" />
-            <marker date="1518793128851" expanded="true" signature="16840:17041" ph="/// Parse COrgan group type enum value to enum name. ... " />
-            <marker date="1518793128851" expanded="true" signature="17104:17614" ph="{...}" />
-            <marker date="1518793128851" expanded="true" signature="17146:17604" ph="{...}" />
-            <marker date="1518793128851" expanded="true" signature="17624:17825" ph="/// Parse COrgan agent type enum value to enum name. ... " />
-            <marker date="1518793128851" expanded="true" signature="17888:18100" ph="{...}" />
-            <marker date="1518793128851" expanded="true" signature="17930:18090" ph="{...}" />
-            <marker date="1518793128851" expanded="true" signature="18110:18384" ph="/// Find a DataRow in a DataTable by its Global id. ... " />
-            <marker date="1518793128851" expanded="true" signature="18460:18581" ph="{...}" />
-          </folding>
+          <folding />
         </state>
       </provider>
     </entry>
@@ -2020,94 +1499,7 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="0">
           <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-          <folding>
-            <marker date="1518793128851" expanded="false" signature="6:180" ph="..." />
-            <marker date="1518793128851" expanded="true" signature="217:18589" ph="{...}" />
-            <marker date="1518793128851" expanded="true" signature="224:310" ph="/// Master Panel Controller for view model logic. ... " />
-            <marker date="1518793128851" expanded="true" signature="349:18587" ph="{...}" />
-            <marker date="1518793128851" expanded="true" signature="364:446" ph="/// Current transaction data package. ... " />
-            <marker date="1518793128851" expanded="true" signature="558:698" ph="/// Load BO from a directory. ... " />
-            <marker date="1518793128851" expanded="true" signature="769:2772" ph="{...}" />
-            <marker date="1518793128851" expanded="true" signature="1007:2762" ph="{...}" />
-            <marker date="1518793128851" expanded="true" signature="1133:2588" ph="{...}" />
-            <marker date="1518793128851" expanded="true" signature="1271:1758" ph="{...}" />
-            <marker date="1518793128851" expanded="true" signature="1783:2570" ph="{...}" />
-            <marker date="1518793128851" expanded="true" signature="2414:2546" ph="{...}" />
-            <marker date="1518793128851" expanded="true" signature="2609:2748" ph="{...}" />
-            <marker date="1518793128851" expanded="true" signature="2782:3026" ph="/// Authorization connect. ... " />
-            <marker date="1518793128851" expanded="true" signature="3115:4030" ph="{...}" />
-            <marker date="1518793128851" expanded="true" signature="3141:3790" ph="{...}" />
-            <marker date="1518793128851" expanded="true" signature="3294:3416" ph="{...}" />
-            <marker date="1518793128851" expanded="true" signature="3823:4020" ph="{...}" />
-            <marker date="1518793128851" expanded="true" signature="4040:4182" ph="/// Get processes of a ren user. ... " />
-            <marker date="1518793128851" expanded="true" signature="4250:5189" ph="{...}" />
-            <marker date="1518793128851" expanded="true" signature="4276:4985" ph="{...}" />
-            <marker date="1518793128851" expanded="true" signature="4434:4618" ph="{...}" />
-            <marker date="1518793128851" expanded="true" signature="5018:5179" ph="{...}" />
-            <marker date="1518793128851" expanded="true" signature="5199:5381" ph="/// Get BO of a process. ... " />
-            <marker date="1518793128851" expanded="true" signature="5461:6520" ph="{...}" />
-            <marker date="1518793128851" expanded="true" signature="5487:6314" ph="{...}" />
-            <marker date="1518793128851" expanded="true" signature="5645:5787" ph="{...}" />
-            <marker date="1518793128851" expanded="true" signature="6155:6268" ph="{...}" />
-            <marker date="1518793128851" expanded="true" signature="6347:6510" ph="{...}" />
-            <marker date="1518793128851" expanded="true" signature="6530:6643" ph="/// Create a new process. ... " />
-            <marker date="1518793128851" expanded="true" signature="6725:7600" ph="{...}" />
-            <marker date="1518793128851" expanded="true" signature="6751:7393" ph="{...}" />
-            <marker date="1518793128851" expanded="true" signature="6905:7188" ph="{...}" />
-            <marker date="1518793128851" expanded="true" signature="7426:7590" ph="{...}" />
-            <marker date="1518793128851" expanded="true" signature="7610:7820" ph="/// Upload a BO. ... " />
-            <marker date="1518793128851" expanded="true" signature="7909:8762" ph="{...}" />
-            <marker date="1518793128851" expanded="true" signature="7935:8560" ph="{...}" />
-            <marker date="1518793128851" expanded="true" signature="8064:8337" ph="{...}" />
-            <marker date="1518793128851" expanded="true" signature="8593:8752" ph="{...}" />
-            <marker date="1518793128851" expanded="true" signature="8772:8945" ph="/// Get all resources in the COrgan by ren auth user binding gateway. ... " />
-            <marker date="1518793128851" expanded="true" signature="9000:9772" ph="{...}" />
-            <marker date="1518793128851" expanded="true" signature="9026:9554" ph="{...}" />
-            <marker date="1518793128851" expanded="true" signature="9162:9346" ph="{...}" />
-            <marker date="1518793128851" expanded="true" signature="9587:9762" ph="{...}" />
-            <marker date="1518793128851" expanded="true" signature="9782:9884" ph="/// Get the data version of this Ren auth binding COrgan. ... " />
-            <marker date="1518793128851" expanded="true" signature="9930:10689" ph="{...}" />
-            <marker date="1518793128851" expanded="true" signature="9956:10480" ph="{...}" />
-            <marker date="1518793128851" expanded="true" signature="10091:10275" ph="{...}" />
-            <marker date="1518793128851" expanded="true" signature="10513:10679" ph="{...}" />
-            <marker date="1518793128851" expanded="true" signature="10699:10788" ph="/// Submit the process to NS and get a rtid. ... " />
-            <marker date="1518793128851" expanded="true" signature="10833:12207" ph="{...}" />
-            <marker date="1518793128851" expanded="true" signature="10859:11998" ph="{...}" />
-            <marker date="1518793128851" expanded="true" signature="10993:11793" ph="{...}" />
-            <marker date="1518793128851" expanded="true" signature="12031:12197" ph="{...}" />
-            <marker date="1518793128851" expanded="true" signature="12217:12290" ph="/// Register mappings to NS. ... " />
-            <marker date="1518793128851" expanded="true" signature="12338:13316" ph="{...}" />
-            <marker date="1518793128851" expanded="true" signature="12364:13104" ph="{...}" />
-            <marker date="1518793128851" expanded="true" signature="12498:12899" ph="{...}" />
-            <marker date="1518793128851" expanded="true" signature="13137:13306" ph="{...}" />
-            <marker date="1518793128851" expanded="true" signature="13334:13417" ph="/// Load resources participant for RS. ... " />
-            <marker date="1518793128851" expanded="true" signature="13464:14296" ph="{...}" />
-            <marker date="1518793128851" expanded="true" signature="13490:14078" ph="{...}" />
-            <marker date="1518793128851" expanded="true" signature="13626:13873" ph="{...}" />
-            <marker date="1518793128851" expanded="true" signature="14111:14286" ph="{...}" />
-            <marker date="1518793128851" expanded="true" signature="14306:14467" ph="/// Generate a string to post to NS of current mapping description. ... " />
-            <marker date="1518793128851" expanded="true" signature="14530:14870" ph="{...}" />
-            <marker date="1518793128851" expanded="true" signature="14740:14833" ph="{...}" />
-            <marker date="1518793128851" expanded="true" signature="14880:15048" ph="/// Get the name list of BOs in current transaction binding process. ... " />
-            <marker date="1518793128851" expanded="true" signature="15095:15213" ph="{...}" />
-            <marker date="1518793128851" expanded="true" signature="15223:15395" ph="/// Get BO content by its name. ... " />
-            <marker date="1518793128851" expanded="true" signature="15450:15728" ph="{...}" />
-            <marker date="1518793128851" expanded="true" signature="15533:15685" ph="{...}" />
-            <marker date="1518793128851" expanded="true" signature="15590:15671" ph="{...}" />
-            <marker date="1518793128851" expanded="true" signature="15738:15833" ph="/// Upload business role mappings to Name Service. ... " />
-            <marker date="1518793128851" expanded="true" signature="15888:15957" ph="{...}" />
-            <marker date="1518793128851" expanded="true" signature="15967:16165" ph="/// Get resource enum by its global id string prefix. ... " />
-            <marker date="1518793128851" expanded="true" signature="16233:16830" ph="{...}" />
-            <marker date="1518793128851" expanded="true" signature="16317:16820" ph="{...}" />
-            <marker date="1518793128851" expanded="true" signature="16840:17041" ph="/// Parse COrgan group type enum value to enum name. ... " />
-            <marker date="1518793128851" expanded="true" signature="17104:17614" ph="{...}" />
-            <marker date="1518793128851" expanded="true" signature="17146:17604" ph="{...}" />
-            <marker date="1518793128851" expanded="true" signature="17624:17825" ph="/// Parse COrgan agent type enum value to enum name. ... " />
-            <marker date="1518793128851" expanded="true" signature="17888:18100" ph="{...}" />
-            <marker date="1518793128851" expanded="true" signature="17930:18090" ph="{...}" />
-            <marker date="1518793128851" expanded="true" signature="18110:18384" ph="/// Find a DataRow in a DataTable by its Global id. ... " />
-            <marker date="1518793128851" expanded="true" signature="18460:18581" ph="{...}" />
-          </folding>
+          <folding />
         </state>
       </provider>
     </entry>
@@ -2262,94 +1654,7 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="4978">
           <caret line="269" column="78" lean-forward="false" selection-start-line="269" selection-start-column="78" selection-end-line="269" selection-end-column="78" />
-          <folding>
-            <marker date="1518793128851" expanded="false" signature="6:180" ph="..." />
-            <marker date="1518793128851" expanded="true" signature="217:18589" ph="{...}" />
-            <marker date="1518793128851" expanded="true" signature="224:310" ph="/// Master Panel Controller for view model logic. ... " />
-            <marker date="1518793128851" expanded="true" signature="349:18587" ph="{...}" />
-            <marker date="1518793128851" expanded="true" signature="364:446" ph="/// Current transaction data package. ... " />
-            <marker date="1518793128851" expanded="true" signature="558:698" ph="/// Load BO from a directory. ... " />
-            <marker date="1518793128851" expanded="true" signature="769:2772" ph="{...}" />
-            <marker date="1518793128851" expanded="true" signature="1007:2762" ph="{...}" />
-            <marker date="1518793128851" expanded="true" signature="1133:2588" ph="{...}" />
-            <marker date="1518793128851" expanded="true" signature="1271:1758" ph="{...}" />
-            <marker date="1518793128851" expanded="true" signature="1783:2570" ph="{...}" />
-            <marker date="1518793128851" expanded="true" signature="2414:2546" ph="{...}" />
-            <marker date="1518793128851" expanded="true" signature="2609:2748" ph="{...}" />
-            <marker date="1518793128851" expanded="true" signature="2782:3026" ph="/// Authorization connect. ... " />
-            <marker date="1518793128851" expanded="true" signature="3115:4030" ph="{...}" />
-            <marker date="1518793128851" expanded="true" signature="3141:3790" ph="{...}" />
-            <marker date="1518793128851" expanded="true" signature="3294:3416" ph="{...}" />
-            <marker date="1518793128851" expanded="true" signature="3823:4020" ph="{...}" />
-            <marker date="1518793128851" expanded="true" signature="4040:4182" ph="/// Get processes of a ren user. ... " />
-            <marker date="1518793128851" expanded="true" signature="4250:5189" ph="{...}" />
-            <marker date="1518793128851" expanded="true" signature="4276:4985" ph="{...}" />
-            <marker date="1518793128851" expanded="true" signature="4434:4618" ph="{...}" />
-            <marker date="1518793128851" expanded="true" signature="5018:5179" ph="{...}" />
-            <marker date="1518793128851" expanded="true" signature="5199:5381" ph="/// Get BO of a process. ... " />
-            <marker date="1518793128851" expanded="true" signature="5461:6520" ph="{...}" />
-            <marker date="1518793128851" expanded="true" signature="5487:6314" ph="{...}" />
-            <marker date="1518793128851" expanded="true" signature="5645:5787" ph="{...}" />
-            <marker date="1518793128851" expanded="true" signature="6155:6268" ph="{...}" />
-            <marker date="1518793128851" expanded="true" signature="6347:6510" ph="{...}" />
-            <marker date="1518793128851" expanded="true" signature="6530:6643" ph="/// Create a new process. ... " />
-            <marker date="1518793128851" expanded="true" signature="6725:7600" ph="{...}" />
-            <marker date="1518793128851" expanded="true" signature="6751:7393" ph="{...}" />
-            <marker date="1518793128851" expanded="true" signature="6905:7188" ph="{...}" />
-            <marker date="1518793128851" expanded="true" signature="7426:7590" ph="{...}" />
-            <marker date="1518793128851" expanded="true" signature="7610:7820" ph="/// Upload a BO. ... " />
-            <marker date="1518793128851" expanded="true" signature="7909:8762" ph="{...}" />
-            <marker date="1518793128851" expanded="true" signature="7935:8560" ph="{...}" />
-            <marker date="1518793128851" expanded="true" signature="8064:8337" ph="{...}" />
-            <marker date="1518793128851" expanded="true" signature="8593:8752" ph="{...}" />
-            <marker date="1518793128851" expanded="true" signature="8772:8945" ph="/// Get all resources in the COrgan by ren auth user binding gateway. ... " />
-            <marker date="1518793128851" expanded="true" signature="9000:9772" ph="{...}" />
-            <marker date="1518793128851" expanded="true" signature="9026:9554" ph="{...}" />
-            <marker date="1518793128851" expanded="true" signature="9162:9346" ph="{...}" />
-            <marker date="1518793128851" expanded="true" signature="9587:9762" ph="{...}" />
-            <marker date="1518793128851" expanded="true" signature="9782:9884" ph="/// Get the data version of this Ren auth binding COrgan. ... " />
-            <marker date="1518793128851" expanded="true" signature="9930:10689" ph="{...}" />
-            <marker date="1518793128851" expanded="true" signature="9956:10480" ph="{...}" />
-            <marker date="1518793128851" expanded="true" signature="10091:10275" ph="{...}" />
-            <marker date="1518793128851" expanded="true" signature="10513:10679" ph="{...}" />
-            <marker date="1518793128851" expanded="true" signature="10699:10788" ph="/// Submit the process to NS and get a rtid. ... " />
-            <marker date="1518793128851" expanded="true" signature="10833:12207" ph="{...}" />
-            <marker date="1518793128851" expanded="true" signature="10859:11998" ph="{...}" />
-            <marker date="1518793128851" expanded="true" signature="10993:11793" ph="{...}" />
-            <marker date="1518793128851" expanded="true" signature="12031:12197" ph="{...}" />
-            <marker date="1518793128851" expanded="true" signature="12217:12290" ph="/// Register mappings to NS. ... " />
-            <marker date="1518793128851" expanded="true" signature="12338:13316" ph="{...}" />
-            <marker date="1518793128851" expanded="true" signature="12364:13104" ph="{...}" />
-            <marker date="1518793128851" expanded="true" signature="12498:12899" ph="{...}" />
-            <marker date="1518793128851" expanded="true" signature="13137:13306" ph="{...}" />
-            <marker date="1518793128851" expanded="true" signature="13334:13417" ph="/// Load resources participant for RS. ... " />
-            <marker date="1518793128851" expanded="true" signature="13464:14296" ph="{...}" />
-            <marker date="1518793128851" expanded="true" signature="13490:14078" ph="{...}" />
-            <marker date="1518793128851" expanded="true" signature="13626:13873" ph="{...}" />
-            <marker date="1518793128851" expanded="true" signature="14111:14286" ph="{...}" />
-            <marker date="1518793128851" expanded="true" signature="14306:14467" ph="/// Generate a string to post to NS of current mapping description. ... " />
-            <marker date="1518793128851" expanded="true" signature="14530:14870" ph="{...}" />
-            <marker date="1518793128851" expanded="true" signature="14740:14833" ph="{...}" />
-            <marker date="1518793128851" expanded="true" signature="14880:15048" ph="/// Get the name list of BOs in current transaction binding process. ... " />
-            <marker date="1518793128851" expanded="true" signature="15095:15213" ph="{...}" />
-            <marker date="1518793128851" expanded="true" signature="15223:15395" ph="/// Get BO content by its name. ... " />
-            <marker date="1518793128851" expanded="true" signature="15450:15728" ph="{...}" />
-            <marker date="1518793128851" expanded="true" signature="15533:15685" ph="{...}" />
-            <marker date="1518793128851" expanded="true" signature="15590:15671" ph="{...}" />
-            <marker date="1518793128851" expanded="true" signature="15738:15833" ph="/// Upload business role mappings to Name Service. ... " />
-            <marker date="1518793128851" expanded="true" signature="15888:15957" ph="{...}" />
-            <marker date="1518793128851" expanded="true" signature="15967:16165" ph="/// Get resource enum by its global id string prefix. ... " />
-            <marker date="1518793128851" expanded="true" signature="16233:16830" ph="{...}" />
-            <marker date="1518793128851" expanded="true" signature="16317:16820" ph="{...}" />
-            <marker date="1518793128851" expanded="true" signature="16840:17041" ph="/// Parse COrgan group type enum value to enum name. ... " />
-            <marker date="1518793128851" expanded="true" signature="17104:17614" ph="{...}" />
-            <marker date="1518793128851" expanded="true" signature="17146:17604" ph="{...}" />
-            <marker date="1518793128851" expanded="true" signature="17624:17825" ph="/// Parse COrgan agent type enum value to enum name. ... " />
-            <marker date="1518793128851" expanded="true" signature="17888:18100" ph="{...}" />
-            <marker date="1518793128851" expanded="true" signature="17930:18090" ph="{...}" />
-            <marker date="1518793128851" expanded="true" signature="18110:18384" ph="/// Find a DataRow in a DataTable by its Global id. ... " />
-            <marker date="1518793128851" expanded="true" signature="18460:18581" ph="{...}" />
-          </folding>
+          <folding />
         </state>
       </provider>
     </entry>
