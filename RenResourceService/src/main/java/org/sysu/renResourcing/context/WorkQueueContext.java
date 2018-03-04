@@ -487,6 +487,31 @@ public class WorkQueueContext implements Serializable, RCacheablesContext {
     }
 
     /**
+     * Remove a workitem from all queue.
+     * @param workitem workitem context
+     */
+    public static synchronized void RemoveFromAllQueue(WorkitemContext workitem) {
+        if (workitem == null) {
+            return;
+        }
+        Session session = HibernateUtil.GetLocalSession();
+        Transaction transaction = session.beginTransaction();
+        try {
+            session.createQuery(String.format("DELETE FROM RenQueueitemsEntity WHERE workitemId = '%s'", workitem.getEntity().getWid())).executeUpdate();
+            transaction.commit();
+        }
+        catch (Exception ex) {
+            transaction.rollback();
+            LogUtil.Log(String.format("When RemoveFromAllQueue(%s) refresh from steady exception occurred, %s",
+                    workitem.getEntity().getWid(), ex), WorkQueueContext.class.getName(),
+                    LogUtil.LogLevelType.ERROR, workitem.getEntity().getRtid());
+        }
+        finally {
+            HibernateUtil.CloseLocalSession();
+        }
+    }
+
+    /**
      * Generate a context by its steady entity.
      * @param workqueueEntity WorkQueue entity
      * @return WorkQueue context

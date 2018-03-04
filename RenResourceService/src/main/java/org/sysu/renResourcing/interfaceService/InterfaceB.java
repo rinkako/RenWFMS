@@ -150,6 +150,8 @@ public class InterfaceB {
      * @return true for a successful workitem accept
      */
     public static boolean AcceptOfferedWorkitem(ParticipantContext participant, WorkitemContext workitem, InitializationByType initType) {
+        // remove from all queue
+        WorkQueueContext.RemoveFromAllQueue(workitem);
         // if internal call, means accept and start
         if (initType == InitializationByType.SYSTEM_INITIATED) {
             boolean result = InterfaceB.StartWorkitem(participant, workitem);
@@ -161,7 +163,6 @@ public class InterfaceB {
         // otherwise workitem should be put to allocated queue
         else {
             WorkQueueContainer container = WorkQueueContainer.GetContext(participant.getWorkerId());
-            // todo remove other participant offered queue item
             container.MoveOfferedToAllocated(workitem);
             InterfaceB.WorkitemChanged(workitem, WorkitemStatusType.Fired, WorkitemResourcingStatusType.Allocated);
         }
