@@ -19,16 +19,6 @@ public class GlobalContext {
     public static final String ENGINE_GLOBAL_ID = String.format("WFMSComponent_Engine_%s", UUID.randomUUID().toString());
 
     /**
-     * Service URL for RS submit task.
-     */
-    public static final String URL_RS_SUBMITTASK = "http://localhost:10233/internal/submitTask";
-
-    /**
-     * Service URL for RS finish life cycle of BO.
-     */
-    public static final String URL_RS_FINISH = "http://localhost:10233/internal/finRtid";
-
-    /**
      * Size for log buffer.
      */
     public static final int LOG_BUFFER_SIZE = 0;

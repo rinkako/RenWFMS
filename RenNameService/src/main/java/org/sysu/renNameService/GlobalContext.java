@@ -72,29 +72,4 @@ public final class GlobalContext {
      * Valid duration of authorization token.
      */
     public static final Long AUTHORITY_TOKEN_VALID_SECOND = 2 * 60 * 60L;
-
-    /**
-     * Service URL for BO Engine Serialization BO.
-     */
-    public static final String URL_BOENGINE_SERIALIZEBO = "http://localhost:10232/gateway/serializeBO";
-
-    /**
-     * Service URL for BO Engine Serialization BO.
-     */
-    public static final String URL_BOENGINE_START = "http://localhost:10232/gateway/launchProcess";
-
-    /**
-     * Service URL for BO Engine event callback.
-     */
-    public static final String URL_BOENGINE_CALLBACK = "http://localhost:10232/gateway/callback";
-
-    /**
-     * Service URL gateway for RS workitem actions.
-     */
-    public static final String GATEWAY_RS_WORKITEM = "http://localhost:10233/workitem/";
-
-    /**
-     * Service URL gateway for RS workqueue actions.
-     */
-    public static final String GATEWAY_RS_QUEUE = "http://localhost:10233/queue/";
 }

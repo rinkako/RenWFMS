@@ -2,6 +2,7 @@
 package org.sysu.workflow.semantics;
 
 import org.sysu.renCommon.enums.LogLevelType;
+import org.sysu.renCommon.interactionRouter.LocationContext;
 import org.sysu.workflow.*;
 import org.sysu.workflow.instanceTree.InstanceManager;
 import org.sysu.workflow.invoke.Invoker;
@@ -197,7 +198,7 @@ public class SCXMLSemanticsImpl implements SCXMLSemantics {
             args.put("rtid", exctx.Rtid);
             try {
                 InstanceManager.UnregisterInstanceTree(exctx.Rtid);
-                GlobalContext.Interaction.Send(GlobalContext.URL_RS_FINISH, args, exctx.Rtid);
+                GlobalContext.Interaction.Send(LocationContext.URL_RS_FINISH, args, exctx.Rtid);
             }
             catch (Exception e) {
                 LogUtil.Log("When send finish Rtid to resource service, exception occurred, " + e.toString(),

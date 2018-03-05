@@ -5,6 +5,7 @@
 package org.sysu.workflow.model.extend;
 
 import org.sysu.renCommon.enums.LogLevelType;
+import org.sysu.renCommon.interactionRouter.LocationContext;
 import org.sysu.workflow.*;
 import org.sysu.workflow.model.EnterableState;
 import org.sysu.workflow.model.ModelException;
@@ -107,7 +108,7 @@ public class Call extends ParamsContainer implements Serializable {
                         args.put("args", params);
                         args.put("rtid", scxmlExecContext.Rtid);
                         try {
-                            GlobalContext.Interaction.Send(GlobalContext.URL_RS_SUBMITTASK, args, scxmlExecContext.Rtid);
+                            GlobalContext.Interaction.Send(LocationContext.URL_RS_SUBMITTASK, args, scxmlExecContext.Rtid);
                         } catch(Exception e) {
                             LogUtil.Log("When submit task to Resource Service, exception occurred, " + e.toString(),
                                     Call.class.getName(), LogLevelType.ERROR, scxmlExecContext.Rtid);
@@ -130,7 +131,7 @@ public class Call extends ParamsContainer implements Serializable {
                         args.put("args", params);
                         args.put("rtid", scxmlExecContext.Rtid);
                         try {
-                            GlobalContext.Interaction.Send(GlobalContext.URL_RS_SUBMITTASK, args, scxmlExecContext.Rtid);
+                            GlobalContext.Interaction.Send(LocationContext.URL_RS_SUBMITTASK, args, scxmlExecContext.Rtid);
                         } catch(Exception e) {
                             LogUtil.Log("When submit task to Resource Service, exception occurred, " + e.toString(),
                                     Call.class.getName(), LogLevelType.ERROR, scxmlExecContext.Rtid);

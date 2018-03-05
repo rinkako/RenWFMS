@@ -6,6 +6,7 @@ package org.sysu.renNameService.nameSpacing;
 
 import org.hibernate.Session;
 import org.hibernate.Transaction;
+import org.sysu.renCommon.interactionRouter.LocationContext;
 import org.sysu.renCommon.utility.AuthDomainHelper;
 import org.sysu.renCommon.utility.TimestampUtil;
 import org.sysu.renNameService.GlobalContext;
@@ -82,7 +83,7 @@ public class NameSpacingService {
             args.put("boidlist", boid);
             transaction.commit();
             cmtFlag = true;
-            String involveBRs = GlobalContext.Interaction.Send(GlobalContext.URL_BOENGINE_SERIALIZEBO, args, "");
+            String involveBRs = GlobalContext.Interaction.Send(LocationContext.URL_BOENGINE_SERIALIZEBO, args, "");
             return new AbstractMap.SimpleEntry<>(boid, involveBRs);
             //return new AbstractMap.SimpleEntry<>(boid, "TEST_INVOLVED");
         } catch (Exception ex) {
@@ -270,7 +271,7 @@ public class NameSpacingService {
         HashMap<String, String> args = new HashMap<>();
         args.put("rtid", rtid);
         try {
-            GlobalContext.Interaction.Send(GlobalContext.URL_BOENGINE_START, args, rtid);
+            GlobalContext.Interaction.Send(LocationContext.URL_BOENGINE_START, args, rtid);
         }
         catch (Exception ex) {
             LogUtil.Log("Cannot interaction with BO Engine for RTID: " + rtid, NameSpacingService.class.getName(), LogUtil.LogLevelType.ERROR, rtid);
@@ -288,7 +289,7 @@ public class NameSpacingService {
         for (Map.Entry<String, Object> kvp : args.entrySet()) {
             argMap.put(kvp.getKey(), (String) kvp.getValue());
         }
-        return GlobalContext.Interaction.Send(GlobalContext.URL_BOENGINE_CALLBACK, argMap, argMap.get("rtid"));
+        return GlobalContext.Interaction.Send(LocationContext.URL_BOENGINE_CALLBACK, argMap, argMap.get("rtid"));
     }
 
     /**
@@ -302,7 +303,7 @@ public class NameSpacingService {
         HashMap<String, String> argMap = new HashMap<>();
         argMap.put("workitemId", workitemId);
         argMap.put("workerId", workerId);
-        String ret = GlobalContext.Interaction.Send(GlobalContext.GATEWAY_RS_WORKITEM + action, argMap, "");
+        String ret = GlobalContext.Interaction.Send(LocationContext.GATEWAY_RS_WORKITEM + action, argMap, "");
         Map retObj = SerializationUtil.JsonDeserialization(ret, Map.class);
         return ((Map) retObj.get("returnElement")).get("data");
     }
@@ -320,7 +321,7 @@ public class NameSpacingService {
         argMap.put("rtid", rtid);
         argMap.put("type", type);
         argMap.put("workerId", workerId);
-        String ret = GlobalContext.Interaction.Send(GlobalContext.GATEWAY_RS_QUEUE + action, argMap, rtid);
+        String ret = GlobalContext.Interaction.Send(LocationContext.GATEWAY_RS_QUEUE + action, argMap, rtid);
         Map retObj = SerializationUtil.JsonDeserialization(ret, Map.class);
         return ((Map) retObj.get("returnElement")).get("data");
     }
