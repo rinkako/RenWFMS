@@ -1,7 +1,8 @@
 
-package org.sysu.workflow.io;
+package org.sysu.workflow;
 
 import org.sysu.workflow.*;
+import org.sysu.workflow.io.SCXMLReader;
 import org.sysu.workflow.model.extend.InheritableContext;
 import org.sysu.workflow.env.MultiStateMachineDispatcher;
 import org.sysu.workflow.env.SimpleErrorReporter;
@@ -111,51 +112,52 @@ public class SCXMLReaderTest {
         EventDispatcher dispatcher = new MultiStateMachineDispatcher();
         SCXMLExecutor executor = new SCXMLExecutor(evaluator, dispatcher, new SimpleErrorReporter());
         executor.setStateMachine(scxml);
+        executor.setRtid("TEST_RTID");
         executor.go();
 
 
 
         SCXMLExecutionContext ctx = executor.getExctx();
 
-        dispatcher.send(ctx.RootTid, ctx.Tid, "", MessageMode.MULTICAST, "GuestOrder", "", SCXMLIOProcessor.DEFAULT_EVENT_PROCESSOR,
+        dispatcher.send("TEST_RTID", ctx.Tid, "", MessageMode.MULTICAST, "GuestOrder", "", SCXMLIOProcessor.DEFAULT_EVENT_PROCESSOR,
                 "submit", null, "", 0);
         System.out.println("send submit");
 
-        dispatcher.send(ctx.RootTid, ctx.Tid, "", MessageMode.TO_CHILD, "KitchenOrder", "", SCXMLIOProcessor.DEFAULT_EVENT_PROCESSOR,
+        dispatcher.send("TEST_RTID", ctx.Tid, "", MessageMode.TO_CHILD, "KitchenOrder", "", SCXMLIOProcessor.DEFAULT_EVENT_PROCESSOR,
                 "produced", null, "", 0);
         System.out.println("send produced");
 
         EventDataPackage edp = new EventDataPackage();
         edp.passed = "1";
-        dispatcher.send(ctx.RootTid, ctx.Tid, "", MessageMode.TO_CHILD, "KitchenOrder", "", SCXMLIOProcessor.DEFAULT_EVENT_PROCESSOR,
+        dispatcher.send("TEST_RTID", ctx.Tid, "", MessageMode.TO_CHILD, "KitchenOrder", "", SCXMLIOProcessor.DEFAULT_EVENT_PROCESSOR,
                 "testCompleted", edp, "", 0);
         System.out.println("send testCompleted");
 
-        dispatcher.send(ctx.RootTid, ctx.Tid, "", MessageMode.TO_CHILD, "KitchenOrder", "", SCXMLIOProcessor.DEFAULT_EVENT_PROCESSOR,
+        dispatcher.send("TEST_RTID", ctx.Tid, "", MessageMode.TO_CHILD, "KitchenOrder", "", SCXMLIOProcessor.DEFAULT_EVENT_PROCESSOR,
                 "delivered", null, "", 0);
         System.out.println("send delivered");
 
-        dispatcher.send(ctx.RootTid, ctx.Tid, "", MessageMode.TO_CHILD, "KitchenOrder", "", SCXMLIOProcessor.DEFAULT_EVENT_PROCESSOR,
+        dispatcher.send("TEST_RTID", ctx.Tid, "", MessageMode.TO_CHILD, "KitchenOrder", "", SCXMLIOProcessor.DEFAULT_EVENT_PROCESSOR,
                 "archived", null, "", 0);
         System.out.println("send archived");
 
-        dispatcher.send(ctx.RootTid, ctx.Tid, "", MessageMode.MULTICAST, "GuestOrder", "", SCXMLIOProcessor.DEFAULT_EVENT_PROCESSOR,
+        dispatcher.send("TEST_RTID", ctx.Tid, "", MessageMode.MULTICAST, "GuestOrder", "", SCXMLIOProcessor.DEFAULT_EVENT_PROCESSOR,
                 "requestCheck", null, "", 0);
         System.out.println("send requestCheck");
 
-        dispatcher.send(ctx.RootTid, ctx.Tid, "", MessageMode.TO_CHILD, "GuestCheck", "", SCXMLIOProcessor.DEFAULT_EVENT_PROCESSOR,
+        dispatcher.send("TEST_RTID", ctx.Tid, "", MessageMode.TO_CHILD, "GuestCheck", "", SCXMLIOProcessor.DEFAULT_EVENT_PROCESSOR,
                 "calculated", null, "", 0);
         System.out.println("send calculated");
 
-        dispatcher.send(ctx.RootTid, ctx.Tid, "", MessageMode.TO_CHILD, "GuestCheck", "", SCXMLIOProcessor.DEFAULT_EVENT_PROCESSOR,
+        dispatcher.send("TEST_RTID", ctx.Tid, "", MessageMode.TO_CHILD, "GuestCheck", "", SCXMLIOProcessor.DEFAULT_EVENT_PROCESSOR,
                 "paid", null, "", 0);
         System.out.println("send paid");
 
-        dispatcher.send(ctx.RootTid, ctx.Tid, "", MessageMode.TO_CHILD, "GuestCheck", "", SCXMLIOProcessor.DEFAULT_EVENT_PROCESSOR,
+        dispatcher.send("TEST_RTID", ctx.Tid, "", MessageMode.TO_CHILD, "GuestCheck", "", SCXMLIOProcessor.DEFAULT_EVENT_PROCESSOR,
                 "archived", null, "", 0);
         System.out.println("send archived");
 
-        Assert.assertNotNull(scxml);
+        Assert.assertTrue(executor.getStatus().isFinal());
     }
 
     public class EventDataPackage {

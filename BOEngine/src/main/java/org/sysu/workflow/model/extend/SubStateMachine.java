@@ -144,7 +144,7 @@ public class SubStateMachine extends NamelistHolder implements PathResolverHolde
 
 
             SCXMLExecutionContext currentExecutionContext = (SCXMLExecutionContext) exctx.getInternalIOProcessor();
-            String boName = getSrc().split(".")[0];
+            String boName = getSrc().split("\\.")[0];
 
 
             //read BO from database

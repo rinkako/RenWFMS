@@ -9,6 +9,7 @@ import org.sysu.workflow.SCXMLExpressionException;
 import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 /**
  * The class in this SCXML object model that corresponds to the
@@ -88,6 +89,9 @@ public class Foreach extends Action implements ActionsContainer {
         ctx.setLocal(getNamespacesKey(), getNamespaces());
         try {
             Object arrayObject = eval.eval(ctx, array);
+            if (arrayObject instanceof Map) {
+                arrayObject = ((Map) arrayObject).entrySet();
+            }
             if (arrayObject != null && (arrayObject instanceof Iterable || arrayObject.getClass().isArray())) {
                 if (arrayObject.getClass().isArray()) {
                     for (int currentIndex = 0, size = Array.getLength(arrayObject); currentIndex < size; currentIndex++) {

@@ -107,11 +107,13 @@ public class Call extends ParamsContainer implements Serializable {
                         String params = SerializationUtil.JsonSerialization(payloadDataMap, scxmlExecContext.Rtid);
                         args.put("args", params);
                         args.put("rtid", scxmlExecContext.Rtid);
-                        try {
-                            GlobalContext.Interaction.Send(LocationContext.URL_RS_SUBMITTASK, args, scxmlExecContext.Rtid);
-                        } catch(Exception e) {
-                            LogUtil.Log("When submit task to Resource Service, exception occurred, " + e.toString(),
-                                    Call.class.getName(), LogLevelType.ERROR, scxmlExecContext.Rtid);
+                        if (!GlobalContext.IsLocalDebug) {
+                            try {
+                                GlobalContext.Interaction.Send(LocationContext.URL_RS_SUBMITTASK, args, scxmlExecContext.Rtid);
+                            } catch (Exception e) {
+                                LogUtil.Log("When submit task to Resource Service, exception occurred, " + e.toString(),
+                                        Call.class.getName(), LogLevelType.ERROR, scxmlExecContext.Rtid);
+                            }
                         }
                         successFlag = true;
                         break;
@@ -130,11 +132,13 @@ public class Call extends ParamsContainer implements Serializable {
                         String params = SerializationUtil.JsonSerialization(payloadDataMap, scxmlExecContext.Rtid);
                         args.put("args", params);
                         args.put("rtid", scxmlExecContext.Rtid);
-                        try {
-                            GlobalContext.Interaction.Send(LocationContext.URL_RS_SUBMITTASK, args, scxmlExecContext.Rtid);
-                        } catch(Exception e) {
-                            LogUtil.Log("When submit task to Resource Service, exception occurred, " + e.toString(),
-                                    Call.class.getName(), LogLevelType.ERROR, scxmlExecContext.Rtid);
+                        if (!GlobalContext.IsLocalDebug) {
+                            try {
+                                GlobalContext.Interaction.Send(LocationContext.URL_RS_SUBMITTASK, args, scxmlExecContext.Rtid);
+                            } catch (Exception e) {
+                                LogUtil.Log("When submit task to Resource Service, exception occurred, " + e.toString(),
+                                        Call.class.getName(), LogLevelType.ERROR, scxmlExecContext.Rtid);
+                            }
                         }
                         successFlag = true;
                         break;

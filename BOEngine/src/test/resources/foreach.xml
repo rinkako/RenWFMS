@@ -1,0 +1,21 @@
+<!--suppress ALL -->
+<businessclass initial="first" name="foreach" version="1.0" xmlns="http://www.w3.org/2005/07/scxml">
+    <state id="first">
+        <onentry>
+            <log label="temp lable" expr="'into first'"/>
+        </onentry>
+        <transition event="test" target="testState"/>
+    </state>
+
+    <state id="testState">
+        <onentry>
+            <foreach item="kvp" array="_event.data">
+                <log label="KEY" expr="kvp.getKey()"/>
+                <log label="VALUE" expr="kvp.getValue()"/>
+            </foreach>
+        </onentry>
+        <transition target="finished"/>
+    </state>
+
+    <final id="finished"/>
+</businessclass>

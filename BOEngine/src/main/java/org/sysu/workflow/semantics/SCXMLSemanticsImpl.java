@@ -196,13 +196,14 @@ public class SCXMLSemanticsImpl implements SCXMLSemantics {
             // TODO: returnDoneEvent(s.donedata)?
             HashMap<String, String> args = new HashMap<String, String>();
             args.put("rtid", exctx.Rtid);
-            try {
-                InstanceManager.UnregisterInstanceTree(exctx.Rtid);
-                GlobalContext.Interaction.Send(LocationContext.URL_RS_FINISH, args, exctx.Rtid);
-            }
-            catch (Exception e) {
-                LogUtil.Log("When send finish Rtid to resource service, exception occurred, " + e.toString(),
-                        Call.class.getName(), LogLevelType.ERROR, exctx.Rtid);
+            if (!GlobalContext.IsLocalDebug) {
+                try {
+                    InstanceManager.UnregisterInstanceTree(exctx.Rtid);
+                    GlobalContext.Interaction.Send(LocationContext.URL_RS_FINISH, args, exctx.Rtid);
+                } catch (Exception e) {
+                    LogUtil.Log("When send finish Rtid to resource service, exception occurred, " + e.toString(),
+                            SCXMLSemanticsImpl.class.getName(), LogLevelType.ERROR, exctx.Rtid);
+                }
             }
         }
     }
@@ -232,7 +233,7 @@ public class SCXMLSemanticsImpl implements SCXMLSemantics {
         executeTransitionContent(exctx, step);
         //进入进入状态集合
         enterStates(exctx, step, statesToInvoke);
-        if (step.getEntrySet().size() != 0) {
+        if (step.getEntrySet().size() != 0 && GlobalContext.IsLocalDebug) {
             System.out.print("Now Enter:");
             for (EnterableState s : step.getEntrySet()) {
                 System.out.print(" " + s.getId());
