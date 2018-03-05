@@ -26,6 +26,7 @@ public class EngineController {
      * Submit a task resourcing request from BOEngine.
      * @param rtid process runtime record id (required)
      * @param boname bo name (required)
+     * @param nodeId id of instance tree node which produce this task (required)
      * @param taskname task polymorphism name (required)
      * @param args argument
      * @return response package
@@ -35,6 +36,7 @@ public class EngineController {
     @Transactional
     public ReturnModel SubmitTask(@RequestParam(value="rtid", required = false)String rtid,
                                   @RequestParam(value="boname", required = false)String boname,
+                                  @RequestParam(value="nodeId", required = false)String nodeId,
                                   @RequestParam(value="taskname", required = false)String taskname,
                                   @RequestParam(value="args", required = false)String args) {
         ReturnModel rnModel = new ReturnModel();
@@ -43,13 +45,14 @@ public class EngineController {
             List<String> missingParams = new ArrayList<>();
             if (rtid == null) missingParams.add("rtid");
             if (boname == null) missingParams.add("boname");
+            if (nodeId == null) missingParams.add("nodeId");
             if (taskname == null) missingParams.add("taskname");
             if (args == null) missingParams.add("args");
             if (missingParams.size() > 0) {
                 return ReturnModelHelper.MissingParametersResponse(missingParams);
             }
             // logic
-            String jsonifyResult = InterfaceA.EngineSubmitTask(rtid, boname, taskname, args);
+            String jsonifyResult = InterfaceA.EngineSubmitTask(rtid, boname, nodeId, taskname, args);
             // return
             ReturnModelHelper.StandardResponse(rnModel, StatusCode.OK, jsonifyResult);
         } catch (Exception e) {

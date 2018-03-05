@@ -34,7 +34,7 @@ public class InteractionService {
      */
     public static void DispatchCallback(String rtid, String bo, String on, String event, String payload) {
         try {
-            HashMap payloadMap = SerializationUtil.JsonDeserialization(payload, HashMap.class);
+            HashMap payloadMap = payload != null ? SerializationUtil.JsonDeserialization(payload, HashMap.class) : new HashMap();
             RInstanceTree instanceTree = InstanceManager.GetInstanceTree(rtid);
             if (instanceTree == null) {
                 LogUtil.Log(String.format("Dispatch callback(BO:%s | ON:%s | EVT:%s | P:%s ), but tree not exist, ignored.",

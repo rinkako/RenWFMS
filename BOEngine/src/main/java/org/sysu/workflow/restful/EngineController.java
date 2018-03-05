@@ -84,7 +84,7 @@ public class EngineController {
      * @param bo from which BO (required)
      * @param on which callback scene (required)
      * @param event event send to engine (required)
-     * @param payload event send to engine (required)
+     * @param payload event send to engine
      * @return response package
      */
     @RequestMapping(value = "/callback", produces = {"application/json", "application/xml"})
@@ -103,7 +103,6 @@ public class EngineController {
             if (bo == null) missingParams.add("bo");
             if (on == null) missingParams.add("on");
             if (event == null) missingParams.add("event");
-            if (payload == null) missingParams.add("payload");
             if (missingParams.size() > 0) {
                 return ReturnModelHelper.MissingParametersResponse(missingParams);
             }

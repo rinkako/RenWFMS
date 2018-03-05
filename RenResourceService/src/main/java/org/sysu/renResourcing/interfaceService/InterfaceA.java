@@ -33,11 +33,12 @@ public class InterfaceA {
      * Handle resourcing submission request from BO Engine.
      * @param rtid process runtime record id
      * @param boName task belong to BO name
+     * @param nodeId producer tree node global id
      * @param polymorphismName task name defined in BO XML.
      * @param arguments arguments list in JSON string
      * @return response package
      */
-    public static String EngineSubmitTask(String rtid, String boName, String polymorphismName, String arguments) {
+    public static String EngineSubmitTask(String rtid, String boName, String nodeId, String polymorphismName, String arguments) {
         Session session = HibernateUtil.GetLocalSession();
         Transaction transaction = session.beginTransaction();
         boolean cmtFlag = false;
@@ -52,6 +53,7 @@ public class InterfaceA {
             ArrayList argVector = SerializationUtil.JsonDeserialization(arguments, ArrayList.class);
             assert argVector != null;
             args.put("taskContext", taskContext);
+            args.put("nodeId", nodeId);
             args.put("taskArgumentsVector", argVector);
             ResourcingContext ctx = ResourcingContext.GetContext(null, rtid, RServiceType.SubmitResourcingTask, args);
             InterfaceA.mainScheduler.Schedule(ctx);

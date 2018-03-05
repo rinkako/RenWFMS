@@ -43,6 +43,7 @@ public class InterfaceB {
      */
     public static void PerformEngineSubmitTask(ResourcingContext ctx) throws Exception {
         LinkedHashMap mapTaskCtx = (LinkedHashMap) ctx.getArgs().get("taskContext");
+        String nodeId = (String) ctx.getArgs().get("nodeId");
         TaskContext taskContext = TaskContext.ParseHashMap(mapTaskCtx);
         // use runtime record to get the admin auth name for admin queue identifier
         RenRuntimerecordEntity runtimeRecord;
@@ -62,7 +63,7 @@ public class InterfaceB {
         // get auth user name
         String domain = AuthDomainHelper.GetDomainByRTID(runtimeRecord.getRtid());
         // generate workitem
-        WorkitemContext workitem = WorkitemContext.GenerateContext(taskContext, ctx.getRtid(), (ArrayList) ctx.getArgs().get("taskArgumentsVector"));
+        WorkitemContext workitem = WorkitemContext.GenerateContext(taskContext, ctx.getRtid(), (ArrayList) ctx.getArgs().get("taskArgumentsVector"), nodeId);
         // parse resourcing principle
         RPrinciple principle = PrincipleParser.Parse(taskContext.getPrinciple());
         if (principle == null) {

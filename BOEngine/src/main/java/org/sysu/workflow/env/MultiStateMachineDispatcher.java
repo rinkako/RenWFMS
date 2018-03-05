@@ -4,6 +4,7 @@
  */
 package org.sysu.workflow.env;
 
+import org.sysu.renCommon.enums.LogLevelType;
 import org.sysu.workflow.EventDispatcher;
 import org.sysu.workflow.SCXMLExecutor;
 import org.sysu.workflow.SCXMLIOProcessor;
@@ -14,6 +15,7 @@ import org.sysu.workflow.model.ModelException;
 import org.sysu.workflow.model.extend.MessageMode;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.sysu.workflow.utility.LogUtil;
 
 import java.io.Serializable;
 import java.util.*;
@@ -163,6 +165,8 @@ public class MultiStateMachineDispatcher extends SimpleDispatcher implements Ser
                     break;
                 default:
                     System.out.println("Unknown message mode");
+                    LogUtil.Log("Dispatcher unknown message mode: " + messageMode,
+                            MultiStateMachineDispatcher.class.getName(), LogLevelType.ERROR, rtid);
                     break;
             }
         }

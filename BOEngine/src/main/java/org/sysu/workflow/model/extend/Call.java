@@ -101,6 +101,7 @@ public class Call extends ParamsContainer implements Serializable {
                         HashMap<String, String> args = new HashMap<String, String>();
                         args.put("taskname", this.name);
                         args.put("boname", scxmlExecContext.getSCXMLExecutor().getStateMachine().getName());
+                        args.put("nodeId", scxmlExecContext.getSCXMLExecutor().Tid);
                         //params of the task
                         String params = SerializationUtil.JsonSerialization(payloadDataMap, scxmlExecContext.Rtid);
                         args.put("args", params);
@@ -108,12 +109,9 @@ public class Call extends ParamsContainer implements Serializable {
                         try {
                             GlobalContext.Interaction.Send(GlobalContext.URL_RS_SUBMITTASK, args, scxmlExecContext.Rtid);
                         } catch(Exception e) {
-                            LogUtil.Log("When submit task to resource service, exception occurred, " + e.toString(),
+                            LogUtil.Log("When submit task to Resource Service, exception occurred, " + e.toString(),
                                     Call.class.getName(), LogLevelType.ERROR, scxmlExecContext.Rtid);
                         }
-                        // Send Message to APP
-//                        EngineBridge.QuickEnqueueBOMessage(scxmlExecContext.getSCXMLExecutor().getExecutorIndex(),
-//                                this.name, payloadDataMap, t.getBrole(), t.getEvent());
                         successFlag = true;
                         break;
                     }
@@ -126,6 +124,7 @@ public class Call extends ParamsContainer implements Serializable {
                         HashMap<String, String> args = new HashMap<String, String>();
                         args.put("taskname", this.name);
                         args.put("boname", scxmlExecContext.getSCXMLExecutor().getStateMachine().getName());
+                        args.put("nodeId", scxmlExecContext.getSCXMLExecutor().Tid);
                         //params of the task
                         String params = SerializationUtil.JsonSerialization(payloadDataMap, scxmlExecContext.Rtid);
                         args.put("args", params);
@@ -133,20 +132,15 @@ public class Call extends ParamsContainer implements Serializable {
                         try {
                             GlobalContext.Interaction.Send(GlobalContext.URL_RS_SUBMITTASK, args, scxmlExecContext.Rtid);
                         } catch(Exception e) {
-                            LogUtil.Log("When submit task to resource service, exception occurred, " + e.toString(),
+                            LogUtil.Log("When submit task to Resource Service, exception occurred, " + e.toString(),
                                     Call.class.getName(), LogLevelType.ERROR, scxmlExecContext.Rtid);
                         }
-                        // Send Message to APP
-//                        EngineBridge.QuickEnqueueBOMessage(scxmlExecContext.getSCXMLExecutor().getExecutorIndex(),
-//                                this.name, subProcess.getSrc(),payloadDataMap, subProcess.getEvents());
-                        System.out.println("test : begin invoking a sub process!!!!");
                         successFlag = true;
                         break;
                     }
                 }
             }
-
-            if (successFlag == false) {
+            if (!successFlag) {
                 throw new ModelException();
             }
         }

@@ -10,7 +10,7 @@ import java.util.Objects;
 
 /**
  * Author: Rinkako
- * Date  : 2018/2/6
+ * Date  : 2018/3/5
  * Usage :
  */
 @Entity
@@ -36,6 +36,7 @@ public class RenWorkitemEntity {
     private String timerexpiry;
     private Timestamp latestStartTime;
     private long executeTime;
+    private String callbackNodeId;
 
     @Id
     @Column(name = "wid", nullable = false, length = 64)
@@ -237,6 +238,16 @@ public class RenWorkitemEntity {
         this.executeTime = executeTime;
     }
 
+    @Basic
+    @Column(name = "callbackNodeId", nullable = false, length = 64)
+    public String getCallbackNodeId() {
+        return callbackNodeId;
+    }
+
+    public void setCallbackNodeId(String callbackNodeId) {
+        this.callbackNodeId = callbackNodeId;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -261,12 +272,13 @@ public class RenWorkitemEntity {
                 Objects.equals(completedBy, that.completedBy) &&
                 Objects.equals(timertrigger, that.timertrigger) &&
                 Objects.equals(timerexpiry, that.timerexpiry) &&
-                Objects.equals(latestStartTime, that.latestStartTime);
+                Objects.equals(latestStartTime, that.latestStartTime) &&
+                Objects.equals(callbackNodeId, that.callbackNodeId);
     }
 
     @Override
     public int hashCode() {
 
-        return Objects.hash(wid, rtid, resourcingId, processId, boId, taskid, taskPolymorphismId, arguments, firingTime, enablementTime, startTime, completionTime, status, resourceStatus, startedBy, completedBy, timertrigger, timerexpiry, latestStartTime, executeTime);
+        return Objects.hash(wid, rtid, resourcingId, processId, boId, taskid, taskPolymorphismId, arguments, firingTime, enablementTime, startTime, completionTime, status, resourceStatus, startedBy, completedBy, timertrigger, timerexpiry, latestStartTime, executeTime, callbackNodeId);
     }
 }

@@ -111,10 +111,12 @@ public class WorkitemContext implements Serializable, RCacheablesContext {
     /**
      * Generate a workitem context and save it to steady by a task context.
      * @param taskContext task context to be the generation template
+     * @param rtid process rtid
      * @param args arguments vector
+     * @param callbackNodeId producer instance tree node global id for callback
      * @return workitem context
      */
-    public static WorkitemContext GenerateContext(TaskContext taskContext, String rtid, ArrayList args) {
+    public static WorkitemContext GenerateContext(TaskContext taskContext, String rtid, ArrayList args, String callbackNodeId) {
         assert args != null && taskContext.getParameters() != null;
         //HashMap parameterMap = SerializationUtil.JsonDeserialization(taskContext.getParameters(), HashMap.class);
         if (args.size() != taskContext.getParameters().size()) {
@@ -138,6 +140,7 @@ public class WorkitemContext implements Serializable, RCacheablesContext {
             rwe.setStatus(WorkitemStatusType.Enabled.name());
             rwe.setResourceStatus(WorkitemResourcingStatusType.Unoffered.name());
             rwe.setExecuteTime(0L);
+            rwe.setCallbackNodeId(callbackNodeId);
             rwe.setEnablementTime(TimestampUtil.GetCurrentTimestamp());
             HashMap<String, String> taskArgsSign = CommonUtil.ZipVectorConvertString(taskContext.getParameters(), args);
             rwe.setArguments(SerializationUtil.JsonSerialization(taskArgsSign));
