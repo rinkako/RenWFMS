@@ -13,7 +13,7 @@ import java.util.Map;
  * Date  : 2018/2/27
  * Usage : An interaction router using HTTP and Restful API for modules interaction.
  */
-public class RestfulRouter extends RInteractionRouter {
+public class RestfulRouter implements RInteractionRouter {
 
     /**
      * Send a message encoded by Key-value pair map to the destination module.

@@ -363,7 +363,7 @@ public class InterfaceB {
             try {
                 WorkQueueContainer container = WorkQueueContainer.GetContext(participant.getWorkerId());
                 container.RemoveFromQueue(workitem, WorkQueueType.ALLOCATED);
-                InterfaceB.WorkitemChanged(workitem, WorkitemStatusType.Complete, WorkitemResourcingStatusType.Skipped);
+                InterfaceB.WorkitemChanged(workitem, WorkitemStatusType.ForcedComplete, WorkitemResourcingStatusType.Skipped);
                 InterfaceE.WriteLog(workitem, participant.getWorkerId(), RSEventType.skip);
                 return true;
             } catch (Exception ex) {

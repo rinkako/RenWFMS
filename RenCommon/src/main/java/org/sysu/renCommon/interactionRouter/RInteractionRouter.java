@@ -12,7 +12,7 @@ import java.util.Map;
  * Usage : Base class of Interaction router, which is responsible for making communication
  *         among modules in RenWFMS.
  */
-public abstract class RInteractionRouter {
+public interface RInteractionRouter {
 
     /**
      * Send a message encoded by Key-value pair map to the destination module.
@@ -21,5 +21,5 @@ public abstract class RInteractionRouter {
      * @param rtid process rtid
      * @return response string if exist
      */
-    public abstract String Send(String destination, Map<String, String> args, String rtid) throws Exception;
+    String Send(String destination, Map<String, String> args, String rtid) throws Exception;
 }

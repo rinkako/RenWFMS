@@ -11,7 +11,7 @@ import java.util.Map;
  * Date  : 2018/2/27
  * Usage : An interaction router using Kafka stream service for modules interaction.
  */
-public class KafkaRouter extends RInteractionRouter {
+public class KafkaRouter implements RInteractionRouter {
 
     /**
      * Send a message encoded by Key-value pair map to the destination module.
