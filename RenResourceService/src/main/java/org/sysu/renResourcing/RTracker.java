@@ -5,6 +5,7 @@
 package org.sysu.renResourcing;
 
 import org.sysu.renCommon.context.ObservableMessage;
+import org.sysu.renCommon.enums.LogLevelType;
 import org.sysu.renCommon.enums.TrackerPhase;
 import org.sysu.renResourcing.context.ResourcingContext;
 import org.sysu.renResourcing.interfaceService.InterfaceB;
@@ -73,7 +74,7 @@ public class RTracker extends Observable implements Observer, Runnable {
         // All exception inside tracker will be handle here, no need to throw outside since it asynchronous executed.
         catch (Exception ex) {
             LogUtil.Log(String.format("Tracker(%s) exception occurred, %s", this.context.getRstid(), ex),
-                    RTracker.class.getName(), LogUtil.LogLevelType.ERROR, this.context.getRtid());
+                    RTracker.class.getName(), LogLevelType.ERROR, this.context.getRtid());
             obm = new ObservableMessage(GlobalContext.OBSERVABLE_NOTIFY_EXCEPTION);
             obm.AddPayload("message", ex.toString());
             this.phase = TrackerPhase.Failed;
@@ -107,6 +108,9 @@ public class RTracker extends Observable implements Observer, Runnable {
         switch (this.context.getService()) {
             case SubmitResourcingTask:
                 InterfaceB.PerformEngineSubmitTask(this.context);
+                break;
+            case FinishProcess:
+                InterfaceB.PerformEngineFinishProcess(this.context);
                 break;
             case AcceptWorkitem:
                 execResult = InterfaceW.AcceptOffer(this.context);

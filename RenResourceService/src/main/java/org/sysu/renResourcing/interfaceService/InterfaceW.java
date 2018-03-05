@@ -4,6 +4,7 @@
  */
 package org.sysu.renResourcing.interfaceService;
 
+import org.sysu.renCommon.enums.LogLevelType;
 import org.sysu.renResourcing.GlobalContext;
 import org.sysu.renCommon.enums.InitializationByType;
 import org.sysu.renCommon.enums.WorkQueueType;
@@ -40,7 +41,7 @@ public class InterfaceW {
         ParticipantContext participant = ParticipantContext.GetContext(ctx.getRtid(), workerId);
         if (workitem == null) {
             LogUtil.Log("Accept offer but workitem not exist, rstid: " + ctx.getRstid(),
-                    InterfaceW.class.getName(), LogUtil.LogLevelType.ERROR, ctx.getRtid());
+                    InterfaceW.class.getName(), LogLevelType.ERROR, ctx.getRtid());
             return false;
         }
         if (participant == null) {
@@ -67,7 +68,7 @@ public class InterfaceW {
         ParticipantContext participant = ParticipantContext.GetContext(ctx.getRtid(), workerId);
         if (workitem == null) {
             LogUtil.Log("Deallocate but workitem not exist, rstid: " + ctx.getRstid(),
-                    InterfaceW.class.getName(), LogUtil.LogLevelType.ERROR, ctx.getRtid());
+                    InterfaceW.class.getName(), LogLevelType.ERROR, ctx.getRtid());
             return false;
         }
         if (participant == null) {
@@ -94,7 +95,7 @@ public class InterfaceW {
         ParticipantContext participant = ParticipantContext.GetContext(ctx.getRtid(), workerId);
         if (workitem == null) {
             LogUtil.Log("Start but workitem not exist, rstid: " + ctx.getRstid(),
-                    InterfaceW.class.getName(), LogUtil.LogLevelType.ERROR, ctx.getRtid());
+                    InterfaceW.class.getName(), LogLevelType.ERROR, ctx.getRtid());
             return false;
         }
         if (participant == null) {
@@ -121,7 +122,7 @@ public class InterfaceW {
         ParticipantContext participant = ParticipantContext.GetContext(ctx.getRtid(), workerId);
         if (workitem == null) {
             LogUtil.Log("Reallocate but workitem not exist, rstid: " + ctx.getRstid(),
-                    InterfaceW.class.getName(), LogUtil.LogLevelType.ERROR, ctx.getRtid());
+                    InterfaceW.class.getName(), LogLevelType.ERROR, ctx.getRtid());
             return false;
         }
         if (participant == null) {
@@ -148,7 +149,7 @@ public class InterfaceW {
         ParticipantContext participant = ParticipantContext.GetContext(ctx.getRtid(), workerId);
         if (workitem == null) {
             LogUtil.Log("Accept and start but workitem not exist, rstid: " + ctx.getRstid(),
-                    InterfaceW.class.getName(), LogUtil.LogLevelType.ERROR, ctx.getRtid());
+                    InterfaceW.class.getName(), LogLevelType.ERROR, ctx.getRtid());
             return false;
         }
         if (participant == null) {
@@ -175,7 +176,7 @@ public class InterfaceW {
         ParticipantContext participant = ParticipantContext.GetContext(ctx.getRtid(), workerId);
         if (workitem == null) {
             LogUtil.Log("Skip but workitem not exist, rstid: " + ctx.getRstid(),
-                    InterfaceW.class.getName(), LogUtil.LogLevelType.ERROR, ctx.getRtid());
+                    InterfaceW.class.getName(), LogLevelType.ERROR, ctx.getRtid());
             return false;
         }
         if (participant == null) {
@@ -202,7 +203,7 @@ public class InterfaceW {
         ParticipantContext participant = ParticipantContext.GetContext(ctx.getRtid(), workerId);
         if (workitem == null) {
             LogUtil.Log("Suspend but workitem not exist, rstid: " + ctx.getRstid(),
-                    InterfaceW.class.getName(), LogUtil.LogLevelType.ERROR, ctx.getRtid());
+                    InterfaceW.class.getName(), LogLevelType.ERROR, ctx.getRtid());
             return false;
         }
         if (participant == null) {
@@ -229,7 +230,7 @@ public class InterfaceW {
         ParticipantContext participant = ParticipantContext.GetContext(ctx.getRtid(), workerId);
         if (workitem == null) {
             LogUtil.Log("Unsuspend but workitem not exist, rstid: " + ctx.getRstid(),
-                    InterfaceW.class.getName(), LogUtil.LogLevelType.ERROR, ctx.getRtid());
+                    InterfaceW.class.getName(), LogLevelType.ERROR, ctx.getRtid());
             return false;
         }
         if (participant == null) {
@@ -256,7 +257,7 @@ public class InterfaceW {
         ParticipantContext participant = ParticipantContext.GetContext(ctx.getRtid(), workerId);
         if (workitem == null) {
             LogUtil.Log("Accept offer but workitem not exist, rstid: " + ctx.getRstid(),
-                    InterfaceW.class.getName(), LogUtil.LogLevelType.ERROR, ctx.getRtid());
+                    InterfaceW.class.getName(), LogLevelType.ERROR, ctx.getRtid());
             return false;
         }
         if (participant == null) {
@@ -332,7 +333,7 @@ public class InterfaceW {
         }
         catch (Exception ex) {
             LogUtil.Log("Illegal queue type: " + queueTypeName, InterfaceW.class.getName(),
-                    LogUtil.LogLevelType.ERROR, rtid);
+                    LogLevelType.ERROR, rtid);
             throw ex;
         }
         WorkQueueContainer container = WorkQueueContainer.GetContext(workerId);

@@ -5,6 +5,7 @@
 package org.sysu.renResourcing.executor;
 
 import org.sysu.renCommon.enums.InitializationByType;
+import org.sysu.renCommon.enums.LogLevelType;
 import org.sysu.renResourcing.context.ParticipantContext;
 import org.sysu.renResourcing.context.WorkitemContext;
 import org.sysu.renResourcing.filter.RFilter;
@@ -50,7 +51,7 @@ public class OfferInteractionExecutor extends InteractionExecutor {
     public Set<ParticipantContext> PerformOffer(HashSet<ParticipantContext> candidateSet, WorkitemContext workitem) {
         if (this.filter == null) {
             LogUtil.Log("Perform offer before binding executor to a filter.",
-                    OfferInteractionExecutor.class.getName(), LogUtil.LogLevelType.ERROR, "");
+                    OfferInteractionExecutor.class.getName(), LogLevelType.ERROR, "");
             return null;
         }
         return this.filter.PerformFilter(candidateSet, workitem);

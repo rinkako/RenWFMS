@@ -4,6 +4,7 @@
  */
 package org.sysu.workflow.utility;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import org.sysu.renCommon.enums.LogLevelType;
 import org.sysu.workflow.model.SCXML;
 
 import java.io.ByteArrayInputStream;
@@ -29,7 +30,7 @@ public class SerializationUtil {
         }
         catch (Exception ex) {
             LogUtil.Log("When json serialization exception occurred, " + ex.toString(),
-                    SerializationUtil.class.getName(), LogUtil.LogLevelType.ERROR, rtid);
+                    SerializationUtil.class.getName(), LogLevelType.ERROR, rtid);
             return null;
         }
     }
@@ -47,7 +48,7 @@ public class SerializationUtil {
         }
         catch (Exception ex) {
             LogUtil.Log("When un serialization exception occurred, " + ex.toString(),
-                    SerializationUtil.class.getName(), LogUtil.LogLevelType.ERROR, "");
+                    SerializationUtil.class.getName(), LogLevelType.ERROR, "");
             return null;
         }
     }
@@ -66,7 +67,7 @@ public class SerializationUtil {
         }
         catch (Exception ex) {
             LogUtil.Log("When SerializationSCXMLToString exception occurred, " + ex.toString(),
-                    SerializationUtil.class.getName(), LogUtil.LogLevelType.ERROR, "");
+                    SerializationUtil.class.getName(), LogLevelType.ERROR, "");
             return null;
         }
     }
@@ -84,7 +85,7 @@ public class SerializationUtil {
         }
         catch (Exception ex) {
             LogUtil.Log("When DeSerializationSCXML exception occurred, " + ex.toString(),
-                    SerializationUtil.class.getName(), LogUtil.LogLevelType.ERROR, "");
+                    SerializationUtil.class.getName(), LogLevelType.ERROR, "");
             return null;
         }
     }

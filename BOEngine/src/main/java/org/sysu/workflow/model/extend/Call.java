@@ -4,6 +4,7 @@
  */
 package org.sysu.workflow.model.extend;
 
+import org.sysu.renCommon.enums.LogLevelType;
 import org.sysu.workflow.*;
 import org.sysu.workflow.model.EnterableState;
 import org.sysu.workflow.model.ModelException;
@@ -108,7 +109,7 @@ public class Call extends ParamsContainer implements Serializable {
                             GlobalContext.Interaction.Send(GlobalContext.URL_RS_SUBMITTASK, args, scxmlExecContext.Rtid);
                         } catch(Exception e) {
                             LogUtil.Log("When submit task to resource service, exception occurred, " + e.toString(),
-                                    Call.class.getName(), LogUtil.LogLevelType.ERROR, scxmlExecContext.Rtid);
+                                    Call.class.getName(), LogLevelType.ERROR, scxmlExecContext.Rtid);
                         }
                         // Send Message to APP
 //                        EngineBridge.QuickEnqueueBOMessage(scxmlExecContext.getSCXMLExecutor().getExecutorIndex(),
@@ -133,7 +134,7 @@ public class Call extends ParamsContainer implements Serializable {
                             GlobalContext.Interaction.Send(GlobalContext.URL_RS_SUBMITTASK, args, scxmlExecContext.Rtid);
                         } catch(Exception e) {
                             LogUtil.Log("When submit task to resource service, exception occurred, " + e.toString(),
-                                    Call.class.getName(), LogUtil.LogLevelType.ERROR, scxmlExecContext.Rtid);
+                                    Call.class.getName(), LogLevelType.ERROR, scxmlExecContext.Rtid);
                         }
                         // Send Message to APP
 //                        EngineBridge.QuickEnqueueBOMessage(scxmlExecContext.getSCXMLExecutor().getExecutorIndex(),

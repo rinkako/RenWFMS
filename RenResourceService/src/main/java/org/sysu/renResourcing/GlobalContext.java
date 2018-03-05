@@ -4,6 +4,9 @@
  */
 package org.sysu.renResourcing;
 
+import org.sysu.renCommon.interactionRouter.RInteractionRouter;
+import org.sysu.renCommon.interactionRouter.RestfulRouter;
+
 import java.util.UUID;
 
 /**
@@ -17,6 +20,11 @@ public class GlobalContext {
      * Resource service micro-service global id.
      */
     public static String RESOURCE_SERVICE_GLOBAL_ID = String.format("WFMSComponent_RS_%s", UUID.randomUUID().toString());
+
+    /**
+     * Main internal interaction router.
+     */
+    public static RInteractionRouter Interaction = new RestfulRouter();
 
     /**
      * Response message of successfully queued request.

@@ -11,7 +11,7 @@ import java.sql.Timestamp;
  * Date  : 2018/1/24
  * Usage : Log package.
  */
-final class LogMessagePackage {
+public class LogMessagePackage {
     /**
      * Create a new log message package.
      * @param rtid process rtid
@@ -20,7 +20,7 @@ final class LogMessagePackage {
      * @param type message type
      * @param ts timestamp
      */
-    LogMessagePackage(String rtid, String msg, String label, LogLevelType type, Timestamp ts) {
+    public LogMessagePackage(String rtid, String msg, String label, LogLevelType type, Timestamp ts) {
         this.Rtid = rtid;
         this.Message = msg;
         this.Label = label;

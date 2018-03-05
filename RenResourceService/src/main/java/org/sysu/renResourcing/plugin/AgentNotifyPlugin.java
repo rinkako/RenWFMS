@@ -4,8 +4,9 @@
  */
 package org.sysu.renResourcing.plugin;
 
-import org.sysu.renResourcing.ResourcingEngine;
 import org.sysu.renCommon.enums.AgentReentrantType;
+import org.sysu.renCommon.enums.LogLevelType;
+import org.sysu.renResourcing.GlobalContext;
 import org.sysu.renResourcing.context.ParticipantContext;
 import org.sysu.renResourcing.utility.LogUtil;
 
@@ -33,13 +34,15 @@ public class AgentNotifyPlugin extends AsyncRunnablePlugin {
     /**
      * Create a new agent notification send plugin.
      */
-    public AgentNotifyPlugin() { }
+    public AgentNotifyPlugin() {
+    }
 
     /**
      * Add a notification to post.
+     *
      * @param agentContext agent participant context
-     * @param args arguments to post
-     * @param rtid process rtid
+     * @param args         arguments to post
+     * @param rtid         process rtid
      */
     public void AddNotification(ParticipantContext agentContext, Map<String, String> args, String rtid) {
         if (!this.IsBeginSending) {
@@ -48,10 +51,9 @@ public class AgentNotifyPlugin extends AsyncRunnablePlugin {
             nmp.Args = args;
             nmp.RtId = rtid;
             this.pendingMessage.add(nmp);
-        }
-        else {
+        } else {
             LogUtil.Log("Add item to a sending AgentNotifyPlugin, ignored.",
-                    AgentNotifyPlugin.class.getName(), LogUtil.LogLevelType.WARNING, rtid);
+                    AgentNotifyPlugin.class.getName(), LogLevelType.WARNING, rtid);
         }
     }
 
@@ -61,24 +63,23 @@ public class AgentNotifyPlugin extends AsyncRunnablePlugin {
     public void Clear(String rtid) {
         if (!this.IsBeginSending) {
             this.pendingMessage.clear();
-        }
-        else {
+        } else {
             LogUtil.Log("Try to clear items in a sending AgentNotifyPlugin, ignored.",
-                    AgentNotifyPlugin.class.getName(), LogUtil.LogLevelType.WARNING, rtid);
+                    AgentNotifyPlugin.class.getName(), LogLevelType.WARNING, rtid);
         }
     }
 
     /**
      * Count pending message.
+     *
      * @return number of pending queue, -1 if begin to send.
      */
     public int Count(String rtid) {
         if (!this.IsBeginSending) {
             return this.pendingMessage.size();
-        }
-        else {
+        } else {
             LogUtil.Log("Try to count items in a sending AgentNotifyPlugin, ignored.",
-                    AgentNotifyPlugin.class.getName(), LogUtil.LogLevelType.WARNING, rtid);
+                    AgentNotifyPlugin.class.getName(), LogLevelType.WARNING, rtid);
             return -1;
         }
     }
@@ -95,28 +96,28 @@ public class AgentNotifyPlugin extends AsyncRunnablePlugin {
 
     /**
      * Post data to a agent binding URL.
+     *
      * @param agentContext agent participant context
-     * @param args arguments to post
-     * @param rtid process rtid
+     * @param args         arguments to post
+     * @param rtid         process rtid
      */
     private void PostToAgent(ParticipantContext agentContext, Map<String, String> args, String rtid) {
         try {
             // reentrant agent: send post directly.
             if (agentContext.getAgentType() == AgentReentrantType.Reentrant) {
-                ResourcingEngine.Interaction.Send(agentContext.getAgentLocation(), args, rtid);
+                GlobalContext.Interaction.Send(agentContext.getAgentLocation(), args, rtid);
                 LogUtil.Log(String.format("Send notification to agent %s(%s): %s", agentContext.getDisplayName(), agentContext.getWorkerId(), args),
-                        AgentNotifyPlugin.class.getName(), LogUtil.LogLevelType.INFO, rtid);
+                        AgentNotifyPlugin.class.getName(), LogLevelType.INFO, rtid);
             }
             // not reentrant agent: queue the request.
             else {
                 // todo here should use queue to send asynchronously only when the agent is free (include other RS)
-                ResourcingEngine.Interaction.Send(agentContext.getAgentLocation(), args, rtid);
+                GlobalContext.Interaction.Send(agentContext.getAgentLocation(), args, rtid);
             }
-        }
-        catch (Exception ex) {
+        } catch (Exception ex) {
             // do not rethrown the exception, since this is tolerable.
             LogUtil.Log("Send notification to agent failed, " + ex, AgentNotifyPlugin.class.getName(),
-                    LogUtil.LogLevelType.ERROR, rtid);
+                    LogLevelType.ERROR, rtid);
         }
     }
 

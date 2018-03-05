@@ -9,6 +9,7 @@ import java.io.Serializable;
  */
 public enum RServiceType implements Serializable {
     SubmitResourcingTask,
+    FinishProcess,
     AcceptWorkitem,
     StartWorkitem,
     AcceptAndStartWorkitem,

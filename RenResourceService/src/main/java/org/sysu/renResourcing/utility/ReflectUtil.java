@@ -4,6 +4,7 @@
  */
 package org.sysu.renResourcing.utility;
 
+import org.sysu.renCommon.enums.LogLevelType;
 import org.sysu.renResourcing.allocator.RAllocator;
 import org.sysu.renResourcing.filter.RFilter;
 
@@ -28,7 +29,7 @@ public final class ReflectUtil {
         }
         catch (Exception ex) {
             LogUtil.Log(String.format("Request %s, Reflect create allocator (%s) failed, %s", rstid, allocatorName, ex),
-                    ReflectUtil.class.getName(), LogUtil.LogLevelType.ERROR, rtid);
+                    ReflectUtil.class.getName(), LogLevelType.ERROR, rtid);
             throw ex;  // rethrow to engine
         }
     }
@@ -48,7 +49,7 @@ public final class ReflectUtil {
         }
         catch (Exception ex) {
             LogUtil.Log(String.format("Request %s, Reflect create filter (%s) failed, %s", rstid, filterName, ex),
-                    ReflectUtil.class.getName(), LogUtil.LogLevelType.ERROR, rtid);
+                    ReflectUtil.class.getName(), LogLevelType.ERROR, rtid);
             throw ex;  // rethrow to engine
         }
     }

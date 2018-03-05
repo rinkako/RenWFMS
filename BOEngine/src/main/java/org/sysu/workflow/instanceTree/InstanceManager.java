@@ -4,6 +4,8 @@
  */
 package org.sysu.workflow.instanceTree;
 
+import org.omg.CORBA.PUBLIC_MEMBER;
+import org.sysu.renCommon.enums.LogLevelType;
 import org.sysu.workflow.SCXMLExecutionContext;
 import org.sysu.workflow.SCXMLExecutor;
 import org.sysu.workflow.utility.LogUtil;
@@ -48,7 +50,7 @@ public class InstanceManager {
         }
         else {
             LogUtil.Log("Instance tree not found: " + rtid, InstanceManager.class.getName(),
-                    LogUtil.LogLevelType.WARNNING, rtid);
+                    LogLevelType.WARNING, rtid);
             return null;
         }
     }
@@ -61,15 +63,23 @@ public class InstanceManager {
     public static void RegisterInstanceTree(String rtid, RInstanceTree tree) {
         if (tree == null || tree.Root == null) {
             LogUtil.Log("Instance tree must not null: " + rtid, InstanceManager.class.getName(),
-                    LogUtil.LogLevelType.ERROR, rtid);
+                    LogLevelType.ERROR, rtid);
         }
         else if (InstanceManager.InstanceTreeTable.containsKey(rtid)) {
             LogUtil.Log("Duplicated Instance tree: " + rtid, InstanceManager.class.getName(),
-                    LogUtil.LogLevelType.WARNNING, rtid);
+                    LogLevelType.WARNING, rtid);
         }
         else {
             InstanceManager.InstanceTreeTable.put(rtid, tree);
         }
+    }
+
+    /**
+     * Signal a process runtime over, and remove its instance tree.
+     * @param rtid process rtid
+     */
+    public static void UnregisterInstanceTree(String rtid) {
+        InstanceManager.InstanceTreeTable.remove(rtid);
     }
 
     /**

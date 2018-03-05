@@ -6,9 +6,8 @@ package org.sysu.renResourcing.restful;
 
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
-import org.sysu.renResourcing.ResourcingEngine;
 import org.sysu.renCommon.dto.ReturnModel;
-import org.sysu.renResourcing.restful.ReturnModelHelper;
+import org.sysu.renResourcing.interfaceService.InterfaceA;
 import org.sysu.renCommon.dto.StatusCode;
 
 import java.util.ArrayList;
@@ -50,7 +49,7 @@ public class EngineController {
                 return ReturnModelHelper.MissingParametersResponse(missingParams);
             }
             // logic
-            String jsonifyResult = ResourcingEngine.EngineSubmitTask(rtid, boname, taskname, args);
+            String jsonifyResult = InterfaceA.EngineSubmitTask(rtid, boname, taskname, args);
             // return
             ReturnModelHelper.StandardResponse(rnModel, StatusCode.OK, jsonifyResult);
         } catch (Exception e) {
@@ -62,12 +61,14 @@ public class EngineController {
     /**
      * Signal that a process runtime has already finished.
      * @param rtid process runtime record id (required)
+     * @param successFlag success flag, 0 unknown, 1 success, -1 failed, default by 1
      * @return response package
      */
     @PostMapping(value = "/finRtid", produces = {"application/json", "application/xml"})
     @ResponseBody
     @Transactional
-    public ReturnModel FinRtid(@RequestParam(value="rtid", required = false)String rtid) {
+    public ReturnModel FinRtid(@RequestParam(value="rtid", required = false)String rtid,
+                               @RequestParam(value="successFlag", required = false)String successFlag) {
         ReturnModel rnModel = new ReturnModel();
         try {
             // miss params
@@ -77,7 +78,7 @@ public class EngineController {
                 return ReturnModelHelper.MissingParametersResponse(missingParams);
             }
             // logic
-            String jsonifyResult = "";  // todo
+            String jsonifyResult = InterfaceA.EngineFinishProcess(rtid, successFlag);
             // return
             ReturnModelHelper.StandardResponse(rnModel, StatusCode.OK, jsonifyResult);
         } catch (Exception e) {

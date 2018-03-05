@@ -6,6 +6,7 @@ package org.sysu.renResourcing.interfaceService;
 
 import org.hibernate.Session;
 import org.hibernate.Transaction;
+import org.sysu.renCommon.enums.LogLevelType;
 import org.sysu.renCommon.enums.PrivilegeType;
 import org.sysu.renCommon.enums.ResourceBindingType;
 import org.sysu.renResourcing.context.ParticipantContext;
@@ -126,7 +127,7 @@ public class InterfaceO {
      */
     public static boolean SenseParticipantDataChanged(String rtid) {
         LogUtil.Log("Sensed binding resources changed.", InterfaceO.class.getName(),
-                LogUtil.LogLevelType.INFO, rtid);
+                LogLevelType.INFO, rtid);
         Session session = HibernateUtil.GetLocalSession();
         try {
             RenRuntimerecordEntity rre = session.get(RenRuntimerecordEntity.class, rtid);

@@ -6,6 +6,7 @@ package org.sysu.renResourcing.plugin.evaluator;
 
 import org.apache.commons.jexl2.JexlContext;
 import org.apache.commons.jexl2.MapContext;
+import org.sysu.renCommon.enums.LogLevelType;
 import org.sysu.renResourcing.utility.LogUtil;
 
 /**
@@ -90,7 +91,7 @@ public class RJexlMapContext extends MapContext implements REvaluableContext {
     @Override
     public void Clear() {
         LogUtil.Echo("Clear is not valid for RJexlMapContext, ignored.",
-                RJexlMapContext.class.getName(), LogUtil.LogLevelType.WARNING);
+                RJexlMapContext.class.getName(), LogLevelType.WARNING);
     }
 
     /**
@@ -101,7 +102,7 @@ public class RJexlMapContext extends MapContext implements REvaluableContext {
     @Override
     public int Count() {
         LogUtil.Echo("Count is not valid for RJexlMapContext, always return 0.",
-                RJexlMapContext.class.getName(), LogUtil.LogLevelType.WARNING);
+                RJexlMapContext.class.getName(), LogLevelType.WARNING);
         return 0;
     }
 

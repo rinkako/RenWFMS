@@ -6,6 +6,7 @@ package org.sysu.renResourcing.context;
 
 import org.hibernate.Session;
 import org.hibernate.Transaction;
+import org.sysu.renCommon.enums.LogLevelType;
 import org.sysu.renCommon.utility.CommonUtil;
 import org.sysu.renCommon.utility.SerializationUtil;
 import org.sysu.renCommon.utility.TimestampUtil;
@@ -99,7 +100,7 @@ public class WorkitemContext implements Serializable, RCacheablesContext {
                 transaction.rollback();
             }
             LogUtil.Log("Get workitem context but exception occurred, " + ex,
-                    WorkitemContext.class.getName(), LogUtil.LogLevelType.ERROR, rtid);
+                    WorkitemContext.class.getName(), LogLevelType.ERROR, rtid);
             throw ex;
         }
         finally {
@@ -119,7 +120,7 @@ public class WorkitemContext implements Serializable, RCacheablesContext {
         if (args.size() != taskContext.getParameters().size()) {
             LogUtil.Log(String.format("Generate workitem for task %s, but arguments(%s) and parameters(%s) not equal",
                     taskContext.getTaskName(), args.size(), taskContext.getParameters().size()),
-                    WorkitemContext.class.getName(), LogUtil.LogLevelType.ERROR, rtid);
+                    WorkitemContext.class.getName(), LogLevelType.ERROR, rtid);
             return null;
         }
         Session session = HibernateUtil.GetLocalSession();
@@ -153,7 +154,7 @@ public class WorkitemContext implements Serializable, RCacheablesContext {
                 transaction.rollback();
             }
             LogUtil.Log("Generate workitem context but exception occurred, " + ex,
-                    WorkitemContext.class.getName(), LogUtil.LogLevelType.ERROR, rtid);
+                    WorkitemContext.class.getName(), LogLevelType.ERROR, rtid);
             throw ex;
         }
         finally {
@@ -168,7 +169,7 @@ public class WorkitemContext implements Serializable, RCacheablesContext {
     public static void SaveToSteady(WorkitemContext context) {
         if (context == null) {
             LogUtil.Log("Ignore null workitem context saving.", WorkitemContext.class.getName(),
-                    LogUtil.LogLevelType.WARNING, "");
+                    LogLevelType.WARNING, "");
             return;
         }
         Session session = HibernateUtil.GetLocalSession();
@@ -180,7 +181,7 @@ public class WorkitemContext implements Serializable, RCacheablesContext {
         catch (Exception ex) {
             transaction.rollback();
             LogUtil.Log("Save workitem context but exception occurred, " + ex,
-                    WorkitemContext.class.getName(), LogUtil.LogLevelType.ERROR, context.getEntity().getRtid());
+                    WorkitemContext.class.getName(), LogLevelType.ERROR, context.getEntity().getRtid());
         }
         finally {
             HibernateUtil.CloseLocalSession();

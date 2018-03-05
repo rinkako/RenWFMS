@@ -10,7 +10,7 @@ import java.util.Objects;
 
 /**
  * Author: Rinkako
- * Date  : 2018/2/7
+ * Date  : 2018/3/5
  * Usage :
  */
 @Entity
@@ -31,6 +31,8 @@ public class RenRuntimerecordEntity {
     private Integer resourceBindingType;
     private Integer failureType;
     private String participantCache;
+    private Timestamp finishTimestamp;
+    private int isSucceed;
 
     @Id
     @Column(name = "rtid", nullable = false, length = 64)
@@ -182,12 +184,33 @@ public class RenRuntimerecordEntity {
         this.participantCache = participantCache;
     }
 
+    @Basic
+    @Column(name = "finish_timestamp", nullable = true)
+    public Timestamp getFinishTimestamp() {
+        return finishTimestamp;
+    }
+
+    public void setFinishTimestamp(Timestamp finishTimestamp) {
+        this.finishTimestamp = finishTimestamp;
+    }
+
+    @Basic
+    @Column(name = "is_succeed", nullable = false)
+    public int getIsSucceed() {
+        return isSucceed;
+    }
+
+    public void setIsSucceed(int isSucceed) {
+        this.isSucceed = isSucceed;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         RenRuntimerecordEntity that = (RenRuntimerecordEntity) o;
-        return Objects.equals(rtid, that.rtid) &&
+        return isSucceed == that.isSucceed &&
+                Objects.equals(rtid, that.rtid) &&
                 Objects.equals(processId, that.processId) &&
                 Objects.equals(processName, that.processName) &&
                 Objects.equals(sessionId, that.sessionId) &&
@@ -201,12 +224,13 @@ public class RenRuntimerecordEntity {
                 Objects.equals(resourceBinding, that.resourceBinding) &&
                 Objects.equals(resourceBindingType, that.resourceBindingType) &&
                 Objects.equals(failureType, that.failureType) &&
-                Objects.equals(participantCache, that.participantCache);
+                Objects.equals(participantCache, that.participantCache) &&
+                Objects.equals(finishTimestamp, that.finishTimestamp);
     }
 
     @Override
     public int hashCode() {
 
-        return Objects.hash(rtid, processId, processName, sessionId, launchAuthorityId, launchTimestamp, launchFrom, launchType, tag, interpreterId, resourcingId, resourceBinding, resourceBindingType, failureType, participantCache);
+        return Objects.hash(rtid, processId, processName, sessionId, launchAuthorityId, launchTimestamp, launchFrom, launchType, tag, interpreterId, resourcingId, resourceBinding, resourceBindingType, failureType, participantCache, finishTimestamp, isSucceed);
     }
 }

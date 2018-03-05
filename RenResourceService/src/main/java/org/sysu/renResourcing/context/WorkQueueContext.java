@@ -6,6 +6,7 @@ package org.sysu.renResourcing.context;
 
 import org.hibernate.Session;
 import org.hibernate.Transaction;
+import org.sysu.renCommon.enums.LogLevelType;
 import org.sysu.renResourcing.GlobalContext;
 import org.sysu.renCommon.enums.RSEventType;
 import org.sysu.renCommon.enums.WorkQueueType;
@@ -267,7 +268,7 @@ public class WorkQueueContext implements Serializable, RCacheablesContext {
                 transaction.rollback();
             }
             LogUtil.Log(String.format("Get WorkQueueContext (owner: %s, type: %s) exception occurred, %s", ownerWorkerId, queueType.name(), ex),
-                    WorkQueueContext.class.getName(), LogUtil.LogLevelType.ERROR, "");
+                    WorkQueueContext.class.getName(), LogLevelType.ERROR, "");
             throw ex;
         }
         finally {
@@ -378,7 +379,7 @@ public class WorkQueueContext implements Serializable, RCacheablesContext {
             transaction.rollback();
             LogUtil.Log(String.format("When WorkQueue(%s of %s, %s) flush remove changes to steady exception occurred, %s",
                         this.queueId, this.ownerWorkerId, this.type.name(), ex), WorkQueueContext.class.getName(),
-                        LogUtil.LogLevelType.ERROR, "");
+                        LogLevelType.ERROR, "");
             throw ex;
         }
         finally {
@@ -427,7 +428,7 @@ public class WorkQueueContext implements Serializable, RCacheablesContext {
             transaction.rollback();
             LogUtil.Log(String.format("When WorkQueue(%s of %s, %s) flush add changes to steady exception occurred, %s",
                     this.queueId, this.ownerWorkerId, this.type.name(), ex), WorkQueueContext.class.getName(),
-                    LogUtil.LogLevelType.ERROR, "");
+                    LogLevelType.ERROR, "");
             throw ex;
         }
         finally {
@@ -478,7 +479,7 @@ public class WorkQueueContext implements Serializable, RCacheablesContext {
             }
             LogUtil.Log(String.format("When WorkQueue(%s of %s, %s) refresh from steady exception occurred, %s",
                     this.queueId, this.ownerWorkerId, this.type.name(), ex), WorkQueueContext.class.getName(),
-                    LogUtil.LogLevelType.ERROR, "");
+                    LogLevelType.ERROR, "");
             throw ex;
         }
         finally {
@@ -504,7 +505,7 @@ public class WorkQueueContext implements Serializable, RCacheablesContext {
             transaction.rollback();
             LogUtil.Log(String.format("When RemoveFromAllQueue(%s) refresh from steady exception occurred, %s",
                     workitem.getEntity().getWid(), ex), WorkQueueContext.class.getName(),
-                    LogUtil.LogLevelType.ERROR, workitem.getEntity().getRtid());
+                    LogLevelType.ERROR, workitem.getEntity().getRtid());
         }
         finally {
             HibernateUtil.CloseLocalSession();

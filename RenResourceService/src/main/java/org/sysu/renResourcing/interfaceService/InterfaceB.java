@@ -11,6 +11,7 @@ import org.sysu.renResourcing.GlobalContext;
 import org.sysu.renCommon.enums.*;
 import org.sysu.renResourcing.consistency.ContextLockManager;
 import org.sysu.renResourcing.context.*;
+import org.sysu.renResourcing.context.steady.RenRsparticipantEntity;
 import org.sysu.renResourcing.context.steady.RenRuntimerecordEntity;
 import org.sysu.renResourcing.context.steady.RenWorkitemEntity;
 import org.sysu.renResourcing.executor.AllocateInteractionExecutor;
@@ -37,6 +38,7 @@ public class InterfaceB {
 
     /**
      * Handle perform submit task.
+     *
      * @param ctx rs context
      */
     public static void PerformEngineSubmitTask(ResourcingContext ctx) throws Exception {
@@ -49,14 +51,12 @@ public class InterfaceB {
         try {
             runtimeRecord = session.get(RenRuntimerecordEntity.class, ctx.getRtid());
             transaction.commit();
-        }
-        catch (Exception ex) {
+        } catch (Exception ex) {
             transaction.rollback();
             LogUtil.Log("PerformEngineSubmitTask get Runtime record failed. " + ex,
-                    InterfaceB.class.getName(), LogUtil.LogLevelType.ERROR, ctx.getRtid());
+                    InterfaceB.class.getName(), LogLevelType.ERROR, ctx.getRtid());
             throw ex;
-        }
-        finally {
+        } finally {
             HibernateUtil.CloseLocalSession();
         }
         // get auth user name
@@ -67,7 +67,7 @@ public class InterfaceB {
         RPrinciple principle = PrincipleParser.Parse(taskContext.getPrinciple());
         if (principle == null) {
             LogUtil.Log(String.format("Cannot parse principle %s", taskContext.getPrinciple()), InterfaceB.class.getName(),
-                    LogUtil.LogLevelType.ERROR, ctx.getRtid());
+                    LogLevelType.ERROR, ctx.getRtid());
             InterfaceX.PrincipleParseFailedRedirectToDomainPool(workitem);
             return;
         }
@@ -75,7 +75,7 @@ public class InterfaceB {
         HashSet<ParticipantContext> validParticipants = InterfaceO.GetParticipantByBRole(ctx.getRtid(), taskContext.getBrole());
         if (validParticipants.isEmpty()) {
             LogUtil.Log("A task cannot be allocated to any valid resources, so it will be put into admin unoffered queue.",
-                    InterfaceB.class.getName(), LogUtil.LogLevelType.WARNING, ctx.getRtid());
+                    InterfaceB.class.getName(), LogLevelType.WARNING, ctx.getRtid());
             // move workitem to admin unoffered queue
             WorkQueueContainer adminContainer = WorkQueueContainer.GetContext(GlobalContext.WORKQUEUE_ADMIN_PREFIX + domain);
             adminContainer.AddToQueue(workitem, WorkQueueType.UNOFFERED);
@@ -143,10 +143,44 @@ public class InterfaceB {
     }
 
     /**
+     * Handle perform submit task.
+     *
+     * @param ctx rs context
+     */
+    public static void PerformEngineFinishProcess(ResourcingContext ctx) {
+        String rtid = (String) ctx.getArgs().get("rtid");
+        String successFlag = (String) ctx.getArgs().get("successFlag");
+        Session session = HibernateUtil.GetLocalSession();
+        Transaction transaction = session.beginTransaction();
+        try {
+            RenRuntimerecordEntity rre = session.get(RenRuntimerecordEntity.class, rtid);
+            rre.setFinishTimestamp(TimestampUtil.GetCurrentTimestamp());
+            rre.setIsSucceed(Integer.parseInt(successFlag));
+            String participantCache = rre.getParticipantCache();
+            String[] participantItem = participantCache.split(",");
+            for (String participantGid : participantItem) {
+                RenRsparticipantEntity rpe = session.get(RenRsparticipantEntity.class, participantGid);
+                rpe.setReferenceCounter(rpe.getReferenceCounter() - 1);
+                if (rpe.getReferenceCounter() <= 0) {
+                    session.createQuery(String.format("DELETE FROM RenRsparticipantEntity WHERE workerid = '%s'", participantGid)).executeUpdate();
+                }
+            }
+            transaction.commit();
+        } catch (Exception ex) {
+            transaction.rollback();
+            LogUtil.Log("PerformEngineFinishProcess but exception occurred, " + ex, InterfaceB.class.getName(),
+                    LogLevelType.ERROR, rtid);
+        } finally {
+            HibernateUtil.CloseLocalSession();
+        }
+    }
+
+    /**
      * Handle a participant accept a workitem.
+     *
      * @param participant participant context
-     * @param workitem workitem context
-     * @param initType initialization type, a flag for engine internal call
+     * @param workitem    workitem context
+     * @param initType    initialization type, a flag for engine internal call
      * @return true for a successful workitem accept
      */
     public static boolean AcceptOfferedWorkitem(ParticipantContext participant, WorkitemContext workitem, InitializationByType initType) {
@@ -172,8 +206,9 @@ public class InterfaceB {
 
     /**
      * Handle a participant deallocate a workitem.
+     *
      * @param participant participant context
-     * @param workitem workitem context
+     * @param workitem    workitem context
      * @return true for a successful workitem deallocate
      */
     public static boolean DeallocateWorkitem(ParticipantContext participant, WorkitemContext workitem) {
@@ -183,23 +218,22 @@ public class InterfaceB {
                 container.MoveAllocatedToOffered(workitem);
                 InterfaceB.WorkitemChanged(workitem, WorkitemStatusType.Fired, WorkitemResourcingStatusType.Offered);
                 return true;
-            }
-            catch (Exception ex) {
+            } catch (Exception ex) {
                 // todo use interfaceE log to workitem log and interfaceX for exception handle
                 return false;
             }
-        }
-        else {
+        } else {
             LogUtil.Log(String.format("Participant %s(%s) try to deallocate %s, but no privilege.", participant.getDisplayName(), participant.getWorkerId(), workitem.getEntity().getWid()),
-                    InterfaceB.class.getName(), LogUtil.LogLevelType.UNAUTHORIZED, workitem.getEntity().getRtid());
+                    InterfaceB.class.getName(), LogLevelType.UNAUTHORIZED, workitem.getEntity().getRtid());
             return false;
         }
     }
 
     /**
      * Handle a participant start a workitem.
+     *
      * @param participant participant context
-     * @param workitem workitem context
+     * @param workitem    workitem context
      * @return true for a successful workitem start
      */
     public static boolean StartWorkitem(ParticipantContext participant, WorkitemContext workitem) {
@@ -228,10 +262,9 @@ public class InterfaceB {
                 } catch (Exception ex2) {
                     transaction.rollback();
                     LogUtil.Log("ParticipantStart get Runtime record failed. " + ex2,
-                            InterfaceB.class.getName(), LogUtil.LogLevelType.ERROR, workitem.getEntity().getRtid());
+                            InterfaceB.class.getName(), LogLevelType.ERROR, workitem.getEntity().getRtid());
                     return false;
-                }
-                finally {
+                } finally {
                     HibernateUtil.CloseLocalSession();
                 }
                 // get admin queue for this auth user
@@ -241,18 +274,18 @@ public class InterfaceB {
             }
             InterfaceB.WorkitemChanged(workitem, WorkitemStatusType.Executing, WorkitemResourcingStatusType.Started);
             return true;
-        }
-        catch (Exception ex) {
+        } catch (Exception ex) {
             LogUtil.Log("ParticipantStart get Runtime record failed. " + ex,
-                    InterfaceB.class.getName(), LogUtil.LogLevelType.ERROR, workitem.getEntity().getRtid());
+                    InterfaceB.class.getName(), LogLevelType.ERROR, workitem.getEntity().getRtid());
             return false;
         }
     }
 
     /**
      * Handle a participant reallocate a workitem.
+     *
      * @param participant participant context
-     * @param workitem workitem context
+     * @param workitem    workitem context
      * @return true for a successful workitem reallocate
      */
     public static boolean ReallocateWorkitem(ParticipantContext participant, WorkitemContext workitem) {
@@ -262,23 +295,22 @@ public class InterfaceB {
                 container.MoveStartedToAllocated(workitem);
                 InterfaceB.WorkitemChanged(workitem, WorkitemStatusType.Fired, WorkitemResourcingStatusType.Allocated);
                 return true;
-            }
-            catch (Exception ex) {
+            } catch (Exception ex) {
                 // todo use interfaceE log to workitem log and interfaceX for exception handle
                 return false;
             }
-        }
-        else {
+        } else {
             LogUtil.Log(String.format("Participant %s(%s) try to reallocate %s, but no privilege.", participant.getDisplayName(), participant.getWorkerId(), workitem.getEntity().getWid()),
-                    InterfaceB.class.getName(), LogUtil.LogLevelType.UNAUTHORIZED, workitem.getEntity().getRtid());
+                    InterfaceB.class.getName(), LogLevelType.UNAUTHORIZED, workitem.getEntity().getRtid());
             return false;
         }
     }
 
     /**
      * Handle a participant suspend a workitem.
+     *
      * @param participant participant context
-     * @param workitem workitem context
+     * @param workitem    workitem context
      * @return true for a successful workitem suspend
      */
     public static boolean SuspendWorkitem(ParticipantContext participant, WorkitemContext workitem) {
@@ -288,23 +320,22 @@ public class InterfaceB {
                 container.MoveStartedToSuspend(workitem);
                 InterfaceB.WorkitemChanged(workitem, WorkitemStatusType.Suspended, WorkitemResourcingStatusType.Suspended);
                 return true;
-            }
-            catch (Exception ex) {
+            } catch (Exception ex) {
                 // todo use interfaceE log to workitem log and interfaceX for exception handle
                 return false;
             }
-        }
-        else {
+        } else {
             LogUtil.Log(String.format("Participant %s(%s) try to suspend %s, but no privilege.", participant.getDisplayName(), participant.getWorkerId(), workitem.getEntity().getWid()),
-                    InterfaceB.class.getName(), LogUtil.LogLevelType.UNAUTHORIZED, workitem.getEntity().getRtid());
+                    InterfaceB.class.getName(), LogLevelType.UNAUTHORIZED, workitem.getEntity().getRtid());
             return false;
         }
     }
 
     /**
      * Handle a participant unsuspend a workitem.
+     *
      * @param participant participant context
-     * @param workitem workitem context
+     * @param workitem    workitem context
      * @return true for a successful workitem unsuspend
      */
     public static boolean UnsuspendWorkitem(ParticipantContext participant, WorkitemContext workitem) {
@@ -313,8 +344,7 @@ public class InterfaceB {
             container.MoveSuspendToStarted(workitem);
             InterfaceB.WorkitemChanged(workitem, WorkitemStatusType.Executing, WorkitemResourcingStatusType.Started);
             return true;
-        }
-        catch (Exception ex) {
+        } catch (Exception ex) {
             // todo use interfaceE log to workitem log and interfaceX for exception handle
             return false;
         }
@@ -322,8 +352,9 @@ public class InterfaceB {
 
     /**
      * Handle a participant skip a workitem.
+     *
      * @param participant participant context
-     * @param workitem workitem context
+     * @param workitem    workitem context
      * @return true for a successful workitem skip
      */
     public static boolean SkipWorkitem(ParticipantContext participant, WorkitemContext workitem) {
@@ -334,23 +365,22 @@ public class InterfaceB {
                 InterfaceB.WorkitemChanged(workitem, WorkitemStatusType.Complete, WorkitemResourcingStatusType.Skipped);
                 InterfaceE.WriteLog(workitem, participant.getWorkerId(), RSEventType.skip);
                 return true;
-            }
-            catch (Exception ex) {
+            } catch (Exception ex) {
                 // todo use interfaceE to log workitem log and interfaceX for exception handle
                 return false;
             }
-        }
-        else {
+        } else {
             LogUtil.Log(String.format("Participant %s(%s) try to skip %s, but no privilege.", participant.getDisplayName(), participant.getWorkerId(), workitem.getEntity().getWid()),
-                    InterfaceB.class.getName(), LogUtil.LogLevelType.UNAUTHORIZED, workitem.getEntity().getRtid());
+                    InterfaceB.class.getName(), LogLevelType.UNAUTHORIZED, workitem.getEntity().getRtid());
             return false;
         }
     }
 
     /**
      * Handle a participant complete a workitem.
+     *
      * @param participant participant context
-     * @param workitem workitem context
+     * @param workitem    workitem context
      * @return true for a successful workitem complete
      */
     public static boolean CompleteWorkitem(ParticipantContext participant, WorkitemContext workitem) {
@@ -367,8 +397,7 @@ public class InterfaceB {
             InterfaceB.WorkitemChanged(workitem, WorkitemStatusType.Complete, WorkitemResourcingStatusType.Completed);
             InterfaceE.WriteLog(workitem, participant.getWorkerId(), RSEventType.complete);
             return true;
-        }
-        catch (Exception ex) {
+        } catch (Exception ex) {
             // todo use interfaceE to log workitem log and interfaceX for exception handle
             return false;
         }
@@ -377,8 +406,9 @@ public class InterfaceB {
     /**
      * Change a workitem from one status to another status.
      * NOTICE that while changing workitem status, its belonging work queue do NOT be changed.
-     * @param workitem workitem context
-     * @param preStatus original status
+     *
+     * @param workitem   workitem context
+     * @param preStatus  original status
      * @param postStatus destination status
      */
     public static void WorkitemStatusChanged(WorkitemContext workitem, WorkitemStatusType preStatus, WorkitemStatusType postStatus) {
@@ -391,8 +421,9 @@ public class InterfaceB {
     /**
      * Change a workitem from one resourcing status to another resourcing status.
      * NOTICE that while changing workitem resourcing status, its belonging work queue do NOT be changed.
-     * @param workitem workitem context
-     * @param preStatus original status
+     *
+     * @param workitem   workitem context
+     * @param preStatus  original status
      * @param postStatus destination status
      */
     public static void WorkitemResourcingStatusChanged(WorkitemContext workitem, WorkitemResourcingStatusType preStatus, WorkitemResourcingStatusType postStatus) {
@@ -404,8 +435,9 @@ public class InterfaceB {
 
     /**
      * Change a workitem from one status to another status.
-     * @param workitem workitem context
-     * @param toStatus destination status
+     *
+     * @param workitem           workitem context
+     * @param toStatus           destination status
      * @param toResourcingStatus destination resourcing status
      */
     public static void WorkitemChanged(WorkitemContext workitem, WorkitemStatusType toStatus, WorkitemResourcingStatusType toResourcingStatus) {
@@ -419,8 +451,7 @@ public class InterfaceB {
             }
             WorkitemContext.SaveToSteady(workitem);
             // todo use InterfaceE for logging
-        }
-        finally {
+        } finally {
             ContextLockManager.WriteUnLock(workitem.getClass(), workitem.getEntity().getWid());
         }
     }

@@ -8,6 +8,7 @@ import org.apache.commons.jexl2.Expression;
 import org.apache.commons.jexl2.JexlContext;
 import org.apache.commons.jexl2.JexlEngine;
 import org.apache.commons.jexl2.Script;
+import org.sysu.renCommon.enums.LogLevelType;
 import org.sysu.renResourcing.utility.LogUtil;
 
 /**
@@ -49,7 +50,7 @@ public class RJexlEvaluator implements REvaluator {
         }
         catch (Exception ex) {
             LogUtil.Echo(String.format("Evaluate failed (Expr: %s), %s", expr, ex),
-                    RJexlEvaluator.class.getName(), LogUtil.LogLevelType.ERROR);
+                    RJexlEvaluator.class.getName(), LogLevelType.ERROR);
             throw ex;
         }
     }
@@ -70,7 +71,7 @@ public class RJexlEvaluator implements REvaluator {
         }
         catch (Exception ex) {
             LogUtil.Echo(String.format("Evaluate condition failed (Expr: %s), %s", expr, ex),
-                    RJexlEvaluator.class.getName(), LogUtil.LogLevelType.ERROR);
+                    RJexlEvaluator.class.getName(), LogLevelType.ERROR);
             throw ex;
         }
     }
@@ -92,11 +93,11 @@ public class RJexlEvaluator implements REvaluator {
             String exMessage = e.getMessage() != null ? e.getMessage() : e.getClass().getCanonicalName();
             try {
                 LogUtil.Echo(String.format("Evaluate condition failed (Expr: %s), %s", script, e),
-                        RJexlEvaluator.class.getName(), LogUtil.LogLevelType.ERROR);
+                        RJexlEvaluator.class.getName(), LogLevelType.ERROR);
                 throw new Exception("evalScript('" + script + "'): " + exMessage, e);
             } catch (Exception e1) {
                 LogUtil.Echo(String.format("Evaluate condition failed, %s", e1),
-                        RJexlEvaluator.class.getName(), LogUtil.LogLevelType.ERROR);
+                        RJexlEvaluator.class.getName(), LogLevelType.ERROR);
                 return null;
             }
         }

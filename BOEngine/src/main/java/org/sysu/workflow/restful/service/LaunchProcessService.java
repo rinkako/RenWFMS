@@ -2,6 +2,7 @@ package org.sysu.workflow.restful.service;
 
 import org.hibernate.Session;
 import org.hibernate.Transaction;
+import org.sysu.renCommon.enums.LogLevelType;
 import org.sysu.workflow.Context;
 import org.sysu.workflow.Evaluator;
 import org.sysu.workflow.EvaluatorFactory;
@@ -32,13 +33,16 @@ import static org.sysu.workflow.utility.SerializationUtil.DeserializationSCXMLBy
  * Usage : All process launch service will be handled in this service module.
  */
 public final class LaunchProcessService {
+
     /**
      * obtain main bo xml content from database according to the process id, and then read and execute it
+     *
      * @param rtid the runtime record of a process
      */
     public static void LaunchProcess(String rtid) {
         Session session = HibernateUtil.GetLocalSession();
         Transaction transaction = session.beginTransaction();
+        boolean cmtFlag = false;
         try {
             RenRuntimerecordEntity rre = session.get(RenRuntimerecordEntity.class, rtid);
             assert rre != null;
@@ -47,21 +51,30 @@ public final class LaunchProcessService {
             assert rpe != null;
             String mainBO = rpe.getMainBo();
             List boList = session.createQuery(String.format("FROM RenBoEntity WHERE pid = '%s'", pid)).list();
-            for(Object bo:boList) {
+            RenBoEntity mainBoEntity = null;
+            for (Object bo : boList) {
                 RenBoEntity boEntity = (RenBoEntity) bo;
-                if(boEntity.getBoName().equals(mainBO)) {
-                    byte[] serializedBO = boEntity.getSerialized();
-                    SCXML DeserializedBO = DeserializationSCXMLByByteArray(serializedBO);
-                    LaunchProcessService.ExecuteBO(DeserializedBO, rtid, pid);
+                if (boEntity.getBoName().equals(mainBO)) {
+                    mainBoEntity = boEntity;
                     break;
                 }
             }
             transaction.commit();
+            cmtFlag = true;
+            if (mainBoEntity == null) {
+                LogUtil.Log("Main BO not exist for launching process: " + rtid,
+                        LaunchProcessService.class.getName(), LogLevelType.ERROR, rtid);
+                return;
+            }
+            byte[] serializedBO = mainBoEntity.getSerialized();
+            SCXML DeserializedBO = DeserializationSCXMLByByteArray(serializedBO);
+            LaunchProcessService.ExecuteBO(DeserializedBO, rtid, pid);
         } catch (Exception e) {
-            e.printStackTrace();
+            if (!cmtFlag) {
+                transaction.rollback();
+            }
             LogUtil.Log("When read bo by rtid, exception occurred, " + e.toString() + ", service rollback",
-                    LaunchProcessService.class.getName(), LogUtil.LogLevelType.ERROR, rtid);
-            transaction.rollback();
+                    LaunchProcessService.class.getName(), LogLevelType.ERROR, rtid);
         } finally {
             HibernateUtil.CloseLocalSession();
         }
@@ -69,16 +82,16 @@ public final class LaunchProcessService {
 
     /**
      * execute the main bo of the current process
-     * @param scxml
-     * @param rtid
-     * @param pid
+     *
+     * @param scxml scxml instance
+     * @param rtid process rtid
+     * @param pid process global id
      */
     public static void ExecuteBO(SCXML scxml, String rtid, String pid) {
         try {
 //          Evaluator evaluator = new JexlEvaluator();
             Evaluator evaluator = EvaluatorFactory.getEvaluator(scxml);
             SCXMLExecutor executor = new SCXMLExecutor(evaluator, new MultiStateMachineDispatcher(), new SimpleErrorReporter());
-            //初始化执行上下文
             Context rootContext = evaluator.newContext(null);
             executor.setRootContext(rootContext);
             executor.setRtid(rtid);
@@ -86,12 +99,14 @@ public final class LaunchProcessService {
             executor.setStateMachine(scxml);
             executor.go();
         } catch (Exception e) {
-            e.printStackTrace();
+            LogUtil.Log("When ExecuteBO, exception occurred, " + e.toString(),
+                    LaunchProcessService.class.getName(), LogLevelType.ERROR, rtid);
         }
     }
 
     /**
      * Serialize a list of BO by their id and return involved business role names.
+     *
      * @param boidList BOs to be serialized
      * @return HashSet of Involved business role name
      */
@@ -131,13 +146,11 @@ public final class LaunchProcessService {
             }
             transaction.commit();
             return retSet;
-        }
-        catch (Exception ex) {
-            LogUtil.Log(String.format("When serialize BOList(%s), exception occurred, %s, service rollback", boidList, ex),
-                    LaunchProcessService.class.getName(), LogUtil.LogLevelType.ERROR, boidList);
+        } catch (Exception ex) {
             transaction.rollback();
-        }
-        finally {
+            LogUtil.Log(String.format("When serialize BOList(%s), exception occurred, %s, service rollback", boidList, ex),
+                    LaunchProcessService.class.getName(), LogLevelType.ERROR, boidList);
+        } finally {
             HibernateUtil.CloseLocalSession();
         }
         return retSet;
@@ -145,6 +158,7 @@ public final class LaunchProcessService {
 
     /**
      * Interpret XML string to SCXML instance.
+     *
      * @param boXMLContent BO XML string
      * @return {@code SCXML} instance
      */
@@ -152,16 +166,16 @@ public final class LaunchProcessService {
         try {
             InputStream inputStream = new ByteArrayInputStream(boXMLContent.getBytes());
             return SCXMLReader.read(inputStream);
-        }
-        catch (Exception ex) {
+        } catch (Exception ex) {
             LogUtil.Log(String.format("When read BO XML data, exception occurred, %s", ex),
-                    LaunchProcessService.class.getName(), LogUtil.LogLevelType.ERROR, boXMLContent);
+                    LaunchProcessService.class.getName(), LogLevelType.ERROR, boXMLContent);
         }
         return null;
     }
 
     /**
      * Get involved business role name of one BO.
+     *
      * @param scxml BO {@code SCXML} instance.
      * @return HashSet of involved business role name
      */

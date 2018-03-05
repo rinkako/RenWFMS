@@ -2,6 +2,7 @@ package org.sysu.renResourcing.context;
 
 import org.hibernate.Session;
 import org.hibernate.Transaction;
+import org.sysu.renCommon.enums.LogLevelType;
 import org.sysu.renCommon.utility.CommonUtil;
 import org.sysu.renCommon.utility.SerializationUtil;
 import org.sysu.renCommon.utility.TimestampUtil;
@@ -148,7 +149,7 @@ public class ResourcingContext implements Comparable<ResourcingContext>, Seriali
                 transaction.rollback();
             }
             LogUtil.Log("Get resourcing request context but exception occurred, " + ex,
-                    TaskContext.class.getName(), LogUtil.LogLevelType.ERROR, rtid);
+                    TaskContext.class.getName(), LogLevelType.ERROR, rtid);
             return null;
         }
         finally {
@@ -163,7 +164,7 @@ public class ResourcingContext implements Comparable<ResourcingContext>, Seriali
     public static void SaveToSteady(ResourcingContext context) {
         if (context == null) {
             LogUtil.Log("Ignore null resourcing context saving.", TaskContext.class.getName(),
-                    LogUtil.LogLevelType.WARNING, "");
+                    LogLevelType.WARNING, "");
             return;
         }
         Session session = HibernateUtil.GetLocalSession();
@@ -182,7 +183,7 @@ public class ResourcingContext implements Comparable<ResourcingContext>, Seriali
         catch (Exception ex) {
             transaction.rollback();
             LogUtil.Log("Save resourcing request context but exception occurred, " + ex,
-                    TaskContext.class.getName(), LogUtil.LogLevelType.ERROR, context.getRtid());
+                    TaskContext.class.getName(), LogLevelType.ERROR, context.getRtid());
         }
         finally {
             HibernateUtil.CloseLocalSession();

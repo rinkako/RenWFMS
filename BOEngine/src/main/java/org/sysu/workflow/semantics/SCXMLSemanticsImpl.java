@@ -1,7 +1,9 @@
 
 package org.sysu.workflow.semantics;
 
+import org.sysu.renCommon.enums.LogLevelType;
 import org.sysu.workflow.*;
+import org.sysu.workflow.instanceTree.InstanceManager;
 import org.sysu.workflow.invoke.Invoker;
 import org.sysu.workflow.invoke.InvokerException;
 import org.sysu.workflow.model.*;
@@ -194,10 +196,12 @@ public class SCXMLSemanticsImpl implements SCXMLSemantics {
             HashMap<String, String> args = new HashMap<String, String>();
             args.put("rtid", exctx.Rtid);
             try {
+                InstanceManager.UnregisterInstanceTree(exctx.Rtid);
                 GlobalContext.Interaction.Send(GlobalContext.URL_RS_FINISH, args, exctx.Rtid);
-            } catch(Exception e) {
+            }
+            catch (Exception e) {
                 LogUtil.Log("When send finish Rtid to resource service, exception occurred, " + e.toString(),
-                        Call.class.getName(), LogUtil.LogLevelType.ERROR, exctx.Rtid);
+                        Call.class.getName(), LogLevelType.ERROR, exctx.Rtid);
             }
         }
     }

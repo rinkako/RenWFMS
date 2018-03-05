@@ -6,10 +6,11 @@ package org.sysu.workflow.restful.entity;
 
 import javax.persistence.*;
 import java.sql.Timestamp;
+import java.util.Objects;
 
 /**
  * Author: Rinkako
- * Date  : 2018/2/7
+ * Date  : 2018/3/5
  * Usage :
  */
 @Entity
@@ -30,6 +31,8 @@ public class RenRuntimerecordEntity {
     private Integer resourceBindingType;
     private Integer failureType;
     private String participantCache;
+    private Timestamp finishTimestamp;
+    private int isSucceed;
 
     @Id
     @Column(name = "rtid", nullable = false, length = 64)
@@ -181,55 +184,53 @@ public class RenRuntimerecordEntity {
         this.participantCache = participantCache;
     }
 
+    @Basic
+    @Column(name = "finish_timestamp", nullable = true)
+    public Timestamp getFinishTimestamp() {
+        return finishTimestamp;
+    }
+
+    public void setFinishTimestamp(Timestamp finishTimestamp) {
+        this.finishTimestamp = finishTimestamp;
+    }
+
+    @Basic
+    @Column(name = "is_succeed", nullable = false)
+    public int getIsSucceed() {
+        return isSucceed;
+    }
+
+    public void setIsSucceed(int isSucceed) {
+        this.isSucceed = isSucceed;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-
         RenRuntimerecordEntity that = (RenRuntimerecordEntity) o;
-
-        if (rtid != null ? !rtid.equals(that.rtid) : that.rtid != null) return false;
-        if (processId != null ? !processId.equals(that.processId) : that.processId != null) return false;
-        if (processName != null ? !processName.equals(that.processName) : that.processName != null) return false;
-        if (sessionId != null ? !sessionId.equals(that.sessionId) : that.sessionId != null) return false;
-        if (launchAuthorityId != null ? !launchAuthorityId.equals(that.launchAuthorityId) : that.launchAuthorityId != null)
-            return false;
-        if (launchTimestamp != null ? !launchTimestamp.equals(that.launchTimestamp) : that.launchTimestamp != null)
-            return false;
-        if (launchFrom != null ? !launchFrom.equals(that.launchFrom) : that.launchFrom != null) return false;
-        if (launchType != null ? !launchType.equals(that.launchType) : that.launchType != null) return false;
-        if (tag != null ? !tag.equals(that.tag) : that.tag != null) return false;
-        if (interpreterId != null ? !interpreterId.equals(that.interpreterId) : that.interpreterId != null)
-            return false;
-        if (resourcingId != null ? !resourcingId.equals(that.resourcingId) : that.resourcingId != null) return false;
-        if (resourceBinding != null ? !resourceBinding.equals(that.resourceBinding) : that.resourceBinding != null)
-            return false;
-        if (resourceBindingType != null ? !resourceBindingType.equals(that.resourceBindingType) : that.resourceBindingType != null)
-            return false;
-        if (failureType != null ? !failureType.equals(that.failureType) : that.failureType != null) return false;
-        if (participantCache != null ? !participantCache.equals(that.participantCache) : that.participantCache != null)
-            return false;
-
-        return true;
+        return isSucceed == that.isSucceed &&
+                Objects.equals(rtid, that.rtid) &&
+                Objects.equals(processId, that.processId) &&
+                Objects.equals(processName, that.processName) &&
+                Objects.equals(sessionId, that.sessionId) &&
+                Objects.equals(launchAuthorityId, that.launchAuthorityId) &&
+                Objects.equals(launchTimestamp, that.launchTimestamp) &&
+                Objects.equals(launchFrom, that.launchFrom) &&
+                Objects.equals(launchType, that.launchType) &&
+                Objects.equals(tag, that.tag) &&
+                Objects.equals(interpreterId, that.interpreterId) &&
+                Objects.equals(resourcingId, that.resourcingId) &&
+                Objects.equals(resourceBinding, that.resourceBinding) &&
+                Objects.equals(resourceBindingType, that.resourceBindingType) &&
+                Objects.equals(failureType, that.failureType) &&
+                Objects.equals(participantCache, that.participantCache) &&
+                Objects.equals(finishTimestamp, that.finishTimestamp);
     }
 
     @Override
     public int hashCode() {
-        int result = rtid != null ? rtid.hashCode() : 0;
-        result = 31 * result + (processId != null ? processId.hashCode() : 0);
-        result = 31 * result + (processName != null ? processName.hashCode() : 0);
-        result = 31 * result + (sessionId != null ? sessionId.hashCode() : 0);
-        result = 31 * result + (launchAuthorityId != null ? launchAuthorityId.hashCode() : 0);
-        result = 31 * result + (launchTimestamp != null ? launchTimestamp.hashCode() : 0);
-        result = 31 * result + (launchFrom != null ? launchFrom.hashCode() : 0);
-        result = 31 * result + (launchType != null ? launchType.hashCode() : 0);
-        result = 31 * result + (tag != null ? tag.hashCode() : 0);
-        result = 31 * result + (interpreterId != null ? interpreterId.hashCode() : 0);
-        result = 31 * result + (resourcingId != null ? resourcingId.hashCode() : 0);
-        result = 31 * result + (resourceBinding != null ? resourceBinding.hashCode() : 0);
-        result = 31 * result + (resourceBindingType != null ? resourceBindingType.hashCode() : 0);
-        result = 31 * result + (failureType != null ? failureType.hashCode() : 0);
-        result = 31 * result + (participantCache != null ? participantCache.hashCode() : 0);
-        return result;
+
+        return Objects.hash(rtid, processId, processName, sessionId, launchAuthorityId, launchTimestamp, launchFrom, launchType, tag, interpreterId, resourcingId, resourceBinding, resourceBindingType, failureType, participantCache, finishTimestamp, isSucceed);
     }
 }

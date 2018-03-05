@@ -1,6 +1,8 @@
 package org.sysu.workflow.utility;
 
 import org.hibernate.Session;
+import org.sysu.renCommon.enums.LogLevelType;
+import org.sysu.renCommon.logging.LogMessagePackage;
 import org.sysu.renCommon.utility.TimestampUtil;
 import org.sysu.workflow.GlobalContext;
 import org.sysu.workflow.restful.entity.RenLogEntity;
@@ -129,11 +131,4 @@ public final class LogUtil {
      * Buffer read write lock.
      */
     private static ReentrantReadWriteLock readWriteLock = new ReentrantReadWriteLock();
-
-    /**
-     * Enum: Log level type.
-     */
-    public enum LogLevelType {
-        INFO, WARNNING, ERROR, UNAUTHORIZED
-    }
 }

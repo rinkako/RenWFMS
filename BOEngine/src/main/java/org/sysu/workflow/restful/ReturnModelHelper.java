@@ -7,6 +7,7 @@ package org.sysu.workflow.restful;
 import org.sysu.renCommon.dto.ReturnElement;
 import org.sysu.renCommon.dto.ReturnModel;
 import org.sysu.renCommon.dto.StatusCode;
+import org.sysu.renCommon.enums.LogLevelType;
 import org.sysu.renCommon.utility.TimestampUtil;
 import org.sysu.workflow.GlobalContext;
 import org.sysu.workflow.utility.LogUtil;
@@ -61,7 +62,7 @@ public class ReturnModelHelper {
         returnElement.setMessage(token);
         rnModel.setReturnElement(returnElement);
         LogUtil.Log(String.format("Unauthorized service request (token:%s)", token),
-                ReturnModelHelper.class.getName(), LogUtil.LogLevelType.UNAUTHORIZED, "");
+                ReturnModelHelper.class.getName(), LogLevelType.UNAUTHORIZED, "");
         return rnModel;
     }
 

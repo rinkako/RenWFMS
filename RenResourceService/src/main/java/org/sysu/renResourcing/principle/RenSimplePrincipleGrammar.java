@@ -4,6 +4,7 @@
  */
 package org.sysu.renResourcing.principle;
 
+import org.sysu.renCommon.enums.LogLevelType;
 import org.sysu.renCommon.enums.WorkitemDistributionType;
 import org.sysu.renResourcing.utility.LogUtil;
 import org.sysu.renCommon.utility.SerializationUtil;
@@ -55,7 +56,7 @@ public class RenSimplePrincipleGrammar implements PrincipleGrammar {
         }
         catch (Exception ex) {
             LogUtil.Log(String.format("Parse (%s) failed: %s", descriptor, ex),
-                    RenSimplePrincipleGrammar.class.getName(), LogUtil.LogLevelType.ERROR, "");
+                    RenSimplePrincipleGrammar.class.getName(), LogLevelType.ERROR, "");
             return null;
         }
     }

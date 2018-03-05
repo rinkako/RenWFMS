@@ -5,6 +5,7 @@
 package org.sysu.renResourcing;
 
 import org.sysu.renCommon.context.ObservableMessage;
+import org.sysu.renCommon.enums.LogLevelType;
 import org.sysu.renResourcing.consistency.ContextCachePool;
 import org.sysu.renResourcing.context.ResourcingContext;
 import org.sysu.renResourcing.utility.LogUtil;
@@ -52,37 +53,38 @@ public class RScheduler implements Observer {
 
     /**
      * Schedule a resourcing context.
+     *
      * @param context resourcing request context to be scheduled
      */
     public void Schedule(ResourcingContext context) {
         if (context == null) {
             LogUtil.Log("Schedule null context, ignored.",
-                    RScheduler.class.getName(), LogUtil.LogLevelType.WARNING, "");
+                    RScheduler.class.getName(), LogLevelType.WARNING, "");
             return;
         }
         try {
             this.pendingQueue.add(context);
             LogUtil.Log(String.format("Schedule resourcing context(%s) to pending queue, current queue length is %s",
                     context.getRstid(), this.pendingQueue.size()), RScheduler.class.getName(),
-                    LogUtil.LogLevelType.INFO, context.getRtid());
+                    LogLevelType.INFO, context.getRtid());
             this.HandlePendingQueue();
-        }
-        catch (Exception ex) {
+        } catch (Exception ex) {
             LogUtil.Log(String.format("Schedule resourcing context(%s) exception occurred, %s", context.getRstid(), ex),
-                    RScheduler.class.getName(), LogUtil.LogLevelType.ERROR, context.getRtid());
-            throw ex;  // re throw to ResourcingEngine
+                    RScheduler.class.getName(), LogLevelType.ERROR, context.getRtid());
+            throw ex;  // re thrown to controller
         }
     }
 
     /**
      * Schedule a resourcing context synchronously and wait for return value.
+     *
      * @param context resourcing request context to be scheduled
      * @return response package in json encoded string
      */
     public String ScheduleSync(ResourcingContext context) {
         if (context == null) {
             LogUtil.Log("Schedule null context, ignored.",
-                    RScheduler.class.getName(), LogUtil.LogLevelType.WARNING, "");
+                    RScheduler.class.getName(), LogLevelType.WARNING, "");
             return null;
         }
         try {
@@ -91,24 +93,23 @@ public class RScheduler implements Observer {
             tracker.addObserver(this);
             tracker.run();
             return context.getExecutionResult();
-        }
-        catch (Exception ex) {
+        } catch (Exception ex) {
             LogUtil.Log("Exception occurred when schedule context synchronously, " + ex,
-                    RScheduler.class.getName(), LogUtil.LogLevelType.ERROR, context.getRtid());
+                    RScheduler.class.getName(), LogLevelType.ERROR, context.getRtid());
             throw ex;
         }
     }
 
     /**
      * Get pending resourcing requests count.
+     *
      * @return length of pending queue
      */
     public int GetPendingCount() {
         this.handlePendingLock.lock();
         try {
             return this.pendingQueue.size();
-        }
-        finally {
+        } finally {
             this.handlePendingLock.unlock();
         }
     }
@@ -123,7 +124,7 @@ public class RScheduler implements Observer {
                 ResourcingContext pCtx = this.pendingQueue.poll();
                 if (pCtx != null) {
                     LogUtil.Log(String.format("Resourcing context(%s) is scheduled to launch.", pCtx.getRstid()),
-                            RScheduler.class.getName(), LogUtil.LogLevelType.INFO, pCtx.getRtid());
+                            RScheduler.class.getName(), LogLevelType.INFO, pCtx.getRtid());
                     pCtx.SetScheduled();
                     ResourcingContext.SaveToSteady(pCtx);
                     this.LaunchTracker(pCtx);
@@ -131,14 +132,14 @@ public class RScheduler implements Observer {
                     break;
                 }
             }
-        }
-        finally {
+        } finally {
             this.handlePendingLock.unlock();
         }
     }
 
     /**
      * Actually handle a workitem launching.
+     *
      * @param context resourcing request context to be fired
      */
     private void LaunchTracker(ResourcingContext context) {
@@ -146,8 +147,7 @@ public class RScheduler implements Observer {
         this.trackerVectorLock.lock();
         try {
             this.trackerVector.add(tracker);
-        }
-        finally {
+        } finally {
             this.trackerVectorLock.unlock();
         }
         tracker.addObserver(this);
@@ -156,6 +156,7 @@ public class RScheduler implements Observer {
 
     /**
      * Get the global unique instance of Scheduler.
+     *
      * @return RScheduler object.
      */
     public static RScheduler GetInstance() {
@@ -167,6 +168,7 @@ public class RScheduler implements Observer {
      * application calls an <tt>Observable</tt> object's
      * <code>notifyObservers</code> method to have all the object's
      * observers notified of the change.
+     *
      * @param o   the observable object.
      * @param arg an argument passed to the <code>notifyObservers</code>
      */
@@ -177,8 +179,7 @@ public class RScheduler implements Observer {
         this.trackerVectorLock.lock();
         try {
             this.trackerVector.remove(tracker);
-        }
-        finally {
+        } finally {
             this.trackerVectorLock.unlock();
         }
         ResourcingContext rCtx = tracker.getContext();
@@ -197,19 +198,16 @@ public class RScheduler implements Observer {
             }
             ResourcingContext.SaveToSteady(rCtx);
             ContextCachePool.Remove(ResourcingContext.class, rCtx.getRstid());
-        }
-        catch (Exception ex) {
+        } catch (Exception ex) {
             try {
                 LogUtil.Log(String.format("Achieving resourcing context(%s: %s) but exception occurred, %S",
                         rCtx.getService().name(), rCtx.getRstid(), ex), RScheduler.class.getName(),
-                        LogUtil.LogLevelType.ERROR, rCtx.getRtid());
-            }
-            catch (Exception ex2) {
+                        LogLevelType.ERROR, rCtx.getRtid());
+            } catch (Exception ex2) {
                 LogUtil.Log(String.format("Achieving resourcing context but exception occurred: %s, %s", ex, ex2),
-                        RScheduler.class.getName(), LogUtil.LogLevelType.ERROR, "");
+                        RScheduler.class.getName(), LogLevelType.ERROR, "");
             }
-        }
-        finally {
+        } finally {
             this.HandlePendingQueue();
         }
     }

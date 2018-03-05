@@ -5,6 +5,8 @@
 package org.sysu.renResourcing.utility;
 
 import org.apache.commons.codec.binary.Base64;
+import org.sysu.renCommon.enums.LogLevelType;
+
 import java.security.*;
 import java.security.spec.PKCS8EncodedKeySpec;
 import java.security.spec.X509EncodedKeySpec;
@@ -27,7 +29,7 @@ public class RSASignatureUtil {
         }
         catch (Exception ex) {
             LogUtil.Log("GenerateKeyPair but exception occurred, " + ex, RSASignatureUtil.class.getName(),
-                    LogUtil.LogLevelType.ERROR, "");
+                    LogLevelType.ERROR, "");
             return null;
         }
     }
@@ -51,7 +53,7 @@ public class RSASignatureUtil {
         }
         catch (Exception ex) {
             LogUtil.Log("Signature but exception occurred, " + ex, RSASignatureUtil.class.getName(),
-                    LogUtil.LogLevelType.ERROR, "");
+                    LogLevelType.ERROR, "");
             return null;
         }
     }
@@ -76,7 +78,7 @@ public class RSASignatureUtil {
         }
             catch (Exception ex) {
             LogUtil.Log("Verify but exception occurred, " + ex, RSASignatureUtil.class.getName(),
-                    LogUtil.LogLevelType.ERROR, "");
+                    LogLevelType.ERROR, "");
             return false;
         }
     }

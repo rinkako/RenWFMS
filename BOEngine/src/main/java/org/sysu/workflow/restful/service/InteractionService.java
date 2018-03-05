@@ -4,6 +4,7 @@
  */
 package org.sysu.workflow.restful.service;
 
+import org.sysu.renCommon.enums.LogLevelType;
 import org.sysu.workflow.SCXMLExecutionContext;
 import org.sysu.workflow.SCXMLIOProcessor;
 import org.sysu.workflow.env.MultiStateMachineDispatcher;
@@ -37,17 +38,17 @@ public class InteractionService {
             RInstanceTree instanceTree = InstanceManager.GetInstanceTree(rtid);
             if (instanceTree == null) {
                 LogUtil.Log(String.format("Dispatch callback(BO:%s | ON:%s | EVT:%s | P:%s ), but tree not exist, ignored.",
-                        bo, on, event, payload), InteractionService.class.getName(), LogUtil.LogLevelType.WARNNING, rtid);
+                        bo, on, event, payload), InteractionService.class.getName(), LogLevelType.WARNING, rtid);
                 return;
             }
             RTreeNode mainBONode = instanceTree.Root;
             if (mainBONode == null) {
                 LogUtil.Log(String.format("Dispatch callback(BO:%s | ON:%s | EVT:%s | P:%s ), but main BO not exist, ignored.",
-                        bo, on, event, payload), InteractionService.class.getName(), LogUtil.LogLevelType.WARNNING, rtid);
+                        bo, on, event, payload), InteractionService.class.getName(), LogLevelType.WARNING, rtid);
                 return;
             }
             LogUtil.Log(String.format("Dispatch callback(BO:%s | ON:%s | EVT:%s | P:%s )",
-                    bo, on, event, payload), InteractionService.class.getName(), LogUtil.LogLevelType.INFO, rtid);
+                    bo, on, event, payload), InteractionService.class.getName(), LogLevelType.INFO, rtid);
             MultiStateMachineDispatcher dispatcher = (MultiStateMachineDispatcher) mainBONode.getExect().getEventDispatcher();
             SCXMLExecutionContext ctx = mainBONode.getExect();
             dispatcher.send(ctx.RootTid, ctx.Tid, "", MessageMode.UNICAST, bo, "",
@@ -55,7 +56,7 @@ public class InteractionService {
         }
         catch (Exception ex) {
             LogUtil.Log(String.format("Dispatch callback(BO:%s | ON:%s | EVT:%s | P:%s ), but exception occurred, %s",
-                bo, on, event, payload, ex), InteractionService.class.getName(), LogUtil.LogLevelType.ERROR, rtid);
+                bo, on, event, payload, ex), InteractionService.class.getName(), LogLevelType.ERROR, rtid);
             throw ex;  // rethrow to controller
         }
     }

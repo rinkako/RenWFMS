@@ -6,6 +6,7 @@ package org.sysu.workflow.model.extend;
 
 import org.hibernate.Session;
 import org.hibernate.Transaction;
+import org.sysu.renCommon.enums.LogLevelType;
 import org.sysu.workflow.env.MultiStateMachineDispatcher;
 import org.sysu.workflow.instanceTree.InstanceManager;
 import org.sysu.workflow.instanceTree.RTreeNode;
@@ -55,6 +56,7 @@ public class SubStateMachine extends NamelistHolder implements PathResolverHolde
 
     /**
      * Get the value of src
+     *
      * @return value of src property
      */
     public String getSrc() {
@@ -63,6 +65,7 @@ public class SubStateMachine extends NamelistHolder implements PathResolverHolde
 
     /**
      * Set the value of src
+     *
      * @param src the src value to set
      */
     public void setSrc(String src) {
@@ -71,6 +74,7 @@ public class SubStateMachine extends NamelistHolder implements PathResolverHolde
 
     /**
      * Get the value of instance
+     *
      * @return value of instance property
      */
     public int getInstances() {
@@ -79,6 +83,7 @@ public class SubStateMachine extends NamelistHolder implements PathResolverHolde
 
     /**
      * Set the value of instance
+     *
      * @param instances the instance value to set, represent how many sub instance ought to be created
      */
     public void setInstances(int instances) {
@@ -87,6 +92,7 @@ public class SubStateMachine extends NamelistHolder implements PathResolverHolde
 
     /**
      * Get the value of pathResolver
+     *
      * @return value of pathResolver property
      */
     public PathResolver getPathResolver() {
@@ -95,6 +101,7 @@ public class SubStateMachine extends NamelistHolder implements PathResolverHolde
 
     /**
      * Set the value of pathResolver
+     *
      * @param pathResolver The path resolver to use.
      */
     public void setPathResolver(PathResolver pathResolver) {
@@ -103,9 +110,8 @@ public class SubStateMachine extends NamelistHolder implements PathResolverHolde
 
     /**
      * Execution of encountering this label
+     *
      * @param exctx The ActionExecutionContext for this execution instance
-     * @throws ModelException
-     * @throws SCXMLExpressionException
      */
     @Override
     public void execute(ActionExecutionContext exctx) {
@@ -156,14 +162,13 @@ public class SubStateMachine extends NamelistHolder implements PathResolverHolde
                             break;
                         }
                     }
-                }
-                catch (Exception e) {
+                    transaction.commit();
+                } catch (Exception e) {
                     e.printStackTrace();
                     transaction.rollback();
                     LogUtil.Log("When read bo by rtid, exception occurred, " + e.toString() + ", service rollback",
-                            LaunchProcessService.class.getName(), LogUtil.LogLevelType.ERROR, currentExecutionContext.Rtid);
-                }
-                finally {
+                            LaunchProcessService.class.getName(), LogLevelType.ERROR, currentExecutionContext.Rtid);
+                } finally {
                     HibernateUtil.CloseLocalSession();
                 }
             }
@@ -180,7 +185,7 @@ public class SubStateMachine extends NamelistHolder implements PathResolverHolde
                 System.out.println("Create sub state machine from: " + url.getFile());
 
                 Context rootContext = evaluator.newContext(null);
-                for (Map.Entry<String,Object> entry : payloadDataMap.entrySet()){
+                for (Map.Entry<String, Object> entry : payloadDataMap.entrySet()) {
                     rootContext.set(entry.getKey(), entry.getValue());
                 }
                 executor.setRootContext(rootContext);

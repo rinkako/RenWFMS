@@ -7,6 +7,7 @@ import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+import org.sysu.renCommon.enums.LogLevelType;
 
 /**
  * Author: Rinkako
@@ -74,7 +75,7 @@ public class HibernateUtil {
         }
         catch (Exception ex) {
             LogUtil.Echo("Close hibernate session failed, " + ex,
-                    HibernateUtil.class.getName(), LogUtil.LogLevelType.ERROR);
+                    HibernateUtil.class.getName(), LogLevelType.ERROR);
         }
     }
 }

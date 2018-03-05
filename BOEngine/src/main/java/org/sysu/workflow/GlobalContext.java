@@ -22,6 +22,7 @@ public class GlobalContext {
      * Service URL for RS submit task.
      */
     public static final String URL_RS_SUBMITTASK = "http://localhost:10233/internal/submitTask";
+
     /**
      * Service URL for RS finish life cycle of BO.
      */

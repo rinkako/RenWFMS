@@ -6,6 +6,7 @@ package org.sysu.renResourcing.context;
 
 import org.hibernate.Session;
 import org.hibernate.Transaction;
+import org.sysu.renCommon.enums.LogLevelType;
 import org.sysu.renResourcing.consistency.ContextCachePool;
 import org.sysu.renResourcing.context.steady.RenBoEntity;
 import org.sysu.renResourcing.context.steady.RenRstaskEntity;
@@ -156,7 +157,7 @@ public class TaskContext implements Serializable, RCacheablesContext {
                 transaction.rollback();
             }
             LogUtil.Log("When json serialization exception occurred, transaction rollback. " + ex,
-                    TaskContext.class.getName(), LogUtil.LogLevelType.ERROR, rtid);
+                    TaskContext.class.getName(), LogLevelType.ERROR, rtid);
             return null;
         }
         finally {

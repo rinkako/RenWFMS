@@ -3,6 +3,8 @@
  * Rinkako, Ariana, Gordan. SYSU SDCS.
  */
 package org.sysu.renResourcing.utility;
+import org.sysu.renCommon.enums.LogLevelType;
+
 import java.sql.Timestamp;
 
 /**
@@ -18,7 +20,7 @@ final class LogMessagePackage {
      * @param type message type
      * @param ts timestamp
      */
-    LogMessagePackage(String rtid, String msg, String label, LogUtil.LogLevelType type, Timestamp ts) {
+    LogMessagePackage(String rtid, String msg, String label, LogLevelType type, Timestamp ts) {
         this.Rtid = rtid;
         this.Message = msg;
         this.Label = label;
@@ -44,7 +46,7 @@ final class LogMessagePackage {
     /**
      * Log level type.
      */
-    public LogUtil.LogLevelType Level;
+    public LogLevelType Level;
 
     /**
      * Log timestamp.

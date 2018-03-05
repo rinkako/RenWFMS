@@ -6,6 +6,7 @@ package org.sysu.renResourcing.plugin;
 
 import org.hibernate.Session;
 import org.hibernate.Transaction;
+import org.sysu.renCommon.enums.LogLevelType;
 import org.sysu.renResourcing.context.steady.RenRseventlogEntity;
 import org.sysu.renResourcing.utility.HibernateUtil;
 import org.sysu.renResourcing.utility.LogUtil;
@@ -43,7 +44,7 @@ public class EventLogWriterPlugin extends AsyncRunnablePlugin {
         if (this.isRunning) {
             LogUtil.Log(String.format("Try to add event to a running writer, ignored. (Wid: %s, Pid: %s, WorkerId: %s, Evt: %s)",
                     eventEntity.getWid(), eventEntity.getProcessid(), eventEntity.getWorkerid(), eventEntity.getEvent()),
-                    EventLogWriterPlugin.class.getName(), LogUtil.LogLevelType.WARNING, rtid);
+                    EventLogWriterPlugin.class.getName(), LogLevelType.WARNING, rtid);
             return;
         }
         this.logEvtQueue.add(eventEntity);
@@ -76,7 +77,7 @@ public class EventLogWriterPlugin extends AsyncRunnablePlugin {
             catch (Exception ex) {
                 LogUtil.Echo(String.format("Fail to insert RS event log to steady. (Wid: %s, Pid: %s, WorkerId: %s, Evt: %s), %s",
                         eventEntity.getWid(), eventEntity.getProcessid(), eventEntity.getWorkerid(), eventEntity.getEvent(), ex),
-                        EventLogWriterPlugin.class.getName(), LogUtil.LogLevelType.ERROR);
+                        EventLogWriterPlugin.class.getName(), LogLevelType.ERROR);
             }
         }
         session.flush();
