@@ -1,3 +1,7 @@
+/*
+ * Project Ren @ 2018
+ * Rinkako, Ariana, Gordan. SYSU SDCS.
+ */
 package org.sysu.workflow.restful.service;
 
 import org.hibernate.Session;
@@ -81,30 +85,6 @@ public final class LaunchProcessService {
     }
 
     /**
-     * execute the main bo of the current process
-     *
-     * @param scxml scxml instance
-     * @param rtid process rtid
-     * @param pid process global id
-     */
-    public static void ExecuteBO(SCXML scxml, String rtid, String pid) {
-        try {
-//          Evaluator evaluator = new JexlEvaluator();
-            Evaluator evaluator = EvaluatorFactory.getEvaluator(scxml);
-            SCXMLExecutor executor = new SCXMLExecutor(evaluator, new MultiStateMachineDispatcher(), new SimpleErrorReporter());
-            Context rootContext = evaluator.newContext(null);
-            executor.setRootContext(rootContext);
-            executor.setRtid(rtid);
-            executor.setPid(pid);
-            executor.setStateMachine(scxml);
-            executor.go();
-        } catch (Exception e) {
-            LogUtil.Log("When ExecuteBO, exception occurred, " + e.toString(),
-                    LaunchProcessService.class.getName(), LogLevelType.ERROR, rtid);
-        }
-    }
-
-    /**
      * Serialize a list of BO by their id and return involved business role names.
      *
      * @param boidList BOs to be serialized
@@ -154,6 +134,30 @@ public final class LaunchProcessService {
             HibernateUtil.CloseLocalSession();
         }
         return retSet;
+    }
+
+    /**
+     * execute the main bo of the current process
+     *
+     * @param scxml scxml instance
+     * @param rtid process rtid
+     * @param pid process global id
+     */
+    private static void ExecuteBO(SCXML scxml, String rtid, String pid) {
+        try {
+//          Evaluator evaluator = new JexlEvaluator();
+            Evaluator evaluator = EvaluatorFactory.getEvaluator(scxml);
+            SCXMLExecutor executor = new SCXMLExecutor(evaluator, new MultiStateMachineDispatcher(), new SimpleErrorReporter());
+            Context rootContext = evaluator.newContext(null);
+            executor.setRootContext(rootContext);
+            executor.setRtid(rtid);
+            executor.setPid(pid);
+            executor.setStateMachine(scxml);
+            executor.go();
+        } catch (Exception e) {
+            LogUtil.Log("When ExecuteBO, exception occurred, " + e.toString(),
+                    LaunchProcessService.class.getName(), LogLevelType.ERROR, rtid);
+        }
     }
 
     /**

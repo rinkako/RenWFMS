@@ -6,6 +6,7 @@ package org.sysu.renNameService.nameSpacing;
 
 import org.hibernate.Session;
 import org.hibernate.Transaction;
+import org.sysu.renCommon.utility.AuthDomainHelper;
 import org.sysu.renCommon.utility.TimestampUtil;
 import org.sysu.renNameService.GlobalContext;
 import org.sysu.renNameService.entity.RenBoEntity;
@@ -225,7 +226,6 @@ public class NameSpacingService {
             String rtid = String.format("RTID_%s_%s", renid, UUID.randomUUID());
             rrte.setRtid(rtid);
             rrte.setLaunchFrom(from);
-            rrte.setLaunchAuthorityId(renid);
             rrte.setSessionId(authoritySession);
             rrte.setProcessId(pid);
             rrte.setProcessName(rpe.getProcessName());
@@ -233,7 +233,6 @@ public class NameSpacingService {
             rrte.setLaunchType(launchType);
             rrte.setFailureType(failureType);
             rrte.setResourceBinding(binding);
-            rrte.setLaunchTimestamp(TimestampUtil.GetCurrentTimestamp());
             session.save(rrte);
             transaction.commit();
             return String.format("%s,%s", rtid, authSign);
@@ -244,6 +243,39 @@ public class NameSpacingService {
             HibernateUtil.CloseLocalSession();
         }
         return null;
+    }
+
+    /**
+     * Start a process.
+     *
+     * @param rtid process rtid.
+     */
+    public static void StartProcess(String rtid) throws Exception {
+        Session session = HibernateUtil.GetLocalSession();
+        Transaction transaction = session.beginTransaction();
+        try {
+            RenRuntimerecordEntity rrte = new RenRuntimerecordEntity();
+            rrte.setLaunchTimestamp(TimestampUtil.GetCurrentTimestamp());
+            String launcher = AuthDomainHelper.GetAuthNameByRTID(rtid);
+            rrte.setLaunchAuthorityId(launcher);
+            session.saveOrUpdate(rrte);
+            transaction.commit();
+        } catch (Exception ex) {
+            transaction.rollback();
+            LogUtil.Log("Start process but exception occurred, service rollback, " + ex, NameSpacingService.class.getName(), LogUtil.LogLevelType.ERROR, rtid);
+        } finally {
+            HibernateUtil.CloseLocalSession();
+        }
+        // interaction with BO Engine
+        HashMap<String, String> args = new HashMap<>();
+        args.put("rtid", rtid);
+        try {
+            GlobalContext.Interaction.Send(GlobalContext.URL_BOENGINE_START, args, rtid);
+        }
+        catch (Exception ex) {
+            LogUtil.Log("Cannot interaction with BO Engine for RTID: " + rtid, NameSpacingService.class.getName(), LogUtil.LogLevelType.ERROR, rtid);
+            throw ex;
+        }
     }
 
     /**

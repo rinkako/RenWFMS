@@ -79,6 +79,11 @@ public final class GlobalContext {
     public static final String URL_BOENGINE_SERIALIZEBO = "http://localhost:10232/gateway/serializeBO";
 
     /**
+     * Service URL for BO Engine Serialization BO.
+     */
+    public static final String URL_BOENGINE_START = "http://localhost:10232/gateway/launchProcess";
+
+    /**
      * Service URL for BO Engine event callback.
      */
     public static final String URL_BOENGINE_CALLBACK = "http://localhost:10232/gateway/callback";

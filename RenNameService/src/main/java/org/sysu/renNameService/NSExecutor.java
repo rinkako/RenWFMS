@@ -138,6 +138,10 @@ public class NSExecutor extends Observable {
                         case "submitProcess":
                             retStr = NameSpacingService.SubmitProcess((String) args.get("pid"), (String) args.get("from"), (String) args.get("renid"), (String) args.get("authoritySession"), Integer.parseInt((String) args.get("bindingType")), Integer.parseInt((String) args.get("launchType")), Integer.parseInt((String) args.get("failureType")), Integer.parseInt((String) args.get("authType")), (String) args.get("binding"));
                             break;
+                        case "startProcess":
+                            NameSpacingService.StartProcess((String) args.get("rtid"));
+                            retStr = "OK";
+                            break;
                         case "transshipCallback":
                             retStr = NameSpacingService.TransshipCallback(args);
                             break;

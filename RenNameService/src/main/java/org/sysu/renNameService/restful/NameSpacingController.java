@@ -344,6 +344,44 @@ public class NameSpacingController {
     }
 
     /**
+     * Start a process.
+     *
+     * @param token auth token (required)
+     * @param rtid  process rtid (required)
+     * @return response package
+     */
+    @RequestMapping(value = "/startProcess", produces = {"application/json", "application/xml"})
+    @ResponseBody
+    @Transactional
+    public ReturnModel StartProcess(@RequestParam(value = "token", required = false) String token,
+                                    @RequestParam(value = "rtid", required = false) String rtid) {
+        ReturnModel rnModel = new ReturnModel();
+        try {
+            // miss params
+            List<String> missingParams = new ArrayList<>();
+            if (token == null) missingParams.add("token");
+            if (rtid == null) missingParams.add("rtid");
+            if (missingParams.size() > 0) {
+                return ReturnModelHelper.MissingParametersResponse(missingParams);
+            }
+            // token check
+            if (!AuthorizationService.CheckValid(token)) {
+                return ReturnModelHelper.UnauthorizedResponse(token);
+            }
+            // logic
+            HashMap<String, String> args = new HashMap<>();
+            args.put("rtid", rtid);
+            NameServiceTransaction t = TransactionCreator.Create(TransactionType.Namespacing, "startProcess", args);
+            String jsonifyResult = (String) NameSpacingController.scheduler.Schedule(t);
+            // return
+            ReturnModelHelper.StandardResponse(rnModel, StatusCode.OK, jsonifyResult);
+        } catch (Exception e) {
+            ReturnModelHelper.ExceptionResponse(rnModel, e.getClass().getName());
+        }
+        return rnModel;
+    }
+
+    /**
      * Transship request of sending a callback event to BO engine.
      *
      * @param signature domain signature key (required)
