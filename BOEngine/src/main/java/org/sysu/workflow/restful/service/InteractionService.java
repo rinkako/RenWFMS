@@ -30,7 +30,7 @@ public class InteractionService {
      * @param bo from which BO (required)
      * @param on which callback scene (required)
      * @param event event send to engine (required)
-     * @param payload event send to engine (required)
+     * @param payload event send to engine
      */
     public static void DispatchCallback(String rtid, String bo, String on, String event, String payload) {
         try {

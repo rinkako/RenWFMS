@@ -104,8 +104,8 @@ public class Call extends ParamsContainer implements Serializable {
                         args.put("boname", scxmlExecContext.getSCXMLExecutor().getStateMachine().getName());
                         args.put("nodeId", scxmlExecContext.getSCXMLExecutor().NodeId);
                         //params of the task
-                        String params = SerializationUtil.JsonSerialization(payloadDataMap, scxmlExecContext.Rtid);
-                        args.put("args", params);
+                        //String params = SerializationUtil.JsonSerialization(payloadDataMap, scxmlExecContext.Rtid);
+                        args.put("args", SerializationUtil.JsonSerialization(this.getParams(), scxmlExecContext.Rtid));
                         args.put("rtid", scxmlExecContext.Rtid);
                         if (!GlobalContext.IsLocalDebug) {
                             try {
@@ -130,7 +130,7 @@ public class Call extends ParamsContainer implements Serializable {
                         args.put("nodeId", scxmlExecContext.getSCXMLExecutor().NodeId);
                         //params of the task
                         String params = SerializationUtil.JsonSerialization(payloadDataMap, scxmlExecContext.Rtid);
-                        args.put("args", params);
+                        args.put("args", SerializationUtil.JsonSerialization(this.getParams(), scxmlExecContext.Rtid));
                         args.put("rtid", scxmlExecContext.Rtid);
                         if (!GlobalContext.IsLocalDebug) {
                             try {

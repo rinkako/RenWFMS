@@ -233,7 +233,8 @@ public class SCXMLSemanticsImpl implements SCXMLSemantics {
         executeTransitionContent(exctx, step);
         //进入进入状态集合
         enterStates(exctx, step, statesToInvoke);
-        if (step.getEntrySet().size() != 0 && GlobalContext.IsLocalDebug) {
+        //if (step.getEntrySet().size() != 0 && GlobalContext.IsLocalDebug) {
+        if (step.getEntrySet().size() != 0) {
             System.out.print("Now Enter:");
             for (EnterableState s : step.getEntrySet()) {
                 System.out.print(" " + s.getId());

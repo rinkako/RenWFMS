@@ -454,7 +454,7 @@ public class InterfaceB {
         }
         // handle callbacks and hooks
         try {
-            InterfaceA.HandleCallbackAndHook(WorkitemStatusType.Enabled, workitem, workitem.getTaskContext());
+            InterfaceA.HandleCallbackAndHook(toStatus, workitem, workitem.getTaskContext());
         }
         catch (Exception ex) {
             LogUtil.Log(String.format("Workitem(%s) status changed but failed to handle callbacks and hooks, %s", workitem.getEntity().getWid(), ex),

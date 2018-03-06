@@ -85,15 +85,23 @@ public class WorkitemContext implements Serializable, RCacheablesContext {
      */
     public static HashMap<String, String> GenerateResponseWorkitem(WorkitemContext workitem) {
         HashMap<String, String> retMap = new HashMap<>();
-        String workitemId = workitem.getEntity().getWid();
+        RenWorkitemEntity entity = workitem.getEntity();
+        String workitemId = entity.getWid();
         retMap.put("Wid", workitemId);
-        retMap.put("Rtid", workitem.getEntity().getRtid());
-        retMap.put("CallbackNodeId", workitem.getEntity().getCallbackNodeId());
+        retMap.put("Rtid", entity.getRtid());
+        retMap.put("CallbackNodeId", entity.getCallbackNodeId());
         retMap.put("TaskName", workitem.taskContext.getTaskName());
         retMap.put("TaskId", workitem.taskContext.getTaskId());
         retMap.put("Role", workitem.taskContext.getBrole());
         retMap.put("Documentation", workitem.taskContext.getDocumentation());
         retMap.put("Argument", SerializationUtil.JsonSerialization(workitem.getArgsDict()));
+        retMap.put("Status", entity.getStatus());
+        retMap.put("ResourceStatus", entity.getResourceStatus());
+        retMap.put("EnablementTime", entity.getEnablementTime() == null ? "" : entity.getEnablementTime().toString());
+        retMap.put("FiringTime", entity.getFiringTime() == null ? "" : entity.getFiringTime().toString());
+        retMap.put("StartTime", entity.getStartTime() == null ? "" : entity.getStartTime().toString());
+        retMap.put("CompletionTime", entity.getCompletionTime() == null ? "" : entity.getCompletionTime().toString());
+        retMap.put("ExecuteTime", String.valueOf(entity.getExecuteTime()));
         Session session = HibernateUtil.GetLocalSession();
         Transaction transaction = session.beginTransaction();
         ArrayList<RenQueueitemsEntity> relations = null;
@@ -103,7 +111,7 @@ public class WorkitemContext implements Serializable, RCacheablesContext {
         }
         catch (Exception ex) {
             LogUtil.Log("GenerateResponseWorkitem but cannot read relation from steady, " + ex,
-                    WorkitemContext.class.getName(), LogLevelType.ERROR, workitem.getEntity().getRtid());
+                    WorkitemContext.class.getName(), LogLevelType.ERROR, entity.getRtid());
             transaction.rollback();
         }
         finally {
@@ -116,7 +124,7 @@ public class WorkitemContext implements Serializable, RCacheablesContext {
             StringBuilder workerIdSb = new StringBuilder();
             workerIdSb.append("[");
             for (RenQueueitemsEntity rqe : relations) {
-                String workerId = rqe.getWorkqueueId().split("_")[2];
+                String workerId = String.format("%s_%s", rqe.getWorkqueueId().split("_")[2], rqe.getWorkqueueId().split("_")[3]);
                 workerIdSb.append(workerId).append(",");
             }
             String workerIdList = workerIdSb.toString();

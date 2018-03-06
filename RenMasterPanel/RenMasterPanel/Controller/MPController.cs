@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Data;
 using System.IO;
 using System.Linq;
+using System.Runtime.Remoting.Channels;
+using System.Text;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using RenMasterPanel.Util;
@@ -194,7 +196,7 @@ namespace RenMasterPanel.Controller
                         { "token", MPController.CurrentTransaction.AuthToken },
                         { "pid", MPController.CurrentTransaction.ProcessPID },
                         { "name", boName },
-                        { "content", content }
+                        { "content", System.Web.HttpUtility.UrlEncode(content, Encoding.UTF8) }
                     },
                     out var retStr);
                 var response = JsonConvert.DeserializeObject<StdResponseEntity>(retStr);

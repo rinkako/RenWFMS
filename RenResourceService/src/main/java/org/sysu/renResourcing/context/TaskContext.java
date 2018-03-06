@@ -253,7 +253,8 @@ public class TaskContext implements Serializable, RCacheablesContext {
      * @return ArrayList of callback event name
      */
     public ArrayList<String> getCallbackEventsOfStatus(WorkitemStatusType statusType) {
-        return this.callbacks.get(statusType.name().toUpperCase());
+        ArrayList<String> retList = this.callbacks.get(statusType.name().toUpperCase());
+        return retList == null ? new ArrayList<>() : retList;
     }
 
     /**
@@ -262,7 +263,8 @@ public class TaskContext implements Serializable, RCacheablesContext {
      * @return ArrayList of callback event name
      */
     public ArrayList<String> getCallbackHooksOfStatus(WorkitemStatusType statusType) {
-        return this.hooks.get(statusType.name().toUpperCase());
+        ArrayList<String> retList = this.hooks.get(statusType.name().toUpperCase());
+        return retList == null ? new ArrayList<>() : retList;
     }
 
 

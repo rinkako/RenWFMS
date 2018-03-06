@@ -112,7 +112,7 @@ public class InterfaceA {
             argsMap.put("bo", bo);
             argsMap.put("on", statusType.name());
             argsMap.put("event", cb);
-            argsMap.put("payload", "");  // todo
+            // todo handle payload
             GlobalContext.Interaction.Send(LocationContext.URL_BOENGINE_CALLBACK, argsMap, rtid);
         }
         // hooks
@@ -122,7 +122,7 @@ public class InterfaceA {
             argsMap.put("rtid", rtid);
             argsMap.put("bo", bo);
             argsMap.put("on", statusType.name());
-            argsMap.put("payload", "");  // todo
+            // todo handle payload
             // NOTICE: here does not internal interaction, DO NOT use interaction router!
             try {
                 HttpClientUtil.SendPost(hk, argsMap, rtid);
