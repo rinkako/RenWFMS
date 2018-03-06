@@ -14,7 +14,11 @@ import org.sysu.renResourcing.GlobalContext;
 import org.sysu.renCommon.enums.WorkitemResourcingStatusType;
 import org.sysu.renCommon.enums.WorkitemStatusType;
 import org.sysu.renResourcing.consistency.ContextCachePool;
+import org.sysu.renResourcing.context.steady.RenBoEntity;
+import org.sysu.renResourcing.context.steady.RenQueueitemsEntity;
+import org.sysu.renResourcing.context.steady.RenRstaskEntity;
 import org.sysu.renResourcing.context.steady.RenWorkitemEntity;
+import org.sysu.renResourcing.interfaceService.InterfaceA;
 import org.sysu.renResourcing.utility.*;
 
 import java.io.Serializable;
@@ -29,6 +33,7 @@ import java.util.UUID;
  *         convenient way for resourcing service.
  */
 public class WorkitemContext implements Serializable, RCacheablesContext {
+
     /**
      * Serial version UID.
      */
@@ -45,6 +50,11 @@ public class WorkitemContext implements Serializable, RCacheablesContext {
     private HashMap<String, String> argsDict;
 
     /**
+     * Template task context.
+     */
+    private TaskContext taskContext;
+
+    /**
      * Get workitem entity.
      * @return workitem entity object
      */
@@ -58,6 +68,115 @@ public class WorkitemContext implements Serializable, RCacheablesContext {
      */
     public HashMap<String, String> getArgsDict() {
         return this.argsDict;
+    }
+
+    /**
+     * Get the template task context of this workitem.
+     * @return TaskContext
+     */
+    public TaskContext getTaskContext() {
+        return this.taskContext;
+    }
+
+    /**
+     * Generate a user-friendly workitem package.
+     * @param workitem workitem context
+     * @return HashMap of workitem descriptor
+     */
+    public static HashMap<String, String> GenerateResponseWorkitem(WorkitemContext workitem) {
+        HashMap<String, String> retMap = new HashMap<>();
+        String workitemId = workitem.getEntity().getWid();
+        retMap.put("Wid", workitemId);
+        retMap.put("Rtid", workitem.getEntity().getRtid());
+        retMap.put("CallbackNodeId", workitem.getEntity().getCallbackNodeId());
+        retMap.put("TaskName", workitem.taskContext.getTaskName());
+        retMap.put("TaskId", workitem.taskContext.getTaskId());
+        retMap.put("Role", workitem.taskContext.getBrole());
+        retMap.put("Documentation", workitem.taskContext.getDocumentation());
+        retMap.put("Argument", SerializationUtil.JsonSerialization(workitem.getArgsDict()));
+        Session session = HibernateUtil.GetLocalSession();
+        Transaction transaction = session.beginTransaction();
+        ArrayList<RenQueueitemsEntity> relations = null;
+        try {
+            relations = (ArrayList<RenQueueitemsEntity>) session.createQuery(String.format("FROM RenQueueitemsEntity WHERE workitemId = '%s'", workitemId)).list();
+            transaction.commit();
+        }
+        catch (Exception ex) {
+            LogUtil.Log("GenerateResponseWorkitem but cannot read relation from steady, " + ex,
+                    WorkitemContext.class.getName(), LogLevelType.ERROR, workitem.getEntity().getRtid());
+            transaction.rollback();
+        }
+        finally {
+            HibernateUtil.CloseLocalSession();
+        }
+        if (relations == null) {
+            retMap.put("WorkerIdList", "[]");
+        }
+        else {
+            StringBuilder workerIdSb = new StringBuilder();
+            workerIdSb.append("[");
+            for (RenQueueitemsEntity rqe : relations) {
+                String workerId = rqe.getWorkqueueId().split("_")[2];
+                workerIdSb.append(workerId).append(",");
+            }
+            String workerIdList = workerIdSb.toString();
+            if (workerIdList.length() > 1) {
+                workerIdList = workerIdList.substring(0, workerIdList.length() - 1);
+            }
+            workerIdList += "]";
+            retMap.put("WorkerIdList", workerIdList);
+        }
+        return retMap;
+    }
+
+    /**
+     * Generate a list of user-friendly workitem packages.
+     * @param wList list of workitem context
+     * @param onlyActive whether only get active workitems
+     * @return ArrayList of HashMap of workitem descriptor
+     */
+    public static ArrayList<HashMap<String, String>> GenerateResponseWorkitems(ArrayList<WorkitemContext> wList, boolean onlyActive) {
+        ArrayList<HashMap<String, String>> retList = new ArrayList<>();
+        for (WorkitemContext workitem : wList) {
+            String status = workitem.getEntity().getStatus();
+            if (onlyActive && (status.equals(WorkitemStatusType.Complete.name())
+                    || status.equals(WorkitemStatusType.ForcedComplete.name())
+                    || status.equals(WorkitemStatusType.Discarded.name()))) {
+                continue;
+            }
+            retList.add(WorkitemContext.GenerateResponseWorkitem(workitem));
+        }
+        return retList;
+    }
+
+    /**
+     * Get Workitem Context by RTID.
+     * @param rtid process rtid
+     * @return ArrayList of workitem context
+     */
+    public static ArrayList<WorkitemContext> GetContextRTID(String rtid) {
+        Session session = HibernateUtil.GetLocalSession();
+        Transaction transaction = session.beginTransaction();
+        boolean cmtFlag = false;
+        ArrayList<WorkitemContext> retList = new ArrayList<>();
+        try {
+            ArrayList<RenWorkitemEntity> workitems = (ArrayList<RenWorkitemEntity>) session.createQuery(String.format("FROM RenWorkitemEntity WHERE rtid = '%s'", rtid)).list();
+            transaction.commit();
+            cmtFlag = true;
+            for (RenWorkitemEntity rwe : workitems) {
+                retList.add(WorkitemContext.GetContext(rwe.getWid(), rwe.getRtid()));
+            }
+            return retList;
+        }
+        catch (Exception ex) {
+            if (!cmtFlag) {
+                transaction.rollback();
+            }
+            return null;
+        }
+        finally {
+            HibernateUtil.CloseLocalSession();
+        }
     }
 
     /**
@@ -88,10 +207,18 @@ public class WorkitemContext implements Serializable, RCacheablesContext {
         try {
             RenWorkitemEntity rwe = session.get(RenWorkitemEntity.class, wid);
             assert rwe != null;
+            String taskId = rwe.getTaskid();
+            RenRstaskEntity rte = session.get(RenRstaskEntity.class, taskId);
+            String taskName = rte.getPolymorphismName();
+            String boId = rte.getBoid();
+            RenBoEntity rbe = session.get(RenBoEntity.class, boId);
+            String boName = rbe.getBoName();
             transaction.commit();
             cmtFlag = true;
             WorkitemContext retCtx = new WorkitemContext();
             retCtx.entity = rwe;
+            retCtx.argsDict = SerializationUtil.JsonDeserialization(rwe.getArguments(), HashMap.class);
+            retCtx.taskContext = TaskContext.GetContext(rtid, boName, taskName);
             ContextCachePool.AddOrUpdate(wid, retCtx);
             return retCtx;
         }
@@ -116,7 +243,7 @@ public class WorkitemContext implements Serializable, RCacheablesContext {
      * @param callbackNodeId producer instance tree node global id for callback
      * @return workitem context
      */
-    public static WorkitemContext GenerateContext(TaskContext taskContext, String rtid, ArrayList args, String callbackNodeId) {
+    public static WorkitemContext GenerateContext(TaskContext taskContext, String rtid, ArrayList args, String callbackNodeId) throws Exception {
         assert args != null && taskContext.getParameters() != null;
         //HashMap parameterMap = SerializationUtil.JsonDeserialization(taskContext.getParameters(), HashMap.class);
         if (args.size() != taskContext.getParameters().size()) {
@@ -150,6 +277,9 @@ public class WorkitemContext implements Serializable, RCacheablesContext {
             WorkitemContext wCtx = new WorkitemContext();
             wCtx.entity = rwe;
             wCtx.argsDict = taskArgsSign;
+            wCtx.taskContext = taskContext;
+            // handle callback and hook
+            InterfaceA.HandleCallbackAndHook(WorkitemStatusType.Enabled, wCtx, taskContext);
             return wCtx;
         }
         catch (Exception ex) {

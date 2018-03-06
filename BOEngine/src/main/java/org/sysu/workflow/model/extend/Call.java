@@ -102,7 +102,7 @@ public class Call extends ParamsContainer implements Serializable {
                         HashMap<String, String> args = new HashMap<String, String>();
                         args.put("taskname", this.name);
                         args.put("boname", scxmlExecContext.getSCXMLExecutor().getStateMachine().getName());
-                        args.put("nodeId", scxmlExecContext.getSCXMLExecutor().Tid);
+                        args.put("nodeId", scxmlExecContext.getSCXMLExecutor().NodeId);
                         //params of the task
                         String params = SerializationUtil.JsonSerialization(payloadDataMap, scxmlExecContext.Rtid);
                         args.put("args", params);
@@ -127,7 +127,7 @@ public class Call extends ParamsContainer implements Serializable {
                         HashMap<String, String> args = new HashMap<String, String>();
                         args.put("taskname", this.name);
                         args.put("boname", scxmlExecContext.getSCXMLExecutor().getStateMachine().getName());
-                        args.put("nodeId", scxmlExecContext.getSCXMLExecutor().Tid);
+                        args.put("nodeId", scxmlExecContext.getSCXMLExecutor().NodeId);
                         //params of the task
                         String params = SerializationUtil.JsonSerialization(payloadDataMap, scxmlExecContext.Rtid);
                         args.put("args", params);

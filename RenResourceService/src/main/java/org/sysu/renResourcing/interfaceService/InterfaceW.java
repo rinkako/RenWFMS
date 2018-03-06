@@ -14,10 +14,7 @@ import org.sysu.renCommon.utility.AuthDomainHelper;
 import org.sysu.renResourcing.utility.LogUtil;
 import org.sysu.renCommon.utility.SerializationUtil;
 
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 
 /**
  * Author: Rinkako
@@ -374,6 +371,22 @@ public class InterfaceW {
             retMap.put(workerId, retSet);
         }
         return retMap;
+    }
+
+    /**
+     * Get all active(means not complete) workitems belong to a RTID in user-friendly package.
+     * @param ctx rs context
+     * @return List of Map of workitem data to return
+     */
+    public static ArrayList<HashMap<String, String>> GetAllActiveWorkitemsInUserFriendly(ResourcingContext ctx) {
+        String rtid = (String) ctx.getArgs().get("rtid");
+        ArrayList<WorkitemContext> workitemList = WorkitemContext.GetContextRTID(rtid);
+        if (workitemList == null) {
+            LogUtil.Log("Cannot get workitem for RTID: " + rtid, InterfaceW.class.getName(),
+                    LogLevelType.ERROR, rtid);
+            return null;
+        }
+        return WorkitemContext.GenerateResponseWorkitems(workitemList, true);
     }
 
     /**

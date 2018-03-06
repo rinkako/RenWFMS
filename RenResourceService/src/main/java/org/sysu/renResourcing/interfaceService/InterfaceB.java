@@ -439,6 +439,7 @@ public class InterfaceB {
      * @param toResourcingStatus destination resourcing status
      */
     public static void WorkitemChanged(WorkitemContext workitem, WorkitemStatusType toStatus, WorkitemResourcingStatusType toResourcingStatus) {
+        // refresh changed to steady
         ContextLockManager.WriteLock(workitem.getClass(), workitem.getEntity().getWid());
         try {
             if (toStatus != null) {
@@ -448,9 +449,17 @@ public class InterfaceB {
                 workitem.getEntity().setResourceStatus(toResourcingStatus.name());
             }
             WorkitemContext.SaveToSteady(workitem);
-            // todo use InterfaceE for logging
         } finally {
             ContextLockManager.WriteUnLock(workitem.getClass(), workitem.getEntity().getWid());
+        }
+        // handle callbacks and hooks
+        try {
+            InterfaceA.HandleCallbackAndHook(WorkitemStatusType.Enabled, workitem, workitem.getTaskContext());
+        }
+        catch (Exception ex) {
+            LogUtil.Log(String.format("Workitem(%s) status changed but failed to handle callbacks and hooks, %s", workitem.getEntity().getWid(), ex),
+                    InterfaceB.class.getName(), LogLevelType.ERROR, workitem.getEntity().getRtid());
+            InterfaceX.NotifyException(workitem);
         }
     }
 }

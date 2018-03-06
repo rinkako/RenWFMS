@@ -917,6 +917,44 @@ public class NameSpacingController {
     }
 
     /**
+     * Get workitems in a user-friendly package by RTID.
+     *
+     * @param signature auth signature
+     * @param rtid      process rtid
+     * @return response package
+     */
+    @RequestMapping(value = "/workitem/getAll", produces = {"application/json", "application/xml"})
+    @ResponseBody
+    @Transactional
+    public ReturnModel TransshipGetAllWorkitems(@RequestParam(value = "signature", required = false) String signature,
+                                                @RequestParam(value = "rtid", required = false) String rtid) {
+        ReturnModel rnModel = new ReturnModel();
+        try {
+            // miss params
+            List<String> missingParams = new ArrayList<>();
+            if (signature == null) missingParams.add("signature");
+            if (rtid == null) missingParams.add("rtid");
+            if (missingParams.size() > 0) {
+                return ReturnModelHelper.MissingParametersResponse(missingParams);
+            }
+            // check authorization
+            if (!AuthorizationService.CheckRTIDSignature(signature, rtid)) {
+                return ReturnModelHelper.UnauthorizedResponse(signature);
+            }
+            // logic
+            HashMap<String, String> args = new HashMap<>();
+            args.put("rtid", rtid);
+            NameServiceTransaction t = TransactionCreator.Create(TransactionType.Namespacing, "transshipGetAll", args);
+            String jsonifyResult = (String) NameSpacingController.scheduler.ScheduleSync(t);
+            // return
+            ReturnModelHelper.StandardResponse(rnModel, StatusCode.OK, jsonifyResult);
+        } catch (Exception e) {
+            ReturnModelHelper.ExceptionResponse(rnModel, e.getClass().getName());
+        }
+        return rnModel;
+    }
+
+    /**
      * Transaction scheduler.
      */
     private static NSScheduler scheduler = NSScheduler.GetInstance();

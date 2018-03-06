@@ -325,4 +325,17 @@ public class NameSpacingService {
         Map retObj = SerializationUtil.JsonDeserialization(ret, Map.class);
         return ((Map) retObj.get("returnElement")).get("data");
     }
+
+    /**
+     * Handle transshipment of get all workitems.
+     *
+     * @param rtid       process rtid
+     */
+    public static Object TransshipGetAll(String rtid) throws Exception {
+        HashMap<String, String> argMap = new HashMap<>();
+        argMap.put("rtid", rtid);
+        String ret = GlobalContext.Interaction.Send(LocationContext.GATEWAY_RS_WORKITEM + "getAll", argMap, rtid);
+        Map retObj = SerializationUtil.JsonDeserialization(ret, Map.class);
+        return ((Map) retObj.get("returnElement")).get("data");
+    }
 }

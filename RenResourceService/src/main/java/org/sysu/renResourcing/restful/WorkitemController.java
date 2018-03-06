@@ -28,15 +28,16 @@ public class WorkitemController {
 
     /**
      * Start a workitem by auth user.
-     * @param workerId worker global id
+     *
+     * @param workerId   worker global id
      * @param workitemId workitem global id
      * @return response package in JSON
      */
-    @RequestMapping(value = "/start", produces = { "application/json", "application/xml"})
+    @RequestMapping(value = "/start", produces = {"application/json", "application/xml"})
     @ResponseBody
     @Transactional
-    public ReturnModel StartWorkitem(@RequestParam(value="workerId", required = false)String workerId,
-                                     @RequestParam(value="workitemId", required = false)String workitemId) {
+    public ReturnModel StartWorkitem(@RequestParam(value = "workerId", required = false) String workerId,
+                                     @RequestParam(value = "workitemId", required = false) String workitemId) {
         ReturnModel rnModel = new ReturnModel();
         try {
             // miss params
@@ -64,15 +65,16 @@ public class WorkitemController {
 
     /**
      * Accept a workitem by auth user.
-     * @param workerId worker global id
+     *
+     * @param workerId   worker global id
      * @param workitemId workitem global id
      * @return response package in JSON
      */
-    @RequestMapping(value = "/accept", produces = { "application/json", "application/xml"})
+    @RequestMapping(value = "/accept", produces = {"application/json", "application/xml"})
     @ResponseBody
     @Transactional
-    public ReturnModel AcceptWorkitem(@RequestParam(value="workerId", required = false)String workerId,
-                                      @RequestParam(value="workitemId", required = false)String workitemId) {
+    public ReturnModel AcceptWorkitem(@RequestParam(value = "workerId", required = false) String workerId,
+                                      @RequestParam(value = "workitemId", required = false) String workitemId) {
         ReturnModel rnModel = new ReturnModel();
         try {
             // miss params
@@ -101,15 +103,16 @@ public class WorkitemController {
 
     /**
      * Accept and start a workitem by auth user.
-     * @param workerId worker global id
+     *
+     * @param workerId   worker global id
      * @param workitemId workitem global id
      * @return response package in JSON
      */
-    @RequestMapping(value = "/acceptStart", produces = { "application/json", "application/xml"})
+    @RequestMapping(value = "/acceptStart", produces = {"application/json", "application/xml"})
     @ResponseBody
     @Transactional
-    public ReturnModel AcceptAndStartWorkitem(@RequestParam(value="workerId", required = false)String workerId,
-                                              @RequestParam(value="workitemId", required = false)String workitemId) {
+    public ReturnModel AcceptAndStartWorkitem(@RequestParam(value = "workerId", required = false) String workerId,
+                                              @RequestParam(value = "workitemId", required = false) String workitemId) {
         ReturnModel rnModel = new ReturnModel();
         try {
             // miss params
@@ -138,15 +141,16 @@ public class WorkitemController {
 
     /**
      * Complete a workitem by auth user.
-     * @param workerId worker global id
+     *
+     * @param workerId   worker global id
      * @param workitemId workitem global id
      * @return response package in JSON
      */
-    @RequestMapping(value = "/complete", produces = { "application/json", "application/xml"})
+    @RequestMapping(value = "/complete", produces = {"application/json", "application/xml"})
     @ResponseBody
     @Transactional
-    public ReturnModel CompleteWorkitem(@RequestParam(value="workerId", required = false)String workerId,
-                                        @RequestParam(value="workitemId", required = false)String workitemId) {
+    public ReturnModel CompleteWorkitem(@RequestParam(value = "workerId", required = false) String workerId,
+                                        @RequestParam(value = "workitemId", required = false) String workitemId) {
         ReturnModel rnModel = new ReturnModel();
         try {
             // miss params
@@ -175,15 +179,16 @@ public class WorkitemController {
 
     /**
      * Suspend a workitem by auth user.
-     * @param workerId worker global id
+     *
+     * @param workerId   worker global id
      * @param workitemId workitem global id
      * @return response package in JSON
      */
-    @RequestMapping(value = "/suspend", produces = { "application/json", "application/xml"})
+    @RequestMapping(value = "/suspend", produces = {"application/json", "application/xml"})
     @ResponseBody
     @Transactional
-    public ReturnModel SuspendWorkitem(@RequestParam(value="workerId", required = false)String workerId,
-                                       @RequestParam(value="workitemId", required = false)String workitemId) {
+    public ReturnModel SuspendWorkitem(@RequestParam(value = "workerId", required = false) String workerId,
+                                       @RequestParam(value = "workitemId", required = false) String workitemId) {
         ReturnModel rnModel = new ReturnModel();
         try {
             // miss params
@@ -212,15 +217,16 @@ public class WorkitemController {
 
     /**
      * Unsuspend a workitem by auth user.
-     * @param workerId worker global id
+     *
+     * @param workerId   worker global id
      * @param workitemId workitem global id
      * @return response package in JSON
      */
-    @RequestMapping(value = "/unsuspend", produces = { "application/json", "application/xml"})
+    @RequestMapping(value = "/unsuspend", produces = {"application/json", "application/xml"})
     @ResponseBody
     @Transactional
-    public ReturnModel UnsuspendWorkitem(@RequestParam(value="workerId", required = false)String workerId,
-                                         @RequestParam(value="workitemId", required = false)String workitemId) {
+    public ReturnModel UnsuspendWorkitem(@RequestParam(value = "workerId", required = false) String workerId,
+                                         @RequestParam(value = "workitemId", required = false) String workitemId) {
         ReturnModel rnModel = new ReturnModel();
         try {
             // miss params
@@ -249,15 +255,16 @@ public class WorkitemController {
 
     /**
      * Skip a workitem by auth user.
-     * @param workerId worker global id
+     *
+     * @param workerId   worker global id
      * @param workitemId workitem global id
      * @return response package in JSON
      */
-    @RequestMapping(value = "/skip", produces = { "application/json", "application/xml"})
+    @RequestMapping(value = "/skip", produces = {"application/json", "application/xml"})
     @ResponseBody
     @Transactional
-    public ReturnModel SkipWorkitem(@RequestParam(value="workerId", required = false)String workerId,
-                                    @RequestParam(value="workitemId", required = false)String workitemId) {
+    public ReturnModel SkipWorkitem(@RequestParam(value = "workerId", required = false) String workerId,
+                                    @RequestParam(value = "workitemId", required = false) String workitemId) {
         ReturnModel rnModel = new ReturnModel();
         try {
             // miss params
@@ -286,15 +293,16 @@ public class WorkitemController {
 
     /**
      * Reallocate a workitem by auth user.
-     * @param workerId worker global id
+     *
+     * @param workerId   worker global id
      * @param workitemId workitem global id
      * @return response package in JSON
      */
-    @RequestMapping(value = "/reallocate", produces = { "application/json", "application/xml"})
+    @RequestMapping(value = "/reallocate", produces = {"application/json", "application/xml"})
     @ResponseBody
     @Transactional
-    public ReturnModel ReallocateWorkitem(@RequestParam(value="workerId", required = false)String workerId,
-                                          @RequestParam(value="workitemId", required = false)String workitemId) {
+    public ReturnModel ReallocateWorkitem(@RequestParam(value = "workerId", required = false) String workerId,
+                                          @RequestParam(value = "workitemId", required = false) String workitemId) {
         ReturnModel rnModel = new ReturnModel();
         try {
             // miss params
@@ -323,15 +331,16 @@ public class WorkitemController {
 
     /**
      * Deallocate a workitem by auth user.
-     * @param workerId worker global id
+     *
+     * @param workerId   worker global id
      * @param workitemId workitem global id
      * @return response package in JSON
      */
-    @RequestMapping(value = "/deallocate", produces = { "application/json", "application/xml"})
+    @RequestMapping(value = "/deallocate", produces = {"application/json", "application/xml"})
     @ResponseBody
     @Transactional
-    public ReturnModel DeallocateWorkitem(@RequestParam(value="workerId", required = false)String workerId,
-                                          @RequestParam(value="workitemId", required = false)String workitemId) {
+    public ReturnModel DeallocateWorkitem(@RequestParam(value = "workerId", required = false) String workerId,
+                                          @RequestParam(value = "workitemId", required = false) String workitemId) {
         ReturnModel rnModel = new ReturnModel();
         try {
             // miss params
@@ -352,6 +361,38 @@ public class WorkitemController {
             // return
             ReturnModelHelper.StandardResponse(rnModel, StatusCode.OK, jsonifyResult);
 
+        } catch (Exception e) {
+            ReturnModelHelper.ExceptionResponse(rnModel, e.getClass().getName());
+        }
+        return rnModel;
+    }
+
+    /**
+     * Get all workitems by rtid.
+     *
+     * @param rtid process rtid
+     * @return response package in JSON
+     */
+    @RequestMapping(value = "/getAll", produces = {"application/json", "application/xml"})
+    @ResponseBody
+    @Transactional
+    public ReturnModel GetAll(@RequestParam(value = "rtid", required = false) String rtid) {
+        ReturnModel rnModel = new ReturnModel();
+        try {
+            // miss params
+            List<String> missingParams = new ArrayList<>();
+            if (rtid == null) missingParams.add("rtid");
+            if (missingParams.size() > 0) {
+                return ReturnModelHelper.MissingParametersResponse(missingParams);
+            }
+            // logic
+            Hashtable<String, Object> args = new Hashtable<>();
+            args.put("rtid", rtid);
+            ResourcingContext rCtx = ResourcingContext.GetContext(null, rtid,
+                    RServiceType.GetAllWorkitemsByRTID, args);
+            String jsonifyResult = RScheduler.GetInstance().ScheduleSync(rCtx);
+            // return
+            ReturnModelHelper.StandardResponse(rnModel, StatusCode.OK, jsonifyResult);
         } catch (Exception e) {
             ReturnModelHelper.ExceptionResponse(rnModel, e.getClass().getName());
         }

@@ -8,17 +8,26 @@ import org.hibernate.Session;
 import org.hibernate.Transaction;
 import org.sysu.renCommon.enums.LogLevelType;
 import org.sysu.renCommon.enums.RServiceType;
+import org.sysu.renCommon.enums.WorkitemDistributionType;
+import org.sysu.renCommon.enums.WorkitemStatusType;
+import org.sysu.renCommon.interactionRouter.LocationContext;
+import org.sysu.renCommon.utility.HttpClientUtil;
 import org.sysu.renCommon.utility.SerializationUtil;
 import org.sysu.renResourcing.GlobalContext;
 import org.sysu.renResourcing.RScheduler;
 import org.sysu.renResourcing.context.ResourcingContext;
 import org.sysu.renResourcing.context.TaskContext;
+import org.sysu.renResourcing.context.WorkitemContext;
 import org.sysu.renResourcing.context.steady.RenRuntimerecordEntity;
+import org.sysu.renResourcing.plugin.AgentNotifyPlugin;
+import org.sysu.renResourcing.plugin.AsyncPluginRunner;
 import org.sysu.renResourcing.utility.HibernateUtil;
 import org.sysu.renResourcing.utility.LogUtil;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Hashtable;
+import java.util.List;
 
 /**
  * Author: Rinkako
@@ -85,6 +94,45 @@ public class InterfaceA {
         ResourcingContext ctx = ResourcingContext.GetContext(null, rtid, RServiceType.FinishProcess, args);
         InterfaceA.mainScheduler.Schedule(ctx);
         return GlobalContext.RESPONSE_SUCCESS;
+    }
+
+    /**
+     * Handle callback and hook notification when workitem status changed.
+     * @param statusType destination status type
+     * @param workitem workitem context
+     */
+    public static void HandleCallbackAndHook(WorkitemStatusType statusType, WorkitemContext workitem, TaskContext task) throws Exception {
+        String rtid = workitem.getEntity().getRtid();
+        String bo = workitem.getEntity().getCallbackNodeId();
+        // events
+        List<String> callbacks = task.getCallbackEventsOfStatus(statusType);
+        for (String cb : callbacks) {
+            HashMap<String, String> argsMap = new HashMap<>();
+            argsMap.put("rtid", rtid);
+            argsMap.put("bo", bo);
+            argsMap.put("on", statusType.name());
+            argsMap.put("event", cb);
+            argsMap.put("payload", "");  // todo
+            GlobalContext.Interaction.Send(LocationContext.URL_BOENGINE_CALLBACK, argsMap, rtid);
+        }
+        // hooks
+        List<String> hooks = task.getCallbackHooksOfStatus(statusType);
+        for (String hk : hooks) {
+            HashMap<String, String> argsMap = new HashMap<>();
+            argsMap.put("rtid", rtid);
+            argsMap.put("bo", bo);
+            argsMap.put("on", statusType.name());
+            argsMap.put("payload", "");  // todo
+            // NOTICE: here does not internal interaction, DO NOT use interaction router!
+            try {
+                HttpClientUtil.SendPost(hk, argsMap, rtid);
+            }
+            // just jump those failed to send, do not throw exception to stop all
+            catch (Exception ex) {
+                LogUtil.Log(String.format("Cannot handle hook (%s) for workitem %s, %s", hk, workitem.getEntity().getWid(), ex),
+                        InterfaceA.class.getName(), LogLevelType.ERROR, rtid);
+            }
+        }
     }
 
     /**

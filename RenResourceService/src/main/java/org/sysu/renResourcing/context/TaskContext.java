@@ -7,6 +7,7 @@ package org.sysu.renResourcing.context;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
 import org.sysu.renCommon.enums.LogLevelType;
+import org.sysu.renCommon.enums.WorkitemStatusType;
 import org.sysu.renResourcing.consistency.ContextCachePool;
 import org.sysu.renResourcing.context.steady.RenBoEntity;
 import org.sysu.renResourcing.context.steady.RenRstaskEntity;
@@ -20,6 +21,7 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
+import java.util.Map;
 
 /**
  * Author: Rinkako
@@ -246,6 +248,25 @@ public class TaskContext implements Serializable, RCacheablesContext {
     }
 
     /**
+     * Get callback events by status type.
+     * @param statusType status enum
+     * @return ArrayList of callback event name
+     */
+    public ArrayList<String> getCallbackEventsOfStatus(WorkitemStatusType statusType) {
+        return this.callbacks.get(statusType.name().toUpperCase());
+    }
+
+    /**
+     * Get callback hooks by status type.
+     * @param statusType status enum
+     * @return ArrayList of callback event name
+     */
+    public ArrayList<String> getCallbackHooksOfStatus(WorkitemStatusType statusType) {
+        return this.hooks.get(statusType.name().toUpperCase());
+    }
+
+
+    /**
      * Get the parameter vector.
      * @return ArrayList of parameter name
      */
@@ -259,7 +280,11 @@ public class TaskContext implements Serializable, RCacheablesContext {
      */
     @SuppressWarnings("unchecked")
     private void ParseHooks(String hookJSONDescriptor) {
-        this.hooks = SerializationUtil.JsonDeserialization(hookJSONDescriptor, HashMap.class);
+        this.hooks = new HashMap<>();
+        HashMap<String, ArrayList<String>> deMap = SerializationUtil.JsonDeserialization(hookJSONDescriptor, HashMap.class);
+        for (Map.Entry<String, ArrayList<String>> kvp : deMap.entrySet()) {
+            this.hooks.put(kvp.getKey().toUpperCase(), kvp.getValue());
+        }
     }
 
     /**
@@ -268,7 +293,11 @@ public class TaskContext implements Serializable, RCacheablesContext {
      */
     @SuppressWarnings("unchecked")
     private void ParseCallbacks(String callbackJSONDescriptor) {
-        this.callbacks = SerializationUtil.JsonDeserialization(callbackJSONDescriptor, HashMap.class);
+        this.callbacks = new HashMap<>();
+        HashMap<String, ArrayList<String>> deMap = SerializationUtil.JsonDeserialization(callbackJSONDescriptor, HashMap.class);
+        for (Map.Entry<String, ArrayList<String>> kvp : deMap.entrySet()) {
+            this.callbacks.put(kvp.getKey().toUpperCase(), kvp.getValue());
+        }
     }
 
     /**

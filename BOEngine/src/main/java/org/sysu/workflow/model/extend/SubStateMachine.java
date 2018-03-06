@@ -194,7 +194,7 @@ public class SubStateMachine extends NamelistHolder implements PathResolverHolde
                 executor.go();
 
                 // maintain the relation of this sub state machine on the instance tree
-                RTreeNode subNode = new RTreeNode(boName, executor.Tid, executor.getExctx(), curNode);
+                RTreeNode subNode = new RTreeNode(boName, executor.NodeId, executor.getExctx(), curNode);
                 curNode.AddChild(subNode);
 
                 //String currentSessionId = (String) currentExecutionContext.getScInstance().getSystemContext().get(SCXMLSystemContext.SESSIONID_KEY);

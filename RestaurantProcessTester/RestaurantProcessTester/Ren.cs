@@ -179,8 +179,7 @@ namespace RestaurantProcessTester
                     },
                     out var retStr);
                 var response = JsonConvert.DeserializeObject<StdResponseEntity>(retStr);
-                ReturnDataHelper.DecodeString(response);
-                LogUtils.LogLine("Mapping BRole OK, RTID: " + Ren.rtid, LogLevel.Important);
+                LogUtils.LogLine("Mapping BRole Send OK, RTID: " + ReturnDataHelper.DecodeString(response), LogLevel.Important);
             }
             catch (Exception ex)
             {
@@ -189,18 +188,14 @@ namespace RestaurantProcessTester
 
             try
             {
-                NetClient.PostData(GlobalContext.LocationDict["UploadMapping"], new Dictionary<string, string>
+                NetClient.PostData(GlobalContext.LocationDict["StartProcess"], new Dictionary<string, string>
                     {
                         { "token", Ren.transaction.AuthToken },
-                        { "rtid", Ren.rtid },
-                        { "organgid", "COrg_571d200f-0f35-11e8-9072-5404a6a99e5d" },
-                        { "dataversion", "version1" },
-                        { "map", Ren.GeneratePostMapStringOfMappings() }
+                        { "rtid", Ren.rtid }
                     },
                     out var retStr);
                 var response = JsonConvert.DeserializeObject<StdResponseEntity>(retStr);
-                ReturnDataHelper.DecodeString(response);
-                LogUtils.LogLine("Mapping BRole OK, RTID: " + Ren.rtid, LogLevel.Important);
+                LogUtils.LogLine("StartProcess send OK, Response: " + ReturnDataHelper.DecodeString(response), LogLevel.Important);
             }
             catch (Exception ex)
             {
@@ -210,12 +205,40 @@ namespace RestaurantProcessTester
 
         public static void PerformCallbackSubmit()
         {
-            
+            try
+            {
+                NetClient.PostData(GlobalContext.LocationDict["StartProcess"], new Dictionary<string, string>
+                    {
+                        { "token", Ren.transaction.AuthToken },
+                        { "rtid", Ren.rtid }
+                    },
+                    out var retStr);
+                var response = JsonConvert.DeserializeObject<StdResponseEntity>(retStr);
+                LogUtils.LogLine("StartProcess send OK, Response: " + ReturnDataHelper.DecodeString(response), LogLevel.Important);
+            }
+            catch (Exception ex)
+            {
+                LogUtils.LogLine("Register mappings, exception occurred" + ex, LogLevel.Error);
+            }
         }
 
         public static void PerformCallbackProduced()
         {
-            
+            try
+            {
+                NetClient.PostData(GlobalContext.LocationDict["Callback"], new Dictionary<string, string>
+                    {
+                        { "token", Ren.transaction.AuthToken },
+                        { "rtid", Ren.rtid }
+                    },
+                    out var retStr);
+                var response = JsonConvert.DeserializeObject<StdResponseEntity>(retStr);
+                LogUtils.LogLine("StartProcess send OK, Response: " + ReturnDataHelper.DecodeString(response), LogLevel.Important);
+            }
+            catch (Exception ex)
+            {
+                LogUtils.LogLine("Register mappings, exception occurred" + ex, LogLevel.Error);
+            }
         }
 
         public static void PerformCallbackTestCompleted()
