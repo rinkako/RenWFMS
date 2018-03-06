@@ -9,9 +9,10 @@ import java.util.UUID;
  * Global static data container.
  */
 public class GlobalContext {
+
     //false:read from database
-    //true:read local BO
-    public static boolean IsLocalDebug = true;
+    //true:read local BO, no any interaction
+    public static boolean IsLocalDebug = false;
 
     /**
      * Name service micro-service global id.

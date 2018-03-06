@@ -60,7 +60,6 @@ public class InterfaceB {
         } finally {
             HibernateUtil.CloseLocalSession();
         }
-        // get auth user name
         String domain = AuthDomainHelper.GetDomainByRTID(runtimeRecord.getRtid());
         // generate workitem
         WorkitemContext workitem = WorkitemContext.GenerateContext(taskContext, ctx.getRtid(), (ArrayList) ctx.getArgs().get("taskArgumentsVector"), nodeId);
@@ -104,7 +103,6 @@ public class InterfaceB {
                 }
                 // change workitem status
                 workitem.getEntity().setFiringTime(TimestampUtil.GetCurrentTimestamp());
-                WorkitemContext.SaveToSteady(workitem);
                 InterfaceB.WorkitemChanged(workitem, WorkitemStatusType.Fired, WorkitemResourcingStatusType.Allocated);
                 break;
             case Offer:
@@ -132,7 +130,6 @@ public class InterfaceB {
                 }
                 // change workitem status
                 workitem.getEntity().setFiringTime(TimestampUtil.GetCurrentTimestamp());
-                WorkitemContext.SaveToSteady(workitem);
                 InterfaceB.WorkitemChanged(workitem, WorkitemStatusType.Fired, WorkitemResourcingStatusType.Offered);
                 break;
             case AutoAllocateIfOfferFailed:
