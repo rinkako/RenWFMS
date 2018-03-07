@@ -163,6 +163,9 @@ public class MultiStateMachineDispatcher extends SimpleDispatcher implements Ser
                 case UNICAST:
                     sendUnicast(rtid, currentId, targetName, targetState, event, data, hints, delay);
                     break;
+                case TO_NOTIFIABLE_ID:
+                    sendToNotifiableId(rtid, currentId, targetName, targetState, event, data, hints, delay);
+                    break;
                 default:
                     System.out.println("Unknown message mode");
                     LogUtil.Log("Dispatcher unknown message mode: " + messageMode,
@@ -322,6 +325,26 @@ public class MultiStateMachineDispatcher extends SimpleDispatcher implements Ser
     @SuppressWarnings("all")
     private void sendUnicast(String treeId, String currentNodeId, String targetGid, String targetState, String event, Object data, Object hints, long delay) {
         RTreeNode destination = InstanceManager.GetInstanceTree(treeId).GetNodeById(targetGid);
+        RTreeNode currentTreeNode = InstanceManager.GetInstanceTree(treeId).GetNodeById(currentNodeId);
+        String eventPrefix = currentTreeNode != InstanceManager.GetInstanceTree(treeId).Root ? currentTreeNode.getName() + "." : "";
+        sendToTarget(destination, targetState, eventPrefix + event, data);
+    }
+
+    /**
+     * send the event to nodes with notifiable id.
+     *
+     * @param treeId             the tree id equals to the root id of the instance tree
+     * @param currentNodeId      the id of the current node
+     * @param targetNotifiableId target node targetNotifiable id
+     * @param targetState        target state name, empty string means no limitation
+     * @param event              type of event being generated
+     * @param data               event payload
+     * @param hints              The data containing information which may be used by the implementing platform to configure the event processor
+     * @param delay              The event is dispatched after the delay interval elapses
+     */
+    @SuppressWarnings("all")
+    private void sendToNotifiableId(String treeId, String currentNodeId, String targetNotifiableId, String targetState, String event, Object data, Object hints, long delay) {
+        ArrayList<RTreeNode> destination = InstanceManager.GetInstanceTree(treeId).GetVectorByNotifiableId(targetNotifiableId);
         RTreeNode currentTreeNode = InstanceManager.GetInstanceTree(treeId).GetNodeById(currentNodeId);
         String eventPrefix = currentTreeNode != InstanceManager.GetInstanceTree(treeId).Root ? currentTreeNode.getName() + "." : "";
         sendToTarget(destination, targetState, eventPrefix + event, data);

@@ -7,11 +7,16 @@
 	
     <state id="first">
         <onentry>
-            <log label="sub dataA(should be 666, not 1) is" expr="dataA"/>
-            <log label="sub dataB is" expr="dataB"/>
+            <log label="SUB" expr="'dataA(should be 666, not 1) is' + dataA"/>
+            <log label="SUB" expr="'dataB is' + dataB"/>
         </onentry>
-        <transition target="finished"/>
+        <transition event="stop" target="finished"/>
     </state>
 
-    <final id="finished"/>
+    <final id="finished">
+	    <onentry>
+			<send event="finish" type="scxml" messageMode="TO_PARENT"/>
+			<log label="SUB" expr="'finished'"/>
+		</onentry>
+	</final>
 </businessclass>

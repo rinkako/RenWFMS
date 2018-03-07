@@ -134,6 +134,22 @@ public class RInstanceTree {
     }
 
     /**
+     * Fetch a tree and return all nodes with notifiableId.
+     * @param notifiableId notifiable id string
+     * @return vector of flattened fetching result by DFS
+     */
+    public ArrayList<RTreeNode> GetVectorByNotifiableId(String notifiableId) {
+        ArrayList<RTreeNode> offsprings = this.GetSelfAndOffspringsVector(this.Root.getGlobalId());
+        ArrayList<RTreeNode> retList = new ArrayList<>();
+        for (RTreeNode node : offsprings) {
+            if (node.getExect().NotifiableId.equals(notifiableId)) {
+                retList.add(node);
+            }
+        }
+        return retList;
+    }
+
+    /**
      * Fetch a tree node then get its offsprings which BO name is target and without itself by its global id.
      * @param gid node unique global id
      * @param target target BO name

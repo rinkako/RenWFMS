@@ -2,6 +2,7 @@
 <businessclass initial="first" name="InitBOTestMain" version="1.0" xmlns="http://www.w3.org/2005/07/scxml">
     <datamodel>
 	    <data expr="'InitBOTestSub_'" id="SubPrefix"></data>
+	    <data expr="0" id="finishCount"></data>
 	</datamodel>
     <state id="first">
         <onentry>
@@ -9,8 +10,15 @@
 				<param name="dataA" expr="666"></param>
 			</newbo>
         </onentry>
-        <transition target="finished"/>
+		<transition event="InitBOTestSub.finish">
+		    <assign location="finishCount" expr="finishCount + 1"></assign>
+			<log label="MAIN" expr="'recieved finish'"/>
+	    </transition>
+		<transition cond="finishCount eq 3" target="finished"/>
     </state>
-
-    <final id="finished"/>
+    <final id="finished">
+		<onentry>
+			<log label="MAIN" expr="'finished'"/>
+		</onentry>
+	</final>
 </businessclass>

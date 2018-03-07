@@ -17,6 +17,7 @@ public enum MessageMode {
     TO_ANCESTOR,
     MULTICAST,
     TO_PARENT,
-    UNICAST
+    UNICAST,
+    TO_NOTIFIABLE_ID
 }
 
