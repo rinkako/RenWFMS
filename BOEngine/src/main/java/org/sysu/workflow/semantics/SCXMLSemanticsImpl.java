@@ -198,8 +198,11 @@ public class SCXMLSemanticsImpl implements SCXMLSemantics {
             args.put("rtid", exctx.Rtid);
             if (!GlobalContext.IsLocalDebug) {
                 try {
-                    InstanceManager.UnregisterInstanceTree(exctx.Rtid);
-                    GlobalContext.Interaction.Send(LocationContext.URL_RS_FINISH, args, exctx.Rtid);
+                    // only remove the tree when root BO finish
+                    if (exctx.NodeId.equals(exctx.RootNodeId)) {
+                        InstanceManager.UnregisterInstanceTree(exctx.Rtid);
+                        GlobalContext.Interaction.Send(LocationContext.URL_RS_FINISH, args, exctx.Rtid);
+                    }
                 } catch (Exception e) {
                     LogUtil.Log("When send finish Rtid to resource service, exception occurred, " + e.toString(),
                             SCXMLSemanticsImpl.class.getName(), LogLevelType.ERROR, exctx.Rtid);

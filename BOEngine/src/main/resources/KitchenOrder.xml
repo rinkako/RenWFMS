@@ -1,20 +1,15 @@
 <businessclass name="KitchenOrder" version="1.0" xmlns="http://www.w3.org/2005/07/scxml">
  <tasks>
     <task id="produceDishes" brole="cook" name="produceDishesTask">
-		<principle method="Offer" distributor="QueueLength">
-			<param name="testParam1"></param>
-			<constraint name="constraint1">
-			    <param name="cparam1"></param>
-			</constraint>
-		</principle>
+		<principle method="Allocate" distributor="ShortestQueue"></principle>
 		<callback on="complete" event="produced"></callback>
     </task>
     <task id="testQuality" brole="cook" name="testQualityTask">
-		<principle method="Allocate" distributor="ShorestQueue"></principle>
+		<principle method="Allocate" distributor="ShortestQueue"></principle>
 		<callback on="complete" event="testCompleted"></callback>
     </task>
     <task id="deliver" brole="waiter" name="deliverTask">
-		<principle method="Allocate" distributor="ShorestQueue"></principle>
+		<principle method="Allocate" distributor="ShortestQueue"></principle>
 		<callback on="complete" event="delivered"></callback>
     </task>
     <task id="archive" brole="archiveHandler" name="archiveTask">
@@ -35,8 +30,8 @@
   <onentry>
    <call name="testQualityTask"></call>
   </onentry>
-  <transition event="testCompleted" cond="_event.data.passed eq 0" target="Producing"></transition>
-  <transition event="testCompleted" cond="_event.data.passed eq 1" target="Delivering"></transition>
+  <transition event="testCompleted" cond="_event.data.get('passed') eq 0" target="Producing"></transition>
+  <transition event="testCompleted" cond="_event.data.get('passed') eq 1" target="Delivering"></transition>
  </state>
  <state id="Delivering">
   <onentry>

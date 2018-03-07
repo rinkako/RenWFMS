@@ -398,6 +398,7 @@ public class NameSpacingController {
     public ReturnModel TransshipCallback(@RequestParam(value = "signature", required = false) String signature,
                                          @RequestParam(value = "rtid", required = false) String rtid,
                                          @RequestParam(value = "bo", required = false) String bo,
+                                         @RequestParam(value = "id", required = false) String id,
                                          @RequestParam(value = "on", required = false) String on,
                                          @RequestParam(value = "event", required = false) String event,
                                          @RequestParam(value = "payload", required = false) String payload) {
@@ -407,9 +408,9 @@ public class NameSpacingController {
             List<String> missingParams = new ArrayList<>();
             if (signature == null) missingParams.add("signature");
             if (rtid == null) missingParams.add("rtid");
-            if (bo == null) missingParams.add("bo");
             if (on == null) missingParams.add("on");
             if (event == null) missingParams.add("event");
+            if (bo == null && id == null) missingParams.add("bo");
             if (missingParams.size() > 0) {
                 return ReturnModelHelper.MissingParametersResponse(missingParams);
             }
@@ -421,7 +422,12 @@ public class NameSpacingController {
             HashMap<String, String> args = new HashMap<>();
             args.put("rtid", rtid);
             args.put("on", on);
-            args.put("bo", bo);
+            if (bo != null) {
+                args.put("bo", bo);
+            }
+            if (id != null) {
+                args.put("id", id);
+            }
             args.put("event", event);
             args.put("payload", payload);
             NameServiceTransaction t = TransactionCreator.Create(TransactionType.Namespacing, "transshipCallback", args);

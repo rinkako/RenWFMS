@@ -157,10 +157,14 @@ public class InterfaceB {
             String participantCache = rre.getParticipantCache();
             String[] participantItem = participantCache.split(",");
             for (String participantGid : participantItem) {
-                RenRsparticipantEntity rpe = session.get(RenRsparticipantEntity.class, participantGid);
-                rpe.setReferenceCounter(rpe.getReferenceCounter() - 1);
-                if (rpe.getReferenceCounter() <= 0) {
-                    session.createQuery(String.format("DELETE FROM RenRsparticipantEntity WHERE workerid = '%s'", participantGid)).executeUpdate();
+                // Gid is in pattern of "WorkerGlobalId:BRoleName"
+                String workerId = participantGid.split(":")[0];
+                RenRsparticipantEntity rpe = session.get(RenRsparticipantEntity.class, workerId);
+                if (rpe != null) {
+                    rpe.setReferenceCounter(rpe.getReferenceCounter() - 1);
+                    if (rpe.getReferenceCounter() <= 0) {
+                        session.delete(rpe);
+                    }
                 }
             }
             transaction.commit();
@@ -189,7 +193,7 @@ public class InterfaceB {
         if (initType == InitializationByType.SYSTEM_INITIATED) {
             boolean result = InterfaceB.StartWorkitem(participant, workitem, payload);
             if (!result) {
-                // todo use interfaceE log to workitem log and interfaceX for exception handle
+                InterfaceX.FailedRedirectToLauncherDomainPool(workitem, "AcceptOffered by System but failed to start");
                 return false;
             }
         }
@@ -219,7 +223,7 @@ public class InterfaceB {
                 InterfaceB.WorkitemChanged(workitem, WorkitemStatusType.Fired, WorkitemResourcingStatusType.Offered, payload);
                 return true;
             } catch (Exception ex) {
-                // todo use interfaceE log to workitem log and interfaceX for exception handle
+                InterfaceX.FailedRedirectToLauncherDomainPool(workitem, "Deallocate but exception occurred: " + ex);
                 return false;
             }
         } else {
@@ -298,7 +302,7 @@ public class InterfaceB {
                 InterfaceB.WorkitemChanged(workitem, WorkitemStatusType.Fired, WorkitemResourcingStatusType.Allocated, payload);
                 return true;
             } catch (Exception ex) {
-                // todo use interfaceE log to workitem log and interfaceX for exception handle
+                InterfaceX.FailedRedirectToLauncherDomainPool(workitem, "Reallocate but exception occurred: " + ex);
                 return false;
             }
         } else {
@@ -324,7 +328,7 @@ public class InterfaceB {
                 InterfaceB.WorkitemChanged(workitem, WorkitemStatusType.Suspended, WorkitemResourcingStatusType.Suspended, payload);
                 return true;
             } catch (Exception ex) {
-                // todo use interfaceE log to workitem log and interfaceX for exception handle
+                InterfaceX.FailedRedirectToLauncherDomainPool(workitem, "Suspend but exception occurred: " + ex);
                 return false;
             }
         } else {
@@ -349,7 +353,7 @@ public class InterfaceB {
             InterfaceB.WorkitemChanged(workitem, WorkitemStatusType.Executing, WorkitemResourcingStatusType.Started, payload);
             return true;
         } catch (Exception ex) {
-            // todo use interfaceE log to workitem log and interfaceX for exception handle
+            InterfaceX.FailedRedirectToLauncherDomainPool(workitem, "Unsuspend but exception occurred: " + ex);
             return false;
         }
     }
@@ -371,7 +375,7 @@ public class InterfaceB {
                 InterfaceE.WriteLog(workitem, participant.getWorkerId(), RSEventType.skip);
                 return true;
             } catch (Exception ex) {
-                // todo use interfaceE to log workitem log and interfaceX for exception handle
+                InterfaceX.FailedRedirectToLauncherDomainPool(workitem, "Skip but exception occurred: " + ex);
                 return false;
             }
         } else {
@@ -404,7 +408,7 @@ public class InterfaceB {
             InterfaceE.WriteLog(workitem, participant.getWorkerId(), RSEventType.complete);
             return true;
         } catch (Exception ex) {
-            // todo use interfaceE to log workitem log and interfaceX for exception handle
+            InterfaceX.FailedRedirectToLauncherDomainPool(workitem, "Complete but exception occurred: " + ex);
             return false;
         }
     }

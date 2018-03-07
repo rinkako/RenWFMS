@@ -15,6 +15,6 @@ public class YAWLRequestAdapter implements IRPCRequestAdapter {
      * @return RenResourcing service object
      */
     public ResourcingContext RequestReceived(String req) {
-        return null; // todo
+        return null;
     }
 }

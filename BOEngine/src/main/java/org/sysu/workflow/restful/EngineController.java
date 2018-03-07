@@ -5,8 +5,10 @@
 package org.sysu.workflow.restful;
 
 import org.springframework.web.bind.annotation.*;
+import org.sysu.renCommon.enums.LogLevelType;
 import org.sysu.workflow.restful.service.InteractionService;
 import org.sysu.workflow.restful.service.LaunchProcessService;
+import org.sysu.workflow.utility.LogUtil;
 import org.sysu.workflow.utility.SerializationUtil;
 import org.sysu.renCommon.dto.ReturnModel;
 import org.sysu.renCommon.dto.StatusCode;
@@ -93,6 +95,7 @@ public class EngineController {
     public ReturnModel Callback(@RequestParam(value="rtid", required = false)String rtid,
                                 @RequestParam(value="bo", required = false)String bo,
                                 @RequestParam(value="on", required = false)String on,
+                                @RequestParam(value="id", required = false)String id,
                                 @RequestParam(value="event", required = false)String event,
                                 @RequestParam(value="payload", required = false)String payload) {
         ReturnModel rnModel = new ReturnModel();
@@ -100,14 +103,23 @@ public class EngineController {
             // miss params
             List<String> missingParams = new ArrayList<>();
             if (rtid == null) missingParams.add("rtid");
-            if (bo == null) missingParams.add("bo");
             if (on == null) missingParams.add("on");
             if (event == null) missingParams.add("event");
+            if (bo == null && id == null) missingParams.add("bo");
             if (missingParams.size() > 0) {
                 return ReturnModelHelper.MissingParametersResponse(missingParams);
             }
             // logic
-            InteractionService.DispatchCallback(rtid, bo, on, event, payload);
+            if (bo != null) {
+                InteractionService.DispatchCallbackByNodeId(rtid, bo, on, event, payload);
+                if (id != null) {
+                    LogUtil.Log("Received callback with both BO and ID, ID will be ignored.",
+                            EngineController.class.getName(), LogLevelType.WARNING, rtid);
+                }
+            }
+            else {
+                InteractionService.DispatchCallbackByNotifiableId(rtid, id, on, event, payload);
+            }
             // return
             ReturnModelHelper.StandardResponse(rnModel, StatusCode.OK, "OK");
         } catch (Exception e) {
@@ -115,4 +127,5 @@ public class EngineController {
         }
         return rnModel;
     }
+
 }

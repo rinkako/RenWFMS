@@ -1,17 +1,27 @@
-<businessclass initial="Initial" name="Order" version="1.0" xmlns="http://www.w3.org/2005/07/scxml">
+<businessclass
+        initial="Initial"
+        name="GuestOrder"
+        extends="BaseOrder"
+        version="1.0"
+        xmlns="http://www.w3.org/2005/07/scxml">
  <datamodel>
-  <data expr="0" id="Count"></data>
+  <data expr="0" id="startKOCount"></data>
+  <data expr="0" id="finishKOCount"></data>
+  <data expr="233" id="mytest"></data>
  </datamodel>
  <tasks>
-    <task id="add" brole="agent" name="addItemTask" event="submit">
-    </task>
-    <task id="update" brole="agent" name="updateDeliTimeTask" event="updateDeliTimeComplete">
+    <task id="addItem" brole="waiter" name="addItemTask">
+	    <principle method="Offer" distributor="QueueLength">
+			<param name="length" expr="lt 3"></param>
+		</principle>
+		<callback on="complete" event="submit"></callback>
+		<documentation>Test task documentation</documentation>
+	</task>
+    <task id="updateDeliTime" brole="waiter" name="updateDeliTimeTask">
+		<principle method="Allocate" distributor="ShortestQueue"></principle>
+		<callback on="complete" event="updateDeliTimeComplete"></callback>
     </task>
  </tasks>
- <resources>
-    <resource name="cook" type="human" expr="5"></resource>
-    <resource name="casher" type="nonhuman"></resource>
- </resources>
  <state id="Initial">
   <transition target="Dining"></transition>
  </state>
@@ -32,7 +42,8 @@
    <transition event="addItem" target="Ordering"></transition>
    
    <transition event="KitchenOrder.delivered">
-     <call name="updateDeliTimeTask"></call>
+     <call name="updateDeliTimeTask">
+	 </call>
    </transition>
    <transition event="KitchenOrder.finish">
      <assign location="finishKOCount" expr="finishKOCount + 1"></assign>

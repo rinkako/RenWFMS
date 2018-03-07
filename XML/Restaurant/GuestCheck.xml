@@ -4,15 +4,15 @@
  </datamodel>
  <tasks>
     <task id="calculate" brole="paymentCalculator" name="calculateTask">
-	    <principle method="Allocate" distributor="ShorestQueue"></principle>
+	    <principle method="Allocate" distributor="ShortestQueue"></principle>
 		<callback on="complete" event="calculated"></callback>
     </task>
     <task id="Payment" brole="paymentHandler" name="paymentTask">
-	    <principle method="Allocate" distributor="ShorestQueue"></principle>
+	    <principle method="Allocate" distributor="ShortestQueue"></principle>
 		<callback on="complete" event="paid"></callback>
     </task>
     <task id="archive" brole="archiveHandler" name="archiveTask">
-	    <principle method="Allocate" distributor="ShorestQueue"></principle>
+	    <principle method="Allocate" distributor="ShortestQueue"></principle>
 		<callback on="complete" event="archived"></callback>
     </task>
  </tasks>

@@ -41,12 +41,13 @@ public class InitBOParamTest {
         executor.setRtid("testRTID");
         executor.go();
         RInstanceTree tree = InstanceManager.GetInstanceTree("testRTID");
-
         SCXMLExecutionContext ctx = executor.getExctx();
         dispatcher.send("testRTID", ctx.NodeId, "", MessageMode.TO_NOTIFIABLE_ID, "InitBOTestSub_1", "", SCXMLIOProcessor.DEFAULT_EVENT_PROCESSOR,
                 "stop", null, "", 0);
         dispatcher.send("testRTID", ctx.NodeId, "", MessageMode.TO_NOTIFIABLE_ID, "InitBOTestSub_0", "", SCXMLIOProcessor.DEFAULT_EVENT_PROCESSOR,
                 "stop", null, "", 0);
+        Assert.assertEquals(tree.Root.getExect().getScInstance().getGlobalContext().getVars().get("finishCount"), 2);
+        Assert.assertFalse(executor.getStatus().isFinal());
         dispatcher.send("testRTID", ctx.NodeId, "", MessageMode.TO_NOTIFIABLE_ID, "InitBOTestSub_2", "", SCXMLIOProcessor.DEFAULT_EVENT_PROCESSOR,
                 "stop", null, "", 0);
         Assert.assertEquals(tree.Root.getExect().getScInstance().getGlobalContext().getVars().get("finishCount"), 3);

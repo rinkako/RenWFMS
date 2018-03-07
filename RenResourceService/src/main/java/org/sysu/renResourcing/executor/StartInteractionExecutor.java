@@ -29,9 +29,6 @@ public class StartInteractionExecutor extends InteractionExecutor {
      * @param startType start type string
      */
     public void BindingTrigger(String startType, String rtid) {
-        // todo handle initiator
-
-        // todo reflect create trigger
-
+        // todo
     }
 }
