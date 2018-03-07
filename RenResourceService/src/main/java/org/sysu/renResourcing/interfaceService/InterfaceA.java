@@ -40,11 +40,12 @@ public class InterfaceA {
 
     /**
      * Handle resourcing submission request from BO Engine.
-     * @param rtid process runtime record id
-     * @param boName task belong to BO name
-     * @param nodeId producer tree node global id
+     *
+     * @param rtid             process runtime record id
+     * @param boName           task belong to BO name
+     * @param nodeId           producer tree node global id
      * @param polymorphismName task name defined in BO XML.
-     * @param arguments arguments list in JSON string
+     * @param arguments        arguments list in JSON string
      * @return response package
      */
     public static String EngineSubmitTask(String rtid, String boName, String nodeId, String polymorphismName, String arguments) {
@@ -67,23 +68,22 @@ public class InterfaceA {
             ResourcingContext ctx = ResourcingContext.GetContext(null, rtid, RServiceType.SubmitResourcingTask, args);
             InterfaceA.mainScheduler.Schedule(ctx);
             return GlobalContext.RESPONSE_SUCCESS;
-        }
-        catch (Exception ex) {
+        } catch (Exception ex) {
             if (!cmtFlag) {
                 transaction.rollback();
             }
             LogUtil.Log("Exception in EngineSubmitTask, " + ex, InterfaceA.class.getName(),
                     LogLevelType.ERROR, rtid);
             throw ex;  // rethrow to cause exception response
-        }
-        finally {
+        } finally {
             HibernateUtil.CloseLocalSession();
         }
     }
 
     /**
      * Handle resourcing submission request from BO Engine.
-     * @param rtid process runtime record id
+     *
+     * @param rtid        process runtime record id
      * @param successFlag process finish status
      * @return response package
      */
@@ -98,10 +98,13 @@ public class InterfaceA {
 
     /**
      * Handle callback and hook notification when workitem status changed.
-     * @param statusType destination status type
-     * @param workitem workitem context
+     *
+     * @param statusType  destination status type
+     * @param workitem    workitem context
+     * @param task        task context
+     * @param payloadJSON payload in JSON encoded string
      */
-    public static void HandleCallbackAndHook(WorkitemStatusType statusType, WorkitemContext workitem, TaskContext task) throws Exception {
+    public static void HandleCallbackAndHook(WorkitemStatusType statusType, WorkitemContext workitem, TaskContext task, String payloadJSON) throws Exception {
         String rtid = workitem.getEntity().getRtid();
         String bo = workitem.getEntity().getCallbackNodeId();
         // events
@@ -112,7 +115,9 @@ public class InterfaceA {
             argsMap.put("bo", bo);
             argsMap.put("on", statusType.name());
             argsMap.put("event", cb);
-            // todo handle payload
+            if (payloadJSON != null) {
+                argsMap.put("payload", payloadJSON);
+            }
             GlobalContext.Interaction.Send(LocationContext.URL_BOENGINE_CALLBACK, argsMap, rtid);
         }
         // hooks
@@ -122,7 +127,9 @@ public class InterfaceA {
             argsMap.put("rtid", rtid);
             argsMap.put("bo", bo);
             argsMap.put("on", statusType.name());
-            // todo handle payload
+            if (payloadJSON != null) {
+                argsMap.put("payload", payloadJSON);
+            }
             // NOTICE: here does not internal interaction, DO NOT use interaction router!
             try {
                 HttpClientUtil.SendPost(hk, argsMap, rtid);

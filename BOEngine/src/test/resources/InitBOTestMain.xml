@@ -1,0 +1,16 @@
+<!--suppress ALL -->
+<businessclass initial="first" name="InitBOTestMain" version="1.0" xmlns="http://www.w3.org/2005/07/scxml">
+    <datamodel>
+	    <data expr="'InitBOTestSub_'" id="SubPrefix"></data>
+	</datamodel>
+    <state id="first">
+        <onentry>
+            <newbo src="InitBOTestSub.xml" instances="3" idExpr="SubPrefix + _instanceIndex">
+				<param name="dataA" expr="666"></param>
+			</newbo>
+        </onentry>
+        <transition target="finished"/>
+    </state>
+
+    <final id="finished"/>
+</businessclass>

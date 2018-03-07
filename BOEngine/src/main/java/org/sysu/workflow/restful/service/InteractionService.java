@@ -51,7 +51,7 @@ public class InteractionService {
                     bo, on, event, payload), InteractionService.class.getName(), LogLevelType.INFO, rtid);
             MultiStateMachineDispatcher dispatcher = (MultiStateMachineDispatcher) mainBONode.getExect().getEventDispatcher();
             SCXMLExecutionContext ctx = mainBONode.getExect();
-            dispatcher.send(ctx.Rtid, ctx.Tid, "", MessageMode.UNICAST, bo, "",
+            dispatcher.send(ctx.Rtid, ctx.NodeId, "", MessageMode.UNICAST, bo, "",
                     SCXMLIOProcessor.DEFAULT_EVENT_PROCESSOR, event, payloadMap, "", 0);
         }
         catch (Exception ex) {

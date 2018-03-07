@@ -15,10 +15,7 @@ import org.sysu.renNameService.utility.LogUtil;
 import org.sysu.renNameService.utility.SerializationUtil;
 import org.sysu.renCommon.utility.TimestampUtil;
 
-import java.util.ArrayList;
-import java.util.Hashtable;
-import java.util.Observable;
-import java.util.Observer;
+import java.util.*;
 
 /**
  * Author: Rinkako
@@ -46,7 +43,7 @@ public class NSExecutor extends Observable {
         try {
             TransactionType tType = TransactionType.values()[context.getType()];
             String act = (String) nst.getParameterDictionary().get(GlobalContext.TRANSACTION_ACTION_KEY);
-            Hashtable<String, Object> args = nst.getParameterDictionary();
+            HashMap<String, Object> args = nst.getParameterDictionary();
             String retStr = null;
             switch (tType) {
                 case BusinessRoleMapping:
@@ -146,7 +143,7 @@ public class NSExecutor extends Observable {
                             retStr = NameSpacingService.TransshipCallback(args);
                             break;
                         case "transshipWorkitem":
-                            retStr = (String) NameSpacingService.TransshipWorkitem((String) args.get("action"), (String) args.get("workitemId"), (String) args.get("workerId"));
+                            retStr = (String) NameSpacingService.TransshipWorkitem((String) args.get("action"), (String) args.get("workitemId"), (String) args.get("workerId"), (String) args.get("payload"));
                             break;
                         case "transshipWorkqueue":
                             retStr = (String) NameSpacingService.TransshipWorkqueue((String) args.get("action"), (String) args.get("rtid"), (String) args.get("workerId"), (String) args.get("type"));

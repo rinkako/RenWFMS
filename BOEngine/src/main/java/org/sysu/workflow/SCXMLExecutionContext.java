@@ -117,14 +117,30 @@ public class SCXMLExecutionContext implements SCXMLIOProcessor {
      */
     private String sessionId;
 
-    public String Tid;
+    /**
+     * Tree Node (Current Executor) global id.
+     */
+    public String NodeId;
 
-    public String RootTid;
+    /**
+     * Root executor global id.
+     */
+    public String RootNodeId;
 
+    /**
+     * Process for this executor runtime record id.
+     */
     public String Rtid;
 
+    /**
+     * Process global id.
+     */
     public String Pid;
 
+    /**
+     * User-friendly callback notifiable id, default equals to BO name.
+     */
+    public String NotifiableId = "";
 
     /**
      * 构造器

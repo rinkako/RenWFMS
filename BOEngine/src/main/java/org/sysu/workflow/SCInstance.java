@@ -28,57 +28,57 @@ public class SCInstance implements Serializable {
     private static final long serialVersionUID = 2L;
 
     /**
-     * SCInstance 不能被初始化，没有一个StateMachine实例
+     * SCInstance no state machine error.
      */
     private static final String ERR_NO_STATE_MACHINE = "SCInstance: State machine not set";
 
     /**
-     * SCInstance 不能被初始化没有一个错误报告
+     * SCInstance not set error.
      */
     private static final String ERR_NO_ERROR_REPORTER = "SCInstance: ErrorReporter not set";
 
     /**
-     * 表明状态机实例已经初始化
+     * Initialized flag.
      */
     private boolean initialized;
 
     /**
-     * 被执行的状态机
+     * SCXML reference.
      */
     private SCXML stateMachine;
 
     /**
-     * 当前被执行状态机的状态配置
+     * State configuration package.
      */
     private final StateConfiguration stateConfiguration;
 
     /**
-     * 当前状态
+     * Current status
      */
     private final Status currentStatus;
 
     /**
-     * 状态机是否在运行中
+     * SCXML running flag.
      */
     private boolean running;
 
     /**
-     * SCXML 的内部事件处理器
+     * SCXML executor.
      */
     private transient SCXMLIOProcessor internalIOProcessor;
 
     /**
-     * 当前状态机实例的求值器
+     * Evaluator reference.
      */
     private transient Evaluator evaluator;
 
     /**
-     * 错误报告
+     * Error reporter reference.
      */
     private transient ErrorReporter errorReporter = null;
 
     /**
-     * 每一个 EnterableState 的 Context
+     * Map of EnterableState Context
      */
     private final Map<EnterableState, Context> contexts = new HashMap<EnterableState, Context>();
 
@@ -88,7 +88,7 @@ public class SCInstance implements Serializable {
     private final Map<History, Set<EnterableState>> histories = new HashMap<History, Set<EnterableState>>();
 
     /**
-     * root 上下文
+     * root context
      */
     private Context rootContext;
 
@@ -109,7 +109,7 @@ public class SCInstance implements Serializable {
 
 
     /**
-     * 构造函数
+     * Constructor.
      *
      * @param internalIOProcessor The I/O Processor for the internal event queue
      * @param evaluator           The evaluator
@@ -126,7 +126,6 @@ public class SCInstance implements Serializable {
 
 
     /**
-     * 初始化，或者再初始化状态机实例，清除所有的变量上下文，历史，当前状态信息，复制SCXML的数据模型到root Context
      * (re)Initializes the state machine instance, clearing all variable contexts, histories and current status,
      * and clones the SCXML root datamodel into the root context.
      *
@@ -153,14 +152,12 @@ public class SCInstance implements Serializable {
         histories.clear();
         stateConfiguration.clear();
 
-        // 克隆数据模型
         Datamodel rootdm = stateMachine.getDatamodel();
         cloneDatamodel(rootdm, getGlobalContext(), evaluator, errorReporter);
         initialized = true;
     }
 
     /**
-     * 分离，派遣，拆开组合的物体
      * Detach this state machine instance to allow external serialization.
      * <p>
      * This clears the internal I/O processor, evaluator and errorReporter members.
@@ -174,7 +171,6 @@ public class SCInstance implements Serializable {
 
     /**
      * Sets the I/O Processor for the internal event queue
-     * 设置 内部的I/O处理器
      *
      * @param internalIOProcessor the I/O Processor
      */
@@ -183,7 +179,6 @@ public class SCInstance implements Serializable {
     }
 
     /**
-     * 设置，或者重新连上
      * Set or re-attach the evaluator
      * <p>
      * If not re-attaching and this state machine instance has been initialized before,
@@ -207,8 +202,6 @@ public class SCInstance implements Serializable {
     }
 
     /**
-     * 得到当前求值器
-     *
      * @return Return the current evaluator
      */
     protected Evaluator getEvaluator() {
@@ -217,7 +210,6 @@ public class SCInstance implements Serializable {
 
     /**
      * Set or re-attach the error reporter
-     * 设置再连接的错误报告器
      *
      * @param errorReporter The error reporter for this state machine instance.
      * @throws ModelException if an attempt is made to set a null value for the error reporter
@@ -231,18 +223,15 @@ public class SCInstance implements Serializable {
 
     /**
      * @return Return the state machine for this instance
-     * 返回状态机实例
      */
     public SCXML getStateMachine() {
         return stateMachine;
     }
 
     /**
-     * 设置状态机实例
      * <p>
      * If this state machine instance has been initialized before, it will be initialized again, destroying all existing
      * state!
-     * 如果SCInstance之前初始化过，执行这个函数将会再次初始化，并清除所有原来的状态
      * </p>
      *
      * @param stateMachine The state machine for this instance
@@ -264,9 +253,7 @@ public class SCInstance implements Serializable {
     }
 
     /**
-     * 返回全局上下文是不是在所有状态之间共享的
-     *
-     * @return
+     * @return Check if context is single without sharing.
      */
     public boolean isSingleContext() {
         return singleContext;
@@ -274,7 +261,6 @@ public class SCInstance implements Serializable {
 
     /**
      * Clone data model.
-     * 克隆数据模型
      *
      * @param ctx           The context to clone to.
      * @param datamodel     The datamodel to clone.
@@ -346,15 +332,12 @@ public class SCInstance implements Serializable {
 
     /**
      * @return Returns the state configuration for this instance
-     * 返回状态机配置
      */
     public StateConfiguration getStateConfiguration() {
         return stateConfiguration;
     }
 
     /**
-     * 返回当前状态
-     *
      * @return Returns the current status for this instance
      */
     public Status getCurrentStatus() {
@@ -367,8 +350,6 @@ public class SCInstance implements Serializable {
     }
 
     /**
-     * 返回是否在运行中
-     *
      * @return Returns if the state machine is running
      */
     public boolean isRunning() {
@@ -377,7 +358,6 @@ public class SCInstance implements Serializable {
 
     /**
      * Sets the running status of the state machine
-     * 设置状态机的运行状态
      *
      * @param running flag indicating the running status of the state machine
      * @throws IllegalStateException Exception thrown if trying to set the state machine running when in a Final state
@@ -391,7 +371,6 @@ public class SCInstance implements Serializable {
 
     /**
      * Get the root context.
-     * 得到root 上下文
      *
      * @return The root context.
      */
@@ -405,7 +384,6 @@ public class SCInstance implements Serializable {
 
     /**
      * Set or replace the root context.
-     * 设置或者替换根上下文
      *
      * @param context The new root context.
      */
@@ -421,7 +399,6 @@ public class SCInstance implements Serializable {
 
     /**
      * Get the unwrapped (modifiable) system context.
-     * 得到未修改的系统上下文
      *
      * @return The unwrapped system context.
      */
@@ -443,8 +420,6 @@ public class SCInstance implements Serializable {
     }
 
     /**
-     * 返回全局上下文，上最顶层的上下文
-     *
      * @return Returns the global context, which is the top context <em>within</em> the state machine.
      */
     public Context getGlobalContext() {
@@ -460,7 +435,6 @@ public class SCInstance implements Serializable {
 
     /**
      * Get the context for an EnterableState or create one if not created before.
-     * 得到一个EnterableState 的上下文，
      *
      * @param state The EnterableState.
      * @return The context.
@@ -490,10 +464,8 @@ public class SCInstance implements Serializable {
 
     /**
      * Get the context for an EnterableState if available.
-     * 返回一个EnterableState的上下文，如果有的话。
      * <p/>
      * <p>Note: used for testing purposes only</p>
-     * 仅仅为了测试支持
      *
      * @param state The EnterableState
      * @return The context or null if not created yet.
@@ -504,10 +476,8 @@ public class SCInstance implements Serializable {
 
     /**
      * Set the context for an EnterableState
-     * 设置状态上下文
      * <p/>
      * <p>Note: used for testing purposes only</p>
-     * 仅仅为了测试支持
      *
      * @param state   The EnterableState.
      * @param context The context.
@@ -519,7 +489,6 @@ public class SCInstance implements Serializable {
 
     /**
      * Get the last configuration for this history.
-     * 得到上一个配置，为了当前的历史
      *
      * @param history The history.
      * @return Returns the lastConfiguration.
@@ -534,7 +503,6 @@ public class SCInstance implements Serializable {
 
     /**
      * Set the last configuration for this history.
-     * 设置当前历史的上一个配置
      *
      * @param history The history.
      * @param lc      The lastConfiguration to set.
@@ -546,7 +514,6 @@ public class SCInstance implements Serializable {
 
     /**
      * Resets the history state.
-     * 重置历史状态
      * <p/>
      * <p>Note: used for testing purposes only</p>
      * only test

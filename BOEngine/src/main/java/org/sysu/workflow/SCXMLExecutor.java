@@ -67,16 +67,6 @@ public class SCXMLExecutor implements SCXMLIOProcessor {
     public String RootNodeId = "";
 
     /**
-     * Process for this executor runtime record id.
-     */
-    public String Rtid = "";
-
-    /**
-     * Process global id.
-     */
-    public String Pid = "";
-
-    /**
      * The external event queue.
      */
     private final Queue<TriggerEvent> externalEventQueue = new ConcurrentLinkedQueue<TriggerEvent>();
@@ -113,8 +103,8 @@ public class SCXMLExecutor implements SCXMLIOProcessor {
                          final SCXMLSemantics semantics) {
         this.semantics = semantics != null ? semantics : new SCXMLSemanticsImpl();
         this.exctx = new SCXMLExecutionContext(this, expEvaluator, evtDisp, errRep);
-        this.exctx.Tid = this.NodeId;
-        this.exctx.RootTid = this.RootNodeId;
+        this.exctx.NodeId = this.NodeId;
+        this.exctx.RootNodeId = this.RootNodeId;
     }
 
     /**
@@ -133,8 +123,8 @@ public class SCXMLExecutor implements SCXMLIOProcessor {
         this.semantics = semantics != null ? semantics : new SCXMLSemanticsImpl();
         this.exctx = new SCXMLExecutionContext(this, expEvaluator, evtDisp, errRep);
         this.RootNodeId = rootNodeId;
-        this.exctx.Tid = this.NodeId;
-        this.exctx.RootTid = this.RootNodeId;
+        this.exctx.NodeId = this.NodeId;
+        this.exctx.RootNodeId = this.RootNodeId;
     }
 
     /**
@@ -147,8 +137,8 @@ public class SCXMLExecutor implements SCXMLIOProcessor {
         this.semantics = parentSCXMLExecutor.semantics;
         this.exctx = new SCXMLExecutionContext(this, parentSCXMLExecutor.getEvaluator(),
                 parentSCXMLExecutor.getEventdispatcher(), parentSCXMLExecutor.getErrorReporter());
-        this.exctx.Tid = this.NodeId;
-        this.exctx.RootTid = this.RootNodeId;
+        this.exctx.NodeId = this.NodeId;
+        this.exctx.RootNodeId = this.RootNodeId;
     }
 
     /**
@@ -471,9 +461,9 @@ public class SCXMLExecutor implements SCXMLIOProcessor {
                 RInstanceTree myTree = new RInstanceTree();
                 RTreeNode nRoot = new RTreeNode(this.exctx.getStateMachine().getName(), this.NodeId, this.exctx, null);
                 myTree.SetRoot(nRoot);
-                InstanceManager.RegisterInstanceTree(this.Rtid, myTree);
+                InstanceManager.RegisterInstanceTree(this.exctx.Rtid, myTree);
                 this.RootNodeId = this.NodeId;
-                this.exctx.RootTid = this.RootNodeId;
+                this.exctx.RootNodeId = this.RootNodeId;
             }
         } catch (Exception e) {
             System.out.println("Executor error at go");
@@ -620,21 +610,15 @@ public class SCXMLExecutor implements SCXMLIOProcessor {
         return exctx;
     }
 
-    public String getRtid() {
-        return Rtid;
-    }
-
     public void setRtid(String rtid) {
-        Rtid = rtid;
-        this.exctx.Rtid = Rtid;
-    }
-
-    public String getPid() {
-        return Pid;
+        this.exctx.Rtid = rtid;
     }
 
     public void setPid(String pid) {
-        Pid = pid;
-        this.exctx.Pid = Pid;
+        this.exctx.Pid = pid;
+    }
+
+    public void setNotifiableId(String notifiableId) {
+        this.exctx.NotifiableId = notifiableId;
     }
 }

@@ -287,7 +287,7 @@ public class WorkitemContext implements Serializable, RCacheablesContext {
             wCtx.argsDict = taskArgsSign;
             wCtx.taskContext = taskContext;
             // handle callback and hook
-            InterfaceA.HandleCallbackAndHook(WorkitemStatusType.Enabled, wCtx, taskContext);
+            InterfaceA.HandleCallbackAndHook(WorkitemStatusType.Enabled, wCtx, taskContext, null);
             return wCtx;
         }
         catch (Exception ex) {

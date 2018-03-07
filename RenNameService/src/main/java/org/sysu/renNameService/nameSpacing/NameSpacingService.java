@@ -255,7 +255,7 @@ public class NameSpacingService {
         Session session = HibernateUtil.GetLocalSession();
         Transaction transaction = session.beginTransaction();
         try {
-            RenRuntimerecordEntity rrte = new RenRuntimerecordEntity();
+            RenRuntimerecordEntity rrte = session.get(RenRuntimerecordEntity.class, rtid);
             rrte.setLaunchTimestamp(TimestampUtil.GetCurrentTimestamp());
             String launcher = AuthDomainHelper.GetAuthNameByRTID(rtid);
             rrte.setLaunchAuthorityId(launcher);
@@ -284,7 +284,7 @@ public class NameSpacingService {
      *
      * @param args argument map to sent
      */
-    public static String TransshipCallback(Hashtable<String, Object> args) throws Exception {
+    public static String TransshipCallback(Map<String, Object> args) throws Exception {
         HashMap<String, String> argMap = new HashMap<>();
         for (Map.Entry<String, Object> kvp : args.entrySet()) {
             argMap.put(kvp.getKey(), (String) kvp.getValue());
@@ -298,11 +298,15 @@ public class NameSpacingService {
      * @param action     action name
      * @param workitemId workitem global id
      * @param workerId   worker global id
+     * @param payload    payload map in JSON encoded string
      */
-    public static Object TransshipWorkitem(String action, String workitemId, String workerId) throws Exception {
+    public static Object TransshipWorkitem(String action, String workitemId, String workerId, String payload) throws Exception {
         HashMap<String, String> argMap = new HashMap<>();
         argMap.put("workitemId", workitemId);
         argMap.put("workerId", workerId);
+        if (payload != null) {
+            argMap.put("payload", payload);
+        }
         String ret = GlobalContext.Interaction.Send(LocationContext.GATEWAY_RS_WORKITEM + action, argMap, "");
         Map retObj = SerializationUtil.JsonDeserialization(ret, Map.class);
         return ((Map) retObj.get("returnElement")).get("data");

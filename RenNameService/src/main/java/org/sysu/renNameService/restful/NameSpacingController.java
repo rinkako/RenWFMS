@@ -389,7 +389,7 @@ public class NameSpacingController {
      * @param bo        from which BO (required)
      * @param on        which callback scene (required)
      * @param event     event send to engine (required)
-     * @param payload   event send to engine (required)
+     * @param payload   payload map in JSON encoded
      * @return response package
      */
     @RequestMapping(value = "/callback", produces = {"application/json", "application/xml"})
@@ -410,7 +410,6 @@ public class NameSpacingController {
             if (bo == null) missingParams.add("bo");
             if (on == null) missingParams.add("on");
             if (event == null) missingParams.add("event");
-            if (payload == null) missingParams.add("payload");
             if (missingParams.size() > 0) {
                 return ReturnModelHelper.MissingParametersResponse(missingParams);
             }
@@ -424,7 +423,7 @@ public class NameSpacingController {
             args.put("on", on);
             args.put("bo", bo);
             args.put("event", event);
-            args.put("payload", event);
+            args.put("payload", payload);
             NameServiceTransaction t = TransactionCreator.Create(TransactionType.Namespacing, "transshipCallback", args);
             String jsonifyResult = (String) NameSpacingController.scheduler.ScheduleSync(t);
             // return
@@ -441,6 +440,7 @@ public class NameSpacingController {
      * @param signature  auth signature
      * @param workerId   worker global id
      * @param workitemId workitem global id
+     * @param payload    payload map in JSON encoded
      * @return response package in JSON
      */
     @RequestMapping(value = "/workitem/start", produces = {"application/json", "application/xml"})
@@ -448,7 +448,8 @@ public class NameSpacingController {
     @Transactional
     public ReturnModel TransshipStartWorkitem(@RequestParam(value = "signature", required = false) String signature,
                                               @RequestParam(value = "workerId", required = false) String workerId,
-                                              @RequestParam(value = "workitemId", required = false) String workitemId) {
+                                              @RequestParam(value = "workitemId", required = false) String workitemId,
+                                              @RequestParam(value = "payload", required = false) String payload) {
         ReturnModel rnModel = new ReturnModel();
         try {
             // miss params
@@ -468,6 +469,7 @@ public class NameSpacingController {
             args.put("action", "start");
             args.put("workitemId", workitemId);
             args.put("workerId", workerId);
+            args.put("payload", payload);
             NameServiceTransaction t = TransactionCreator.Create(TransactionType.Namespacing, "transshipWorkitem", args);
             String jsonifyResult = (String) NameSpacingController.scheduler.ScheduleSync(t);
             // return
@@ -484,6 +486,7 @@ public class NameSpacingController {
      * @param signature  auth signature
      * @param workerId   worker global id
      * @param workitemId workitem global id
+     * @param payload    payload map in JSON encoded
      * @return response package in JSON
      */
     @RequestMapping(value = "/workitem/accept", produces = {"application/json", "application/xml"})
@@ -491,7 +494,8 @@ public class NameSpacingController {
     @Transactional
     public ReturnModel TransshipAcceptWorkitem(@RequestParam(value = "signature", required = false) String signature,
                                                @RequestParam(value = "workerId", required = false) String workerId,
-                                               @RequestParam(value = "workitemId", required = false) String workitemId) {
+                                               @RequestParam(value = "workitemId", required = false) String workitemId,
+                                               @RequestParam(value = "payload", required = false) String payload) {
         ReturnModel rnModel = new ReturnModel();
         try {
             // miss params
@@ -511,6 +515,7 @@ public class NameSpacingController {
             args.put("action", "accept");
             args.put("workitemId", workitemId);
             args.put("workerId", workerId);
+            args.put("payload", payload);
             NameServiceTransaction t = TransactionCreator.Create(TransactionType.Namespacing, "transshipWorkitem", args);
             String jsonifyResult = (String) NameSpacingController.scheduler.ScheduleSync(t);
             // return
@@ -527,6 +532,7 @@ public class NameSpacingController {
      * @param signature  auth signature
      * @param workerId   worker global id
      * @param workitemId workitem global id
+     * @param payload    payload map in JSON encoded
      * @return response package in JSON
      */
     @RequestMapping(value = "/workitem/acceptStart", produces = {"application/json", "application/xml"})
@@ -534,7 +540,8 @@ public class NameSpacingController {
     @Transactional
     public ReturnModel TransshipAcceptAndStartWorkitem(@RequestParam(value = "signature", required = false) String signature,
                                                        @RequestParam(value = "workerId", required = false) String workerId,
-                                                       @RequestParam(value = "workitemId", required = false) String workitemId) {
+                                                       @RequestParam(value = "workitemId", required = false) String workitemId,
+                                                       @RequestParam(value = "payload", required = false) String payload) {
         ReturnModel rnModel = new ReturnModel();
         try {
             // miss params
@@ -554,6 +561,7 @@ public class NameSpacingController {
             args.put("action", "acceptStart");
             args.put("workitemId", workitemId);
             args.put("workerId", workerId);
+            args.put("payload", payload);
             NameServiceTransaction t = TransactionCreator.Create(TransactionType.Namespacing, "transshipWorkitem", args);
             String jsonifyResult = (String) NameSpacingController.scheduler.ScheduleSync(t);
             // return
@@ -570,6 +578,7 @@ public class NameSpacingController {
      * @param signature  auth signature
      * @param workerId   worker global id
      * @param workitemId workitem global id
+     * @param payload    payload map in JSON encoded
      * @return response package in JSON
      */
     @RequestMapping(value = "/workitem/complete", produces = {"application/json", "application/xml"})
@@ -577,7 +586,8 @@ public class NameSpacingController {
     @Transactional
     public ReturnModel TransshipCompleteWorkitem(@RequestParam(value = "signature", required = false) String signature,
                                                  @RequestParam(value = "workerId", required = false) String workerId,
-                                                 @RequestParam(value = "workitemId", required = false) String workitemId) {
+                                                 @RequestParam(value = "workitemId", required = false) String workitemId,
+                                                 @RequestParam(value = "payload", required = false) String payload) {
         ReturnModel rnModel = new ReturnModel();
         try {
             // miss params
@@ -597,6 +607,7 @@ public class NameSpacingController {
             args.put("action", "complete");
             args.put("workitemId", workitemId);
             args.put("workerId", workerId);
+            args.put("payload", payload);
             NameServiceTransaction t = TransactionCreator.Create(TransactionType.Namespacing, "transshipWorkitem", args);
             String jsonifyResult = (String) NameSpacingController.scheduler.ScheduleSync(t);
             // return
@@ -613,6 +624,7 @@ public class NameSpacingController {
      * @param signature  auth signature
      * @param workerId   worker global id
      * @param workitemId workitem global id
+     * @param payload    payload map in JSON encoded
      * @return response package in JSON
      */
     @RequestMapping(value = "/workitem/suspend", produces = {"application/json", "application/xml"})
@@ -620,7 +632,8 @@ public class NameSpacingController {
     @Transactional
     public ReturnModel TransshipSuspendWorkitem(@RequestParam(value = "signature", required = false) String signature,
                                                 @RequestParam(value = "workerId", required = false) String workerId,
-                                                @RequestParam(value = "workitemId", required = false) String workitemId) {
+                                                @RequestParam(value = "workitemId", required = false) String workitemId,
+                                                @RequestParam(value = "payload", required = false) String payload) {
         ReturnModel rnModel = new ReturnModel();
         try {
             // miss params
@@ -640,6 +653,7 @@ public class NameSpacingController {
             args.put("action", "suspend");
             args.put("workitemId", workitemId);
             args.put("workerId", workerId);
+            args.put("payload", payload);
             NameServiceTransaction t = TransactionCreator.Create(TransactionType.Namespacing, "transshipWorkitem", args);
             String jsonifyResult = (String) NameSpacingController.scheduler.ScheduleSync(t);
             // return
@@ -656,6 +670,7 @@ public class NameSpacingController {
      * @param signature  auth signature
      * @param workerId   worker global id
      * @param workitemId workitem global id
+     * @param payload    payload map in JSON encoded
      * @return response package in JSON
      */
     @RequestMapping(value = "/workitem/unsuspend", produces = {"application/json", "application/xml"})
@@ -663,7 +678,8 @@ public class NameSpacingController {
     @Transactional
     public ReturnModel TransshipUnsuspendWorkitem(@RequestParam(value = "signature", required = false) String signature,
                                                   @RequestParam(value = "workerId", required = false) String workerId,
-                                                  @RequestParam(value = "workitemId", required = false) String workitemId) {
+                                                  @RequestParam(value = "workitemId", required = false) String workitemId,
+                                                  @RequestParam(value = "payload", required = false) String payload) {
         ReturnModel rnModel = new ReturnModel();
         try {
             // miss params
@@ -683,6 +699,7 @@ public class NameSpacingController {
             args.put("action", "unsuspend");
             args.put("workitemId", workitemId);
             args.put("workerId", workerId);
+            args.put("payload", payload);
             NameServiceTransaction t = TransactionCreator.Create(TransactionType.Namespacing, "transshipWorkitem", args);
             String jsonifyResult = (String) NameSpacingController.scheduler.ScheduleSync(t);
             // return
@@ -699,6 +716,7 @@ public class NameSpacingController {
      * @param signature  auth signature
      * @param workerId   worker global id
      * @param workitemId workitem global id
+     * @param payload    payload map in JSON encoded
      * @return response package in JSON
      */
     @RequestMapping(value = "/workitem/skip", produces = {"application/json", "application/xml"})
@@ -706,7 +724,8 @@ public class NameSpacingController {
     @Transactional
     public ReturnModel TransshipSkipWorkitem(@RequestParam(value = "signature", required = false) String signature,
                                              @RequestParam(value = "workerId", required = false) String workerId,
-                                             @RequestParam(value = "workitemId", required = false) String workitemId) {
+                                             @RequestParam(value = "workitemId", required = false) String workitemId,
+                                             @RequestParam(value = "payload", required = false) String payload) {
         ReturnModel rnModel = new ReturnModel();
         try {
             // miss params
@@ -726,6 +745,7 @@ public class NameSpacingController {
             args.put("action", "skip");
             args.put("workitemId", workitemId);
             args.put("workerId", workerId);
+            args.put("payload", payload);
             NameServiceTransaction t = TransactionCreator.Create(TransactionType.Namespacing, "transshipWorkitem", args);
             String jsonifyResult = (String) NameSpacingController.scheduler.ScheduleSync(t);
             // return
@@ -742,6 +762,7 @@ public class NameSpacingController {
      * @param signature  auth signature
      * @param workerId   worker global id
      * @param workitemId workitem global id
+     * @param payload    payload map in JSON encoded
      * @return response package in JSON
      */
     @RequestMapping(value = "/workitem/reallocate", produces = {"application/json", "application/xml"})
@@ -749,7 +770,8 @@ public class NameSpacingController {
     @Transactional
     public ReturnModel TransshipReallocateWorkitem(@RequestParam(value = "signature", required = false) String signature,
                                                    @RequestParam(value = "workerId", required = false) String workerId,
-                                                   @RequestParam(value = "workitemId", required = false) String workitemId) {
+                                                   @RequestParam(value = "workitemId", required = false) String workitemId,
+                                                   @RequestParam(value = "payload", required = false) String payload) {
         ReturnModel rnModel = new ReturnModel();
         try {
             // miss params
@@ -769,6 +791,7 @@ public class NameSpacingController {
             args.put("action", "reallocate");
             args.put("workitemId", workitemId);
             args.put("workerId", workerId);
+            args.put("payload", payload);
             NameServiceTransaction t = TransactionCreator.Create(TransactionType.Namespacing, "transshipWorkitem", args);
             String jsonifyResult = (String) NameSpacingController.scheduler.ScheduleSync(t);
             // return
@@ -785,6 +808,7 @@ public class NameSpacingController {
      * @param signature  auth signature
      * @param workerId   worker global id
      * @param workitemId workitem global id
+     * @param payload    payload map in JSON encoded
      * @return response package in JSON
      */
     @RequestMapping(value = "/workitem/deallocate", produces = {"application/json", "application/xml"})
@@ -792,7 +816,8 @@ public class NameSpacingController {
     @Transactional
     public ReturnModel TransshipDeallocateWorkitem(@RequestParam(value = "signature", required = false) String signature,
                                                    @RequestParam(value = "workerId", required = false) String workerId,
-                                                   @RequestParam(value = "workitemId", required = false) String workitemId) {
+                                                   @RequestParam(value = "workitemId", required = false) String workitemId,
+                                                   @RequestParam(value = "payload", required = false) String payload) {
         ReturnModel rnModel = new ReturnModel();
         try {
             // miss params
@@ -812,6 +837,7 @@ public class NameSpacingController {
             args.put("action", "deallocate");
             args.put("workitemId", workitemId);
             args.put("workerId", workerId);
+            args.put("payload", payload);
             NameServiceTransaction t = TransactionCreator.Create(TransactionType.Namespacing, "transshipWorkitem", args);
             String jsonifyResult = (String) NameSpacingController.scheduler.ScheduleSync(t);
             // return

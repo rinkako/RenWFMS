@@ -267,6 +267,7 @@ public final class SCXMLReader {
     /*newbo元素的属性*/
     private static final String ATTR_BOO_INSTANCES = "instances";
     private static final String ATTR_BOO_INSTANCESEXPR = "instancesExpr";
+    private static final String ATTR_BOO_IDEXPR = "idExpr";
     /*send元素扩展的属性*/
     private static final String ATTR_BOO_MESSAGEMODE="messageMode";
     private static final String ATTR_BOO_TARGETNAME="targetName";
@@ -554,8 +555,6 @@ public final class SCXMLReader {
      */
     private static SCXML readDocument(final XMLStreamReader reader, final Configuration configuration)
             throws IOException, ModelException, XMLStreamException {
-
-        // 实例化SCXML
         SCXML scxml = new SCXML();
         while (reader.hasNext()) {
             String name, nsURI;
@@ -597,42 +596,32 @@ public final class SCXMLReader {
     private static void readSCXML(final XMLStreamReader reader, final Configuration configuration, final SCXML scxml)
             throws IOException, ModelException, XMLStreamException {
 
-        //设置scxml元素的属性
         scxml.setDatamodelName(readAV(reader, ATTR_DATAMODEL));
         scxml.setExmode(readAV(reader, ATTR_EXMODE));
         scxml.setInitial(readAV(reader, ATTR_INITIAL));
-        scxml.setName(readAV(reader, ATTR_NAME));
+        scxml.setName(readRequiredAV(reader, ELEM_SCXML, ATTR_NAME));
         scxml.setProfile(readAV(reader, ATTR_PROFILE));
         scxml.setBaseBusinessObjectName(readAV(reader, ATTR_BOO_EXTENDS));
-
-        String na = scxml.getName();
-        System.out.println("name:" + na);
-        //创建继承上下文实例
+        // if id is not given, set it equals to name
+        String myId = readAV(reader, ATTR_ID);
+        scxml.setId(myId == null ? scxml.getName() : myId);
+        // handle inheritable context
         String baseBOName = scxml.getBaseBusinessObjectName();
-        System.out.println("baseName:" + baseBOName);
-
-        if(baseBOName == null || baseBOName.length() <= 0){
-            //do nothing;
-        }else{
+        if (baseBOName != null && baseBOName.length() > 0) {
             try{
                 InheritableContext inheritor = BOInheritHandler.InheritConnect(scxml, scxml.getBaseBusinessObjectName());
                 scxml.setInheritedContext(inheritor);
-            }catch(Exception e){
+            }
+            catch (Exception e) {
                 e.printStackTrace();
             }
         }
-        //version属性是必须的
         scxml.setVersion(readRequiredAV(reader, ELEM_SCXML, ATTR_VERSION));
-        //验证version是否为 1.0
         if (!SCXML_REQUIRED_VERSION.equals(scxml.getVersion())) {
             throw new ModelException(new MessageFormat(ERR_INVALID_VERSION).format(new Object[]{scxml.getVersion()}));
         }
-        //
         readNamespaces(configuration, scxml);
-
-        //设置全局Script为false
         boolean hasGlobalScript = false;
-        //开始读取scxml元素里面的内容
         loop:
         while (reader.hasNext()) {
             String name, nsURI;
@@ -640,7 +629,7 @@ public final class SCXMLReader {
                 case XMLStreamConstants.START_ELEMENT:
                     pushNamespaces(reader, configuration);
                     nsURI = reader.getNamespaceURI();
-                    name = reader.getLocalName();//获取当前读取到的元素名
+                    name = reader.getLocalName();
                     if (XMLNS_SCXML.equals(nsURI)) {
                         if (ELEM_STATE.equals(name)) {
                             readState(reader, configuration, scxml, null);
@@ -1889,7 +1878,7 @@ public final class SCXMLReader {
                     if (XMLNS_SCXML.equals(nsURI)) {
                         if (ELEM_BOO_NEWBO.equals(name)) {
                             //RINKAKO: 读取子业务对象
-                            readSubStateMachine(reader, configuration, executable, parent);
+                            readNewBO(reader, configuration, executable, parent);
                         } else if (ELEM_BOO_CALL.equals(name)) {
                             //RINKAKO: 读取CALL标签
                             readCall(reader, configuration, executable, parent);
@@ -2512,16 +2501,17 @@ public final class SCXMLReader {
     }
 
     /**
-     * 读取newbo元素的内容
-     * @param reader
-     * @param configuration
-     * @param executable
-     * @param parent
+     * Read newbo label content.
+     * @param reader        The {@link XMLStreamReader} providing the SCXML document to parse.
+     * @param configuration The {@link Configuration} to use while parsing.
+     * @param executable    The parent {@link Executable} for this action.
+     * @param parent        The optional parent {@link ActionsContainer} if this action is a child of one.s
      */
-    private static void readSubStateMachine(XMLStreamReader reader, Configuration configuration, Executable executable, ActionsContainer parent) throws XMLStreamException, ModelException {
-        SubStateMachine subStateMachine = new SubStateMachine();
+    private static void readNewBO(XMLStreamReader reader, Configuration configuration, Executable executable, ActionsContainer parent) throws XMLStreamException, ModelException {
+        NewBO subStateMachine = new NewBO();
         subStateMachine.setSrc(readAV(reader, ATTR_SRC));
         subStateMachine.setInstances(Integer.parseInt(readAV(reader, ATTR_BOO_INSTANCES)));
+        subStateMachine.setIdExpr(readAV(reader, ATTR_BOO_IDEXPR));
         subStateMachine.setNamelist(readAV(reader, ATTR_NAMELIST));
         subStateMachine.setPathResolver(configuration.pathResolver);
         if (subStateMachine.getSrc() == null) {
@@ -2540,11 +2530,9 @@ public final class SCXMLReader {
                                 readParam(reader, configuration, subStateMachine);
                             } else {
                                 reportIgnoredElement(reader, configuration, ELEM_BOO_NEWBO, nsURI, name);
-                                //reportIgnoredElement(reader, configuration, ELEM_SUBSTATEMACHINE, nsURI, name);
                             }
                         } else {
                             reportIgnoredElement(reader, configuration, ELEM_BOO_NEWBO, nsURI, name);
-                            //reportIgnoredElement(reader, configuration, ELEM_SUBSTATEMACHINE, nsURI, name);
                         }
                         break;
                     case XMLStreamConstants.END_ELEMENT:

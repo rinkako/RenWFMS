@@ -34,6 +34,7 @@ public class InterfaceW {
     public static boolean AcceptOffer(ResourcingContext ctx) {
         String workitemId = (String) ctx.getArgs().get("workitemId");
         String workerId = (String) ctx.getArgs().get("workerId");
+        String payload = (String) ctx.getArgs().get("payload");
         WorkitemContext workitem = WorkitemContext.GetContext(workitemId, ctx.getRtid());
         ParticipantContext participant = ParticipantContext.GetContext(ctx.getRtid(), workerId);
         if (workitem == null) {
@@ -50,7 +51,7 @@ public class InterfaceW {
             }
             return false;
         }
-        return InterfaceB.AcceptOfferedWorkitem(participant, workitem, InitializationByType.USER_INITIATED);
+        return InterfaceB.AcceptOfferedWorkitem(participant, workitem, payload, InitializationByType.USER_INITIATED);
     }
 
     /**
@@ -61,6 +62,7 @@ public class InterfaceW {
     public static boolean Deallocate(ResourcingContext ctx) {
         String workitemId = (String) ctx.getArgs().get("workitemId");
         String workerId = (String) ctx.getArgs().get("workerId");
+        String payload = (String) ctx.getArgs().get("payload");
         WorkitemContext workitem = WorkitemContext.GetContext(workitemId, ctx.getRtid());
         ParticipantContext participant = ParticipantContext.GetContext(ctx.getRtid(), workerId);
         if (workitem == null) {
@@ -77,7 +79,7 @@ public class InterfaceW {
             }
             return false;
         }
-        return InterfaceB.DeallocateWorkitem(participant, workitem);
+        return InterfaceB.DeallocateWorkitem(participant, workitem, payload);
     }
 
     /**
@@ -88,6 +90,7 @@ public class InterfaceW {
     public static boolean Start(ResourcingContext ctx) {
         String workitemId = (String) ctx.getArgs().get("workitemId");
         String workerId = (String) ctx.getArgs().get("workerId");
+        String payload = (String) ctx.getArgs().get("payload");
         WorkitemContext workitem = WorkitemContext.GetContext(workitemId, ctx.getRtid());
         ParticipantContext participant = ParticipantContext.GetContext(ctx.getRtid(), workerId);
         if (workitem == null) {
@@ -104,7 +107,7 @@ public class InterfaceW {
             }
             return false;
         }
-        return InterfaceB.StartWorkitem(participant, workitem);
+        return InterfaceB.StartWorkitem(participant, workitem, payload);
     }
 
     /**
@@ -115,6 +118,7 @@ public class InterfaceW {
     public static boolean Reallocate(ResourcingContext ctx) {
         String workitemId = (String) ctx.getArgs().get("workitemId");
         String workerId = (String) ctx.getArgs().get("workerId");
+        String payload = (String) ctx.getArgs().get("payload");
         WorkitemContext workitem = WorkitemContext.GetContext(workitemId, ctx.getRtid());
         ParticipantContext participant = ParticipantContext.GetContext(ctx.getRtid(), workerId);
         if (workitem == null) {
@@ -131,7 +135,7 @@ public class InterfaceW {
             }
             return false;
         }
-        return InterfaceB.ReallocateWorkitem(participant, workitem);
+        return InterfaceB.ReallocateWorkitem(participant, workitem, payload);
     }
 
     /**
@@ -142,6 +146,7 @@ public class InterfaceW {
     public static boolean AcceptAndStart(ResourcingContext ctx) {
         String workitemId = (String) ctx.getArgs().get("workitemId");
         String workerId = (String) ctx.getArgs().get("workerId");
+        String payload = (String) ctx.getArgs().get("payload");
         WorkitemContext workitem = WorkitemContext.GetContext(workitemId, ctx.getRtid());
         ParticipantContext participant = ParticipantContext.GetContext(ctx.getRtid(), workerId);
         if (workitem == null) {
@@ -158,7 +163,7 @@ public class InterfaceW {
             }
             return false;
         }
-        return InterfaceB.AcceptOfferedWorkitem(participant, workitem, InitializationByType.SYSTEM_INITIATED);
+        return InterfaceB.AcceptOfferedWorkitem(participant, workitem, payload, InitializationByType.SYSTEM_INITIATED);
     }
 
     /**
@@ -169,6 +174,7 @@ public class InterfaceW {
     public static boolean Skip(ResourcingContext ctx) {
         String workitemId = (String) ctx.getArgs().get("workitemId");
         String workerId = (String) ctx.getArgs().get("workerId");
+        String payload = (String) ctx.getArgs().get("payload");
         WorkitemContext workitem = WorkitemContext.GetContext(workitemId, ctx.getRtid());
         ParticipantContext participant = ParticipantContext.GetContext(ctx.getRtid(), workerId);
         if (workitem == null) {
@@ -185,7 +191,7 @@ public class InterfaceW {
             }
             return false;
         }
-        return InterfaceB.SkipWorkitem(participant, workitem);
+        return InterfaceB.SkipWorkitem(participant, workitem, payload);
     }
 
     /**
@@ -196,6 +202,7 @@ public class InterfaceW {
     public static boolean Suspend(ResourcingContext ctx) {
         String workitemId = (String) ctx.getArgs().get("workitemId");
         String workerId = (String) ctx.getArgs().get("workerId");
+        String payload = (String) ctx.getArgs().get("payload");
         WorkitemContext workitem = WorkitemContext.GetContext(workitemId, ctx.getRtid());
         ParticipantContext participant = ParticipantContext.GetContext(ctx.getRtid(), workerId);
         if (workitem == null) {
@@ -212,7 +219,7 @@ public class InterfaceW {
             }
             return false;
         }
-        return InterfaceB.SuspendWorkitem(participant, workitem);
+        return InterfaceB.SuspendWorkitem(participant, workitem, payload);
     }
 
     /**
@@ -223,6 +230,7 @@ public class InterfaceW {
     public static boolean Unsuspend(ResourcingContext ctx) {
         String workitemId = (String) ctx.getArgs().get("workitemId");
         String workerId = (String) ctx.getArgs().get("workerId");
+        String payload = (String) ctx.getArgs().get("payload");
         WorkitemContext workitem = WorkitemContext.GetContext(workitemId, ctx.getRtid());
         ParticipantContext participant = ParticipantContext.GetContext(ctx.getRtid(), workerId);
         if (workitem == null) {
@@ -239,7 +247,7 @@ public class InterfaceW {
             }
             return false;
         }
-        return InterfaceB.UnsuspendWorkitem(participant, workitem);
+        return InterfaceB.UnsuspendWorkitem(participant, workitem, payload);
     }
 
     /**
@@ -250,6 +258,7 @@ public class InterfaceW {
     public static boolean Complete(ResourcingContext ctx) {
         String workitemId = (String) ctx.getArgs().get("workitemId");
         String workerId = (String) ctx.getArgs().get("workerId");
+        String payload = (String) ctx.getArgs().get("payload");
         WorkitemContext workitem = WorkitemContext.GetContext(workitemId, ctx.getRtid());
         ParticipantContext participant = ParticipantContext.GetContext(ctx.getRtid(), workerId);
         if (workitem == null) {
@@ -266,7 +275,7 @@ public class InterfaceW {
             }
             return false;
         }
-        return InterfaceB.CompleteWorkitem(participant, workitem);
+        return InterfaceB.CompleteWorkitem(participant, workitem, payload);
     }
 
     /**

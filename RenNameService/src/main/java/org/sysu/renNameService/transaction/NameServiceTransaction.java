@@ -5,6 +5,7 @@
 package org.sysu.renNameService.transaction;
 import org.sysu.renNameService.entity.RenNsTransactionEntity;
 
+import java.util.HashMap;
 import java.util.Hashtable;
 import java.util.Map;
 
@@ -17,32 +18,36 @@ import java.util.Map;
 public final class NameServiceTransaction implements Comparable {
     /**
      * Add parameter key value to parameter dictionary.
-     * @param key param key
+     *
+     * @param key   param key
      * @param value param value
      */
-    public void AddParameter(String key, Object value) {
+    public synchronized void AddParameter(String key, Object value) {
         this.parameterDictionary.put(key, value);
     }
 
     /**
      * Add parameter key value to parameter dictionary.
+     *
      * @param kvps param key value dictionary
      */
     @SuppressWarnings("unchecked")
-    public void AddParameter(Map kvps) {
+    public synchronized void AddParameter(Map kvps) {
         this.parameterDictionary.putAll(kvps);
     }
 
     /**
      * Get transaction parameter dictionary.
+     *
      * @return a HashTable for request parameters.
      */
-    public Hashtable<String, Object> getParameterDictionary() {
+    public synchronized HashMap<String, Object> getParameterDictionary() {
         return parameterDictionary;
     }
 
     /**
      * Get transaction persist context.
+     *
      * @return {@see RenNsTransactionEntity} instance.
      */
     public RenNsTransactionEntity getTransactionContext() {
@@ -51,7 +56,7 @@ public final class NameServiceTransaction implements Comparable {
 
     @Override
     public int compareTo(Object arg) {
-        NameServiceTransaction otherTrans = (NameServiceTransaction)arg;
+        NameServiceTransaction otherTrans = (NameServiceTransaction) arg;
         int otherPriority = otherTrans.getTransactionContext().getPriority();
         int myPriority = this.transactionContext.getPriority();
         return Integer.compare(myPriority, otherPriority);
@@ -60,7 +65,7 @@ public final class NameServiceTransaction implements Comparable {
     /**
      * Service request parameters.
      */
-    private Hashtable<String, Object> parameterDictionary = new Hashtable<>();
+    private HashMap<String, Object> parameterDictionary = new HashMap<>();
 
     /**
      * Transaction context for persistence.

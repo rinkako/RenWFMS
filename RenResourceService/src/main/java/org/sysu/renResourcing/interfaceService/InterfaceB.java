@@ -103,7 +103,7 @@ public class InterfaceB {
                 }
                 // change workitem status
                 workitem.getEntity().setFiringTime(TimestampUtil.GetCurrentTimestamp());
-                InterfaceB.WorkitemChanged(workitem, WorkitemStatusType.Fired, WorkitemResourcingStatusType.Allocated);
+                InterfaceB.WorkitemChanged(workitem, WorkitemStatusType.Fired, WorkitemResourcingStatusType.Allocated, null);
                 break;
             case Offer:
                 // create a filter interaction
@@ -130,7 +130,7 @@ public class InterfaceB {
                 }
                 // change workitem status
                 workitem.getEntity().setFiringTime(TimestampUtil.GetCurrentTimestamp());
-                InterfaceB.WorkitemChanged(workitem, WorkitemStatusType.Fired, WorkitemResourcingStatusType.Offered);
+                InterfaceB.WorkitemChanged(workitem, WorkitemStatusType.Fired, WorkitemResourcingStatusType.Offered, null);
                 break;
             case AutoAllocateIfOfferFailed:
                 // todo not implementation
@@ -179,14 +179,15 @@ public class InterfaceB {
      * @param participant participant context
      * @param workitem    workitem context
      * @param initType    initialization type, a flag for engine internal call
+     * @param payload     payload in JSON encoded string
      * @return true for a successful workitem accept
      */
-    public static boolean AcceptOfferedWorkitem(ParticipantContext participant, WorkitemContext workitem, InitializationByType initType) {
+    public static boolean AcceptOfferedWorkitem(ParticipantContext participant, WorkitemContext workitem, String payload, InitializationByType initType) {
         // remove from all queue
         WorkQueueContext.RemoveFromAllQueue(workitem);
         // if internal call, means accept and start
         if (initType == InitializationByType.SYSTEM_INITIATED) {
-            boolean result = InterfaceB.StartWorkitem(participant, workitem);
+            boolean result = InterfaceB.StartWorkitem(participant, workitem, payload);
             if (!result) {
                 // todo use interfaceE log to workitem log and interfaceX for exception handle
                 return false;
@@ -196,7 +197,7 @@ public class InterfaceB {
         else {
             WorkQueueContainer container = WorkQueueContainer.GetContext(participant.getWorkerId());
             container.MoveOfferedToAllocated(workitem);
-            InterfaceB.WorkitemChanged(workitem, WorkitemStatusType.Fired, WorkitemResourcingStatusType.Allocated);
+            InterfaceB.WorkitemChanged(workitem, WorkitemStatusType.Fired, WorkitemResourcingStatusType.Allocated, payload);
         }
         // todo notify if agent
         return true;
@@ -207,14 +208,15 @@ public class InterfaceB {
      *
      * @param participant participant context
      * @param workitem    workitem context
+     * @param payload     payload in JSON encoded string
      * @return true for a successful workitem deallocate
      */
-    public static boolean DeallocateWorkitem(ParticipantContext participant, WorkitemContext workitem) {
+    public static boolean DeallocateWorkitem(ParticipantContext participant, WorkitemContext workitem, String payload) {
         if (InterfaceO.CheckPrivilege(participant, workitem, PrivilegeType.CAN_DEALLOCATE)) {
             try {
                 WorkQueueContainer container = WorkQueueContainer.GetContext(participant.getWorkerId());
                 container.MoveAllocatedToOffered(workitem);
-                InterfaceB.WorkitemChanged(workitem, WorkitemStatusType.Fired, WorkitemResourcingStatusType.Offered);
+                InterfaceB.WorkitemChanged(workitem, WorkitemStatusType.Fired, WorkitemResourcingStatusType.Offered, payload);
                 return true;
             } catch (Exception ex) {
                 // todo use interfaceE log to workitem log and interfaceX for exception handle
@@ -232,9 +234,10 @@ public class InterfaceB {
      *
      * @param participant participant context
      * @param workitem    workitem context
+     * @param payload     payload in JSON encoded string
      * @return true for a successful workitem start
      */
-    public static boolean StartWorkitem(ParticipantContext participant, WorkitemContext workitem) {
+    public static boolean StartWorkitem(ParticipantContext participant, WorkitemContext workitem, String payload) {
         try {
             WorkQueueContainer container = WorkQueueContainer.GetContext(participant.getWorkerId());
             container.MoveAllocatedToStarted(workitem);
@@ -245,7 +248,7 @@ public class InterfaceB {
             WorkitemContext.SaveToSteady(workitem);
             // already started
             if (workitem.getEntity().getStatus().equals(WorkitemStatusType.Executing.name())) {
-                InterfaceB.WorkitemChanged(workitem, WorkitemStatusType.Executing, WorkitemResourcingStatusType.Started);
+                InterfaceB.WorkitemChanged(workitem, WorkitemStatusType.Executing, WorkitemResourcingStatusType.Started, payload);
                 return true;
             }
             // start by admin
@@ -270,7 +273,7 @@ public class InterfaceB {
                 WorkQueueContainer adminContainer = WorkQueueContainer.GetContext(GlobalContext.WORKQUEUE_ADMIN_PREFIX + adminQueuePostfix);
                 adminContainer.RemoveFromQueue(workitem, WorkQueueType.UNOFFERED);
             }
-            InterfaceB.WorkitemChanged(workitem, WorkitemStatusType.Executing, WorkitemResourcingStatusType.Started);
+            InterfaceB.WorkitemChanged(workitem, WorkitemStatusType.Executing, WorkitemResourcingStatusType.Started, payload);
             return true;
         } catch (Exception ex) {
             LogUtil.Log("ParticipantStart get Runtime record failed. " + ex,
@@ -284,14 +287,15 @@ public class InterfaceB {
      *
      * @param participant participant context
      * @param workitem    workitem context
+     * @param payload     payload in JSON encoded string
      * @return true for a successful workitem reallocate
      */
-    public static boolean ReallocateWorkitem(ParticipantContext participant, WorkitemContext workitem) {
+    public static boolean ReallocateWorkitem(ParticipantContext participant, WorkitemContext workitem, String payload) {
         if (InterfaceO.CheckPrivilege(participant, workitem, PrivilegeType.CAN_REALLOCATE)) {
             try {
                 WorkQueueContainer container = WorkQueueContainer.GetContext(participant.getWorkerId());
                 container.MoveStartedToAllocated(workitem);
-                InterfaceB.WorkitemChanged(workitem, WorkitemStatusType.Fired, WorkitemResourcingStatusType.Allocated);
+                InterfaceB.WorkitemChanged(workitem, WorkitemStatusType.Fired, WorkitemResourcingStatusType.Allocated, payload);
                 return true;
             } catch (Exception ex) {
                 // todo use interfaceE log to workitem log and interfaceX for exception handle
@@ -309,14 +313,15 @@ public class InterfaceB {
      *
      * @param participant participant context
      * @param workitem    workitem context
+     * @param payload     payload in JSON encoded string
      * @return true for a successful workitem suspend
      */
-    public static boolean SuspendWorkitem(ParticipantContext participant, WorkitemContext workitem) {
+    public static boolean SuspendWorkitem(ParticipantContext participant, WorkitemContext workitem, String payload) {
         if (InterfaceO.CheckPrivilege(participant, workitem, PrivilegeType.CAN_SUSPEND)) {
             try {
                 WorkQueueContainer container = WorkQueueContainer.GetContext(participant.getWorkerId());
                 container.MoveStartedToSuspend(workitem);
-                InterfaceB.WorkitemChanged(workitem, WorkitemStatusType.Suspended, WorkitemResourcingStatusType.Suspended);
+                InterfaceB.WorkitemChanged(workitem, WorkitemStatusType.Suspended, WorkitemResourcingStatusType.Suspended, payload);
                 return true;
             } catch (Exception ex) {
                 // todo use interfaceE log to workitem log and interfaceX for exception handle
@@ -334,13 +339,14 @@ public class InterfaceB {
      *
      * @param participant participant context
      * @param workitem    workitem context
+     * @param payload     payload in JSON encoded string
      * @return true for a successful workitem unsuspend
      */
-    public static boolean UnsuspendWorkitem(ParticipantContext participant, WorkitemContext workitem) {
+    public static boolean UnsuspendWorkitem(ParticipantContext participant, WorkitemContext workitem, String payload) {
         try {
             WorkQueueContainer container = WorkQueueContainer.GetContext(participant.getWorkerId());
             container.MoveSuspendToStarted(workitem);
-            InterfaceB.WorkitemChanged(workitem, WorkitemStatusType.Executing, WorkitemResourcingStatusType.Started);
+            InterfaceB.WorkitemChanged(workitem, WorkitemStatusType.Executing, WorkitemResourcingStatusType.Started, payload);
             return true;
         } catch (Exception ex) {
             // todo use interfaceE log to workitem log and interfaceX for exception handle
@@ -353,14 +359,15 @@ public class InterfaceB {
      *
      * @param participant participant context
      * @param workitem    workitem context
+     * @param payload     payload in JSON encoded string
      * @return true for a successful workitem skip
      */
-    public static boolean SkipWorkitem(ParticipantContext participant, WorkitemContext workitem) {
+    public static boolean SkipWorkitem(ParticipantContext participant, WorkitemContext workitem, String payload) {
         if (InterfaceO.CheckPrivilege(participant, workitem, PrivilegeType.CAN_SKIP)) {
             try {
                 WorkQueueContainer container = WorkQueueContainer.GetContext(participant.getWorkerId());
                 container.RemoveFromQueue(workitem, WorkQueueType.ALLOCATED);
-                InterfaceB.WorkitemChanged(workitem, WorkitemStatusType.ForcedComplete, WorkitemResourcingStatusType.Skipped);
+                InterfaceB.WorkitemChanged(workitem, WorkitemStatusType.ForcedComplete, WorkitemResourcingStatusType.Skipped, payload);
                 InterfaceE.WriteLog(workitem, participant.getWorkerId(), RSEventType.skip);
                 return true;
             } catch (Exception ex) {
@@ -379,9 +386,10 @@ public class InterfaceB {
      *
      * @param participant participant context
      * @param workitem    workitem context
+     * @param payload     payload in JSON encoded string
      * @return true for a successful workitem complete
      */
-    public static boolean CompleteWorkitem(ParticipantContext participant, WorkitemContext workitem) {
+    public static boolean CompleteWorkitem(ParticipantContext participant, WorkitemContext workitem, String payload) {
         try {
             RenWorkitemEntity rwe = workitem.getEntity();
             Timestamp currentTS = TimestampUtil.GetCurrentTimestamp();
@@ -392,7 +400,7 @@ public class InterfaceB {
             WorkitemContext.SaveToSteady(workitem);
             WorkQueueContainer container = WorkQueueContainer.GetContext(participant.getWorkerId());
             container.RemoveFromQueue(workitem, WorkQueueType.STARTED);
-            InterfaceB.WorkitemChanged(workitem, WorkitemStatusType.Complete, WorkitemResourcingStatusType.Completed);
+            InterfaceB.WorkitemChanged(workitem, WorkitemStatusType.Complete, WorkitemResourcingStatusType.Completed, payload);
             InterfaceE.WriteLog(workitem, participant.getWorkerId(), RSEventType.complete);
             return true;
         } catch (Exception ex) {
@@ -408,12 +416,13 @@ public class InterfaceB {
      * @param workitem   workitem context
      * @param preStatus  original status
      * @param postStatus destination status
+     * @param payload    payload in JSON encoded string
      */
-    public static void WorkitemStatusChanged(WorkitemContext workitem, WorkitemStatusType preStatus, WorkitemStatusType postStatus) {
+    public static void WorkitemStatusChanged(WorkitemContext workitem, WorkitemStatusType preStatus, WorkitemStatusType postStatus, String payload) {
         if (preStatus == postStatus) {
             return;
         }
-        InterfaceB.WorkitemChanged(workitem, postStatus, null);
+        InterfaceB.WorkitemChanged(workitem, postStatus, null, payload);
     }
 
     /**
@@ -423,12 +432,13 @@ public class InterfaceB {
      * @param workitem   workitem context
      * @param preStatus  original status
      * @param postStatus destination status
+     * @param payload    payload in JSON encoded string
      */
-    public static void WorkitemResourcingStatusChanged(WorkitemContext workitem, WorkitemResourcingStatusType preStatus, WorkitemResourcingStatusType postStatus) {
+    public static void WorkitemResourcingStatusChanged(WorkitemContext workitem, WorkitemResourcingStatusType preStatus, WorkitemResourcingStatusType postStatus, String payload) {
         if (preStatus == postStatus) {
             return;
         }
-        InterfaceB.WorkitemChanged(workitem, null, postStatus);
+        InterfaceB.WorkitemChanged(workitem, null, postStatus, payload);
     }
 
     /**
@@ -437,8 +447,9 @@ public class InterfaceB {
      * @param workitem           workitem context
      * @param toStatus           destination status
      * @param toResourcingStatus destination resourcing status
+     * @param payload            payload in JSON encoded string
      */
-    public static void WorkitemChanged(WorkitemContext workitem, WorkitemStatusType toStatus, WorkitemResourcingStatusType toResourcingStatus) {
+    public static void WorkitemChanged(WorkitemContext workitem, WorkitemStatusType toStatus, WorkitemResourcingStatusType toResourcingStatus, String payload) {
         // refresh changed to steady
         ContextLockManager.WriteLock(workitem.getClass(), workitem.getEntity().getWid());
         try {
@@ -454,9 +465,8 @@ public class InterfaceB {
         }
         // handle callbacks and hooks
         try {
-            InterfaceA.HandleCallbackAndHook(toStatus, workitem, workitem.getTaskContext());
-        }
-        catch (Exception ex) {
+            InterfaceA.HandleCallbackAndHook(toStatus, workitem, workitem.getTaskContext(), payload);
+        } catch (Exception ex) {
             LogUtil.Log(String.format("Workitem(%s) status changed but failed to handle callbacks and hooks, %s", workitem.getEntity().getWid(), ex),
                     InterfaceB.class.getName(), LogLevelType.ERROR, workitem.getEntity().getRtid());
             InterfaceX.NotifyException(workitem);

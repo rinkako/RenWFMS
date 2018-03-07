@@ -1,0 +1,17 @@
+<!--suppress ALL -->
+<businessclass initial="first" name="InitBOTestSub" version="1.0" xmlns="http://www.w3.org/2005/07/scxml">
+	<datamodel>
+	    <data expr="1" id="dataA"></data>
+	    <data expr="2333" id="dataB"></data>
+	</datamodel>
+	
+    <state id="first">
+        <onentry>
+            <log label="sub dataA(should be 666, not 1) is" expr="dataA"/>
+            <log label="sub dataB is" expr="dataB"/>
+        </onentry>
+        <transition target="finished"/>
+    </state>
+
+    <final id="finished"/>
+</businessclass>

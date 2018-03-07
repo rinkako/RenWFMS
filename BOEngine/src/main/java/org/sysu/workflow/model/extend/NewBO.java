@@ -23,6 +23,7 @@ import org.sysu.workflow.utility.SerializationUtil;
 
 import java.io.InputStream;
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
@@ -30,9 +31,10 @@ import java.util.Map;
 /**
  * Author: Rinkako
  * Date  : 2017/3/7
- * Usage : Label context of SubStateMachine.
+ * Usage : Label context of NewBO.
  */
-public class SubStateMachine extends NamelistHolder implements PathResolverHolder {
+public class NewBO extends NamelistHolder implements PathResolverHolder {
+
     /**
      * Serial version UID.
      */
@@ -47,6 +49,11 @@ public class SubStateMachine extends NamelistHolder implements PathResolverHolde
      * How many sub state machine instance ought to be create
      */
     private int instances = 1;
+
+    /**
+     * Notifiable id.
+     */
+    private String idExpr;
 
     /**
      * Path Resolver for the file src
@@ -88,6 +95,24 @@ public class SubStateMachine extends NamelistHolder implements PathResolverHolde
      */
     public void setInstances(int instances) {
         this.instances = instances;
+    }
+
+    /**
+     * Get the expr of notifiable id.
+     *
+     * @return id string
+     */
+    public String getIdExpr() {
+        return idExpr;
+    }
+
+    /**
+     * Set the expr of notifiable id.
+     *
+     * @param idExpr id string
+     */
+    public void setIdExpr(String idExpr) {
+        this.idExpr = idExpr;
     }
 
     /**
@@ -142,30 +167,32 @@ public class SubStateMachine extends NamelistHolder implements PathResolverHolde
                 e.printStackTrace();
             }
 
-
             SCXMLExecutionContext currentExecutionContext = (SCXMLExecutionContext) exctx.getInternalIOProcessor();
             String boName = getSrc().split("\\.")[0];
-
 
             //read BO from database
             if (!GlobalContext.IsLocalDebug) {
                 //Ariana:get the serialized BO from the database and deserialize it into SCXML object
                 Session session = HibernateUtil.GetLocalSession();
                 Transaction transaction = session.beginTransaction();
+                boolean cmtFlag = false;
                 try {
+                    byte[] serializedBO = null;
                     List boList = session.createQuery(String.format("FROM RenBoEntity WHERE pid = '%s'", currentExecutionContext.Pid)).list();
                     for (Object bo : boList) {
                         RenBoEntity boEntity = (RenBoEntity) bo;
                         if (boEntity.getBoName().equals(boName)) {
-                            byte[] serializedBO = boEntity.getSerialized();
-                            scxml = SerializationUtil.DeserializationSCXMLByByteArray(serializedBO);
+                            serializedBO = boEntity.getSerialized();
                             break;
                         }
                     }
                     transaction.commit();
+                    cmtFlag = true;
+                    scxml = SerializationUtil.DeserializationSCXMLByByteArray(serializedBO);
                 } catch (Exception e) {
-                    e.printStackTrace();
-                    transaction.rollback();
+                    if (!cmtFlag) {
+                        transaction.rollback();
+                    }
                     LogUtil.Log("When read bo by rtid, exception occurred, " + e.toString() + ", service rollback",
                             LaunchProcessService.class.getName(), LogLevelType.ERROR, currentExecutionContext.Rtid);
                 } finally {
@@ -175,33 +202,52 @@ public class SubStateMachine extends NamelistHolder implements PathResolverHolde
 
             // launch sub state machine of the number of instances
             RInstanceTree iTree = InstanceManager.GetInstanceTree(currentExecutionContext.Rtid);
-            RTreeNode curNode = iTree.GetNodeById(currentExecutionContext.Tid);
+            RTreeNode curNode = iTree.GetNodeById(currentExecutionContext.NodeId);
+            Evaluator evaluator = EvaluatorFactory.getEvaluator(scxml);
+            Context tmpCtx = evaluator.newContext(ctx);
             for (int i = 0; i < getInstances(); i++) {
-                Evaluator evaluator = EvaluatorFactory.getEvaluator(scxml);
-                SCXMLExecutor executor = new SCXMLExecutor(evaluator, new MultiStateMachineDispatcher(), new SimpleErrorReporter(), null, currentExecutionContext.RootTid);
+                SCXMLExecutor executor = new SCXMLExecutor(evaluator, new MultiStateMachineDispatcher(), new SimpleErrorReporter(), null, currentExecutionContext.RootNodeId);
                 executor.setRtid(currentExecutionContext.Rtid);
                 executor.setPid(currentExecutionContext.Pid);
                 executor.setStateMachine(scxml);
-                System.out.println("Create sub state machine from: " + url.getFile());
-
                 Context rootContext = evaluator.newContext(null);
                 for (Map.Entry<String, Object> entry : payloadDataMap.entrySet()) {
                     rootContext.set(entry.getKey(), entry.getValue());
                 }
+                // handle initialization parameter
+                Datamodel dm = scxml.getDatamodel();
+                ArrayList<Data> dataToAdd = new ArrayList<>();
+                for (Param argument : this.getParams()) {
+                    boolean existFlag = false;
+                    for (Data parameter : dm.getData()) {
+                        if (parameter.getId().equals(argument.getName())) {
+                            parameter.setExpr(argument.getExpr());
+                            existFlag = true;
+                            break;
+                        }
+                    }
+                    if (!existFlag) {
+                        Data d = new Data();
+                        d.setId(argument.getName());
+                        d.setExpr(argument.getExpr());
+                        dataToAdd.add(d);
+                    }
+                }
+                for (Data d : dataToAdd) {
+                    dm.addData(d);
+                }
+                // handle notifiable id of new state machine
+                if (this.idExpr != null) {
+                    tmpCtx.setLocal("_instanceIndex", i);
+                    executor.setNotifiableId(evaluator.eval(tmpCtx, this.idExpr).toString());
+                }
+                // start sub state machine
                 executor.setRootContext(rootContext);
                 executor.setExecutorIndex(iTree.Root.getExect().getSCXMLExecutor().getExecutorIndex());
-
                 executor.go();
-
                 // maintain the relation of this sub state machine on the instance tree
                 RTreeNode subNode = new RTreeNode(boName, executor.NodeId, executor.getExctx(), curNode);
                 curNode.AddChild(subNode);
-
-                //String currentSessionId = (String) currentExecutionContext.getScInstance().getSystemContext().get(SCXMLSystemContext.SESSIONID_KEY);
-                //String subStateMachineSessionId = (String) executor.getGlobalContext().getSystemContext().get(SCXMLSystemContext.SESSIONID_KEY);
-                //instanceTree.insert(currentSessionId, subStateMachineSessionId, executor.getStateMachine().getName());
-                // add this new executor to the instance manager
-                //SCXMLInstanceManager.setSCXMLInstance(executor);
             }
         } catch (Exception e) {
             e.printStackTrace();

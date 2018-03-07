@@ -16,8 +16,7 @@ import java.util.Map;
  * &lt;scxml&gt; root element, and serves as the &quot;document
  * root&quot;.
  */
-public class SCXML implements Serializable, Observable,
-        NamespacePrefixesHolder {
+public class SCXML implements Serializable, Observable, NamespacePrefixesHolder {
 
     /**
      * Serial version UID.
@@ -128,9 +127,23 @@ public class SCXML implements Serializable, Observable,
      */
     private long ttNextId;
 
+    /**
+     * Inherited context for polymorphism.
+     */
     private InheritableContext inheritedContext;
 
+    /**
+     * Base BO name.
+     */
     private String baseBusinessObjectName;
+
+    /**
+     * Id of this BO, for callback event dispatcher to found the destination BO.<p/>
+     * NOTICE this id should be unique, if duplicated, dispatcher will only dispatch
+     * the event to the first encountered node with that id.<p/>
+     * If id is not given, it default equals to bo name.
+     */
+    private String id;
 
     /**
      * Constructor.
@@ -440,6 +453,14 @@ public class SCXML implements Serializable, Observable,
 
     public void setBaseBusinessObjectName(final String baseBusinessObjectName) {
         this.baseBusinessObjectName = baseBusinessObjectName;
+    }
+
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
     }
 }
 
