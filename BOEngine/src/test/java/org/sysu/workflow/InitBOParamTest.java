@@ -14,10 +14,8 @@ import org.sysu.workflow.instanceTree.InstanceManager;
 import org.sysu.workflow.instanceTree.RInstanceTree;
 import org.sysu.workflow.io.SCXMLReader;
 import org.sysu.workflow.model.SCXML;
-import org.sysu.workflow.model.extend.MessageMode;
 
 import java.net.URL;
-import java.util.HashMap;
 
 /**
  * Author: Rinkako

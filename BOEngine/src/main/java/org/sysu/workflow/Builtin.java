@@ -5,7 +5,6 @@ import java.io.Serializable;
 
 /**
  * Implementation of the SCXML specification required In() builtin predicate.
- * 实现了SCXML标准中的  in()函数的功能
  */
 public class Builtin implements Serializable {
 

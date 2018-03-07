@@ -4,6 +4,7 @@
  */
 package org.sysu.workflow;
 
+import org.sysu.renCommon.utility.CommonUtil;
 import org.sysu.workflow.instanceTree.RInstanceTree;
 import org.sysu.workflow.invoke.Invoker;
 import org.sysu.workflow.model.*;
@@ -455,6 +456,10 @@ public class SCXMLExecutor implements SCXMLIOProcessor {
      *                        model problem.
      */
     public void go() throws ModelException {
+        // if notifiable id not exist, use BO name by default
+        if (CommonUtil.IsNullOrEmpty(this.exctx.NotifiableId)) {
+            this.setNotifiableId(this.exctx.getStateMachine().getId());
+        }
         // register a new instance tree if this state-machine is the root one
         try {
             if (this.RootNodeId.equals("") || this.RootNodeId.equals(this.NodeId)) {

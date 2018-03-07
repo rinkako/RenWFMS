@@ -68,32 +68,22 @@ public interface SCXMLSemantics {
     SCXML normalizeStateMachine(final SCXML input, final ErrorReporter errRep);
 
     /**
+     * <p>
      * First step in the execution of an SCXML state machine.
-     * <p/>
-     * 状态机执行过程中的第一步
      * <p/>
      * <p>
      * In the default implementation, this will first (re)initialize the state machine instance, destroying any existing
      * state!
      * <p/>
-     * 默认是先初始化状态机实例
-     * <p/>
-     * </p>
      * <p>
-     * 第一步是对一应interpret()算法程序的mainLoop()程序，空等待一个外部事件的到来
-     * <p/>
      * The first step is corresponding to the Algorithm for SCXML processing from the interpret() procedure to the
      * mainLoop() procedure up to the blocking wait for an external event.
      * </p>
      * <p>
-     * 这一步应该完成SCXML的初始化执行 和macroStep的一个顺序，直到在返回之前达到一个稳定的状态机配置，
-     * <p/>
      * This step should complete the SCXML initial execution and a subsequent macroStep to stabilize the state machine
      * again before returning.
      * </p>
      * <p>
-     * 如果状态机执行了这一步不再运行了，finalStep()应该在返回之前被调用用来清理工作。
-     * <p/>
      * If the state machine no longer is running after all this, first the {@link #finalStep(SCXMLExecutionContext)}
      * should be called for cleanup before returning.
      * </p>
