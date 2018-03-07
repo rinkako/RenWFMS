@@ -1,0 +1,258 @@
+<businessclass
+        version="1.0"
+        xmlns="http://www.w3.org/2005/07/scxml"
+        name="Crowdsourcing"
+        initial="Initial">
+
+    <!-- 数据模型：定义业务对象在业务执行过程中需要使用的业务数据 -->
+    <datamodel>
+        <!--继承自父业务类的数据模型不需要在这里重新进行定义-->
+        <data id="employer" expr=""></data>
+        <data id="taskName" expr=""></data>
+        <data id="taskDescription" expr=""></data>
+        <data id="judgeCount" expr=""></data>
+        <data id="decomposeCount" expr=""></data>
+        <data id="decomposeVoteCount" expr=""></data>
+        <data id="solveCount" expr=""></data>
+        <data id="solveVoteCount" expr=""></data>
+        <data id="steps" expr="0"></data>
+        <data id="count" expr="0"></data>
+        <data id="complexCount" expr="0"></data>
+        <data id="simpleCount" expr="0"></data>
+        <data id="judgeCompleted" expr="false"></data>
+    </datamodel>
+
+    <!-- 任务模型 -->
+    <tasks>
+        <task id="judge" name="judgeTask" brole="judger">
+            <principle method="Allocate" distributor="ShortestQueue"></principle>
+            <callback on="complete" event="judgeComplete" hook=""></callback>
+            <documentation>Judge task let judgers judge crowdsourcing task to be simple or complex.</documentation>
+        </task>
+        <task id="decompose" name="decomposeTask" brole="decomposer">
+            <principle method="Allocate" distributor="ShortestQueue"></principle>
+            <callback on="complete" event="decomposeComplete" hook=""></callback>
+            <documentation>Decompose task let decomposers decompose crowdsourcing task to be several sub tasks.</documentation>
+        </task>
+        <task id="decomposeVote" name="decomposeVoteTask" brole="decomposeVoter">
+            <principle method="Allocate" distributor="ShortestQueue"></principle>
+            <callback on="complete" event="decomposeVoteComplete" hook=""></callback>
+            <documentation>DecomposeVote task let decomposeVoters vote for decompose plans of a crowdsourcing task.</documentation>
+        </task>
+        <task id="getBestSchema" name="getBestSchemaTask" vrole="automicQuerier">
+            <principle method="Allocate" distributor="Random"></principle>
+            <callback on="complete" event="queryComplete" hook=""></callback>
+            <documentation>GetBestSchema task let a automicQuerier agent query for the best decompose schema in the database and return.</documentation>
+        </task>
+        <task id="solve" name="solveTask" brole="solver">
+            <principle method="Allocate" distributor="ShortestQueue"></principle>
+            <callback on="complete" event="solveComplete" hook=""></callback>
+            <documentation>Solve task let solvers solve a crowdsourcing task.</documentation>
+        </task>
+        <task id="solveVoting" name="solveVoteTask" role="solveVoter">
+            <principle method="Allocate" distributor="ShortestQueue"></principle>
+            <callback on="complete" event="solveVoteComplete" hook=""></callback>
+            <documentation>SolveVote task let solveVoters vote for solutions of a crowdsourcing task.</documentation>
+        </task>
+        <task id="merge" name="mergeTask" brole="merger">
+            <principle method="Allocate" distributor="Random"></principle>
+            <callback on="complete" event="merged" hook=""></callback>
+            <documentation>Merge task let a merger agent merge solutions of sub tasks to be a complete solution of a crowdsourcing task.</documentation>
+        </task>
+
+    </tasks>
+
+
+    <!-- 生命周期模型 -->
+
+    <!-- 初始状态：初始化数据模型 -->
+    <state id="Initial">
+        <onentry>
+            <log label="init" expr="'entry Initial state'"/>
+        </onentry>
+        <transition target="Judging">
+            <call name="judgeTask"></call>
+        </transition>
+        <onexit>
+            <log label="init" expr="'exit Initial state'"/>
+        </onexit>
+    </state>
+
+    <!-- Judging状态：判断当前众包任务是否是复杂任务-->
+    <state id="Judging">
+        <onentry>
+            <log label="judging" expr="'entry Judging state'"/>
+        </onentry>
+
+        <transition event="judgeComplete">
+            <if cond="_event.data.simple eq 0">
+                <assign location="simpleCount" expr="simpleCount + 1"></assign>
+                <elseif cond="_event.data.simple eq 1"/>
+                <assign location="complexCount" expr="complexCount + 1"></assign>
+            </if>
+            <if cond="simpleCount + complexCount eq judgeCount">
+                <assign location="judgeCompleted" expr="true"></assign>
+            </if>
+        </transition>
+
+        <transition cond="judgeCompleted and simpleCount gt complexCount" target="solving">
+            <call name="solveTask" instances="solveCount"></call>
+        </transition>
+
+        <transition cond="judgeCompleted and simpleCount lt complexCount" target="decomposing">
+            <call name="decomposeTask" instances="decomposeCount"></call>
+        </transition>
+
+        <onexit>
+            <log label="judging" expr="'exit Judging state'"/>
+            <assign location="simpleCount" expr="0"></assign>
+            <assign location="complexCount" expr="0"></assign>
+            <assign location="judgeCompleted" expr="false"></assign>
+        </onexit>
+    </state>
+
+
+    <!-- Decomposing状态：如果当前众包任务是复杂任务，将会进入分解状态对人物进行分解-->
+    <state id="Decomposing">
+        <onentry>
+            <log label="decomposing" expr="'entry Decomposing state'"/>
+        </onentry>
+
+        <transition event="decomposeComplete">
+            <!-- 写入数据库: 每个decomposer的分解方案 -->
+            <assign location="count" expr="count + 1"></assign>
+        </transition>
+
+        <transition cond="count eq decomposeCount" target="DecomposeVoting">
+            <call name="decomposeVoteTask" instances="decomposeVoteCount"></call>
+        </transition>
+
+        <onexit>
+            <log label="decomposing" expr="'exit Decomposing state'"/>
+        </onexit>
+    </state>
+
+    <!-- DecomposeVoting状态：对所有decomposer的分解方案进行投票，选出最佳分解方案-->
+    <state id="DecomposeVoting">
+        <onentry>
+            <log label="decomposeVoting" expr="'entry DecomposeVoting state'"/>
+            <assign location="count" expr="0"></assign>
+        </onentry>
+
+        <transition event="decomposeVoteComplete">
+            <assign location="count" expr="count + 1"></assign>
+        </transition>
+
+        <transition cond="count eq decomposeVoteCount" target="Temp">
+            <!--标记将票数最高的分配方案-->
+            <call name="getBestSchemaTask" instances="1"></call>
+        </transition>
+
+        <onexit>
+            <log label="decomposing" expr="'exit DecomposeVoting state'"/>
+        </onexit>
+    </state>
+
+    <state id="Temp">
+        <transition event="queryComplete" target="Waiting">
+            <foreach array="_event.data" item="kvpair">
+                <newbo name="CrowdSourcing.xml" instances="1">
+                    <param id="employer" expr="employer"></param>
+                    <param id="taskName" expr="taskName"></param>
+                    <param id="taskDescription" expr="kvpair.getValue()"></param>
+                    <param id="judgeCount" expr="judgeCount"></param>
+                    <param id="decomposeCount" expr="decomposeCount"></param>
+                    <param id="decomposeVoteCount" expr="decomposeVoteCount"></param>
+                    <param id="solveCount" expr="solveCount"></param>
+                    <param id="solveVoteCount" expr="solveVoteCount"></param>
+                </newbo>
+                <assign location="steps" expr="steps + 1"></assign>
+            </foreach>
+        </transition>
+    </state>
+
+    <!-- Waiting状态：等待其创建的业务对象的生命周期结束 -->
+    <state id="Waiting">
+        <onentry>
+            <log label="waiting" expr="'entry Waiting state '"/>
+            <assign location="count" expr="0"></assign>
+        </onentry>
+
+        <transition event="Crowdsourcing.finish">
+            <assign location="count" expr="count + 1"></assign>
+        </transition>
+
+        <transition cond="count eq steps" target="merging">
+            <call name="mergeTask"></call>
+        </transition>
+
+        <onexit>
+            <log label="waiting" expr="'exit Waiting state '"/>
+        </onexit>
+    </state>
+
+    <!-- Merging状态：调用合并算法执行任务结果的合并 -->
+    <state id="Merging">
+        <onentry>
+            <log label="merging" expr="'entry Merging state '"/>
+        </onentry>
+
+        <transition event="merged" target="Final">
+            <send event="finish" type="scxml" messageMode="TO_PARENT"></send>
+        </transition>
+
+        <onexit>
+            <log label="merging" expr="'exit Merging state '"/>
+        </onexit>
+    </state>
+
+    <!-- Solving状态：解决简单任务-->
+    <state id="Solving">
+        <onentry>
+            <log label="solving" expr="'entry Solving state '"/>
+            <assign location="count" expr="0"></assign>
+        </onentry>
+
+        <transition event="solveComplete">
+            <assign location="count" expr="count + 1"></assign>
+        </transition>
+
+        <transition cond="count eq solveCount" target="solveVoting">
+            <call name="solveVoteTask" instances="solveVoteCount"></call>
+        </transition>
+
+        <onexit>
+            <log label="solving" expr="'exit Solving state '"/>
+        </onexit>
+    </state>
+
+    <!-- SolveVoting state  -->
+    <state id="SolveVoting">
+        <onentry>
+            <log label="solveVoting" expr="' entry SolveVoting state '"/>
+            <assign location="count" expr="0"></assign>
+        </onentry>
+
+        <transition event="solveVoteComplete">
+            <assign location="count" expr="count + 1"></assign>
+        </transition>
+
+        <transition cond="count eq solveVoteCount" target="Final">
+            <send event="finish" type="scxml" messageMode="TO_PARENT"></send>
+            <!--标记票数最高的solution-->
+        </transition>
+
+        <onexit>
+            <log label="solveVoting" expr="' exit SolveVoting state '"/>
+        </onexit>
+    </state>
+
+    <final id="Final">
+        <onentry>
+            <log label="final" expr="' entry Final state '"/>
+        </onentry>
+        <onexit>
+            <log label="final" expr="' exit Final state '"/>
+        </onexit>
+    </final>
+</businessclass>

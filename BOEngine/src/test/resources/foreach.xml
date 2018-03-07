@@ -9,7 +9,7 @@
 
     <state id="testState">
         <onentry>
-            <foreach item="kvp" array="_event.data">
+            <foreach array="_event.data" item="kvp" >
                 <log label="KEY" expr="kvp.getKey()"/>
                 <log label="VALUE" expr="kvp.getValue()"/>
             </foreach>
