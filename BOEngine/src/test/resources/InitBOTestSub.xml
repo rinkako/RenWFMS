@@ -19,7 +19,7 @@
     <final id="finished">
         <onentry>
             <send event="finish" type="scxml" messageMode="TO_PARENT"/>
-            <log label="SUB" expr="'finished'"/>
+            <log label="SUB" expr="'finished, id is: ' + _id"/>
         </onentry>
     </final>
 </businessclass>

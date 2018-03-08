@@ -6,20 +6,20 @@
 
     <datamodel>
         <!--继承自父业务类的数据模型不需要在这里重新进行定义-->
-        <data id="employer" expr=""></data>
-        <data id="taskName" expr=""></data>
-        <data id="taskDescription" expr=""></data>
-        <data id="judgeCount" expr="3"></data>
-        <data id="decomposeCount" expr="3"></data>
-        <data id="decomposeVoteCount" expr="3"></data>
-        <data id="solveCount" expr="3"></data>
-        <data id="solveVoteCount" expr="3"></data>
+        <data id="employer" expr=""/>
+        <data id="taskName" expr=""/>
+        <data id="taskDescription" expr=""/>
+        <data id="judgeCount" expr="3"/>
+        <data id="decomposeCount" expr="3"/>
+        <data id="decomposeVoteCount" expr="3"/>
+        <data id="solveCount" expr="3"/>
+        <data id="solveVoteCount" expr="3"/>
     </datamodel>
 
     <tasks>
         <task id="edit" name="editTask" brole="publisher">
-            <principle method="Allocate" distributor="ShortestQueue"></principle>
-            <callback on="complete" event="submit"></callback>
+            <principle method="Allocate" distributor="ShortestQueue"/>
+            <callback on="complete" event="submit"/>
             <documentation>Edit task let the publisher publish a new crowdsourcing task.</documentation>
         </task>
     </tasks>
@@ -33,10 +33,10 @@
         </onentry>
         <!-- publisher点击发布任务按钮产生publish事件，分配编辑众包详情任务 -->
         <transition event="publish" target="Editing">
-            <call name="editTask"></call>
+            <call name="editTask"/>
         </transition>
 
-        <transition event="cancel" target="Final"></transition>
+        <transition event="cancel" target="Final"/>
         <onexit>
             <log label="init" expr="'exit Initial state'"/>
         </onexit>
@@ -53,14 +53,14 @@
                 3.param和namelist不能同时指定
                 4.namelist="employer taskName taskDescription judgeCount decomposeCount decomposeVoteCount solveCount solveVoteCount"-->
             <newbo src="Crowdsourcing.xml" instances="1"  idExpr="SubPrefix + _instanceIndex">
-                <param name="employer" expr="employer"></param>
-                <param name="taskName" expr="taskName"></param>
-                <param name="taskDescription" expr="taskDescription"></param>
-                <param name="judgeCount" expr="judgeCount"></param>
-                <param name="decomposeCount" expr="decomposeCount"></param>
-                <param name="decomposeVoteCount" expr=" decomposeVoteCount"></param>
-                <param name="solveCount" expr="solveCount"></param>
-                <param name="solveVoteCount" expr="solveVoteCount"></param>
+                <param name="employer" expr="employer"/>
+                <param name="taskName" expr="taskName"/>
+                <param name="taskDescription" expr="taskDescription"/>
+                <param name="judgeCount" expr="judgeCount"/>
+                <param name="decomposeCount" expr="decomposeCount"/>
+                <param name="decomposeVoteCount" expr=" decomposeVoteCount"/>
+                <param name="solveCount" expr="solveCount"/>
+                <param name="solveVoteCount" expr="solveVoteCount"/>
             </newbo>
         </transition>
         <onexit>
@@ -72,7 +72,7 @@
         <onentry>
             <log label="waiting" expr="'entry Waiting state'"/>
         </onentry>
-        <transition event="Crowdsourcing.finish" target="Final"></transition>
+        <transition event="Crowdsourcing.finish" target="Final"/>
         <onexit>
             <log label="waiting" expr="'exit Waiting state'"/>
         </onexit>

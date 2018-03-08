@@ -33,6 +33,7 @@ public class SCXMLSystemContext implements Context, Serializable {
      * Extend: instance index key
      */
     public static final String INSTANCEINDEX_KEY = "_instanceIndex";
+    public static final String NOTIFIABLE_ID_KEY = "_id";
 
     /**
      * The Commons SCXML internal {@link #getPlatformVariables() platform variable key} holding the current SCXML
@@ -44,7 +45,7 @@ public class SCXMLSystemContext implements Context, Serializable {
      * The set of protected system variables names
      */
     private static final Set<String> PROTECTED_NAMES = new HashSet<String>(Arrays.asList(
-            EVENT_KEY, SESSIONID_KEY, SCXML_NAME_KEY, IOPROCESSORS_KEY, X_KEY, INSTANCEINDEX_KEY));
+            EVENT_KEY, SESSIONID_KEY, SCXML_NAME_KEY, IOPROCESSORS_KEY, X_KEY, INSTANCEINDEX_KEY, NOTIFIABLE_ID_KEY));
 
     /**
      * The wrapped system context

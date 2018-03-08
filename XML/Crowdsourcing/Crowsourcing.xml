@@ -7,56 +7,56 @@
     <!-- 数据模型：定义业务对象在业务执行过程中需要使用的业务数据 -->
     <datamodel>
         <!--继承自父业务类的数据模型不需要在这里重新进行定义-->
-        <data id="employer" expr=""></data>
-        <data id="taskName" expr=""></data>
-        <data id="taskDescription" expr=""></data>
-        <data id="judgeCount" expr=""></data>
-        <data id="decomposeCount" expr=""></data>
-        <data id="decomposeVoteCount" expr=""></data>
-        <data id="solveCount" expr=""></data>
-        <data id="solveVoteCount" expr=""></data>
-        <data id="steps" expr="0"></data>
-        <data id="count" expr="0"></data>
-        <data id="complexCount" expr="0"></data>
-        <data id="simpleCount" expr="0"></data>
-        <data id="judgeCompleted" expr="false"></data>
+        <data id="employer" expr=""/>
+        <data id="taskName" expr=""/>
+        <data id="taskDescription" expr=""/>
+        <data id="judgeCount" expr=""/>
+        <data id="decomposeCount" expr=""/>
+        <data id="decomposeVoteCount" expr=""/>
+        <data id="solveCount" expr=""/>
+        <data id="solveVoteCount" expr=""/>
+        <data id="steps" expr="0"/>
+        <data id="count" expr="0"/>
+        <data id="complexCount" expr="0"/>
+        <data id="simpleCount" expr="0"/>
+        <data id="judgeCompleted" expr="false"/>
     </datamodel>
 
     <!-- 任务模型 -->
     <tasks>
         <task id="judge" name="judgeTask" brole="judger">
-            <principle method="Allocate" distributor="ShortestQueue"></principle>
-            <callback on="complete" event="judgeComplete"></callback>
+            <principle method="Allocate" distributor="ShortestQueue"/>
+            <callback on="complete" event="judgeComplete"/>
             <documentation>Judge task let judgers judge crowdsourcing task to be simple or complex.</documentation>
         </task>
         <task id="decompose" name="decomposeTask" brole="decomposer">
-            <principle method="Allocate" distributor="ShortestQueue"></principle>
-            <callback on="complete" event="decomposeComplete"></callback>
+            <principle method="Allocate" distributor="ShortestQueue"/>
+            <callback on="complete" event="decomposeComplete"/>
             <documentation>Decompose task let decomposers decompose crowdsourcing task to be several sub tasks.</documentation>
         </task>
         <task id="decomposeVote" name="decomposeVoteTask" brole="decomposeVoter">
-            <principle method="Allocate" distributor="ShortestQueue"></principle>
-            <callback on="complete" event="decomposeVoteComplete"></callback>
+            <principle method="Allocate" distributor="ShortestQueue"/>
+            <callback on="complete" event="decomposeVoteComplete"/>
             <documentation>DecomposeVote task let decomposeVoters vote for decompose plans of a crowdsourcing task.</documentation>
         </task>
         <task id="getBestSchema" name="getBestSchemaTask" vrole="automicQuerier">
-            <principle method="Allocate" distributor="Random"></principle>
-            <callback on="complete" event="queryComplete"></callback>
+            <principle method="Allocate" distributor="Random"/>
+            <callback on="complete" event="queryComplete"/>
             <documentation>GetBestSchema task let a automicQuerier agent query for the best decompose schema in the database and return.</documentation>
         </task>
         <task id="solve" name="solveTask" brole="solver">
-            <principle method="Allocate" distributor="ShortestQueue"></principle>
-            <callback on="complete" event="solveComplete"></callback>
+            <principle method="Allocate" distributor="ShortestQueue"/>
+            <callback on="complete" event="solveComplete"/>
             <documentation>Solve task let solvers solve a crowdsourcing task.</documentation>
         </task>
         <task id="solveVoting" name="solveVoteTask" role="solveVoter">
-            <principle method="Allocate" distributor="ShortestQueue"></principle>
-            <callback on="complete" event="solveVoteComplete"></callback>
+            <principle method="Allocate" distributor="ShortestQueue"/>
+            <callback on="complete" event="solveVoteComplete"/>
             <documentation>SolveVote task let solveVoters vote for solutions of a crowdsourcing task.</documentation>
         </task>
         <task id="merge" name="mergeTask" brole="merger">
-            <principle method="Allocate" distributor="Random"></principle>
-            <callback on="complete" event="merged"></callback>
+            <principle method="Allocate" distributor="Random"/>
+            <callback on="complete" event="merged"/>
             <documentation>Merge task let a merger agent merge solutions of sub tasks to be a complete solution of a crowdsourcing task.</documentation>
         </task>
 
@@ -71,7 +71,7 @@
             <log label="init" expr="'entry Initial state'"/>
         </onentry>
         <transition target="Judging">
-            <call name="judgeTask"></call>
+            <call name="judgeTask"/>
         </transition>
         <onexit>
             <log label="init" expr="'exit Initial state'"/>
@@ -86,28 +86,28 @@
 
         <transition event="judgeComplete">
             <if cond="_event.data.get('simple') eq 0">
-                <assign location="simpleCount" expr="simpleCount + 1"></assign>
+                <assign location="simpleCount" expr="simpleCount + 1"/>
                 <elseif cond="_event.data.get('simple') eq 1"/>
-                <assign location="complexCount" expr="complexCount + 1"></assign>
+                <assign location="complexCount" expr="complexCount + 1"/>
             </if>
             <if cond="simpleCount + complexCount eq judgeCount">
-                <assign location="judgeCompleted" expr="true"></assign>
+                <assign location="judgeCompleted" expr="true"/>
             </if>
         </transition>
 
         <transition cond="judgeCompleted and simpleCount gt complexCount" target="solving">
-            <call name="solveTask" instances="solveCount"></call>
+            <call name="solveTask" instances="solveCount"/>
         </transition>
 
         <transition cond="judgeCompleted and simpleCount lt complexCount" target="decomposing">
-            <call name="decomposeTask" instances="decomposeCount"></call>
+            <call name="decomposeTask" instances="decomposeCount"/>
         </transition>
 
         <onexit>
             <log label="judging" expr="'exit Judging state'"/>
-            <assign location="simpleCount" expr="0"></assign>
-            <assign location="complexCount" expr="0"></assign>
-            <assign location="judgeCompleted" expr="false"></assign>
+            <assign location="simpleCount" expr="0"/>
+            <assign location="complexCount" expr="0"/>
+            <assign location="judgeCompleted" expr="false"/>
         </onexit>
     </state>
 
@@ -120,11 +120,11 @@
 
         <transition event="decomposeComplete">
             <!-- 写入数据库: 每个decomposer的分解方案 -->
-            <assign location="count" expr="count + 1"></assign>
+            <assign location="count" expr="count + 1"/>
         </transition>
 
         <transition cond="count eq decomposeCount" target="DecomposeVoting">
-            <call name="decomposeVoteTask" instances="decomposeVoteCount"></call>
+            <call name="decomposeVoteTask" instances="decomposeVoteCount"/>
         </transition>
 
         <onexit>
@@ -136,16 +136,16 @@
     <state id="DecomposeVoting">
         <onentry>
             <log label="decomposeVoting" expr="'entry DecomposeVoting state'"/>
-            <assign location="count" expr="0"></assign>
+            <assign location="count" expr="0"/>
         </onentry>
 
         <transition event="decomposeVoteComplete">
-            <assign location="count" expr="count + 1"></assign>
+            <assign location="count" expr="count + 1"/>
         </transition>
 
         <transition cond="count eq decomposeVoteCount" target="Temp">
             <!--标记将票数最高的分配方案-->
-            <call name="getBestSchemaTask" instances="1"></call>
+            <call name="getBestSchemaTask" instances="1"/>
         </transition>
 
         <onexit>
@@ -157,16 +157,16 @@
         <transition event="queryComplete" target="Waiting">
             <foreach array="_event.data" item="kvpair">
                 <newbo name="CrowdSourcing.xml" instances="1">
-                    <param id="employer" expr="employer"></param>
-                    <param id="taskName" expr="taskName"></param>
-                    <param id="taskDescription" expr="kvpair.getValue()"></param>
-                    <param id="judgeCount" expr="judgeCount"></param>
-                    <param id="decomposeCount" expr="decomposeCount"></param>
-                    <param id="decomposeVoteCount" expr="decomposeVoteCount"></param>
-                    <param id="solveCount" expr="solveCount"></param>
-                    <param id="solveVoteCount" expr="solveVoteCount"></param>
+                    <param id="employer" expr="employer"/>
+                    <param id="taskName" expr="taskName"/>
+                    <param id="taskDescription" expr="kvpair.getValue()"/>
+                    <param id="judgeCount" expr="judgeCount"/>
+                    <param id="decomposeCount" expr="decomposeCount"/>
+                    <param id="decomposeVoteCount" expr="decomposeVoteCount"/>
+                    <param id="solveCount" expr="solveCount"/>
+                    <param id="solveVoteCount" expr="solveVoteCount"/>
                 </newbo>
-                <assign location="steps" expr="steps + 1"></assign>
+                <assign location="steps" expr="steps + 1"/>
             </foreach>
         </transition>
     </state>
@@ -175,15 +175,15 @@
     <state id="Waiting">
         <onentry>
             <log label="waiting" expr="'entry Waiting state '"/>
-            <assign location="count" expr="0"></assign>
+            <assign location="count" expr="0"/>
         </onentry>
 
         <transition event="Crowdsourcing.finish">
-            <assign location="count" expr="count + 1"></assign>
+            <assign location="count" expr="count + 1"/>
         </transition>
 
         <transition cond="count eq steps" target="merging">
-            <call name="mergeTask"></call>
+            <call name="mergeTask"/>
         </transition>
 
         <onexit>
@@ -198,7 +198,7 @@
         </onentry>
 
         <transition event="merged" target="Final">
-            <send event="finish" type="scxml" messageMode="TO_PARENT"></send>
+            <send event="finish" type="scxml" messageMode="TO_PARENT"/>
         </transition>
 
         <onexit>
@@ -210,15 +210,15 @@
     <state id="Solving">
         <onentry>
             <log label="solving" expr="'entry Solving state '"/>
-            <assign location="count" expr="0"></assign>
+            <assign location="count" expr="0"/>
         </onentry>
 
         <transition event="solveComplete">
-            <assign location="count" expr="count + 1"></assign>
+            <assign location="count" expr="count + 1"/>
         </transition>
 
         <transition cond="count eq solveCount" target="solveVoting">
-            <call name="solveVoteTask" instances="solveVoteCount"></call>
+            <call name="solveVoteTask" instances="solveVoteCount"/>
         </transition>
 
         <onexit>
@@ -230,15 +230,15 @@
     <state id="SolveVoting">
         <onentry>
             <log label="solveVoting" expr="' entry SolveVoting state '"/>
-            <assign location="count" expr="0"></assign>
+            <assign location="count" expr="0"/>
         </onentry>
 
         <transition event="solveVoteComplete">
-            <assign location="count" expr="count + 1"></assign>
+            <assign location="count" expr="count + 1"/>
         </transition>
 
         <transition cond="count eq solveVoteCount" target="Final">
-            <send event="finish" type="scxml" messageMode="TO_PARENT"></send>
+            <send event="finish" type="scxml" messageMode="TO_PARENT"/>
             <!--标记票数最高的solution-->
         </transition>
 

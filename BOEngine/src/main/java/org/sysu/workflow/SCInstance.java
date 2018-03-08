@@ -63,7 +63,7 @@ public class SCInstance implements Serializable {
     private boolean running;
 
     /**
-     * SCXML executor.
+     * SCXML execution context.
      */
     private transient SCXMLIOProcessor internalIOProcessor;
 
@@ -413,6 +413,7 @@ public class SCInstance implements Serializable {
                 systemContext.getContext().set(SCXMLSystemContext.SESSIONID_KEY, UUID.randomUUID().toString());
                 String _name = stateMachine != null && stateMachine.getName() != null ? stateMachine.getName() : "";
                 systemContext.getContext().set(SCXMLSystemContext.SCXML_NAME_KEY, _name);
+                systemContext.getContext().set(SCXMLSystemContext.NOTIFIABLE_ID_KEY, ((SCXMLExecutionContext) this.internalIOProcessor).NotifiableId);
                 systemContext.getPlatformVariables().put(SCXMLSystemContext.STATUS_KEY, currentStatus);
             }
         }
