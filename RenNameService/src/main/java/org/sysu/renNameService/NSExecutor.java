@@ -139,6 +139,9 @@ public class NSExecutor extends Observable {
                             NameSpacingService.StartProcess((String) args.get("rtid"));
                             retStr = "OK";
                             break;
+                        case "checkFinish":
+                            retStr = NameSpacingService.CheckFinish((String) args.get("rtid"));
+                            break;
                         case "transshipCallback":
                             retStr = NameSpacingService.TransshipCallback(args);
                             break;

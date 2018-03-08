@@ -53,7 +53,7 @@ public class RoundAllocator extends RAllocator {
     @Override
     public ParticipantContext PerformAllocate(HashSet<ParticipantContext> candidateSet, WorkitemContext context) {
         synchronized (RoundAllocator.roundingSetMutex) {
-            HashSet<String> roundSet = roundingCloseSet.computeIfAbsent(context.getTaskContext().getTaskGlobalId(), k -> new HashSet<>());
+            HashSet<String> roundSet = roundingCloseSet.computeIfAbsent(String.format("%s_%s", context.getTaskContext().getTaskGlobalId(), context.getEntity().getRtid()), k -> new HashSet<>());
             for (ParticipantContext participant : candidateSet) {
                 if (!roundSet.contains(participant.getWorkerId())) {
                     roundSet.add(participant.getWorkerId());
@@ -69,7 +69,7 @@ public class RoundAllocator extends RAllocator {
     }
 
     /**
-     * Rounding set, pattern (taskGlobalId, Set of allocated workerId).
+     * Rounding set, pattern (taskGlobalId_rtid, Set of allocated workerId).
      */
     private static final HashMap<String, HashSet<String>> roundingCloseSet = new HashMap<>();
 

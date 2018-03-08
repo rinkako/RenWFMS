@@ -234,6 +234,7 @@ public class NameSpacingService {
             rrte.setLaunchType(launchType);
             rrte.setFailureType(failureType);
             rrte.setResourceBinding(binding);
+            rrte.setIsSucceed(0);
             session.save(rrte);
             transaction.commit();
             return String.format("%s,%s", rtid, authSign);
@@ -277,6 +278,37 @@ public class NameSpacingService {
             LogUtil.Log("Cannot interaction with BO Engine for RTID: " + rtid, NameSpacingService.class.getName(), LogUtil.LogLevelType.ERROR, rtid);
             throw ex;
         }
+    }
+
+    /**
+     * Check a process runtime finish status.
+     *
+     * @param rtid process rtid.
+     * @return a map of status description in JSON
+     */
+    public static String CheckFinish(String rtid) throws Exception {
+        Session session = HibernateUtil.GetLocalSession();
+        Transaction transaction = session.beginTransaction();
+        RenRuntimerecordEntity rrte;
+        try {
+            rrte = session.get(RenRuntimerecordEntity.class, rtid);
+            transaction.commit();
+        } catch (Exception ex) {
+            transaction.rollback();
+            LogUtil.Log("CheckFinish but exception occurred, service rollback, " + ex, NameSpacingService.class.getName(), LogUtil.LogLevelType.ERROR, rtid);
+            return null;
+        } finally {
+            HibernateUtil.CloseLocalSession();
+        }
+        if (rrte == null) {
+            return null;
+        }
+        HashMap<String, String> retMap = new HashMap<>();
+        boolean isFinished = rrte.getFinishTimestamp() != null;
+        retMap.put("IsFinished", isFinished ? "true" : "false");
+        retMap.put("FinishTimestamp", isFinished ? rrte.getFinishTimestamp().toString() : "");
+        retMap.put("IsSucceed", rrte.getIsSucceed() == 1 ? "true" : "false");
+        return SerializationUtil.JsonSerialization(retMap, rtid);
     }
 
     /**

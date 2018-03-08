@@ -205,80 +205,130 @@ namespace RestaurantProcessTester
 
         public static void PerformCallbackSubmit()
         {
-            try
-            {
-                NetClient.PostData(GlobalContext.LocationDict["StartProcess"], new Dictionary<string, string>
-                    {
-                        { "token", Ren.transaction.AuthToken },
-                        { "rtid", Ren.rtid }
-                    },
-                    out var retStr);
-                var response = JsonConvert.DeserializeObject<StdResponseEntity>(retStr);
-                LogUtils.LogLine("StartProcess send OK, Response: " + ReturnDataHelper.DecodeString(response), LogLevel.Important);
-            }
-            catch (Exception ex)
-            {
-                LogUtils.LogLine("Register mappings, exception occurred" + ex, LogLevel.Error);
-            }
+            var wpList = Ren.GetWorkitemNameIdOneHandlerInVector();
+            var wp = wpList[0];
+            var response = Ren.PostWorkitemRequest("Submit accept", GlobalContext.LocationDict["WorkitemAccept"], wp.Item1, wp.Item2, null);
+            response = Ren.PostWorkitemRequest("Submit start", GlobalContext.LocationDict["WorkitemStart"], wp.Item1, wp.Item2, null);
+            response = Ren.PostWorkitemRequest("Submit complete", GlobalContext.LocationDict["WorkitemComplete"], wp.Item1, wp.Item2, null);
         }
 
         public static void PerformCallbackProduced()
         {
-            try
-            {
-                NetClient.PostData(GlobalContext.LocationDict["Callback"], new Dictionary<string, string>
-                    {
-                        { "token", Ren.transaction.AuthToken },
-                        { "rtid", Ren.rtid }
-                    },
-                    out var retStr);
-                var response = JsonConvert.DeserializeObject<StdResponseEntity>(retStr);
-                LogUtils.LogLine("StartProcess send OK, Response: " + ReturnDataHelper.DecodeString(response), LogLevel.Important);
-            }
-            catch (Exception ex)
-            {
-                LogUtils.LogLine("Register mappings, exception occurred" + ex, LogLevel.Error);
-            }
+            var wpList = Ren.GetWorkitemNameIdOneHandlerInVector();
+            var wp = wpList[0];
+            var response = Ren.PostWorkitemRequest("Produce start", GlobalContext.LocationDict["WorkitemStart"], wp.Item1, wp.Item2, null);
+            response = Ren.PostWorkitemRequest("Produce complete", GlobalContext.LocationDict["WorkitemComplete"], wp.Item1, wp.Item2, null);
         }
 
         public static void PerformCallbackTestCompleted()
         {
-            
+            var wpList = Ren.GetWorkitemNameIdOneHandlerInVector();
+            var wp = wpList[0];
+            var payload = "{\"passed\":1}";
+            var response = Ren.PostWorkitemRequest("QTest start", GlobalContext.LocationDict["WorkitemStart"], wp.Item1, wp.Item2, null);
+            response = Ren.PostWorkitemRequest("QTest complete", GlobalContext.LocationDict["WorkitemComplete"], wp.Item1, wp.Item2, payload);
         }
 
         public static void PerformCallbackDelivered()
         {
-            
+            var wpList = Ren.GetWorkitemNameIdOneHandlerInVector();
+            var wp = wpList[0];
+            var payload = "{\"passed\":1}";
+            var response = Ren.PostWorkitemRequest("Delivere start", GlobalContext.LocationDict["WorkitemStart"], wp.Item1, wp.Item2, null);
+            response = Ren.PostWorkitemRequest("Delivere complete", GlobalContext.LocationDict["WorkitemComplete"], wp.Item1, wp.Item2, payload);
         }
 
         public static void PerformCallbackArchivedKO()
         {
-            
+            // 这里会有2个工作项：updateDeliTimeTask和Archived
+            var wpList = Ren.GetWorkitemNameIdOneHandlerInVector();
+            var wp = wpList.FirstOrDefault(wpp => String.Compare(wpp.Item3, "archiveTask", StringComparison.CurrentCultureIgnoreCase) == 0);
+            var response = Ren.PostWorkitemRequest("Archived(KO) start", GlobalContext.LocationDict["WorkitemStart"], wp.Item1, wp.Item2, null);
+            response = Ren.PostWorkitemRequest("Archived(KO) complete", GlobalContext.LocationDict["WorkitemComplete"], wp.Item1, wp.Item2, null);
+        }
+
+        public static void PerformCallbackUpdateDeliTimeKO()
+        {
+            // 这里会有2个工作项：updateDeliTimeTask和Archived
+            var wpList = Ren.GetWorkitemNameIdOneHandlerInVector();
+            var wp = wpList.FirstOrDefault(wpp => String.Compare(wpp.Item3, "updateDeliTimeTask", StringComparison.CurrentCultureIgnoreCase) == 0);
+            var response = Ren.PostWorkitemRequest("UpdateDeliTime start", GlobalContext.LocationDict["WorkitemStart"], wp.Item1, wp.Item2, null);
+            response = Ren.PostWorkitemRequest("UpdateDeliTime complete", GlobalContext.LocationDict["WorkitemComplete"], wp.Item1, wp.Item2, null);
         }
 
         public static void PerformCallbackRequestCheck()
         {
-            
+            // 这个callback是用户发起的，与工作项无关，和其他不一样
+            try
+            {
+                NetClient.PostData(GlobalContext.LocationDict["Callback"], new Dictionary<string, string>
+                    {
+                        { "signature", Ren.transaction.Signature },
+                        { "rtid", Ren.rtid },
+                        { "id", "GuestOrder" },
+                        { "on", "Complete" },
+                        { "event", "requestCheck" }
+                    },
+                    out var retStr);
+                var response = JsonConvert.DeserializeObject<StdResponseEntity>(retStr);
+                LogUtils.LogLine("Request Check callback send OK: " + ReturnDataHelper.DecodeString(response), LogLevel.Important);
+            }
+            catch (Exception ex)
+            {
+                LogUtils.LogLine("Request Check callback send, exception occurred" + ex, LogLevel.Error);
+            }
         }
 
         public static void PerformCallbackCalculated()
         {
-            
+            var wpList = Ren.GetWorkitemNameIdOneHandlerInVector();
+            var wp = wpList[0];
+            var response = Ren.PostWorkitemRequest("Calculate start", GlobalContext.LocationDict["WorkitemStart"], wp.Item1, wp.Item2, null);
+            response = Ren.PostWorkitemRequest("Calculate complete", GlobalContext.LocationDict["WorkitemComplete"], wp.Item1, wp.Item2, null);
         }
 
         public static void PerformCallbackPaid()
         {
-            
+            var wpList = Ren.GetWorkitemNameIdOneHandlerInVector();
+            var wp = wpList[0];
+            var response = Ren.PostWorkitemRequest("Pay start", GlobalContext.LocationDict["WorkitemStart"], wp.Item1, wp.Item2, null);
+            response = Ren.PostWorkitemRequest("Pay complete", GlobalContext.LocationDict["WorkitemComplete"], wp.Item1, wp.Item2, null);
         }
 
         public static void PerformCallbackArchivedGC()
         {
-            
+            var wpList = Ren.GetWorkitemNameIdOneHandlerInVector();
+            var wp = wpList.FirstOrDefault(wpp => String.Compare(wpp.Item3, "archiveTask", StringComparison.CurrentCultureIgnoreCase) == 0);
+            var response = Ren.PostWorkitemRequest("Archived(GC) start", GlobalContext.LocationDict["WorkitemStart"], wp.Item1, wp.Item2, null);
+            response = Ren.PostWorkitemRequest("Archived(GC) complete", GlobalContext.LocationDict["WorkitemComplete"], wp.Item1, wp.Item2, null);
         }
 
         public static void PerformCheckFinish()
         {
-            
+            try
+            {
+                NetClient.PostData(GlobalContext.LocationDict["CheckFinish"], new Dictionary<string, string>
+                    {
+                        { "signature", Ren.transaction.Signature },
+                        { "rtid", Ren.rtid }
+                    },
+                    out var retStr);
+                var response = JsonConvert.DeserializeObject<StdResponseEntity>(retStr);
+                var retDict = ReturnDataHelper.DecodeToStringStringDictionary(response);
+                LogUtils.LogLine("CheckFinish send OK: " + ReturnDataHelper.DecodeString(response), LogLevel.Important);
+                if (retDict["IsFinish"] == "true")
+                {
+                    LogUtils.LogLine("IsFinish flag is TRUE!", LogLevel.Important);
+                }
+                else
+                {
+                    LogUtils.LogLine("IsFinish flag is FALSE!", LogLevel.Error);
+                }
+            }
+            catch (Exception ex)
+            {
+                LogUtils.LogLine("CheckFinish send, exception occurred" + ex, LogLevel.Error);
+            }
         }
 
         #region SupportFuncs
@@ -345,6 +395,61 @@ namespace RestaurantProcessTester
                 retStr = retStr.Substring(0, retStr.Length - 1);
             }
             return retStr;
+        }
+
+        public static StdResponseEntity PostWorkitemRequest(string desc, string urlKey, string workerId, string workitemId, string payload = null)
+        {
+            try
+            {
+                var argDict = new Dictionary<string, string>
+                {
+                    { "signature", Ren.transaction.Signature },
+                    { "workitemId", workitemId },
+                    { "workerId", workerId },
+                };
+                if (payload != null)
+                {
+                    argDict["payload"] = payload;
+                }
+                NetClient.PostData(GlobalContext.LocationDict[urlKey], argDict, out var retStr);
+                var response = JsonConvert.DeserializeObject<StdResponseEntity>(retStr);
+                LogUtils.LogLine("Submit accept " + ReturnDataHelper.DecodeString(response), LogLevel.Important);
+                return response
+            }
+            catch (Exception ex)
+            {
+                LogUtils.LogLine(desc + ", exception occurred" + ex, LogLevel.Error);
+                return null;
+            }
+        }
+        
+        public static List<Tuple<String, String, String>> GetWorkitemNameIdOneHandlerInVector()
+        {
+            var retList = new List<Tuple<String, String, String>>();
+            try
+            {
+                var argDict = new Dictionary<string, string>
+                {
+                    { "signature", Ren.transaction.Signature },
+                    { "rtid", Ren.rtid }
+                };
+                NetClient.PostData(GlobalContext.LocationDict["GetAllWorkitem"], argDict, out var retStr);
+                var response = JsonConvert.DeserializeObject<StdResponseEntity>(retStr);
+                var workitemList = ReturnDataHelper.DecodeList(response);
+                foreach (var workitem in workitemList)
+                {
+                    var wd = workitem as Dictionary<String, Object>;
+                    var workerIdListDesc = wd["WorkerIdList"].ToString();
+                    var workerIdList = JsonConvert.DeserializeObject<List<String>>(workerIdListDesc);
+                    retList.Add(new Tuple<string, string, string>(workerIdList[0], wd["Wid"].ToString(), wd["TaskName"].ToString()));
+                }
+                return retList;
+            }
+            catch (Exception ex)
+            {
+                LogUtils.LogLine("Get all workitems, exception occurred" + ex, LogLevel.Error);
+                return null;
+            }
         }
 
         #endregion

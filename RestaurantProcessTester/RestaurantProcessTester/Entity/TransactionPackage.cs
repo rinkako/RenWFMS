@@ -6,6 +6,8 @@ namespace RestaurantProcessTester.Entity
     [Serializable]
     internal sealed class TransactionPackage
     {
+        public String Signature = "PrUpNw1dM3zRH6j3eviklCHE9Zbvk9NavGcJ_CibW19h50Yvr-ZZYZqn5Gi_SG1cPVQEIZf2wAJgBmq4dhNj7w7t9wUEz2pcGhn-6kIRO--QqWy121gksPE8B103RtMzuOsQDcErk4LriRQRO7-Xqks-RtpBUnpInnS_lkkajQs";
+
         public String AuthToken { get; set; } = null;
 
         public String RenUsername { get; set; } = null;
