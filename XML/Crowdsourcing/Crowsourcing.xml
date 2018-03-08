@@ -26,37 +26,37 @@
     <tasks>
         <task id="judge" name="judgeTask" brole="judger">
             <principle method="Allocate" distributor="ShortestQueue"></principle>
-            <callback on="complete" event="judgeComplete" hook=""></callback>
+            <callback on="complete" event="judgeComplete"></callback>
             <documentation>Judge task let judgers judge crowdsourcing task to be simple or complex.</documentation>
         </task>
         <task id="decompose" name="decomposeTask" brole="decomposer">
             <principle method="Allocate" distributor="ShortestQueue"></principle>
-            <callback on="complete" event="decomposeComplete" hook=""></callback>
+            <callback on="complete" event="decomposeComplete"></callback>
             <documentation>Decompose task let decomposers decompose crowdsourcing task to be several sub tasks.</documentation>
         </task>
         <task id="decomposeVote" name="decomposeVoteTask" brole="decomposeVoter">
             <principle method="Allocate" distributor="ShortestQueue"></principle>
-            <callback on="complete" event="decomposeVoteComplete" hook=""></callback>
+            <callback on="complete" event="decomposeVoteComplete"></callback>
             <documentation>DecomposeVote task let decomposeVoters vote for decompose plans of a crowdsourcing task.</documentation>
         </task>
         <task id="getBestSchema" name="getBestSchemaTask" vrole="automicQuerier">
             <principle method="Allocate" distributor="Random"></principle>
-            <callback on="complete" event="queryComplete" hook=""></callback>
+            <callback on="complete" event="queryComplete"></callback>
             <documentation>GetBestSchema task let a automicQuerier agent query for the best decompose schema in the database and return.</documentation>
         </task>
         <task id="solve" name="solveTask" brole="solver">
             <principle method="Allocate" distributor="ShortestQueue"></principle>
-            <callback on="complete" event="solveComplete" hook=""></callback>
+            <callback on="complete" event="solveComplete"></callback>
             <documentation>Solve task let solvers solve a crowdsourcing task.</documentation>
         </task>
         <task id="solveVoting" name="solveVoteTask" role="solveVoter">
             <principle method="Allocate" distributor="ShortestQueue"></principle>
-            <callback on="complete" event="solveVoteComplete" hook=""></callback>
+            <callback on="complete" event="solveVoteComplete"></callback>
             <documentation>SolveVote task let solveVoters vote for solutions of a crowdsourcing task.</documentation>
         </task>
         <task id="merge" name="mergeTask" brole="merger">
             <principle method="Allocate" distributor="Random"></principle>
-            <callback on="complete" event="merged" hook=""></callback>
+            <callback on="complete" event="merged"></callback>
             <documentation>Merge task let a merger agent merge solutions of sub tasks to be a complete solution of a crowdsourcing task.</documentation>
         </task>
 
@@ -85,9 +85,9 @@
         </onentry>
 
         <transition event="judgeComplete">
-            <if cond="_event.data.simple eq 0">
+            <if cond="_event.data.get('simple') eq 0">
                 <assign location="simpleCount" expr="simpleCount + 1"></assign>
-                <elseif cond="_event.data.simple eq 1"/>
+                <elseif cond="_event.data.get('simple') eq 1"/>
                 <assign location="complexCount" expr="complexCount + 1"></assign>
             </if>
             <if cond="simpleCount + complexCount eq judgeCount">
