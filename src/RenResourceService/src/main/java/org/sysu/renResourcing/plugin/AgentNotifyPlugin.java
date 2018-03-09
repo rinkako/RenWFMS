@@ -117,7 +117,7 @@ public class AgentNotifyPlugin extends AsyncRunnablePlugin {
         } catch (Exception ex) {
             // do not rethrown the exception, since this is tolerable.
             LogUtil.Log("Send notification to agent failed, " + ex, AgentNotifyPlugin.class.getName(),
-                    LogLevelType.ERROR, rtid);
+                    LogLevelType.WARNING, rtid);
         }
     }
 
