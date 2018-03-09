@@ -9,7 +9,8 @@
   <component name="TemplatesService">
     <option name="TEMPLATE_FOLDERS">
       <list>
-        <option value="$MODULE_DIR$/../../COrgan/templates" />
+        <option value="$MODULE_DIR$/../../demoSrc/CrowdSourcingDemo/templates" />
+        <option value="$MODULE_DIR$/templates" />
       </list>
     </option>
   </component>
