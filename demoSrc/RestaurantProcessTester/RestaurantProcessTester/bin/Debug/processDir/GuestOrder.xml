@@ -1,0 +1,57 @@
+<businessclass
+        initial="Initial"
+        name="GuestOrder"
+        version="1.0"
+        xmlns="http://www.w3.org/2005/07/scxml">
+    <datamodel>
+        <data expr="0" id="startKOCount"/>
+        <data expr="0" id="finishKOCount"/>
+    </datamodel>
+    <tasks>
+        <task id="addItem" brole="waiter" name="addItemTask">
+            <principle method="Offer" distributor="QueueLength">
+                <param name="length" expr="lt 3"/>
+            </principle>
+            <callback on="complete" event="submit"/>
+            <documentation>Test task documentation</documentation>
+        </task>
+        <task id="updateDeliTime" brole="waiter" name="updateDeliTimeTask">
+            <principle method="Allocate" distributor="ShortestQueue"/>
+            <callback on="complete" event="updateDeliTimeComplete"/>
+        </task>
+    </tasks>
+    <state id="Initial">
+        <transition target="Dining"/>
+    </state>
+    <state id="Dining" initial="in">
+        <onentry>
+            <call name="addItemTask"/>
+        </onentry>
+        <state id="in">
+            <transition target="Ordering"/>
+        </state>
+        <state id="Ordering">
+            <transition event="submit" target="Active">
+                <newbo src="KitchenOrder.xml" instances="1"/>
+                <assign location="startKOCount" expr="startKOCount + 1"/>
+            </transition>
+        </state>
+        <state id="Active">
+            <transition event="addItem" target="Ordering"/>
+            <transition event="KitchenOrder.delivered">
+                <call name="updateDeliTimeTask"/>
+            </transition>
+            <transition event="KitchenOrder.finish">
+                <assign location="finishKOCount" expr="finishKOCount + 1"/>
+            </transition>
+            <transition event="requestCheck" cond="finishKOCount eq startKOCount" target="Paying">
+                <newbo src="GuestCheck.xml" instances="1"/>
+            </transition>
+        </state>
+        <final id="fin"/>
+    </state>
+    <state id="Paying">
+        <transition event="GuestCheck.finish" target="GOFinal"/>
+    </state>
+    <final id="GOFinal"/>
+</businessclass>

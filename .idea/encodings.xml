@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="Encoding">
-    <file url="file://$PROJECT_DIR$/BOEngine" charset="UTF-8" />
-    <file url="file://$PROJECT_DIR$/BOEngine/src/main/java/org/sysu/workflow/env/MultiStateMachineDispatcher.java" charset="UTF-8" />
-    <file url="file://$PROJECT_DIR$/RenCommon" charset="UTF-8" />
-    <file url="file://$PROJECT_DIR$/RenNameService" charset="UTF-8" />
-    <file url="file://$PROJECT_DIR$/RenResourceService" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/src/BOEngine" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/src/BOEngine/src/main/java/org/sysu/workflow/env/MultiStateMachineDispatcher.java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/src/RenCommon" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/src/RenNameService" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/src/RenResourceService" charset="UTF-8" />
   </component>
 </project>

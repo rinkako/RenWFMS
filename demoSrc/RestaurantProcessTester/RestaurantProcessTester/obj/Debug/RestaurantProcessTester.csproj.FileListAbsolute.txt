@@ -1,0 +1,11 @@
+G:\RenWFMS\RestaurantProcessTester\RestaurantProcessTester\bin\Debug\RestaurantProcessTester.exe
+G:\RenWFMS\RestaurantProcessTester\RestaurantProcessTester\bin\Debug\RestaurantProcessTester.pdb
+G:\RenWFMS\RestaurantProcessTester\RestaurantProcessTester\obj\Debug\RestaurantProcessTester.csprojResolveAssemblyReference.cache
+G:\RenWFMS\RestaurantProcessTester\RestaurantProcessTester\obj\Debug\RestaurantProcessTester.Properties.Resources.resources
+G:\RenWFMS\RestaurantProcessTester\RestaurantProcessTester\obj\Debug\RestaurantProcessTester.csproj.GenerateResource.Cache
+G:\RenWFMS\RestaurantProcessTester\RestaurantProcessTester\obj\Debug\RestaurantProcessTester.csproj.CoreCompileInputs.cache
+G:\RenWFMS\RestaurantProcessTester\RestaurantProcessTester\obj\Debug\RestaurantProcessTester.exe
+G:\RenWFMS\RestaurantProcessTester\RestaurantProcessTester\obj\Debug\RestaurantProcessTester.pdb
+G:\RenWFMS\RestaurantProcessTester\RestaurantProcessTester\bin\Debug\Newtonsoft.Json.dll
+G:\RenWFMS\RestaurantProcessTester\RestaurantProcessTester\bin\Debug\Newtonsoft.Json.xml
+G:\RenWFMS\RestaurantProcessTester\RestaurantProcessTester\obj\Debug\RestaurantProcessTester.Form1.resources

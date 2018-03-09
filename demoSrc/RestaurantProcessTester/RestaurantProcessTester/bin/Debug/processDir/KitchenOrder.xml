@@ -1,0 +1,53 @@
+<businessclass name="KitchenOrder" version="1.0" xmlns="http://www.w3.org/2005/07/scxml">
+    <tasks>
+        <task id="produceDishes" brole="cook" name="produceDishesTask">
+            <principle method="Allocate" distributor="ShortestQueue"/>
+            <callback on="complete" event="produced"/>
+        </task>
+        <task id="testQuality" brole="cook" name="testQualityTask">
+            <principle method="Allocate" distributor="ShortestQueue"/>
+            <callback on="complete" event="testCompleted"/>
+        </task>
+        <task id="deliver" brole="waiter" name="deliverTask">
+            <principle method="Allocate" distributor="ShortestQueue"/>
+            <callback on="complete" event="delivered"/>
+        </task>
+        <task id="archive" brole="archiveHandler" name="archiveTask">
+            <principle method="Allocate" distributor="Random"/>
+            <callback on="complete" event="archived"/>
+        </task>
+    </tasks>
+    <state id="Initial">
+        <transition target="Producing"/>
+    </state>
+    <state id="Producing">
+        <onentry>
+            <call name="produceDishesTask"/>
+        </onentry>
+        <transition event="produced" target="QualityTesting"/>
+    </state>
+    <state id="QualityTesting">
+        <onentry>
+            <call name="testQualityTask"/>
+        </onentry>
+        <transition event="testCompleted" cond="_event.data.get('passed') eq 0" target="Producing"/>
+        <transition event="testCompleted" cond="_event.data.get('passed') eq 1" target="Delivering"/>
+    </state>
+    <state id="Delivering">
+        <onentry>
+            <call name="deliverTask"/>
+        </onentry>
+        <transition event="delivered" target="Archiving">
+            <send event="delivered" type="scxml" messageMode="TO_PARENT"/>
+        </transition>
+    </state>
+    <state id="Archiving">
+        <onentry>
+            <call name="archiveTask"/>
+        </onentry>
+        <transition event="archived" target="KOFinal">
+            <send event="finish" type="scxml" messageMode="TO_PARENT"/>
+        </transition>
+    </state>
+    <final id="KOFinal"/>
+</businessclass>

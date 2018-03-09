@@ -1,0 +1,43 @@
+<businessclass initial="Initial" name="GuestCheck" version="1.0" xmlns="http://www.w3.org/2005/07/scxml">
+    <datamodel>
+        <data expr="1" id="Count"/>
+    </datamodel>
+    <tasks>
+        <task id="calculate" brole="paymentCalculator" name="calculateTask">
+            <principle method="Allocate" distributor="ShortestQueue"/>
+            <callback on="complete" event="calculated"/>
+        </task>
+        <task id="Payment" brole="paymentHandler" name="paymentTask">
+            <principle method="Allocate" distributor="ShortestQueue"/>
+            <callback on="complete" event="paid"/>
+        </task>
+        <task id="archive" brole="archiveHandler" name="archiveTask">
+            <principle method="Allocate" distributor="ShortestQueue"/>
+            <callback on="complete" event="archived"/>
+        </task>
+    </tasks>
+    <state id="Initial">
+        <transition target="Preparing"/>
+    </state>
+    <state id="Preparing">
+        <onentry>
+            <call name="calculateTask"/>
+        </onentry>
+        <transition event="calculated" target="Paying"/>
+    </state>
+    <state id="Paying">
+        <onentry>
+            <call name="paymentTask"/>
+        </onentry>
+        <transition event="paid" target="Archiving"/>
+    </state>
+    <state id="Archiving">
+        <onentry>
+            <call name="archiveTask"/>
+        </onentry>
+        <transition event="archived" target="GCFinal">
+            <send event="finish" type="scxml" messageMode="TO_PARENT"/>
+        </transition>
+    </state>
+    <final id="GCFinal"/>
+</businessclass>
