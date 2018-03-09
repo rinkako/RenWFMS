@@ -100,7 +100,7 @@ namespace RestaurantProcessTester.Utility
             }
             catch (Exception ex)
             {
-                LogUtils.LogLine("Serialization failed. " + ex, "IOUtils", LogLevel.Error);
+                LogUtils.LogLine("Serialization failed. " + ex, LogLevel.Error);
                 throw;
             }
             return true;
@@ -123,7 +123,7 @@ namespace RestaurantProcessTester.Utility
             }
             catch (Exception ex)
             {
-                LogUtils.LogLine("Unserialization failed. " + ex, "IOUtils", LogLevel.Error);
+                LogUtils.LogLine("Unserialization failed. " + ex, LogLevel.Error);
                 return null;
             }
         }

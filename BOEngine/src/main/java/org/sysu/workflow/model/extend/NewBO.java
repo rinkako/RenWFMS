@@ -146,26 +146,8 @@ public class NewBO extends NamelistHolder implements PathResolverHolder {
             ctx.setLocal(getNamespacesKey(), getNamespaces());
             Map<String, Object> payloadDataMap = new LinkedHashMap<String, Object>();
             addParamsToPayload(exctx, payloadDataMap);
-            // get resource file url
-            //final URL url = this.getClass().getClassLoader().getResource(getSrc());
-
-            // RINKAKO: get file by passing URL
-            URL url = new URL("file", "", getSrc());
-            try {
-                InputStream in = url.openStream();
-            } catch (Exception e1) {
-                System.out.println("load file directly failed, try get resource");
-                url = this.getClass().getClassLoader().getResource(getSrc());
-            }
 
             SCXML scxml = null;
-            //read local BO
-            try {
-                scxml = SCXMLReader.read(url);
-            } catch (Exception e) {
-                System.out.println("couldn't find :" + getSrc());
-                e.printStackTrace();
-            }
 
             SCXMLExecutionContext currentExecutionContext = (SCXMLExecutionContext) exctx.getInternalIOProcessor();
             String boName = getSrc().split("\\.")[0];
@@ -197,6 +179,26 @@ public class NewBO extends NamelistHolder implements PathResolverHolder {
                             LaunchProcessService.class.getName(), LogLevelType.ERROR, currentExecutionContext.Rtid);
                 } finally {
                     HibernateUtil.CloseLocalSession();
+                }
+            }
+            else {
+                //read local BO
+                // get resource file url
+                //final URL url = this.getClass().getClassLoader().getResource(getSrc());
+
+                // RINKAKO: get file by passing URL
+                URL url = new URL("file", "", getSrc());
+                try {
+                    InputStream in = url.openStream();
+                } catch (Exception e1) {
+                    System.out.println("load file directly failed, try get resource");
+                    url = this.getClass().getClassLoader().getResource(getSrc());
+                }
+                try {
+                    scxml = SCXMLReader.read(url);
+                } catch (Exception e) {
+                    System.out.println("couldn't find :" + getSrc());
+                    e.printStackTrace();
                 }
             }
 

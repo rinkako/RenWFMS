@@ -54,17 +54,14 @@ public class InterfaceA {
         boolean cmtFlag = false;
         try {
             RenRuntimerecordEntity rre = session.get(RenRuntimerecordEntity.class, rtid);
-            assert rre != null;
             transaction.commit();
             cmtFlag = true;
             TaskContext taskContext = TaskContext.GetContext(rtid, boName, polymorphismName);
-            assert taskContext != null;
             Hashtable<String, Object> args = new Hashtable<>();
-            ArrayList argVector = SerializationUtil.JsonDeserialization(arguments, ArrayList.class);
-            assert argVector != null;
+            HashMap argMap = SerializationUtil.JsonDeserialization(arguments, HashMap.class);
             args.put("taskContext", taskContext);
             args.put("nodeId", nodeId);
-            args.put("taskArgumentsVector", argVector);
+            args.put("taskArgumentsVector", argMap);
             ResourcingContext ctx = ResourcingContext.GetContext(null, rtid, RServiceType.SubmitResourcingTask, args);
             InterfaceA.mainScheduler.Schedule(ctx);
             return GlobalContext.RESPONSE_SUCCESS;

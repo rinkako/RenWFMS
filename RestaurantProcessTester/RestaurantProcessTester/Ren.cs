@@ -31,10 +31,8 @@ namespace RestaurantProcessTester
             sr.Close();
             fs.Close();
             LogUtils.LogLine("Read Location: " + GlobalContext.LocationDict.Count, LogLevel.Normal);
-            foreach (var kvp in GlobalContext.LocationDict)
-            {
-                LogUtils.LogLine($"{kvp.Key} => {kvp.Value}", LogLevel.Simple);
-            }
+            var outputStr = GlobalContext.LocationDict.Aggregate("", (current, kvp) => current + $"{kvp.Key} => {kvp.Value}\n");
+            LogUtils.LogLine(outputStr, LogLevel.Simple);
         }
 
         public static void PerformLogin()
@@ -132,6 +130,7 @@ namespace RestaurantProcessTester
             {
                 Ren.transaction.Mappings.Add(mapItem);
             }
+            LogUtils.LogLine("Generate Mappings OK, update at next step", LogLevel.Important);
         }
 
         private static string rtid = "";
@@ -142,6 +141,7 @@ namespace RestaurantProcessTester
             Ren.transaction.IsolationType = 0;
             Ren.transaction.FailureType = 0;
             Ren.transaction.AuthType = 0;
+            Ren.transaction.RenUsername = "admin@admin";
             try
             {
                 NetClient.PostData(GlobalContext.LocationDict["SubmitProcess"], new Dictionary<string, string>
@@ -158,7 +158,9 @@ namespace RestaurantProcessTester
                     },
                     out var retStr);
                 var response = JsonConvert.DeserializeObject<StdResponseEntity>(retStr);
-                Ren.rtid = ReturnDataHelper.DecodeString(response);
+                var submitRes = ReturnDataHelper.DecodeString(response);
+                var submitResItem = submitRes.Split(',');
+                Ren.rtid = submitResItem[0];
                 LogUtils.LogLine("Submit Process OK, RTID: " + Ren.rtid, LogLevel.Important);
             }
             catch (Exception ex)
@@ -179,7 +181,24 @@ namespace RestaurantProcessTester
                     },
                     out var retStr);
                 var response = JsonConvert.DeserializeObject<StdResponseEntity>(retStr);
-                LogUtils.LogLine("Mapping BRole Send OK, RTID: " + ReturnDataHelper.DecodeString(response), LogLevel.Important);
+                LogUtils.LogLine("Mapping BRole Send OK, Response: " + ReturnDataHelper.DecodeString(response), LogLevel.Important);
+            }
+            catch (Exception ex)
+            {
+                LogUtils.LogLine("Register mappings, exception occurred" + ex, LogLevel.Error);
+            }
+
+            try
+            {
+                NetClient.PostData(GlobalContext.LocationDict["LoadParticipant"], new Dictionary<string, string>
+                    {
+                        { "token", Ren.transaction.AuthToken },
+                        { "rtid", Ren.rtid },
+                        { "renid", Ren.transaction.RenUsername }
+                    },
+                    out var retStr);
+                var response = JsonConvert.DeserializeObject<StdResponseEntity>(retStr);
+                LogUtils.LogLine("LoadParticipant Send OK, Response: " + ReturnDataHelper.DecodeString(response), LogLevel.Important);
             }
             catch (Exception ex)
             {
@@ -316,13 +335,13 @@ namespace RestaurantProcessTester
                 var response = JsonConvert.DeserializeObject<StdResponseEntity>(retStr);
                 var retDict = ReturnDataHelper.DecodeToStringStringDictionary(response);
                 LogUtils.LogLine("CheckFinish send OK: " + ReturnDataHelper.DecodeString(response), LogLevel.Important);
-                if (retDict["IsFinish"] == "true")
+                if (retDict["IsFinished"] == "true")
                 {
-                    LogUtils.LogLine("IsFinish flag is TRUE!", LogLevel.Important);
+                    LogUtils.LogLine(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> IsFinish flag is TRUE! Test Passed!", LogLevel.Important);
                 }
                 else
                 {
-                    LogUtils.LogLine("IsFinish flag is FALSE!", LogLevel.Error);
+                    LogUtils.LogLine(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> IsFinish flag is FALSE!", LogLevel.Error);
                 }
             }
             catch (Exception ex)
@@ -338,6 +357,7 @@ namespace RestaurantProcessTester
             var dirInfo = new DirectoryInfo(folderPath);
             var fileInfos = dirInfo.GetFiles();
             Ren.transaction.ProcessLocalPath = folderPath;
+            Ren.transaction.BOVector = new List<Dictionary<string, string>>();
             foreach (var fileInfo in fileInfos)
             {
                 if (String.Compare(fileInfo.Extension, ".xml", StringComparison.CurrentCultureIgnoreCase) != 0) { continue; }
@@ -348,6 +368,7 @@ namespace RestaurantProcessTester
                 sr.Close();
                 fs.Close();
                 var boName = fileInfo.Name.Substring(0, fileInfo.Name.Length - 4);
+                
                 Ren.transaction.BOVector.Add(new Dictionary<string, string>
                 {
                     { "bo_name", boName },
@@ -365,7 +386,7 @@ namespace RestaurantProcessTester
                         { "token", Ren.transaction.AuthToken },
                         { "pid", Ren.transaction.ProcessPID },
                         { "name", boName },
-                        { "content", content }
+                        { "content", System.Web.HttpUtility.UrlEncode(content, Encoding.UTF8) }
                     },
                     out var retStr);
                 var response = JsonConvert.DeserializeObject<StdResponseEntity>(retStr);
@@ -411,10 +432,10 @@ namespace RestaurantProcessTester
                 {
                     argDict["payload"] = payload;
                 }
-                NetClient.PostData(GlobalContext.LocationDict[urlKey], argDict, out var retStr);
+                NetClient.PostData(urlKey, argDict, out var retStr);
                 var response = JsonConvert.DeserializeObject<StdResponseEntity>(retStr);
-                LogUtils.LogLine("Submit accept " + ReturnDataHelper.DecodeString(response), LogLevel.Important);
-                return response
+                LogUtils.LogLine(desc + "(" + urlKey + ") get response: " + ReturnDataHelper.DecodeString(response), LogLevel.Important);
+                return response;
             }
             catch (Exception ex)
             {
@@ -438,10 +459,10 @@ namespace RestaurantProcessTester
                 var workitemList = ReturnDataHelper.DecodeList(response);
                 foreach (var workitem in workitemList)
                 {
-                    var wd = workitem as Dictionary<String, Object>;
+                    var wd = ReturnDataHelper.DecodeDictionaryByString(workitem.ToString());
                     var workerIdListDesc = wd["WorkerIdList"].ToString();
                     var workerIdList = JsonConvert.DeserializeObject<List<String>>(workerIdListDesc);
-                    retList.Add(new Tuple<string, string, string>(workerIdList[0], wd["Wid"].ToString(), wd["TaskName"].ToString()));
+                    retList.Add(new Tuple<string, string, string>(workerIdList.Last(), wd["Wid"].ToString(), wd["TaskName"].ToString()));
                 }
                 return retList;
             }

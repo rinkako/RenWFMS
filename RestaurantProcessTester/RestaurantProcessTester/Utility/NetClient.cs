@@ -53,8 +53,7 @@ namespace RestaurantProcessTester.Utility
             }
             catch (Exception ex)
             {
-                LogUtils.LogLine("Post Data to URL " + url + " failed." + Environment.NewLine + ex,
-                    "YuriHttpClient", LogLevel.Error);
+                LogUtils.LogLine("Post Data to URL " + url + " failed." + Environment.NewLine + ex, LogLevel.Error);
                 result = null;
                 return false;
             }
@@ -77,8 +76,7 @@ namespace RestaurantProcessTester.Utility
             }
             catch (Exception ex)
             {
-                LogUtils.LogLine("Fetch String from URL " + url + " failed." + Environment.NewLine + ex,
-                    "YuriHttpClient", LogLevel.Error);
+                LogUtils.LogLine("Fetch String from URL " + url + " failed." + Environment.NewLine + ex, LogLevel.Error);
                 result = null;
                 return false;
             }
@@ -117,8 +115,7 @@ namespace RestaurantProcessTester.Utility
             }
             catch (Exception ex)
             {
-                LogUtils.LogLine("Download from URL " + url + " failed." + Environment.NewLine + ex,
-                    "YuriHttpClient", LogLevel.Error);
+                LogUtils.LogLine("Download from URL " + url + " failed." + Environment.NewLine + ex, LogLevel.Error);
                 return false;
             }
         }

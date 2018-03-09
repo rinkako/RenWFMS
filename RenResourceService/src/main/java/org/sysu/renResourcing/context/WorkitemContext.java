@@ -124,7 +124,8 @@ public class WorkitemContext implements Serializable, RCacheablesContext {
             StringBuilder workerIdSb = new StringBuilder();
             workerIdSb.append("[");
             for (RenQueueitemsEntity rqe : relations) {
-                String workerId = String.format("%s_%s", rqe.getWorkqueueId().split("_")[2], rqe.getWorkqueueId().split("_")[3]);
+                String[] workqueueIdItem = rqe.getWorkqueueId().split("_");
+                String workerId = String.format("\"%s_%s\"", workqueueIdItem[2], workqueueIdItem[3]);
                 workerIdSb.append(workerId).append(",");
             }
             String workerIdList = workerIdSb.toString();
@@ -247,18 +248,17 @@ public class WorkitemContext implements Serializable, RCacheablesContext {
      * Generate a workitem context and save it to steady by a task context.
      * @param taskContext task context to be the generation template
      * @param rtid process rtid
-     * @param args arguments vector
+     * @param args parameter-arguments map
      * @param callbackNodeId producer instance tree node global id for callback
      * @return workitem context
      */
-    public static WorkitemContext GenerateContext(TaskContext taskContext, String rtid, ArrayList args, String callbackNodeId) throws Exception {
+    public static WorkitemContext GenerateContext(TaskContext taskContext, String rtid, HashMap args, String callbackNodeId) throws Exception {
         assert args != null && taskContext.getParameters() != null;
         //HashMap parameterMap = SerializationUtil.JsonDeserialization(taskContext.getParameters(), HashMap.class);
         if (args.size() != taskContext.getParameters().size()) {
             LogUtil.Log(String.format("Generate workitem for task %s, but arguments(%s) and parameters(%s) not equal",
                     taskContext.getTaskName(), args.size(), taskContext.getParameters().size()),
-                    WorkitemContext.class.getName(), LogLevelType.ERROR, rtid);
-            return null;
+                    WorkitemContext.class.getName(), LogLevelType.WARNING, rtid);
         }
         Session session = HibernateUtil.GetLocalSession();
         Transaction transaction = session.beginTransaction();
@@ -277,14 +277,13 @@ public class WorkitemContext implements Serializable, RCacheablesContext {
             rwe.setExecuteTime(0L);
             rwe.setCallbackNodeId(callbackNodeId);
             rwe.setEnablementTime(TimestampUtil.GetCurrentTimestamp());
-            HashMap<String, String> taskArgsSign = CommonUtil.ZipVectorConvertString(taskContext.getParameters(), args);
-            rwe.setArguments(SerializationUtil.JsonSerialization(taskArgsSign));
+            rwe.setArguments(SerializationUtil.JsonSerialization(args));
             session.save(rwe);
             transaction.commit();
             cmtFlag = true;
             WorkitemContext wCtx = new WorkitemContext();
             wCtx.entity = rwe;
-            wCtx.argsDict = taskArgsSign;
+            wCtx.argsDict = (HashMap<String, String>) args;
             wCtx.taskContext = taskContext;
             // handle callback and hook
             InterfaceA.HandleCallbackAndHook(WorkitemStatusType.Enabled, wCtx, taskContext, null);

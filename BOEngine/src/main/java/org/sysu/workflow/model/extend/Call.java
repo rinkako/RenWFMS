@@ -124,10 +124,12 @@ public class Call extends ParamsContainer implements Serializable {
                         if (!GlobalContext.IsLocalDebug) {
                             int timesBorder = this.instances;
                             if (t.getPrinciple().getMethod().equalsIgnoreCase("Offer")) {
+                                if (this.instances != 1) {
+                                    LogUtil.Log("Method is Offer but instance not 1 is invalid, use default value 1.",
+                                            Call.class.getName(), LogLevelType.WARNING,
+                                            ((SCXMLExecutionContext) exctx.getInternalIOProcessor()).Rtid);
+                                }
                                 timesBorder = 1;
-                                LogUtil.Log("Method is Offer but instance not 1 is invalid, use default value 1.",
-                                        Call.class.getName(), LogLevelType.WARNING,
-                                        ((SCXMLExecutionContext) exctx.getInternalIOProcessor()).Rtid);
                             }
                             for (int times = 0; times < timesBorder; times++) {
                                 try {
