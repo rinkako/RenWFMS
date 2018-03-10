@@ -1,0 +1,42 @@
+﻿<mah:MetroWindow x:Class="ArticleCrowdSourcingDemo.Form.SolveVoteWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:ArticleCrowdSourcingDemo.Form"
+        xmlns:mah="http://metro.mahapps.com/winfx/xaml/controls"
+        mc:Ignorable="d"
+        Title="Vote for solution" Height="400" Width="800">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="32*" MinHeight="32" MaxHeight="32"/>
+            <RowDefinition Height="60*"/>
+            <RowDefinition Height="32*" MinHeight="32" MaxHeight="32"/>
+            <RowDefinition Height="200*"/>
+            <RowDefinition Height="35*" MinHeight="35" MaxHeight="35"/>
+        </Grid.RowDefinitions>
+        <TextBox Grid.Row="0" FontSize="18" Background="AliceBlue" Foreground="Blue" TextAlignment="Center">
+            [Description]
+        </TextBox>
+        <TextBox Name="TextBox_Description" Grid.Row="1" FontSize="15">
+            test description
+        </TextBox>
+        <TextBox Grid.Row="2" FontSize="18" Background="Beige" Foreground="Coral" TextAlignment="Center">
+            [Candidate Solutions]
+        </TextBox>
+        <Grid Grid.Row="3">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="30*"/>
+                <ColumnDefinition Width="70*"/>
+            </Grid.ColumnDefinitions>
+            <ListBox Name="ListBox_CandidateSolutions" Margin="0,0,0,0"/>
+            <TextBox Name="TextBox_Solution"  FontSize="15" Margin="10,0,0,0" Grid.Column="1">
+                test solution
+            </TextBox>
+        </Grid>
+        <Grid Grid.Row="4" Background="Lavender">
+            <Button Name="Button_VoteThis" Content="Vote this" Margin="250,5,250,5"/>
+        </Grid>
+    </Grid>
+</mah:MetroWindow>
+

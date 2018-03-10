@@ -1,0 +1,31 @@
+﻿<mah:MetroWindow x:Class="ArticleCrowdSourcingDemo.Form.PreviewResultWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:ArticleCrowdSourcingDemo.Form"
+        xmlns:mah="http://metro.mahapps.com/winfx/xaml/controls"
+        mc:Ignorable="d"
+        Title="View Result" Height="400" Width="800">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="10*" MinHeight="32" MaxHeight="32"/>
+            <RowDefinition Height="20*"/>
+            <RowDefinition Height="10*" MinHeight="32" MaxHeight="32"/>
+            <RowDefinition Height="70*"/>
+        </Grid.RowDefinitions>
+        <TextBox Grid.Row="0" FontSize="18" Background="AliceBlue" Foreground="Blue" TextAlignment="Center">
+            [Description]
+        </TextBox>
+        <TextBox Name="TextBox_Description" Grid.Row="1" FontSize="15">
+            test description
+        </TextBox>
+        <TextBox Grid.Row="2" FontSize="18" Background="Beige" Foreground="Coral" TextAlignment="Center">
+            [Solution]
+        </TextBox>
+        <TextBox Name="TextBox_Solution" Grid.Row="3" FontSize="15">
+            test solution
+        </TextBox>
+    </Grid>
+</mah:MetroWindow>
+
