@@ -52,7 +52,16 @@
                 2.也可以通过namelist属性指定传给外部任务的参数，其中namelist的值对应于datamodel中的data的ID值，以空格隔开多个ID值；
                 3.param和namelist不能同时指定
                 4.namelist="employer taskName taskDescription judgeCount decomposeCount decomposeVoteCount solveCount solveVoteCount"-->
-            <newbo src="Crowdsourcing.xml" instances="1"  idExpr="SubPrefix + _instanceIndex">
+            <assign location="employer" expr="_event.data.get('employer')"/>
+            <assign location="taskName" expr="_event.data.get('taskName')"/>
+            <assign location="taskDescription" expr="_event.data.get('taskDescription')"/>
+            <assign location="judgeCount" expr="_event.data.get('judgeCount')"/>
+            <assign location="decomposeCount" expr="_event.data.get('decomposeCount')"/>
+            <assign location="decomposeVoteCount" expr="_event.data.get('decomposeVoteCount')"/>
+            <assign location="solveCount" expr="_event.data.get('solveCount')"/>
+            <assign location="solveVoteCount" expr="_event.data.get('solveVoteCount')"/>
+
+            <newbo src="Crowdsourcing.xml" instances="1">
                 <param name="employer" expr="employer"/>
                 <param name="taskName" expr="taskName"/>
                 <param name="taskDescription" expr="taskDescription"/>
