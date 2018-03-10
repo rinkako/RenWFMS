@@ -95,11 +95,11 @@
             </if>
         </transition>
 
-        <transition cond="judgeCompleted and simpleCount gt complexCount" target="solving">
+        <transition cond="judgeCompleted and simpleCount gt complexCount" target="Solving">
             <call name="solveTask" instances="solveCount"/>
         </transition>
 
-        <transition cond="judgeCompleted and simpleCount lt complexCount" target="decomposing">
+        <transition cond="judgeCompleted and simpleCount lt complexCount" target="Decomposing">
             <call name="decomposeTask" instances="decomposeCount"/>
         </transition>
 
@@ -116,6 +116,7 @@
     <state id="Decomposing">
         <onentry>
             <log label="decomposing" expr="'entry Decomposing state'"/>
+            <assign location="count" expr="0"/>
         </onentry>
 
         <transition event="decomposeComplete">
@@ -182,7 +183,7 @@
             <assign location="count" expr="count + 1"/>
         </transition>
 
-        <transition cond="count eq steps" target="merging">
+        <transition cond="count eq steps" target="Merging">
             <call name="mergeTask"/>
         </transition>
 
@@ -217,7 +218,7 @@
             <assign location="count" expr="count + 1"/>
         </transition>
 
-        <transition cond="count eq solveCount" target="solveVoting">
+        <transition cond="count eq solveCount" target="SolveVoting">
             <call name="solveVoteTask" instances="solveVoteCount"/>
         </transition>
 
