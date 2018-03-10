@@ -4,14 +4,12 @@
     <datamodel>
         <data id="dataA" expr="1"></data>
         <data id="dataB" expr="2333"></data>
-        <data id="test" expr="121212"></data>
     </datamodel>
 
     <state id="first">
         <onentry>
             <log label="SUB" expr="'dataA(should be 666, not 1) is ' + dataA"/>
             <log label="SUB" expr="'dataB is ' + dataB"/>
-            <log label="SUB" expr="'test(should be 1111, not 121212) is ' + test"/>
         </onentry>
         <transition event="stop" target="finished"/>
     </state>

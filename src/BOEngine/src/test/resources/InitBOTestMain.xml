@@ -4,14 +4,12 @@
     <datamodel>
         <data id="SubPrefix" expr="'InitBOTestSub_'"></data>
         <data id="finishCount" expr="0"></data>
-        <data id="test" expr="11111"></data>
     </datamodel>
 
     <state id="first">
         <onentry>
             <newbo src="InitBOTestSub.xml" instances="3" idExpr="SubPrefix + _instanceIndex" namelist="text">
                 <param name="dataA" expr="666"></param>
-                <param name="test" expr="test"></param>
             </newbo>
         </onentry>
         <transition event="InitBOTestSub.finish">

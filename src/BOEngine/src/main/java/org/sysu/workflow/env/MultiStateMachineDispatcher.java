@@ -188,13 +188,13 @@ public class MultiStateMachineDispatcher extends SimpleDispatcher implements Ser
     @SuppressWarnings("all")
     private void sendToParent(String treeId, String currentNodeId, String targetName, String targetState, String event, Object data, Object hints, long delay) {
         //get the current tree node by currentNodeId
-        RTreeNode currentNode = InstanceManager.GetInstanceTree(treeId).GetNodeById(currentNodeId);
+        RTreeNode currentTreeNode = InstanceManager.GetInstanceTree(treeId).GetNodeById(currentNodeId);
         //get the parent node of the current tree node
-        RTreeNode parentNode = currentNode.Parent;
+        RTreeNode parentNode = currentTreeNode.Parent;
         if (parentNode == null) {
             System.out.println("it is root , no parent.");
         }
-        String eventPrefix = currentNode != InstanceManager.GetInstanceTree(treeId).Root ? currentNode.getName() + "." : "";
+        String eventPrefix = this.normalizeEventPrefix(treeId, currentTreeNode);
         sendToTarget(parentNode, targetState, eventPrefix + event, data);
     }
 
@@ -222,7 +222,7 @@ public class MultiStateMachineDispatcher extends SimpleDispatcher implements Ser
             //get all the children
             targetTreeNodeList = currentTreeNode.Children;
         }
-        String eventPrefix = currentTreeNode != InstanceManager.GetInstanceTree(treeId).Root ? currentTreeNode.getName() + "." : "";
+        String eventPrefix = this.normalizeEventPrefix(treeId, currentTreeNode);
         sendToTarget(targetTreeNodeList, targetState, eventPrefix + event, data);
     }
 
@@ -249,8 +249,7 @@ public class MultiStateMachineDispatcher extends SimpleDispatcher implements Ser
             targetTreeNodeList = InstanceManager.GetInstanceTree(treeId).GetAncestorsVector(currentNodeId);
         }
         //get the current tree node by currentNodeId
-        RTreeNode currentTreeNode = InstanceManager.GetInstanceTree(treeId).GetNodeById(currentNodeId);
-        String eventPrefix = currentTreeNode != InstanceManager.GetInstanceTree(treeId).Root ? currentTreeNode.getName() + "." : "";
+        String eventPrefix = this.normalizeEventPrefix(treeId, currentNodeId);
         sendToTarget(targetTreeNodeList, targetState, eventPrefix + event, data);
     }
 
@@ -277,8 +276,7 @@ public class MultiStateMachineDispatcher extends SimpleDispatcher implements Ser
             targetTreeNodeList = InstanceManager.GetInstanceTree(treeId).GetOffspringsVector(currentNodeId);
         }
         //get the current tree node by currentNodeId
-        RTreeNode currentTreeNode = InstanceManager.GetInstanceTree(treeId).GetNodeById(currentNodeId);
-        String eventPrefix = currentTreeNode != InstanceManager.GetInstanceTree(treeId).Root ? currentTreeNode.getName() + "." : "";
+        String eventPrefix = this.normalizeEventPrefix(treeId, currentNodeId);
         sendToTarget(targetTreeNodeList, targetState, eventPrefix + event, data);
     }
 
@@ -305,8 +303,7 @@ public class MultiStateMachineDispatcher extends SimpleDispatcher implements Ser
             targetTreeNodeList = InstanceManager.GetInstanceTree(treeId).GetSiblingsVector(currentNodeId);
         }
         // get the current tree node by currentNodeId
-        RTreeNode currentTreeNode = InstanceManager.GetInstanceTree(treeId).GetNodeById(currentNodeId);
-        String eventPrefix = currentTreeNode != InstanceManager.GetInstanceTree(treeId).Root ? currentTreeNode.getName() + "." : "";
+        String eventPrefix = this.normalizeEventPrefix(treeId, currentNodeId);
         sendToTarget(targetTreeNodeList, targetState, eventPrefix + event, data);
     }
 
@@ -325,8 +322,7 @@ public class MultiStateMachineDispatcher extends SimpleDispatcher implements Ser
     @SuppressWarnings("all")
     private void sendUnicast(String treeId, String currentNodeId, String targetGid, String targetState, String event, Object data, Object hints, long delay) {
         RTreeNode destination = InstanceManager.GetInstanceTree(treeId).GetNodeById(targetGid);
-        RTreeNode currentTreeNode = InstanceManager.GetInstanceTree(treeId).GetNodeById(currentNodeId);
-        String eventPrefix = currentTreeNode != InstanceManager.GetInstanceTree(treeId).Root ? currentTreeNode.getName() + "." : "";
+        String eventPrefix = this.normalizeEventPrefix(treeId, currentNodeId);
         sendToTarget(destination, targetState, eventPrefix + event, data);
     }
 
@@ -345,8 +341,7 @@ public class MultiStateMachineDispatcher extends SimpleDispatcher implements Ser
     @SuppressWarnings("all")
     private void sendToNotifiableId(String treeId, String currentNodeId, String targetNotifiableId, String targetState, String event, Object data, Object hints, long delay) {
         ArrayList<RTreeNode> destination = InstanceManager.GetInstanceTree(treeId).GetVectorByNotifiableId(targetNotifiableId);
-        RTreeNode currentTreeNode = InstanceManager.GetInstanceTree(treeId).GetNodeById(currentNodeId);
-        String eventPrefix = currentTreeNode != InstanceManager.GetInstanceTree(treeId).Root ? currentTreeNode.getName() + "." : "";
+        String eventPrefix = this.normalizeEventPrefix(treeId, currentNodeId);
         sendToTarget(destination, targetState, eventPrefix + event, data);
     }
 
@@ -375,8 +370,7 @@ public class MultiStateMachineDispatcher extends SimpleDispatcher implements Ser
             targetTreeNodeList = InstanceManager.GetInstanceTree(treeId).GetAllNodeVector();
         }
         //get the current tree node by currentNodeId
-        RTreeNode currentTreeNode = InstanceManager.GetInstanceTree(treeId).GetNodeById(currentNodeId);
-        String eventPrefix = currentTreeNode != InstanceManager.GetInstanceTree(treeId).Root ? currentTreeNode.getName() + "." : "";
+        String eventPrefix = this.normalizeEventPrefix(treeId, currentNodeId);
         sendToTarget(targetTreeNodeList, targetState, eventPrefix + event, data);
     }
 
@@ -402,8 +396,7 @@ public class MultiStateMachineDispatcher extends SimpleDispatcher implements Ser
             return;
         }
         //get the current tree node by currentNodeId
-        RTreeNode currentTreeNode = InstanceManager.GetInstanceTree(treeId).GetNodeById(currentNodeId);
-        String eventPrefix = currentTreeNode != InstanceManager.GetInstanceTree(treeId).Root ? currentTreeNode.getName() + "." : "";
+        String eventPrefix = this.normalizeEventPrefix(treeId, currentNodeId);
         sendToTarget(targetTreeNodeList, targetState, eventPrefix + event, data);
     }
 
@@ -463,6 +456,29 @@ public class MultiStateMachineDispatcher extends SimpleDispatcher implements Ser
         ArrayList<RTreeNode> treeNodeArrayList = new ArrayList<>();
         treeNodeArrayList.add(treeNode);
         sendToTarget(treeNodeArrayList, targetState, event, data);
+    }
+
+    /**
+     * Generate normalized event prefix
+     * @param treeId        the target tree node
+     * @param currentNodeId the id of the current node
+     * @return              normalized event prefix
+     */
+    @SuppressWarnings("all")
+    private String normalizeEventPrefix(String treeId, String currentNodeId) {
+        RTreeNode currentTreeNode = InstanceManager.GetInstanceTree(treeId).GetNodeById(currentNodeId);
+        return currentTreeNode != InstanceManager.GetInstanceTree(treeId).Root ? currentTreeNode.getExect().NotifiableId + "." : "";
+    }
+
+    /**
+     * Generate normalized event prefix
+     * @param treeId        the target tree node
+     * @param currentNode   current node
+     * @return              normalized event prefix
+     */
+    @SuppressWarnings("all")
+    private String normalizeEventPrefix(String treeId, RTreeNode currentNode) {
+        return currentNode != InstanceManager.GetInstanceTree(treeId).Root ? currentNode.getName() + "." : "";
     }
 
     /**
