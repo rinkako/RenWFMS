@@ -1,0 +1,19 @@
+﻿<mah:MetroWindow x:Class="ArticleCrowdSourcingDemo.Form.LoginWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:ArticleCrowdSourcingDemo.Form"
+        xmlns:mah="http://metro.mahapps.com/winfx/xaml/controls"
+        mc:Ignorable="d" Title="Login CrowdSourcing Platform" Height="220" Width="388" ResizeMode="NoResize" WindowStartupLocation="CenterScreen">
+    <Grid>
+        <Label Content="Login" FontSize="22" HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top" Foreground="#FF00B9FF"/>
+        <Rectangle HorizontalAlignment="Left" Height="2" Margin="0,45,0,0" VerticalAlignment="Top" Width="350" Fill="#FFD6D6D6"/>
+        <Label Content="Username" HorizontalAlignment="Left" Margin="10,70,0,0" VerticalAlignment="Top"/>
+        <Label Content="Password" HorizontalAlignment="Left" Margin="10,107,0,0" VerticalAlignment="Top"/>
+        <TextBox Text="admin" Name="TextBox_username" HorizontalAlignment="Left" Height="23" Margin="92,70,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="267" TabIndex="1"/>
+        <Button Content="Connect" HorizontalAlignment="Left" Margin="239,149,0,0" VerticalAlignment="Top" Width="120" Height="30" TabIndex="3"/>
+        <PasswordBox Password="admin" Name="PasswordBox_password" HorizontalAlignment="Left" Margin="92,107,0,0" VerticalAlignment="Top" Width="267" TabIndex="2"/>
+    </Grid>
+</mah:MetroWindow>
+
