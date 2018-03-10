@@ -15,13 +15,13 @@
             <RowDefinition Height="200*"/>
             <RowDefinition Height="35*" MinHeight="35" MaxHeight="35"/>
         </Grid.RowDefinitions>
-        <TextBox Grid.Row="0" FontSize="18" Background="AliceBlue" Foreground="Blue" TextAlignment="Center">
+        <TextBox Grid.Row="0" IsReadOnly="True" FontSize="18" Background="AliceBlue" Foreground="Blue" TextAlignment="Center">
             [Description]
         </TextBox>
-        <TextBox Name="TextBox_Description" Grid.Row="1" FontSize="15">
+        <TextBox Name="TextBox_Description" IsReadOnly="True" Grid.Row="1" FontSize="15">
             test description
         </TextBox>
-        <TextBox Grid.Row="2" FontSize="18" Background="Beige" Foreground="Coral" TextAlignment="Center">
+        <TextBox Grid.Row="2" IsReadOnly="True" FontSize="18" Background="Beige" Foreground="Coral" TextAlignment="Center">
             [Candidate Solutions]
         </TextBox>
         <Grid Grid.Row="3">
@@ -30,7 +30,7 @@
                 <ColumnDefinition Width="70*"/>
             </Grid.ColumnDefinitions>
             <ListBox Name="ListBox_CandidateSolutions" Margin="0,0,0,0"/>
-            <TextBox Name="TextBox_Solution"  FontSize="15" Margin="10,0,0,0" Grid.Column="1">
+            <TextBox Name="TextBox_Solution" IsReadOnly="True" FontSize="15" Margin="10,0,0,0" Grid.Column="1">
                 test solution
             </TextBox>
         </Grid>

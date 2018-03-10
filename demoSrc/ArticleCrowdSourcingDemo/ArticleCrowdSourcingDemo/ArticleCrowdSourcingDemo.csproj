@@ -69,7 +69,11 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Form\LoginForm.xaml">
+    <Page Include="Form\NewRequestWindow.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Form\LoginWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -83,8 +87,11 @@
     <Compile Include="Form\JudgeTaskWindow.xaml.cs">
       <DependentUpon>JudgeTaskWindow.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Form\LoginForm.xaml.cs">
-      <DependentUpon>LoginForm.xaml</DependentUpon>
+    <Compile Include="Form\NewRequestWindow.xaml.cs">
+      <DependentUpon>NewRequestWindow.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Form\LoginWindow.xaml.cs">
+      <DependentUpon>LoginWindow.xaml</DependentUpon>
     </Compile>
     <Page Include="Form\DecomposeWindow.xaml">
       <Generator>MSBuild:Compile</Generator>

@@ -14,16 +14,16 @@
             <RowDefinition Height="10*" MinHeight="32" MaxHeight="32"/>
             <RowDefinition Height="70*"/>
         </Grid.RowDefinitions>
-        <TextBox Grid.Row="0" FontSize="18" Background="AliceBlue" Foreground="Blue" TextAlignment="Center">
+        <TextBox Grid.Row="0" FontSize="18" IsReadOnly="True" Background="AliceBlue" Foreground="Blue" TextAlignment="Center">
             [Description]
         </TextBox>
-        <TextBox Name="TextBox_Description" Grid.Row="1" FontSize="15">
+        <TextBox Name="TextBox_Description" IsReadOnly="True" Grid.Row="1" FontSize="15">
             test description
         </TextBox>
-        <TextBox Grid.Row="2" FontSize="18" Background="Beige" Foreground="Coral" TextAlignment="Center">
+        <TextBox Grid.Row="2" FontSize="18" IsReadOnly="True" Background="Beige" Foreground="Coral" TextAlignment="Center">
             [Solution]
         </TextBox>
-        <TextBox Name="TextBox_Solution" Grid.Row="3" FontSize="15">
+        <TextBox Name="TextBox_Solution" IsReadOnly="True" Grid.Row="3" FontSize="15">
             test solution
         </TextBox>
     </Grid>

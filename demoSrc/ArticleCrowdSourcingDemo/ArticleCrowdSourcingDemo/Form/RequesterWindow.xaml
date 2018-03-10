@@ -29,6 +29,7 @@
                 </DataGrid>
             </Grid>
         </GroupBox>
+        <Button Content="Detail" Grid.Row="0" Grid.Column="1" Margin="0,5,160,5" HorizontalAlignment="Right" Width="100" mah:ControlsHelper.ContentCharacterCasing="Normal"/>
 
     </Grid>
 </mah:MetroWindow>
