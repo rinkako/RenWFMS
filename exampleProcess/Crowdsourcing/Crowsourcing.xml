@@ -7,7 +7,6 @@
     <!-- 数据模型：定义业务对象在业务执行过程中需要使用的业务数据 -->
     <datamodel>
         <!--继承自父业务类的数据模型不需要在这里重新进行定义-->
-        <data id="employer" expr=""/>
         <data id="taskName" expr=""/>
         <data id="taskDescription" expr=""/>
         <data id="judgeCount" expr=""/>

@@ -4,6 +4,9 @@
     <datamodel>
         <data id="SubPrefix" expr="'InitBOTestSub_'"></data>
         <data id="finishCount" expr="0"></data>
+        <data id="boolVar" expr="false"></data>
+        <data id="testA" expr="0"></data>
+        <data id="testB" expr="0"></data>
     </datamodel>
 
     <state id="first">
@@ -16,7 +19,19 @@
             <assign location="finishCount" expr="finishCount + 1"></assign>
             <log label="MAIN" expr="'recieved finish'"/>
         </transition>
-        <transition cond="finishCount eq 3" target="finished"/>
+        <transition cond="finishCount eq 3" target="temp">
+            <assign location="boolVar" expr="true"></assign>
+            <assign location="testA" expr="1"></assign>
+            <assign location="testB" expr="2"></assign>
+        </transition>
+    </state>
+    <state id="temp">
+        <transition cond="boolVar and testA eq 123">
+          <log label="MAIN" expr="'and test passed'"/>
+        </transition>
+        <transition cond="testB + testA eq 3" target="finished">
+            <log label="MAIN" expr="'+ test passed'"/>
+        </transition>
     </state>
     <final id="finished">
         <onentry>

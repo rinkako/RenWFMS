@@ -6,7 +6,6 @@
 
     <datamodel>
         <!--继承自父业务类的数据模型不需要在这里重新进行定义-->
-        <data id="employer" expr=""/>
         <data id="taskName" expr=""/>
         <data id="taskDescription" expr=""/>
         <data id="judgeCount" expr="3"/>
@@ -52,7 +51,6 @@
                 2.也可以通过namelist属性指定传给外部任务的参数，其中namelist的值对应于datamodel中的data的ID值，以空格隔开多个ID值；
                 3.param和namelist不能同时指定
                 4.namelist="employer taskName taskDescription judgeCount decomposeCount decomposeVoteCount solveCount solveVoteCount"-->
-            <assign location="employer" expr="_event.data.get('employer')"/>
             <assign location="taskName" expr="_event.data.get('taskName')"/>
             <assign location="taskDescription" expr="_event.data.get('taskDescription')"/>
             <assign location="judgeCount" expr="_event.data.get('judgeCount')"/>
@@ -62,7 +60,6 @@
             <assign location="solveVoteCount" expr="_event.data.get('solveVoteCount')"/>
 
             <newbo src="Crowdsourcing.xml" instances="1">
-                <param name="employer" expr="employer"/>
                 <param name="taskName" expr="taskName"/>
                 <param name="taskDescription" expr="taskDescription"/>
                 <param name="judgeCount" expr="judgeCount"/>
