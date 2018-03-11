@@ -57,5 +57,6 @@ public class CrowdSourcingTest {
         dispatcher.send("testRTID", ctx.NodeId, "", MessageMode.TO_NOTIFIABLE_ID, "Request",
                 "", SCXMLIOProcessor.DEFAULT_EVENT_PROCESSOR, "submit", submitPayload, "", 0);
 
+        Assert.assertTrue(executor.getExctx().getScInstance().getCurrentStatus().isInState("Waiting"));
     }
 }

@@ -38,7 +38,7 @@
             <callback on="complete" event="decomposeVoteComplete"/>
             <documentation>DecomposeVote task let decomposeVoters vote for decompose plans of a crowdsourcing task.</documentation>
         </task>
-        <task id="getBestSchema" name="getBestSchemaTask" vrole="automicQuerier">
+        <task id="getBestSchema" name="getBestSchemaTask" brole="automicQuerier">
             <principle method="Allocate" distributor="Random"/>
             <callback on="complete" event="queryComplete"/>
             <documentation>GetBestSchema task let a automicQuerier agent query for the best decompose schema in the database and return.</documentation>
@@ -48,7 +48,7 @@
             <callback on="complete" event="solveComplete"/>
             <documentation>Solve task let solvers solve a crowdsourcing task.</documentation>
         </task>
-        <task id="solveVoting" name="solveVoteTask" role="solveVoter">
+        <task id="solveVoting" name="solveVoteTask" brole="solveVoter">
             <principle method="Allocate" distributor="ShortestQueue"/>
             <callback on="complete" event="solveVoteComplete"/>
             <documentation>SolveVote task let solveVoters vote for solutions of a crowdsourcing task.</documentation>
@@ -67,26 +67,26 @@
     <!-- 初始状态：初始化数据模型 -->
     <state id="Initial">
         <onentry>
-            <log label="init" expr="'entry Initial state'"/>
+            <log label="CS_init" expr="'entry Initial state'"/>
         </onentry>
         <transition target="Judging">
             <call name="judgeTask"/>
         </transition>
         <onexit>
-            <log label="init" expr="'exit Initial state'"/>
+            <log label="CS_init" expr="'exit Initial state'"/>
         </onexit>
     </state>
 
     <!-- Judging状态：判断当前众包任务是否是复杂任务-->
     <state id="Judging">
         <onentry>
-            <log label="judging" expr="'entry Judging state'"/>
+            <log label="CS_judging" expr="'entry Judging state'"/>
         </onentry>
 
         <transition event="judgeComplete">
             <if cond="_event.data.get('simple') eq 0">
                 <assign location="simpleCount" expr="simpleCount + 1"/>
-                <elseif cond="_event.data.get('simple') eq 1"/>
+            <elseif cond="_event.data.get('simple') eq 1"/>
                 <assign location="complexCount" expr="complexCount + 1"/>
             </if>
             <if cond="simpleCount + complexCount eq judgeCount">
@@ -95,15 +95,15 @@
         </transition>
 
         <transition cond="judgeCompleted and simpleCount gt complexCount" target="Solving">
-            <call name="solveTask" instances="solveCount"/>
+            <call name="solveTask" instancesExpr="solveCount"/>
         </transition>
 
         <transition cond="judgeCompleted and simpleCount lt complexCount" target="Decomposing">
-            <call name="decomposeTask" instances="decomposeCount"/>
+            <call name="decomposeTask" instancesExpr="decomposeCount"/>
         </transition>
 
         <onexit>
-            <log label="judging" expr="'exit Judging state'"/>
+            <log label="CS_judging" expr="'exit Judging state'"/>
             <assign location="simpleCount" expr="0"/>
             <assign location="complexCount" expr="0"/>
             <assign location="judgeCompleted" expr="false"/>
@@ -114,7 +114,7 @@
     <!-- Decomposing状态：如果当前众包任务是复杂任务，将会进入分解状态对人物进行分解-->
     <state id="Decomposing">
         <onentry>
-            <log label="decomposing" expr="'entry Decomposing state'"/>
+            <log label="CS_decomposing" expr="'entry Decomposing state'"/>
             <assign location="count" expr="0"/>
         </onentry>
 
@@ -124,18 +124,18 @@
         </transition>
 
         <transition cond="count eq decomposeCount" target="DecomposeVoting">
-            <call name="decomposeVoteTask" instances="decomposeVoteCount"/>
+            <call name="decomposeVoteTask" instancesExpr="decomposeVoteCount"/>
         </transition>
 
         <onexit>
-            <log label="decomposing" expr="'exit Decomposing state'"/>
+            <log label="CS_decomposing" expr="'exit Decomposing state'"/>
         </onexit>
     </state>
 
     <!-- DecomposeVoting状态：对所有decomposer的分解方案进行投票，选出最佳分解方案-->
     <state id="DecomposeVoting">
         <onentry>
-            <log label="decomposeVoting" expr="'entry DecomposeVoting state'"/>
+            <log label="CS_decomposeVoting" expr="'entry DecomposeVoting state'"/>
             <assign location="count" expr="0"/>
         </onentry>
 
@@ -145,26 +145,26 @@
 
         <transition cond="count eq decomposeVoteCount" target="Temp">
             <!--标记将票数最高的分配方案-->
-            <call name="getBestSchemaTask" instances="1"/>
+            <call name="getBestSchemaTask" instancesExpr="1"/>
         </transition>
 
         <onexit>
-            <log label="decomposing" expr="'exit DecomposeVoting state'"/>
+            <log label="CS_decomposing" expr="'exit DecomposeVoting state'"/>
         </onexit>
     </state>
 
     <state id="Temp">
         <transition event="queryComplete" target="Waiting">
             <foreach array="_event.data" item="kvpair">
-                <newbo name="CrowdSourcing.xml" instances="1">
-                    <param id="employer" expr="employer"/>
-                    <param id="taskName" expr="taskName"/>
-                    <param id="taskDescription" expr="kvpair.getValue()"/>
-                    <param id="judgeCount" expr="judgeCount"/>
-                    <param id="decomposeCount" expr="decomposeCount"/>
-                    <param id="decomposeVoteCount" expr="decomposeVoteCount"/>
-                    <param id="solveCount" expr="solveCount"/>
-                    <param id="solveVoteCount" expr="solveVoteCount"/>
+                <newbo src="CrowdSourcing.xml" instancesExpr="1">
+                    <param name="employer" expr="employer"/>
+                    <param name="taskName" expr="taskName"/>
+                    <param name="taskDescription" expr="kvpair.getValue()"/>
+                    <param name="judgeCount" expr="judgeCount"/>
+                    <param name="decomposeCount" expr="decomposeCount"/>
+                    <param name="decomposeVoteCount" expr="decomposeVoteCount"/>
+                    <param name="solveCount" expr="solveCount"/>
+                    <param name="solveVoteCount" expr="solveVoteCount"/>
                 </newbo>
                 <assign location="steps" expr="steps + 1"/>
             </foreach>
@@ -174,7 +174,7 @@
     <!-- Waiting状态：等待其创建的业务对象的生命周期结束 -->
     <state id="Waiting">
         <onentry>
-            <log label="waiting" expr="'entry Waiting state '"/>
+            <log label="CS_waiting" expr="'entry Waiting state '"/>
             <assign location="count" expr="0"/>
         </onentry>
 
@@ -187,14 +187,14 @@
         </transition>
 
         <onexit>
-            <log label="waiting" expr="'exit Waiting state '"/>
+            <log label="CS_waiting" expr="'exit Waiting state '"/>
         </onexit>
     </state>
 
     <!-- Merging状态：调用合并算法执行任务结果的合并 -->
     <state id="Merging">
         <onentry>
-            <log label="merging" expr="'entry Merging state '"/>
+            <log label="CS_merging" expr="'entry Merging state '"/>
         </onentry>
 
         <transition event="merged" target="Final">
@@ -202,14 +202,14 @@
         </transition>
 
         <onexit>
-            <log label="merging" expr="'exit Merging state '"/>
+            <log label="CS_merging" expr="'exit Merging state '"/>
         </onexit>
     </state>
 
     <!-- Solving状态：解决简单任务-->
     <state id="Solving">
         <onentry>
-            <log label="solving" expr="'entry Solving state '"/>
+            <log label="CS_solving" expr="'entry Solving state '"/>
             <assign location="count" expr="0"/>
         </onentry>
 
@@ -218,18 +218,18 @@
         </transition>
 
         <transition cond="count eq solveCount" target="SolveVoting">
-            <call name="solveVoteTask" instances="solveVoteCount"/>
+            <call name="solveVoteTask" instancesExpr="solveVoteCount"/>
         </transition>
 
         <onexit>
-            <log label="solving" expr="'exit Solving state '"/>
+            <log label="CS_solving" expr="'exit Solving state '"/>
         </onexit>
     </state>
 
     <!-- SolveVoting state  -->
     <state id="SolveVoting">
         <onentry>
-            <log label="solveVoting" expr="' entry SolveVoting state '"/>
+            <log label="CS_solveVoting" expr="' entry SolveVoting state '"/>
             <assign location="count" expr="0"/>
         </onentry>
 
@@ -243,16 +243,16 @@
         </transition>
 
         <onexit>
-            <log label="solveVoting" expr="' exit SolveVoting state '"/>
+            <log label="CS_solveVoting" expr="' exit SolveVoting state '"/>
         </onexit>
     </state>
 
     <final id="Final">
         <onentry>
-            <log label="final" expr="' entry Final state '"/>
+            <log label="CS_final" expr="' entry Final state '"/>
         </onentry>
         <onexit>
-            <log label="final" expr="' exit Final state '"/>
+            <log label="CS_final" expr="' exit Final state '"/>
         </onexit>
     </final>
 </businessclass>

@@ -11,7 +11,7 @@
 
     <state id="first">
         <onentry>
-            <newbo src="InitBOTestSub.xml" instancesExpr="3" idExpr="SubPrefix + _instanceIndex" namelist="text">
+            <newbo src="InitBOTestSub.xml" instancesExpr="3" idExpr="SubPrefix + _instanceIndex">
                 <param name="dataA" expr="666"></param>
             </newbo>
         </onentry>

@@ -86,7 +86,7 @@
         <transition event="judgeComplete">
             <if cond="_event.data.get('simple') eq 0">
                 <assign location="simpleCount" expr="simpleCount + 1"/>
-                <elseif cond="_event.data.get('simple') eq 1"/>
+            <elseif cond="_event.data.get('simple') eq 1"/>
                 <assign location="complexCount" expr="complexCount + 1"/>
             </if>
             <if cond="simpleCount + complexCount eq judgeCount">
@@ -156,15 +156,15 @@
     <state id="Temp">
         <transition event="queryComplete" target="Waiting">
             <foreach array="_event.data" item="kvpair">
-                <newbo name="CrowdSourcing.xml" instancesExpr="1">
-                    <param id="employer" expr="employer"/>
-                    <param id="taskName" expr="taskName"/>
-                    <param id="taskDescription" expr="kvpair.getValue()"/>
-                    <param id="judgeCount" expr="judgeCount"/>
-                    <param id="decomposeCount" expr="decomposeCount"/>
-                    <param id="decomposeVoteCount" expr="decomposeVoteCount"/>
-                    <param id="solveCount" expr="solveCount"/>
-                    <param id="solveVoteCount" expr="solveVoteCount"/>
+                <newbo src="CrowdSourcing.xml" instancesExpr="1">
+                    <param name="employer" expr="employer"/>
+                    <param name="taskName" expr="taskName"/>
+                    <param name="taskDescription" expr="kvpair.getValue()"/>
+                    <param name="judgeCount" expr="judgeCount"/>
+                    <param name="decomposeCount" expr="decomposeCount"/>
+                    <param name="decomposeVoteCount" expr="decomposeVoteCount"/>
+                    <param name="solveCount" expr="solveCount"/>
+                    <param name="solveVoteCount" expr="solveVoteCount"/>
                 </newbo>
                 <assign location="steps" expr="steps + 1"/>
             </foreach>

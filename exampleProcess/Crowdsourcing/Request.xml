@@ -15,42 +15,19 @@
         <data id="solveVoteCount" expr="3"/>
     </datamodel>
 
-    <tasks>
-        <task id="edit" name="editTask" brole="publisher">
-            <principle method="Allocate" distributor="ShortestQueue"/>
-            <callback on="complete" event="submit"/>
-            <documentation>Edit task let the publisher publish a new crowdsourcing task.</documentation>
-        </task>
-    </tasks>
-
     <!-- 生命周期模型 -->
 
     <!-- 初始状态：publisher一登录系统就进入到初始状态 -->
     <state id="Initial">
         <onentry>
-            <log label="init" expr="'entry Initial state'"/>
+            <log label="Request_init" expr="'entry Initial state'"/>
         </onentry>
         <!-- publisher点击发布任务按钮产生publish事件，分配编辑众包详情任务 -->
-        <transition event="publish" target="Editing">
-            <call name="editTask"/>
-        </transition>
-
-        <transition event="cancel" target="Final"/>
-        <onexit>
-            <log label="init" expr="'exit Initial state'"/>
-        </onexit>
-    </state>
-
-    <state id="Editing">
-        <onentry>
-            <log label="editing" expr="'entry Editing state'"/>
-        </onentry>
-        <!-- publisher点击提交按钮产生submit事件，创建一个具体执行众包任务的BO -->
         <transition event="submit" target="Waiting">
             <!--1.通过param孩子元素指定传给外部任务的参数，location对应于datamodel里面的data的location，从location中获得data的value；
                 2.也可以通过namelist属性指定传给外部任务的参数，其中namelist的值对应于datamodel中的data的ID值，以空格隔开多个ID值；
                 3.param和namelist不能同时指定
-                4.namelist="employer taskName taskDescription judgeCount decomposeCount decomposeVoteCount solveCount solveVoteCount"-->
+                -->
             <assign location="taskName" expr="_event.data.get('taskName')"/>
             <assign location="taskDescription" expr="_event.data.get('taskDescription')"/>
             <assign location="judgeCount" expr="_event.data.get('judgeCount')"/>
@@ -59,7 +36,7 @@
             <assign location="solveCount" expr="_event.data.get('solveCount')"/>
             <assign location="solveVoteCount" expr="_event.data.get('solveVoteCount')"/>
 
-            <newbo src="Crowdsourcing.xml" instances="1">
+            <newbo src="Crowdsourcing.xml" instancesExpr="1">
                 <param name="taskName" expr="taskName"/>
                 <param name="taskDescription" expr="taskDescription"/>
                 <param name="judgeCount" expr="judgeCount"/>
@@ -69,27 +46,28 @@
                 <param name="solveVoteCount" expr="solveVoteCount"/>
             </newbo>
         </transition>
+        <transition event="cancel" target="Final"/>
         <onexit>
-            <log label="editing" expr="'exit Editing state'"/>
+            <log label="Request_init" expr="'exit Initial state'"/>
         </onexit>
     </state>
 
     <state id="Waiting">
         <onentry>
-            <log label="waiting" expr="'entry Waiting state'"/>
+            <log label="Request_waiting" expr="'entry Waiting state'"/>
         </onentry>
         <transition event="Crowdsourcing.finish" target="Final"/>
         <onexit>
-            <log label="waiting" expr="'exit Waiting state'"/>
+            <log label="Request_waiting" expr="'exit Waiting state'"/>
         </onexit>
     </state>
 
     <final id="Final">
         <onentry>
-            <log label="final" expr="'entry Final state'"/>
+            <log label="Request_final" expr="'entry Final state'"/>
         </onentry>
         <onexit>
-            <log label="final" expr="'exit Final state'"/>
+            <log label="Request_final" expr="'exit Final state'"/>
         </onexit>
     </final>
 </businessclass>

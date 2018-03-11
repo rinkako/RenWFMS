@@ -12,6 +12,9 @@
             <foreach array="_event.data" item="kvp" >
                 <log label="KEY" expr="kvp.getKey()"/>
                 <log label="VALUE" expr="kvp.getValue()"/>
+                <newbo src="InitBOTestSub.xml" instanceExpr="1">
+                    <param name="dataA" expr="666"/>
+                </newbo>
             </foreach>
         </onentry>
         <transition target="finished"/>

@@ -43,7 +43,7 @@
                 <param name="decomposeCount" expr="decomposeCount"/>
                 <param name="decomposeVoteCount" expr=" decomposeVoteCount"/>
                 <param name="solveCount" expr="solveCount"/>
-                <param name= "solveVoteCount" expr="solveVoteCount"/>
+                <param name="solveVoteCount" expr="solveVoteCount"/>
             </newbo>
         </transition>
         <transition event="cancel" target="Final"/>
