@@ -23,5 +23,25 @@ namespace ArticleCrowdSourcingDemo.Form
         {
             InitializeComponent();
         }
+
+        private void Button_Click(object sender, RoutedEventArgs e)
+        {
+            if (CSCore.DoLogin(this.TextBox_username.Text, this.PasswordBox_password.Password))
+            {
+                if (GlobalDataPackage.CurrentUserViewRole == UserViewRole.Requester)
+                {
+                    new RequesterWindow().Show();
+                }
+                else
+                {
+                    new SolverWindow().Show();
+                }
+                this.Close();
+            }
+            else
+            {
+                MessageBox.Show("Invalid username or password");
+            }
+        }
     }
 }

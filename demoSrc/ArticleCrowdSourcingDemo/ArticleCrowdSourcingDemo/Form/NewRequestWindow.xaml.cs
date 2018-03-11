@@ -19,9 +19,43 @@ namespace ArticleCrowdSourcingDemo.Form
     /// </summary>
     public partial class NewRequestWindow : MetroWindow
     {
-        public NewRequestWindow()
+        private readonly bool isReadonly = false;
+
+        public NewRequestWindow(bool isNew, string taskName = "", string desc = "", string jc = "0", string sc = "0", string svc = "0", string dc = "0", string dvc = "0")
         {
             InitializeComponent();
+            this.isReadonly = !isNew;
+            this.TextBox_TaskName.IsReadOnly =
+                this.TextBox_Description.IsReadOnly =
+                    this.TextBox_SolveCount.IsReadOnly =
+                        this.TextBox_JudgeCount.IsReadOnly =
+                            this.TextBox_DecomposeCount.IsReadOnly =
+                                this.TextBox_SolveVoteCount.IsReadOnly =
+                                    this.TextBox_DecomposeVoteCount.IsReadOnly = this.isReadonly;
+            if (this.isReadonly)
+            {
+                this.Button_Submit.Content = "OK";
+                this.Label_Header.Content = this.Title = "Task Detail";
+                this.TextBox_TaskName.Text = taskName;
+                this.TextBox_Description.Text = desc;
+                this.TextBox_JudgeCount.Text = jc;
+                this.TextBox_SolveCount.Text = sc;
+                this.TextBox_DecomposeCount.Text = dc;
+                this.TextBox_SolveVoteCount.Text = svc;
+                this.TextBox_DecomposeVoteCount.Text = dvc;
+            }
+        }
+
+        private void Button_Submit_Click(object sender, RoutedEventArgs e)
+        {
+            if (this.isReadonly)
+            {
+                this.Close();
+            }
+            else
+            {
+                
+            }
         }
     }
 }

@@ -7,24 +7,24 @@
         xmlns:mah="http://metro.mahapps.com/winfx/xaml/controls"
         mc:Ignorable="d" Title="New Request" Height="445" Width="388" ResizeMode="NoResize" WindowStartupLocation="CenterScreen">
     <Grid>
-        <Label Content="Create Request" FontSize="22" HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top" Foreground="#FF00B9FF"/>
+        <Label Name="Label_Header" Content="Create Request" FontSize="22" HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top" Foreground="#FF00B9FF"/>
         <Rectangle HorizontalAlignment="Left" Height="2" Margin="0,45,0,0" VerticalAlignment="Top" Width="350" Fill="#FFD6D6D6"/>
         <Label Content="TaskName" HorizontalAlignment="Left" Margin="10,70,0,0" VerticalAlignment="Top"/>
         <Label Content="Description" HorizontalAlignment="Left" Margin="10,107,0,0" VerticalAlignment="Top"/>
-        <TextBox Text="" Name="TextBox_username" HorizontalAlignment="Left" Height="23" Margin="92,70,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="267" TabIndex="1"/>
-        <Button Content="Submit" HorizontalAlignment="Left" Margin="239,382,0,0" VerticalAlignment="Top" Width="120" Height="30" TabIndex="3"/>
-        <TextBox Text="" x:Name="TextBox_username_Copy" HorizontalAlignment="Left" Height="100" Margin="92,106,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="267" TabIndex="1"/>
+        <TextBox Text="" Name="TextBox_TaskName" HorizontalAlignment="Left" Height="23" Margin="92,70,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="267" TabIndex="1"/>
+        <Button Name="Button_Submit" Content="Submit" HorizontalAlignment="Left" Margin="239,382,0,0" VerticalAlignment="Top" Width="120" Height="30" TabIndex="3" Click="Button_Submit_Click"/>
+        <TextBox Text="" x:Name="TextBox_Description" HorizontalAlignment="Left" Height="100" Margin="92,106,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="267" TabIndex="1"/>
         <Rectangle Fill="LightGray" HorizontalAlignment="Left" Height="2" Margin="10,220,0,0" VerticalAlignment="Top" Width="349"/>
         <Label Content="Judge Count" HorizontalAlignment="Left" Margin="10,227,0,0" VerticalAlignment="Top" Width="159"/>
-        <TextBox Text="3" x:Name="TextBox_username_Copy1" HorizontalAlignment="Left" Height="23" Margin="174,227,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="185" TabIndex="1"/>
+        <TextBox Text="3" x:Name="TextBox_JudgeCount" HorizontalAlignment="Left" Height="23" Margin="174,227,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="185" TabIndex="1"/>
         <Label Content="Decompose Count" HorizontalAlignment="Left" Margin="10,258,0,0" VerticalAlignment="Top" Width="159"/>
-        <TextBox Text="3" x:Name="TextBox_username_Copy2" HorizontalAlignment="Left" Height="23" Margin="174,258,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="185" TabIndex="1"/>
+        <TextBox Text="3" x:Name="TextBox_DecomposeCount" HorizontalAlignment="Left" Height="23" Margin="174,258,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="185" TabIndex="1"/>
         <Label Content="Decompose Vote Count" HorizontalAlignment="Left" Margin="10,289,0,0" VerticalAlignment="Top" Width="159"/>
-        <TextBox Text="3" x:Name="TextBox_username_Copy3" HorizontalAlignment="Left" Height="23" Margin="174,289,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="185" TabIndex="1"/>
+        <TextBox Text="3" x:Name="TextBox_DecomposeVoteCount" HorizontalAlignment="Left" Height="23" Margin="174,289,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="185" TabIndex="1"/>
         <Label Content="Solve Count" HorizontalAlignment="Left" Margin="10,320,0,0" VerticalAlignment="Top" Width="159"/>
-        <TextBox Text="3" x:Name="TextBox_username_Copy4" HorizontalAlignment="Left" Height="23" Margin="174,320,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="185" TabIndex="1"/>
+        <TextBox Text="3" x:Name="TextBox_SolveCount" HorizontalAlignment="Left" Height="23" Margin="174,320,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="185" TabIndex="1"/>
         <Label Content="Solve Vote Count" HorizontalAlignment="Left" Margin="10,351,0,0" VerticalAlignment="Top" Width="159"/>
-        <TextBox Text="3" x:Name="TextBox_username_Copy5" HorizontalAlignment="Left" Height="23" Margin="174,351,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="185" TabIndex="1"/>
+        <TextBox Text="3" x:Name="TextBox_SolveVoteCount" HorizontalAlignment="Left" Height="23" Margin="174,351,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="185" TabIndex="1"/>
     </Grid>
 </mah:MetroWindow>
 

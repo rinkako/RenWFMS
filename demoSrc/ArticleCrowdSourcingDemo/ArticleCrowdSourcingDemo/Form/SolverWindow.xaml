@@ -17,7 +17,7 @@
             <RowDefinition Height="90*"/>
         </Grid.RowDefinitions>
         <Label FontSize="16" VerticalContentAlignment="Center" Margin="10,0,0,0" HorizontalAlignment="Left" Width="88">Welcome:</Label>
-        <Label FontSize="16" VerticalContentAlignment="Center" Content="Username" Grid.Row="0" Grid.ColumnSpan="2" Margin="103,0,0,0"/>
+        <Label Name="Label_Username" FontSize="16" VerticalContentAlignment="Center" Content="Username" Grid.Row="0" Grid.ColumnSpan="2" Grid.Column="0" Margin="103,0,0,0"/>
         <GroupBox Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2" Header="My Tasks" mah:ControlsHelper.ContentCharacterCasing="Normal">
             <ListBox Name="ListBox_Solver_Tasks">
 

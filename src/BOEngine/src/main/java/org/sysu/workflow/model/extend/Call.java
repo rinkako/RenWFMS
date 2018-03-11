@@ -37,9 +37,9 @@ public class Call extends ParamsContainer implements Serializable {
     private String name;
 
     /**
-     * How many task instances ought to be create
+     * How many task instances ought to be create in expression.
      */
-    private int instances = 1;
+    private String instanceExpr = "1";
 
     /**
      * Get the value of name
@@ -64,8 +64,8 @@ public class Call extends ParamsContainer implements Serializable {
      *
      * @return value of instance property
      */
-    public int getInstances() {
-        return instances;
+    public String getInstances() {
+        return this.instanceExpr;
     }
 
     /**
@@ -73,8 +73,8 @@ public class Call extends ParamsContainer implements Serializable {
      *
      * @param instances the instance value to set, represent how many task instances ought to be created
      */
-    public void setInstances(int instances) {
-        this.instances = instances;
+    public void setInstances(String instances) {
+        this.instanceExpr = instances;
     }
 
     /**
@@ -122,9 +122,9 @@ public class Call extends ParamsContainer implements Serializable {
                         args.put("args", jsonifyParam);
                         args.put("rtid", scxmlExecContext.Rtid);
                         if (!GlobalContext.IsLocalDebug) {
-                            int timesBorder = this.instances;
+                            int timesBorder = (int) scxmlExecContext.getEvaluator().eval(ctx, this.instanceExpr);
                             if (t.getPrinciple().getMethod().equalsIgnoreCase("Offer")) {
-                                if (this.instances != 1) {
+                                if (timesBorder != 1) {
                                     LogUtil.Log("Method is Offer but instance not 1 is invalid, use default value 1.",
                                             Call.class.getName(), LogLevelType.WARNING,
                                             ((SCXMLExecutionContext) exctx.getInternalIOProcessor()).Rtid);

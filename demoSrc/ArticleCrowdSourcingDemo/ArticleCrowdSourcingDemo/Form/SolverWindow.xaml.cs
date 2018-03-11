@@ -22,6 +22,7 @@ namespace ArticleCrowdSourcingDemo.Form
         public SolverWindow()
         {
             InitializeComponent();
+            this.Label_Username.Content = GlobalDataPackage.CurrentUsername;
         }
     }
 }

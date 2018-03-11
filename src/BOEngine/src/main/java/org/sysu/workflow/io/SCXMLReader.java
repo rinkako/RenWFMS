@@ -1,6 +1,7 @@
 
 package org.sysu.workflow.io;
 
+import org.sysu.renCommon.utility.CommonUtil;
 import org.sysu.workflow.Evaluator;
 import org.sysu.workflow.PathResolver;
 import org.sysu.workflow.model.extend.InheritableContext;
@@ -2461,8 +2462,9 @@ public final class SCXMLReader {
             throws XMLStreamException, ModelException {
         Call call = new Call();
         call.setName(readRequiredAV(reader, ELEM_BOO_CALL, ATTR_NAME));
-        if(readAV(reader, ATTR_BOO_INSTANCES) != null && readAV(reader, ATTR_BOO_INSTANCES).length() > 0){
-            call.setInstances(Integer.parseInt(readAV(reader, ATTR_BOO_INSTANCES)));
+        String ins = readAV(reader, ATTR_BOO_INSTANCESEXPR);
+        if (!CommonUtil.IsNullOrEmpty(ins)) {
+            call.setInstances(ins);
         }
 
         loop:
@@ -2510,10 +2512,13 @@ public final class SCXMLReader {
     private static void readNewBO(XMLStreamReader reader, Configuration configuration, Executable executable, ActionsContainer parent) throws XMLStreamException, ModelException {
         NewBO subStateMachine = new NewBO();
         subStateMachine.setSrc(readAV(reader, ATTR_SRC));
-        subStateMachine.setInstances(Integer.parseInt(readAV(reader, ATTR_BOO_INSTANCES)));
         subStateMachine.setIdExpr(readAV(reader, ATTR_BOO_IDEXPR));
         subStateMachine.setNamelist(readAV(reader, ATTR_NAMELIST));
         subStateMachine.setPathResolver(configuration.pathResolver);
+        String instanceExpr = readAV(reader, ATTR_BOO_INSTANCESEXPR);
+        if (!CommonUtil.IsNullOrEmpty(instanceExpr)) {
+            subStateMachine.setInstancesExpr(instanceExpr);
+        }
         if (subStateMachine.getSrc() == null) {
             return;
         } else {

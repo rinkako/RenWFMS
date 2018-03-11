@@ -46,9 +46,9 @@ public class NewBO extends NamelistHolder implements PathResolverHolder {
     private String src;
 
     /**
-     * How many sub state machine instance ought to be create
+     * How many sub state machine instance ought to be create in expression.
      */
-    private int instances = 1;
+    private String instancesExpr = "1";
 
     /**
      * Notifiable id.
@@ -84,8 +84,8 @@ public class NewBO extends NamelistHolder implements PathResolverHolder {
      *
      * @return value of instance property
      */
-    public int getInstances() {
-        return instances;
+    public String getInstancesExpr() {
+        return instancesExpr;
     }
 
     /**
@@ -93,8 +93,8 @@ public class NewBO extends NamelistHolder implements PathResolverHolder {
      *
      * @param instances the instance value to set, represent how many sub instance ought to be created
      */
-    public void setInstances(int instances) {
-        this.instances = instances;
+    public void setInstancesExpr(String instances) {
+        this.instancesExpr = instances;
     }
 
     /**
@@ -207,7 +207,8 @@ public class NewBO extends NamelistHolder implements PathResolverHolder {
             RTreeNode curNode = iTree.GetNodeById(currentExecutionContext.NodeId);
             Evaluator evaluator = EvaluatorFactory.getEvaluator(scxml);
             Context tmpCtx = evaluator.newContext(ctx);
-            for (int i = 0; i < getInstances(); i++) {
+            int instanceNum = (int) evaluator.eval(ctx, this.instancesExpr);
+            for (int i = 0; i < instanceNum; i++) {
                 SCXMLExecutor executor = new SCXMLExecutor(evaluator, new MultiStateMachineDispatcher(), new SimpleErrorReporter(), null, currentExecutionContext.RootNodeId);
                 executor.setRtid(currentExecutionContext.Rtid);
                 executor.setPid(currentExecutionContext.Pid);
