@@ -62,6 +62,7 @@ namespace ArticleCrowdSourcingDemo.Form
         private void Button_Click_1(object sender, RoutedEventArgs e)
         {
             new NewRequestWindow(true).ShowDialog();
+            this.RefreshRequestList();
         }
     }
 }

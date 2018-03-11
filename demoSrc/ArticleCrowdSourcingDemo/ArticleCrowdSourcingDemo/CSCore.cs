@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Data;
 using System.Linq;
 using System.Text;
+using ArticleCrowdSourcingDemo.Interaction;
 using ArticleCrowdSourcingDemo.Utility;
 
 namespace ArticleCrowdSourcingDemo
@@ -11,18 +12,20 @@ namespace ArticleCrowdSourcingDemo
     {
         public static bool DoLogin(string username, string password)
         {
-            DataTable resDt = DBUtil.CommitToDB("select * from ren_user where ren_user.username = \"" + username + "\"").Tables[0];
-            if (resDt.Rows.Count > 0)
+            var resDt = DBUtil.CommitToDB("select * from ren_user where ren_user.username = \"" + username + "\"").Tables[0];
+            if (resDt.Rows.Count <= 0)
             {
-                string checkpw = (string) resDt.Rows[0]["password"];
-                if (String.Equals(checkpw, password))
-                {
-                    GlobalDataPackage.CurrentUserViewRole = (UserViewRole) resDt.Rows[0]["level"];
-                    GlobalDataPackage.CurrentUsername = username;
-                    return true;
-                }
+                return false;
             }
-            return false;
+            var checkpw = (string) resDt.Rows[0]["password"];
+            if (!String.Equals(checkpw, password))
+            {
+                return false;
+            }
+            GlobalDataPackage.CurrentUserViewRole = (UserViewRole) resDt.Rows[0]["level"];
+            GlobalDataPackage.CurrentUsername = username;
+            GlobalDataPackage.CurrentUserWid = resDt.Rows[0]["workerId"].ToString();
+            return true;
         }
 
         public static DataTable RefreshRequest(string requester)
@@ -31,9 +34,20 @@ namespace ArticleCrowdSourcingDemo
         }
 
 
-        public static void NewRequest()
+        public static void NewRequest(string taskName, string taskDesc, int jc, int sc, int svc, int dc, int dvc)
         {
-            
+            var ArgDict = new Dictionary<String, Object>
+            {
+                {"taskName", taskName},
+                {"taskDescription", taskDesc},
+                {"judgeCount", jc},
+                {"decomposeCount", dc},
+                {"decomposeVoteCount", dvc},
+                {"solveCount", sc},
+                {"solveVoteCount", svc}
+            };
+            InteractionManager.DoCallback("submit", "Request", ArgDict);
+            DBUtil.CommitToDB($"insert into ren_request(name, requester, description, status, judgeCount, decomposeCount, decomposeVoteCount, solveCount, solveVoteCount, solution) values (\"{taskName}\", \"{GlobalDataPackage.CurrentUsername}\", \"{taskDesc}\", \"{SolvePhase.Solving.ToString()}\", {jc}, {dc}, {dvc}, {sc}, {svc}, \"\")");
         }
 
     }

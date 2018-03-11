@@ -48,14 +48,17 @@ namespace ArticleCrowdSourcingDemo.Form
 
         private void Button_Submit_Click(object sender, RoutedEventArgs e)
         {
-            if (this.isReadonly)
+            if (!this.isReadonly)
             {
-                this.Close();
+                CSCore.NewRequest(this.TextBox_TaskName.Text.Trim(),
+                    this.TextBox_Description.Text.Trim(),
+                    Convert.ToInt32(this.TextBox_JudgeCount.Text),
+                    Convert.ToInt32(this.TextBox_SolveCount.Text),
+                    Convert.ToInt32(this.TextBox_SolveVoteCount.Text),
+                    Convert.ToInt32(this.TextBox_DecomposeCount.Text),
+                    Convert.ToInt32(this.TextBox_DecomposeVoteCount.Text));
             }
-            else
-            {
-                
-            }
+            this.Close();
         }
     }
 }
