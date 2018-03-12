@@ -84,9 +84,9 @@
         </onentry>
 
         <transition event="judgeComplete">
-            <if cond="_event.data.get('simple') eq 0">
+            <if cond="_event.data.get('simple') eq 1">
                 <assign location="simpleCount" expr="simpleCount + 1"/>
-            <elseif cond="_event.data.get('simple') eq 1"/>
+            <elseif cond="_event.data.get('simple') eq 0"/>
                 <assign location="complexCount" expr="complexCount + 1"/>
             </if>
             <if cond="simpleCount + complexCount eq judgeCount">

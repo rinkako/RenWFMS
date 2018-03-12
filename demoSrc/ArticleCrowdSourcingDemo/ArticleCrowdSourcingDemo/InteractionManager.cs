@@ -5,7 +5,7 @@ using ArticleCrowdSourcingDemo.Entity;
 using ArticleCrowdSourcingDemo.Utility;
 using Newtonsoft.Json;
 
-namespace ArticleCrowdSourcingDemo.Interaction
+namespace ArticleCrowdSourcingDemo
 {
     internal static class InteractionManager
     {
@@ -19,7 +19,7 @@ namespace ArticleCrowdSourcingDemo.Interaction
                         { "username", "admin@admin" },
                         { "password", "admin" }
                     },
-                    out string retStr);
+                    out var retStr);
                 var response = JsonConvert.DeserializeObject<StdResponseEntity>(retStr);
                 var retToken = ReturnDataHelper.DecodeString(response);
                 var successFlag = !retToken.StartsWith("#");
@@ -43,7 +43,7 @@ namespace ArticleCrowdSourcingDemo.Interaction
                 NetClient.PostData(GlobalDataPackage.URL_SubmitProcess, new Dictionary<string, string>
                     {
                         { "token",GlobalDataPackage.AuthToken },
-                        { "pid", Ren.transaction.ProcessPID },
+                        { "pid", GlobalDataPackage.ProcessPID },
                         { "from", "CrowdSourcing.NET" },
                         { "renid", "admin@admin" },
                         { "bindingType", "0" },
@@ -73,7 +73,7 @@ namespace ArticleCrowdSourcingDemo.Interaction
                         { "rtid", GlobalDataPackage.RTID },
                         { "organgid", "COrg_571d200f-0f35-11e8-9072-5404a6a99e5d" },
                         { "dataversion", "version1" },
-                        { "map", Ren.GeneratePostMapStringOfMappings() }
+                        { "map", InteractionManager.GeneratePostMapStringOfMappings() }
                     },
                     out var retStr);
                 var response = JsonConvert.DeserializeObject<StdResponseEntity>(retStr);
@@ -147,19 +147,19 @@ namespace ArticleCrowdSourcingDemo.Interaction
             }
         }
 
-        public static Tuple<string, string, string> GetMyWorkitem(string workerId)
+        public static List<Tuple<List<string>, Dictionary<String, String>>> GetMyWorkitem(string workerId, string rtid)
         {
-            var retList = new List<Tuple<String, String, String>>();
             try
             {
                 var argDict = new Dictionary<string, string>
                 {
                     { "signature", GlobalDataPackage.Signature },
-                    { "rtid", GlobalDataPackage.RTID }
+                    { "rtid", rtid }
                 };
                 NetClient.PostData(GlobalDataPackage.URL_GetAllWorkitem, argDict, out var retStr);
                 var response = JsonConvert.DeserializeObject<StdResponseEntity>(retStr);
                 var workitemList = ReturnDataHelper.DecodeList(response);
+                var retList = new List<Tuple<List<string>, Dictionary<String, String>>>();
                 retList.AddRange(
                     from workitem 
                     in workitemList
@@ -167,8 +167,8 @@ namespace ArticleCrowdSourcingDemo.Interaction
                     into wd
                     let workerIdListDesc = wd["WorkerIdList"]
                     let workerIdList = JsonConvert.DeserializeObject<List<String>>(workerIdListDesc)
-                    select new Tuple<string, string, string>(workerIdList.Last(), wd["Wid"], wd["TaskName"]));
-                return retList.Find(t => t.Item1 == workerId);
+                    select new Tuple<List<string>, Dictionary<String, String>>(workerIdList, wd));
+                return retList.FindAll(t => t.Item1.Contains(workerId));
             }
             catch (Exception ex)
             {
@@ -207,6 +207,36 @@ namespace ArticleCrowdSourcingDemo.Interaction
         {
             InteractionManager.PostWorkitemRequest("Start", GlobalDataPackage.URL_WorkitemStart, workerId, workitemId, startPayload);
             InteractionManager.PostWorkitemRequest("Complete", GlobalDataPackage.URL_WorkitemComplete, workerId, workitemId, completePayload);
+        }
+
+        public static void PerformMappingBRole()
+        {
+            var CurrentMap = new List<KeyValuePair<string, string>>
+            {
+                new KeyValuePair<string, string>("judger", "Capa_e986668f-24da-11e8-972c-2c4d54f01cf2"),
+                new KeyValuePair<string, string>("decomposer", "Capa_d72c864f-24da-11e8-b535-2c4d54f01cf2"),
+                new KeyValuePair<string, string>("decomposeVoter", "Capa_db79994f-24da-11e8-abc0-2c4d54f01cf2"),
+                new KeyValuePair<string, string>("solver", "Capa_ceecb54f-24da-11e8-84a6-2c4d54f01cf2"),
+                new KeyValuePair<string, string>("solveVoter", "Capa_d3e7e29e-24da-11e8-8487-2c4d54f01cf2"),
+                new KeyValuePair<string, string>("merger", "Capa_cb8b61e1-24da-11e8-a3d8-2c4d54f01cf2"),
+                new KeyValuePair<string, string>("automicQuerier", "Capa_1f54376e-25a3-11e8-8267-2c4d54f01cf2")
+            };
+            GlobalDataPackage.Mappings = new List<KeyValuePair<string, string>>();
+            foreach (var mapItem in CurrentMap)
+            {
+                GlobalDataPackage.Mappings.Add(mapItem);
+            }
+            LogUtils.LogLine("Generate Mappings OK", LogLevel.Important);
+        }
+
+        public static string GeneratePostMapStringOfMappings()
+        {
+            var retStr = GlobalDataPackage.Mappings.Aggregate(String.Empty, (current, mapKVP) => current + String.Format("{0},{1};", mapKVP.Key, mapKVP.Value));
+            if (retStr.Length > 0)
+            {
+                retStr = retStr.Substring(0, retStr.Length - 1);
+            }
+            return retStr;
         }
     }
 }

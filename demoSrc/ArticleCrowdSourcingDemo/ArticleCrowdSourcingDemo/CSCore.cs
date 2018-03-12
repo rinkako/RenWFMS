@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Data;
 using System.Linq;
 using System.Text;
-using ArticleCrowdSourcingDemo.Interaction;
 using ArticleCrowdSourcingDemo.Utility;
 
 namespace ArticleCrowdSourcingDemo
@@ -32,8 +31,7 @@ namespace ArticleCrowdSourcingDemo
         {
             return DBUtil.CommitToDB("select * from ren_request where ren_request.requester = \"" + requester + "\"").Tables[0];
         }
-
-
+        
         public static void NewRequest(string taskName, string taskDesc, int jc, int sc, int svc, int dc, int dvc)
         {
             var ArgDict = new Dictionary<String, Object>
@@ -47,8 +45,18 @@ namespace ArticleCrowdSourcingDemo
                 {"solveVoteCount", svc}
             };
             InteractionManager.DoCallback("submit", "Request", ArgDict);
-            DBUtil.CommitToDB($"insert into ren_request(name, requester, description, status, judgeCount, decomposeCount, decomposeVoteCount, solveCount, solveVoteCount, solution) values (\"{taskName}\", \"{GlobalDataPackage.CurrentUsername}\", \"{taskDesc}\", \"{SolvePhase.Solving.ToString()}\", {jc}, {dc}, {dvc}, {sc}, {svc}, \"\")");
+            DBUtil.CommitToDB($"insert into ren_request(name, requester, description, status, judgeCount, decomposeCount, decomposeVoteCount, solveCount, solveVoteCount, solution, rtid) values (\"{taskName}\", \"{GlobalDataPackage.CurrentUsername}\", \"{taskDesc}\", \"{SolvePhase.Solving.ToString()}\", {jc}, {dc}, {dvc}, {sc}, {svc}, \"\", \"{GlobalDataPackage.RTID}\")");
         }
 
+        public static DataRow GetRequestByRTID(String rtid)
+        {
+            return DBUtil.CommitToDB("select * from ren_request where ren_request.rtid = \"" + rtid + "\"").Tables[0].Rows[0];
+        }
+
+        public static List<string> GetAllActiveRTID()
+        {
+            var ret = DBUtil.CommitToDB($"select ren_request.rtid from ren_request where ren_request.status = \"{SolvePhase.Solving.ToString()}\"").Tables[0];
+            return (from object row in ret.Rows select (row as DataRow)["rtid"] as string).ToList();
+        }
     }
 }

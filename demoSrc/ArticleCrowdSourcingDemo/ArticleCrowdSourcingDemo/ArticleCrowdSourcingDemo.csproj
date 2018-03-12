@@ -72,7 +72,7 @@
     <Compile Include="Entity\ReturnDataHelper.cs" />
     <Compile Include="Entity\StdResponseEntity.cs" />
     <Compile Include="GlobalDataPackage.cs" />
-    <Compile Include="Interaction\InteractionManager.cs" />
+    <Compile Include="InteractionManager.cs" />
     <Compile Include="Utility\BDUtil.cs" />
     <Compile Include="Utility\LogUtil.cs" />
     <Compile Include="Utility\NetUtil.cs" />

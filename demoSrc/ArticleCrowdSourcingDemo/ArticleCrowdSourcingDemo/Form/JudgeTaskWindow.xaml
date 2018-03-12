@@ -13,8 +13,8 @@
             <RowDefinition Height="10*" MinHeight="32" MaxHeight="32"/>
             <RowDefinition Height="20*" MinHeight="70" MaxHeight="70"/>
         </Grid.RowDefinitions>
-        <TextBox Grid.Row="0" IsReadOnly="True" FontSize="18" Background="AliceBlue" Foreground="Blue" TextAlignment="Center">
-            [Description]
+        <TextBox Name="TextBox_Title" Grid.Row="0" IsReadOnly="True" FontSize="18" Background="AliceBlue" Foreground="Blue" TextAlignment="Center">
+            [Description: TaskName]
         </TextBox>
         <TextBox Name="TextBox_Description" IsReadOnly="True" Grid.Row="1" FontSize="15">
             test description
@@ -27,8 +27,8 @@
                 <ColumnDefinition/>
                 <ColumnDefinition/>
             </Grid.ColumnDefinitions>
-            <Button Name="Button_Simple" Grid.Column="0" Content="Simple Task" Margin="10,10,10,10"/>
-            <Button Name="Button_Complex" Grid.Column="1" Content="Complex Task" Margin="10,10,10,10"/>
+            <Button Name="Button_Simple" Grid.Column="0" Content="Simple Task" Margin="10,10,10,10" Click="Button_Simple_Click"/>
+            <Button Name="Button_Complex" Grid.Column="1" Content="Complex Task" Margin="10,10,10,10" Click="Button_Complex_Click"/>
         </Grid>
 
     </Grid>

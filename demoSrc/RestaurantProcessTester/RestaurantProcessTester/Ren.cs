@@ -398,11 +398,7 @@ namespace RestaurantProcessTester
                 return null;
             }
         }
-
-        /// <summary>
-        /// Get the name list of BOs in current transaction binding process.
-        /// </summary>
-        /// <returns>List of BO name strings</returns>
+        
         public static List<String> GetBOList()
         {
             return Ren.transaction.BOVector.Select(bo => bo["bo_name"]).ToList();

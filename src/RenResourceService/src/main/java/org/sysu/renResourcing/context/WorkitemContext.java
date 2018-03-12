@@ -7,7 +7,6 @@ package org.sysu.renResourcing.context;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
 import org.sysu.renCommon.enums.LogLevelType;
-import org.sysu.renCommon.utility.CommonUtil;
 import org.sysu.renCommon.utility.SerializationUtil;
 import org.sysu.renCommon.utility.TimestampUtil;
 import org.sysu.renResourcing.GlobalContext;

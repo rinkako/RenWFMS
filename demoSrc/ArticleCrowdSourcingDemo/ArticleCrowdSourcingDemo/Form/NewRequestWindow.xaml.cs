@@ -20,6 +20,7 @@ namespace ArticleCrowdSourcingDemo.Form
     public partial class NewRequestWindow : MetroWindow
     {
         private readonly bool isReadonly = false;
+        private bool isCancel = true;
 
         public NewRequestWindow(bool isNew, string taskName = "", string desc = "", string jc = "0", string sc = "0", string svc = "0", string dc = "0", string dvc = "0")
         {
@@ -48,6 +49,7 @@ namespace ArticleCrowdSourcingDemo.Form
 
         private void Button_Submit_Click(object sender, RoutedEventArgs e)
         {
+            this.isCancel = false;
             if (!this.isReadonly)
             {
                 CSCore.NewRequest(this.TextBox_TaskName.Text.Trim(),
@@ -59,6 +61,14 @@ namespace ArticleCrowdSourcingDemo.Form
                     Convert.ToInt32(this.TextBox_DecomposeVoteCount.Text));
             }
             this.Close();
+        }
+
+        private void MetroWindow_Closing(object sender, System.ComponentModel.CancelEventArgs e)
+        {
+            if (this.isCancel)
+            {
+                InteractionManager.DoCallback("cancel", "Request", null);
+            }
         }
     }
 }

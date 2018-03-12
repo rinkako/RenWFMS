@@ -10,7 +10,9 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
+using ArticleCrowdSourcingDemo.Entity;
 using MahApps.Metro.Controls;
+using Newtonsoft.Json;
 
 namespace ArticleCrowdSourcingDemo.Form
 {
@@ -23,6 +25,53 @@ namespace ArticleCrowdSourcingDemo.Form
         {
             InitializeComponent();
             this.Label_Username.Content = GlobalDataPackage.CurrentUsername;
+        }
+
+        public void RefreshList()
+        {
+            this.ListBox_Solver_Tasks.Items.Clear();
+            var rtids = CSCore.GetAllActiveRTID();
+            foreach (var rtid in rtids)
+            {
+                var workitems = InteractionManager.GetMyWorkitem(GlobalDataPackage.CurrentUserWid, rtid);
+                foreach (var workitem in workitems)
+                {
+                    var itemDict = workitem.Item2;
+                    var request = CSCore.GetRequestByRTID(rtid);
+                    var retArgs = ReturnDataHelper.DecodeDictionaryByString(itemDict["Argument"]);
+                    var lbi = new ListBoxItem
+                    {
+                        Content = String.Format("Task: {0} | From CrowdSourcing Request: {1} | By: {2}",
+                            itemDict["TaskName"], request.ItemArray[1], request.ItemArray[2]),
+                        Tag = new Tuple<Dictionary<String, String>, Dictionary<String, String>>(itemDict, retArgs)
+                    };
+                    this.ListBox_Solver_Tasks.Items.Add(lbi);
+                }
+            }
+        }
+
+        private void ListBox_Solver_Tasks_MouseDoubleClick(object sender, MouseButtonEventArgs e)
+        {
+            if (this.ListBox_Solver_Tasks.SelectedIndex == -1)
+            {
+                return;
+            }
+            var listItem = this.ListBox_Solver_Tasks.SelectedItem as ListBoxItem;
+            var itemDict = (listItem.Tag as Tuple<Dictionary<String, String>, Dictionary<String, String>>).Item1;
+            var argDict = (listItem.Tag as Tuple<Dictionary<String, String>, Dictionary<String, String>>).Item2;
+            switch (argDict["TaskName"])
+            {
+                case "judgeTask":
+                    break;
+                case "decomposeTask":
+                    break;
+                case "decomposeVoteTask":
+                    break;
+                case "solveTask":
+                    break;
+                case "solveVoteTask":
+                    break;
+            }
         }
     }
 }

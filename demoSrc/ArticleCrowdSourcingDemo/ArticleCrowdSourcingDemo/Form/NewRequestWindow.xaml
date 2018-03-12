@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:ArticleCrowdSourcingDemo.Form"
         xmlns:mah="http://metro.mahapps.com/winfx/xaml/controls"
-        mc:Ignorable="d" Title="New Request" Height="445" Width="388" ResizeMode="NoResize" WindowStartupLocation="CenterScreen">
+        mc:Ignorable="d" Title="New Request" Height="445" Width="388" ResizeMode="NoResize" WindowStartupLocation="CenterScreen" Closing="MetroWindow_Closing">
     <Grid>
         <Label Name="Label_Header" Content="Create Request" FontSize="22" HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top" Foreground="#FF00B9FF"/>
         <Rectangle HorizontalAlignment="Left" Height="2" Margin="0,45,0,0" VerticalAlignment="Top" Width="350" Fill="#FFD6D6D6"/>

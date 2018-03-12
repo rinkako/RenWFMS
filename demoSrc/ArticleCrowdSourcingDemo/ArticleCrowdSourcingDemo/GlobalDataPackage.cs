@@ -15,6 +15,8 @@ namespace ArticleCrowdSourcingDemo
         
         public const string DBName = "rencsdemo";
 
+        public const string ProcessPID = "";
+
         public const string Signature = "PrUpNw1dM3zRH6j3eviklCHE9Zbvk9NavGcJ_CibW19h50Yvr-ZZYZqn5Gi_SG1cPVQEIZf2wAJgBmq4dhNj7w7t9wUEz2pcGhn-6kIRO--QqWy121gksPE8B103RtMzuOsQDcErk4LriRQRO7-Xqks-RtpBUnpInnS_lkkajQs";
 
         public const string URL_Callback = "http://127.0.0.1:10234/ns/callback";
@@ -42,6 +44,8 @@ namespace ArticleCrowdSourcingDemo
         public static string CurrentUserWid = "";
 
         public static string AuthToken = "";
+
+        public static List<KeyValuePair<String, String>> Mappings { get; set; } = new List<KeyValuePair<string, string>>();
 
         public static UserViewRole CurrentUserViewRole = UserViewRole.Solver;
     }

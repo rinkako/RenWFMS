@@ -18,9 +18,35 @@ namespace ArticleCrowdSourcingDemo.Form
     /// </summary>
     public partial class JudgeTaskWindow : Window
     {
-        public JudgeTaskWindow()
+        private readonly string workitemId;
+
+        public JudgeTaskWindow(string taskName, string description, string workitemId)
         {
             InitializeComponent();
+            this.workitemId = workitemId;
+            this.TextBox_Title.Text = $"[Description: {taskName}]";
+            this.TextBox_Description.Text = description;
+        }
+        
+        private void Button_Simple_Click(object sender, RoutedEventArgs e)
+        {
+            this.HandleCallbackVote(false);
+            this.Close();
+        }
+
+        private void Button_Complex_Click(object sender, RoutedEventArgs e)
+        {
+            this.HandleCallbackVote(true);
+            this.Close();
+        }
+
+        private void HandleCallbackVote(bool isComplex)
+        {
+            var args = new Dictionary<string, object>
+            {
+                {"simple", isComplex ? 0 : 1}
+            };
+            InteractionManager.StartAndComplete(GlobalDataPackage.CurrentUserWid, this.workitemId, args);
         }
     }
 }
