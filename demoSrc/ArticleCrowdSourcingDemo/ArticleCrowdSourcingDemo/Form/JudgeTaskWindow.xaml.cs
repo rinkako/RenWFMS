@@ -46,7 +46,7 @@ namespace ArticleCrowdSourcingDemo.Form
             {
                 {"simple", isComplex ? 0 : 1}
             };
-            InteractionManager.StartAndComplete(GlobalDataPackage.CurrentUserWid, this.workitemId, args);
+            InteractionManager.StartAndComplete(GlobalDataPackage.CurrentUserWorkerId, this.workitemId, args);
         }
     }
 }

@@ -44,6 +44,17 @@ namespace ArticleCrowdSourcingDemo.Entity
         }
 
         /// <summary>
+        /// Decode a json string to a .NET List data struct.
+        /// </summary>
+        /// <param name="response">string to be decoded</param>
+        /// <returns>List in .NET</returns>
+        public static List<String> DecodeListByString(string response)
+        {
+            var responseList = JsonConvert.DeserializeObject<JObject>(response);
+            return responseList.ToObject<List<String>>();
+        }
+
+        /// <summary>
         /// Decode a standard response to a .NET dictionary(string, string) data struct.
         /// </summary>
         /// <param name="response">StdResponseEntity instance to be decoded</param>

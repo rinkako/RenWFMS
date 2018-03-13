@@ -41,7 +41,7 @@ namespace ArticleCrowdSourcingDemo
 
         public static string CurrentUsername = "";
 
-        public static string CurrentUserWid = "";
+        public static string CurrentUserWorkerId = "";
 
         public static string AuthToken = "";
 

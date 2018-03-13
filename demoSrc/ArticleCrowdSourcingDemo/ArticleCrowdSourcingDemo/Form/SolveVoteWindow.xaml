@@ -15,8 +15,8 @@
             <RowDefinition Height="200*"/>
             <RowDefinition Height="35*" MinHeight="35" MaxHeight="35"/>
         </Grid.RowDefinitions>
-        <TextBox Grid.Row="0" IsReadOnly="True" FontSize="18" Background="AliceBlue" Foreground="Blue" TextAlignment="Center">
-            [Description]
+        <TextBox Name="TextBox_Title" Grid.Row="0" IsReadOnly="True" FontSize="18" Background="AliceBlue" Foreground="Blue" TextAlignment="Center">
+            [Description: TaskName]
         </TextBox>
         <TextBox Name="TextBox_Description" IsReadOnly="True" Grid.Row="1" FontSize="15">
             test description
@@ -29,13 +29,11 @@
                 <ColumnDefinition Width="30*"/>
                 <ColumnDefinition Width="70*"/>
             </Grid.ColumnDefinitions>
-            <ListBox Name="ListBox_CandidateSolutions" Margin="0,0,0,0"/>
-            <TextBox Name="TextBox_Solution" IsReadOnly="True" FontSize="15" Margin="10,0,0,0" Grid.Column="1">
-                test solution
-            </TextBox>
+            <ListBox Name="ListBox_CandidateSolutions" Margin="0,0,0,0" SelectionChanged="ListBox_CandidateSolutions_OnSelectionChanged"/>
+            <TextBox Name="TextBox_Solution" IsReadOnly="True" FontSize="15" Margin="10,0,0,0" Grid.Column="1"/>
         </Grid>
         <Grid Grid.Row="4" Background="Lavender">
-            <Button Name="Button_VoteThis" Content="Vote this" Margin="250,5,250,5"/>
+            <Button Name="Button_VoteThis" Content="Vote this" Margin="250,5,250,5" Click="Button_VoteThis_Click"/>
         </Grid>
     </Grid>
 </mah:MetroWindow>

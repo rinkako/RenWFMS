@@ -15,7 +15,7 @@
             <RowDefinition Height="200*"/>
             <RowDefinition Height="35*" MinHeight="35" MaxHeight="35"/>
         </Grid.RowDefinitions>
-        <TextBox Grid.Row="0"  IsReadOnly="True" FontSize="18" Background="AliceBlue" Foreground="Blue" TextAlignment="Center">
+        <TextBox Name="TextBox_Title" Grid.Row="0"  IsReadOnly="True" FontSize="18" Background="AliceBlue" Foreground="Blue" TextAlignment="Center">
             [Description]
         </TextBox>
         <TextBox Name="TextBox_Description" Grid.Row="1" FontSize="15">
@@ -28,7 +28,7 @@
             test solution
         </TextBox>
         <Grid Grid.Row="4" Background="Lavender">
-            <Button Name="Button_Submit" Content="Submit" Margin="250,5,250,5"/>
+            <Button Name="Button_Submit" Content="Submit" Margin="250,5,250,5" Click="Button_Submit_Click"/>
         </Grid>
     </Grid>
 </mah:MetroWindow>

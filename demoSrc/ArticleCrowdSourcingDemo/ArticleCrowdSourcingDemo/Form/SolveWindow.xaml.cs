@@ -19,9 +19,29 @@ namespace ArticleCrowdSourcingDemo.Form
     /// </summary>
     public partial class SolveWindow : MetroWindow
     {
-        public SolveWindow()
+        private readonly string workitemId;
+        private readonly string nodeId;
+        private readonly string rtid;
+
+        public SolveWindow(string taskName, string description, string workitemId, string rtid, string nodeId)
         {
             InitializeComponent();
+            this.workitemId = workitemId;
+            this.nodeId = nodeId;
+            this.rtid = rtid;
+            this.TextBox_Title.Text = $"[Description: {taskName}]";
+            this.TextBox_Description.Text = description;
+        }
+
+        private void Button_Submit_Click(object sender, RoutedEventArgs e)
+        {
+            var dr = MessageBox.Show("Sure to commit?", "Information", MessageBoxButton.OKCancel);
+            if (dr == MessageBoxResult.Cancel)
+            {
+                return;
+            }
+            CSCore.Solve(this.rtid, this.workitemId, this.nodeId, this.TextBox_Solution.Text);
+            this.Close();
         }
     }
 }

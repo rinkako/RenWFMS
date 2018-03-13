@@ -15,8 +15,8 @@
             <RowDefinition Height="200*"/>
             <RowDefinition Height="35*" MinHeight="35" MaxHeight="35"/>
         </Grid.RowDefinitions>
-        <TextBox Grid.Row="0" FontSize="18" Background="AliceBlue" Foreground="Blue" TextAlignment="Center">
-            [Description for Decomposing Task]
+        <TextBox Name="TextBox_Title"  Grid.Row="0" FontSize="18" Background="AliceBlue" Foreground="Blue" TextAlignment="Center">
+            [Description: ]
         </TextBox>
         <TextBox Name="TextBox_Description" Grid.Row="1" FontSize="15">
             test description
@@ -30,14 +30,14 @@
                 <ColumnDefinition Width="50*"/>
             </Grid.ColumnDefinitions>
             <ListBox Name="ListBox_MyPlans" Margin="0,0,0,0" BorderBrush="LightBlue" BorderThickness="2"/>
-            <TextBox Name="TextBox_StepPlan" Grid.Column="1" Margin="10,38,10,0" TextWrapping="Wrap" Text="TextBox" Height="80" VerticalAlignment="Top"/>
-            <Label Content="Step plan content:" Grid.Column="1" Margin="10,8,10,0" VerticalAlignment="Top"/>
-            <Button Name="Button_PlanAdd" Content="Add" Grid.Column="1" HorizontalAlignment="Left" Margin="10,123,0,0" VerticalAlignment="Top" Width="150"/>
-            <Button Name="Button_PlanRemove" Content="Remove" Grid.Column="1" HorizontalAlignment="Left" Margin="10,171,0,0" VerticalAlignment="Top" Width="150"/>
+            <TextBox Name="TextBox_StepPlan" Grid.Column="1" Margin="10,38,10,0" TextWrapping="Wrap" Text="" Height="80" VerticalAlignment="Top"/>
+            <Label Content="To add step plan content:" Grid.Column="1" Margin="10,8,10,0" VerticalAlignment="Top"/>
+            <Button Name="Button_PlanAdd" Content="Add" Grid.Column="1" HorizontalAlignment="Left" Margin="10,123,0,0" VerticalAlignment="Top" Width="150" Click="Button_PlanAdd_Click"/>
+            <Button Name="Button_PlanRemove" Content="Remove" Grid.Column="1" HorizontalAlignment="Left" Margin="10,171,0,0" VerticalAlignment="Top" Width="150" Click="Button_PlanRemove_Click"/>
 
         </Grid>
         <Grid Grid.Row="4" Background="Lavender">
-            <Button Name="Button_Submit" Content="Submit" Margin="250,5,250,5"/>
+            <Button Name="Button_Submit" Content="Submit" Margin="250,5,250,5" Click="Button_Submit_Click"/>
         </Grid>
     </Grid>
 </mah:MetroWindow>

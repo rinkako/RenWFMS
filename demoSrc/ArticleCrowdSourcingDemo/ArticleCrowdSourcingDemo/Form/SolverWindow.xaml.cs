@@ -33,7 +33,7 @@ namespace ArticleCrowdSourcingDemo.Form
             var rtids = CSCore.GetAllActiveRTID();
             foreach (var rtid in rtids)
             {
-                var workitems = InteractionManager.GetMyWorkitem(GlobalDataPackage.CurrentUserWid, rtid);
+                var workitems = InteractionManager.GetMyWorkitem(GlobalDataPackage.CurrentUserWorkerId, rtid);
                 foreach (var workitem in workitems)
                 {
                     var itemDict = workitem.Item2;
@@ -59,19 +59,25 @@ namespace ArticleCrowdSourcingDemo.Form
             var listItem = this.ListBox_Solver_Tasks.SelectedItem as ListBoxItem;
             var itemDict = (listItem.Tag as Tuple<Dictionary<String, String>, Dictionary<String, String>>).Item1;
             var argDict = (listItem.Tag as Tuple<Dictionary<String, String>, Dictionary<String, String>>).Item2;
+            var request = CSCore.GetRequestByRTID(itemDict["Rtid"]);
+            var passedArguments = ReturnDataHelper.DecodeDictionaryByString(itemDict["Argument"]);
             switch (argDict["TaskName"])
             {
                 case "judgeTask":
+                    new JudgeTaskWindow(passedArguments["taskName"], passedArguments["taskDescription"], itemDict["Wid"]).ShowDialog();
                     break;
                 case "decomposeTask":
+                    new DecomposeWindow(passedArguments["taskName"], passedArguments["taskDescription"], itemDict["Wid"], itemDict["Rtid"], itemDict["CallbackNodeId"]).ShowDialog();
                     break;
                 case "decomposeVoteTask":
+                    new DecomposeVoteWindow(passedArguments["taskName"], passedArguments["taskDescription"], itemDict["Wid"], itemDict["Rtid"], itemDict["CallbackNodeId"]).ShowDialog();
                     break;
                 case "solveTask":
                     break;
                 case "solveVoteTask":
                     break;
             }
+            this.RefreshList();
         }
     }
 }

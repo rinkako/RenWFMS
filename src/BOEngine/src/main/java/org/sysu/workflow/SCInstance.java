@@ -2,6 +2,8 @@
 package org.sysu.workflow;
 
 import org.sysu.workflow.env.SimpleContext;
+import org.sysu.workflow.instanceTree.InstanceManager;
+import org.sysu.workflow.instanceTree.RTreeNode;
 import org.sysu.workflow.model.*;
 import org.sysu.workflow.semantics.ErrorConstants;
 import org.w3c.dom.Document;
@@ -413,7 +415,18 @@ public class SCInstance implements Serializable {
                 systemContext.getContext().set(SCXMLSystemContext.SESSIONID_KEY, UUID.randomUUID().toString());
                 String _name = stateMachine != null && stateMachine.getName() != null ? stateMachine.getName() : "";
                 systemContext.getContext().set(SCXMLSystemContext.SCXML_NAME_KEY, _name);
-                systemContext.getContext().set(SCXMLSystemContext.NOTIFIABLE_ID_KEY, ((SCXMLExecutionContext) this.internalIOProcessor).NotifiableId);
+                SCXMLExecutionContext executionContext = ((SCXMLExecutionContext) this.internalIOProcessor);
+                systemContext.getContext().set(SCXMLSystemContext.NOTIFIABLE_ID_KEY, executionContext.NotifiableId);
+                systemContext.getContext().set(SCXMLSystemContext.GLOBAL_ID_KEY, executionContext.NodeId);
+                RTreeNode parentNode = InstanceManager.GetInstanceTree(executionContext.Rtid).GetNodeById(executionContext.NodeId).Parent;
+                if (parentNode != null) {
+                    systemContext.getContext().set(SCXMLSystemContext.PARENT_GLOBAL_ID_KEY, parentNode.getExect().NodeId);
+                    systemContext.getContext().set(SCXMLSystemContext.PARENT_NOTIFIABLE_ID_KEY, parentNode.getExect().NotifiableId);
+                }
+                else {
+                    systemContext.getContext().set(SCXMLSystemContext.PARENT_GLOBAL_ID_KEY, "");
+                    systemContext.getContext().set(SCXMLSystemContext.PARENT_NOTIFIABLE_ID_KEY, "");
+                }
                 systemContext.getPlatformVariables().put(SCXMLSystemContext.STATUS_KEY, currentStatus);
             }
         }

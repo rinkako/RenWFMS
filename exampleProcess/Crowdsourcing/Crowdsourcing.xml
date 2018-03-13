@@ -14,6 +14,8 @@
         <data id="decomposeVoteCount" expr=""/>
         <data id="solveCount" expr=""/>
         <data id="solveVoteCount" expr=""/>
+        <data id="supervisor" expr=""/>
+        <data id="ordinal" expr="0"/>
         <data id="steps" expr="0"/>
         <data id="count" expr="0"/>
         <data id="complexCount" expr="0"/>
@@ -27,11 +29,15 @@
             <principle method="Allocate" distributor="ShortestQueue"/>
             <callback on="complete" event="judgeComplete"/>
             <documentation>Judge task let judgers judge crowdsourcing task to be simple or complex.</documentation>
+            <param name="taskName"/>
+            <param name="taskDescription"/>
         </task>
         <task id="decompose" name="decomposeTask" brole="decomposer">
             <principle method="Allocate" distributor="ShortestQueue"/>
             <callback on="complete" event="decomposeComplete"/>
             <documentation>Decompose task let decomposers decompose crowdsourcing task to be several sub tasks.</documentation>
+            <param name="taskName"/>
+            <param name="taskDescription"/>
         </task>
         <task id="decomposeVote" name="decomposeVoteTask" brole="decomposeVoter">
             <principle method="Allocate" distributor="ShortestQueue"/>
@@ -47,6 +53,8 @@
             <principle method="Allocate" distributor="ShortestQueue"/>
             <callback on="complete" event="solveComplete"/>
             <documentation>Solve task let solvers solve a crowdsourcing task.</documentation>
+            <param name="taskName"/>
+            <param name="taskDescription"/>
         </task>
         <task id="solveVoting" name="solveVoteTask" brole="solveVoter">
             <principle method="Allocate" distributor="ShortestQueue"/>
@@ -70,7 +78,10 @@
             <log label="CS_init" expr="'entry Initial state'"/>
         </onentry>
         <transition target="Judging">
-            <call name="judgeTask"/>
+            <call name="judgeTask">
+                <param name="taskName" expr="taskName"/>
+                <param name="taskDescription" expr="taskDescription"/>
+            </call>
         </transition>
         <onexit>
             <log label="CS_init" expr="'exit Initial state'"/>
@@ -95,11 +106,19 @@
         </transition>
 
         <transition cond="judgeCompleted and simpleCount gt complexCount" target="Solving">
-            <call name="solveTask" instancesExpr="solveCount"/>
+            <call name="solveTask" instancesExpr="solveCount">
+                <param name="taskName" expr="taskName"/>
+                <param name="taskDescription" expr="taskDescription"/>
+                <param name="from" expr="_parentGid"/>
+            </call>
         </transition>
 
         <transition cond="judgeCompleted and simpleCount lt complexCount" target="Decomposing">
-            <call name="decomposeTask" instancesExpr="decomposeCount"/>
+            <call name="decomposeTask" instancesExpr="decomposeCount">
+                <param name="taskName" expr="taskName"/>
+                <param name="taskDescription" expr="taskDescription"/>
+                <param name="from" expr="_parentGid"/>
+            </call>
         </transition>
 
         <onexit>
@@ -119,7 +138,7 @@
         </onentry>
 
         <transition event="decomposeComplete">
-            <!-- 写入数据库: 每个decomposer的分解方案 -->
+            <!-- 每个decomposer的分解方案 -->
             <assign location="count" expr="count + 1"/>
         </transition>
 
@@ -145,7 +164,10 @@
 
         <transition cond="count eq decomposeVoteCount" target="Temp">
             <!--标记将票数最高的分配方案-->
-            <call name="getBestSchemaTask" instancesExpr="1"/>
+            <call name="getBestSchemaTask" instancesExpr="1">
+                <param name="supervisor" expr="supervisor"/>
+                <param name="ordinal" expr="ordinal"/>
+            </call>
         </transition>
 
         <onexit>
@@ -155,7 +177,7 @@
 
     <state id="Temp">
         <transition event="queryComplete" target="Waiting">
-            <foreach array="_event.data" item="kvpair">
+            <foreach array="_event.data" item="kvpair" index="currentIdx">
                 <newbo src="CrowdSourcing.xml" instancesExpr="1">
                     <param name="employer" expr="employer"/>
                     <param name="taskName" expr="taskName"/>
@@ -165,6 +187,8 @@
                     <param name="decomposeVoteCount" expr="decomposeVoteCount"/>
                     <param name="solveCount" expr="solveCount"/>
                     <param name="solveVoteCount" expr="solveVoteCount"/>
+                    <param name="supervisor" expr="_id"/>
+                    <param name="ordinal" expr="currentIdx"/>
                 </newbo>
                 <assign location="steps" expr="steps + 1"/>
             </foreach>
@@ -246,6 +270,8 @@
             <log label="CS_solveVoting" expr="' exit SolveVoting state '"/>
         </onexit>
     </state>
+
+    <!-- todo add temp state -->
 
     <final id="Final">
         <onentry>
