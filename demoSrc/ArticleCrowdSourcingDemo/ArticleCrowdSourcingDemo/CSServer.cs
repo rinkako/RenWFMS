@@ -5,13 +5,14 @@ using System.Linq;
 using System.Net;
 using System.Text;
 using ArticleCrowdSourcingDemo.Utility;
+using Newtonsoft.Json;
 
 namespace ArticleCrowdSourcingDemo
 {
     /// <summary>
     /// Http服务器类
     /// </summary>
-    internal class YuriHttpServer
+    internal class CSServer
     {
         /// <summary>
         /// 获取或设置该Http服务的网关地址
@@ -84,7 +85,25 @@ namespace ArticleCrowdSourcingDemo
         {
             var postDataHelper = new HttpListenerPostParaHelper(context);
             List<HttpListenerPostValue> postParams = postDataHelper.GetHttpListenerPostValue();
-            /* 这里要转发给Yuri的路由系统，处理请求，再做响应 */
+            var pDict = new Dictionary<String, String>();
+            foreach (var pp in postParams)
+            {
+                pDict[pp.Key] = pp.ValueString;
+            }
+            switch (pDict["TaskName"])
+            {
+                case "getBestSchemaTask":
+                    CSCore.DoQueryBestDecompose(pDict["Rtid"], pDict["CallbackNodeId"], pDict["Wid"]);
+                    break;
+                case "getBestSolutionTask":
+                    var sArgDict = JsonConvert.DeserializeObject<Dictionary<string, string>>(pDict["Argument"]);
+                    CSCore.DoQueryBestSolution(pDict["Rtid"], pDict["NodeId"], sArgDict["supervisor"], sArgDict["ordinal"], pDict["Wid"]);
+                    break;
+                case "mergeTask":
+                    var mArgDict = JsonConvert.DeserializeObject<Dictionary<string, string>>(pDict["Argument"]);
+                    CSCore.DoMerge(pDict["Rtid"], pDict["CallbackNodeId"], mArgDict["supervisor"], mArgDict["ordinal"]);
+                    break;
+            }
         }
     }
 

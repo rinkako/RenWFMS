@@ -109,7 +109,7 @@ namespace ArticleCrowdSourcingDemo
             InteractionManager.StartAndComplete(GlobalDataPackage.CurrentUserWorkerId, workitemId);
         }
 
-        public static string DoQueryBestDecompose(string rtid, string nodeId)
+        public static void DoQueryBestDecompose(string rtid, string nodeId, string workitemId)
         {
             var dSet = DBUtil.CommitToDB($"select * from ren_decompose where rtid = \"{rtid}\" and nodeId = \"{nodeId}\"").Tables[0];
             var list = (from object row
@@ -128,12 +128,52 @@ namespace ArticleCrowdSourcingDemo
                 }
             }
             var rList = ReturnDataHelper.DecodeListByString(selected);
-            var retDict = new Dictionary<string, string>();
+            var retDict = new Dictionary<string, object>();
             for (var i = 0; i < rList.Count; i++)
             {
                 retDict[i.ToString()] = rList[i];
             }
-            return JsonConvert.SerializeObject(retDict);
+            InteractionManager.StartAndComplete(GlobalDataPackage.CurrentUserWorkerId, workitemId, retDict);  // todo worker id of agent
+        }
+
+        public static void DoQueryBestSolution(string rtid, string nodeId, string supervisor, string ordinal, string workitemId)
+        {
+            var dSet = DBUtil.CommitToDB($"select * from ren_midsolution where rtid = \"{rtid}\" and nodeId = \"{nodeId}\"").Tables[0];
+            var list = (from object row
+                        in dSet.Rows
+                        select row as DataRow
+                        into rowItem
+                        select new Tuple<string, int>(rowItem["solution"].ToString(), Convert.ToInt32(rowItem["voted"].ToString()))).ToList();
+            var vote = -1;
+            var selected = "";
+            foreach (var tuple in list)
+            {
+                if (tuple.Item2 > vote)
+                {
+                    vote = tuple.Item2;
+                    selected = tuple.Item1;
+                }
+            }
+            DBUtil.CommitToDB($"insert into ren_solution(supervisor, ordinal, solution) values (\"{supervisor}\", \"{ordinal}\", \"{selected}\")");
+            InteractionManager.StartAndComplete(GlobalDataPackage.CurrentUserWorkerId, workitemId);  // todo worker id of agent
+        }
+
+        public static void DoMerge(string rtid, string currentNodeId, string currentSupervisor, string currentOrdinal)
+        {
+            var solutions = DBUtil.CommitToDB($"select * from ren_solution where supervisor = \"{currentNodeId}\"").Tables[0];
+            var list = (from object row
+                        in solutions.Rows
+                        select row as DataRow
+                        into rowItem
+                        select new Tuple<int, string>(Convert.ToInt32(rowItem["ordinal"].ToString()), rowItem["solution"].ToString())).ToList();
+            list.Sort((tuple, tuple1) => tuple.Item1.CompareTo(tuple1.Item1));
+            var merged = list.Aggregate(string.Empty, (s, tuple) => s + tuple.Item2);
+            DBUtil.CommitToDB("insert into ren_solution(supervisor, ordinal, solution) values " +
+                              $"(\"{currentSupervisor}\", \"{currentOrdinal}\", \"{merged}\")");
+            if (currentSupervisor == String.Empty)
+            {
+                DBUtil.CommitToDB($"update ren_request set solution = \"{merged}\" where rtid = \"{rtid}\"");
+            }
         }
     }
 }

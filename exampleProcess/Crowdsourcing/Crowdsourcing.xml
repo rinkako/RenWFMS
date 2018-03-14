@@ -44,7 +44,7 @@
             <callback on="complete" event="decomposeVoteComplete"/>
             <documentation>DecomposeVote task let decomposeVoters vote for decompose plans of a crowdsourcing task.</documentation>
         </task>
-        <task id="getBestSchema" name="getBestSchemaTask" brole="automicQuerier">
+        <task id="getBestSchema" name="getBestSchemaTask" brole="decomposeQuerier">
             <principle method="Allocate" distributor="Random"/>
             <callback on="complete" event="queryComplete"/>
             <documentation>GetBestSchema task let a automicQuerier agent query for the best decompose schema in the database and return.</documentation>
@@ -61,12 +61,18 @@
             <callback on="complete" event="solveVoteComplete"/>
             <documentation>SolveVote task let solveVoters vote for solutions of a crowdsourcing task.</documentation>
         </task>
+        <task id="getBestSolution" name="getBestSolutionTask" brole="solutionQuerier">
+            <principle method="Allocate" distributor="Random"/>
+            <callback on="complete" event="choseComplete"/>
+            <documentation>GetBestSchema task let a automicQuerier agent query for the best solution in the database and return.</documentation>
+            <param name="supervisor"/>
+            <param name="ordinal"/>
+        </task>
         <task id="merge" name="mergeTask" brole="merger">
             <principle method="Allocate" distributor="Random"/>
             <callback on="complete" event="merged"/>
             <documentation>Merge task let a merger agent merge solutions of sub tasks to be a complete solution of a crowdsourcing task.</documentation>
         </task>
-
     </tasks>
 
 
@@ -162,12 +168,8 @@
             <assign location="count" expr="count + 1"/>
         </transition>
 
-        <transition cond="count eq decomposeVoteCount" target="Temp">
-            <!--标记将票数最高的分配方案-->
-            <call name="getBestSchemaTask" instancesExpr="1">
-                <param name="supervisor" expr="supervisor"/>
-                <param name="ordinal" expr="ordinal"/>
-            </call>
+        <transition cond="count eq decomposeVoteCount" target="HandlingBestDecompose">
+            <call name="getBestSchemaTask" instancesExpr="1"/>
         </transition>
 
         <onexit>
@@ -175,7 +177,7 @@
         </onexit>
     </state>
 
-    <state id="Temp">
+    <state id="HandlingBestDecompose">
         <transition event="queryComplete" target="Waiting">
             <foreach array="_event.data" item="kvpair" index="currentIdx">
                 <newbo src="CrowdSourcing.xml" instancesExpr="1">
@@ -261,9 +263,11 @@
             <assign location="count" expr="count + 1"/>
         </transition>
 
-        <transition cond="count eq solveVoteCount" target="Final">
-            <send event="finish" type="scxml" messageMode="TO_PARENT"/>
-            <!--标记票数最高的solution-->
+        <transition cond="count eq solveVoteCount" target="HandlingBestSolution">
+            <call name="getBestSolutionTask" instancesExpr="1">
+                <param name="supervisor" expr="supervisor"/>
+                <param name="ordinal" expr="ordinal"/>
+            </call>
         </transition>
 
         <onexit>
@@ -271,8 +275,14 @@
         </onexit>
     </state>
 
-    <!-- todo add temp state -->
+    <!-- Handle best solution state  -->
+    <state id="HandlingBestSolution">
+        <transition event="choseComplete" target="Final">
+            <send event="finish" type="scxml" messageMode="TO_PARENT"/>
+        </transition>
+    </state>
 
+    <!-- Final state  -->
     <final id="Final">
         <onentry>
             <log label="CS_final" expr="' entry Final state '"/>

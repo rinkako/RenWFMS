@@ -69,6 +69,7 @@
       <SubType>Designer</SubType>
     </ApplicationDefinition>
     <Compile Include="CSCore.cs" />
+    <Compile Include="CSServer.cs" />
     <Compile Include="Entity\ReturnDataHelper.cs" />
     <Compile Include="Entity\StdResponseEntity.cs" />
     <Compile Include="GlobalDataPackage.cs" />

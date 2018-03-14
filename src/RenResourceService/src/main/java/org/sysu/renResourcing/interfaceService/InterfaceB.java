@@ -96,8 +96,7 @@ public class InterfaceB {
                 // notify if agent
                 if (chosenOne.getWorkerType() == WorkerType.Agent) {
                     AgentNotifyPlugin allocateAnp = new AgentNotifyPlugin();
-                    HashMap<String, String> allocateNotifyMap = new HashMap<>();
-                    allocateNotifyMap.put(GlobalContext.NOTIFICATION_AGENT_ACTION, WorkitemDistributionType.Allocate.name());
+                    HashMap<String, String> allocateNotifyMap = new HashMap<>(WorkitemContext.GenerateResponseWorkitem(workitem));
                     allocateAnp.AddNotification(chosenOne, allocateNotifyMap, ctx.getRtid());
                     AsyncPluginRunner.AsyncRun(allocateAnp);
                 }
@@ -115,8 +114,7 @@ public class InterfaceB {
                 Set<ParticipantContext> chosenSet = offerInteraction.PerformOffer(validParticipants, workitem);
                 // put workitem to chosen participants offered queue
                 AgentNotifyPlugin offerAnp = new AgentNotifyPlugin();
-                HashMap<String, String> offerNotifyMap = new HashMap<>();
-                offerNotifyMap.put(GlobalContext.NOTIFICATION_AGENT_ACTION, WorkitemDistributionType.Offer.name());
+                HashMap<String, String> offerNotifyMap = new HashMap<>(WorkitemContext.GenerateResponseWorkitem(workitem));
                 for (ParticipantContext oneInSet : chosenSet) {
                     WorkQueueContainer oneInSetContainer = WorkQueueContainer.GetContext(oneInSet.getWorkerId());
                     oneInSetContainer.AddToQueue(workitem, WorkQueueType.OFFERED);
