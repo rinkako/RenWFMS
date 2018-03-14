@@ -26,23 +26,25 @@
     <!-- 任务模型 -->
     <tasks>
         <task id="judge" name="judgeTask" brole="judger">
-            <principle method="Allocate" distributor="ShortestQueue"/>
+            <principle method="Allocate" distributor="Round"/>
             <callback on="complete" event="judgeComplete"/>
             <documentation>Judge task let judgers judge crowdsourcing task to be simple or complex.</documentation>
             <param name="taskName"/>
             <param name="taskDescription"/>
         </task>
         <task id="decompose" name="decomposeTask" brole="decomposer">
-            <principle method="Allocate" distributor="ShortestQueue"/>
+            <principle method="Allocate" distributor="Round"/>
             <callback on="complete" event="decomposeComplete"/>
             <documentation>Decompose task let decomposers decompose crowdsourcing task to be several sub tasks.</documentation>
             <param name="taskName"/>
             <param name="taskDescription"/>
         </task>
         <task id="decomposeVote" name="decomposeVoteTask" brole="decomposeVoter">
-            <principle method="Allocate" distributor="ShortestQueue"/>
+            <principle method="Allocate" distributor="Round"/>
             <callback on="complete" event="decomposeVoteComplete"/>
             <documentation>DecomposeVote task let decomposeVoters vote for decompose plans of a crowdsourcing task.</documentation>
+            <param name="taskName"/>
+            <param name="taskDescription"/>
         </task>
         <task id="getBestSchema" name="getBestSchemaTask" brole="decomposeQuerier">
             <principle method="Allocate" distributor="Random"/>
@@ -50,16 +52,18 @@
             <documentation>GetBestSchema task let a automicQuerier agent query for the best decompose schema in the database and return.</documentation>
         </task>
         <task id="solve" name="solveTask" brole="solver">
-            <principle method="Allocate" distributor="ShortestQueue"/>
+            <principle method="Allocate" distributor="Round"/>
             <callback on="complete" event="solveComplete"/>
             <documentation>Solve task let solvers solve a crowdsourcing task.</documentation>
             <param name="taskName"/>
             <param name="taskDescription"/>
         </task>
         <task id="solveVoting" name="solveVoteTask" brole="solveVoter">
-            <principle method="Allocate" distributor="ShortestQueue"/>
+            <principle method="Allocate" distributor="Round"/>
             <callback on="complete" event="solveVoteComplete"/>
             <documentation>SolveVote task let solveVoters vote for solutions of a crowdsourcing task.</documentation>
+            <param name="taskName"/>
+            <param name="taskDescription"/>
         </task>
         <task id="getBestSolution" name="getBestSolutionTask" brole="solutionQuerier">
             <principle method="Allocate" distributor="Random"/>
@@ -84,7 +88,7 @@
             <log label="CS_init" expr="'entry Initial state'"/>
         </onentry>
         <transition target="Judging">
-            <call name="judgeTask">
+            <call name="judgeTask" instancesExpr="judgeCount">
                 <param name="taskName" expr="taskName"/>
                 <param name="taskDescription" expr="taskDescription"/>
             </call>
@@ -115,7 +119,6 @@
             <call name="solveTask" instancesExpr="solveCount">
                 <param name="taskName" expr="taskName"/>
                 <param name="taskDescription" expr="taskDescription"/>
-                <param name="from" expr="_parentGid"/>
             </call>
         </transition>
 
@@ -123,7 +126,6 @@
             <call name="decomposeTask" instancesExpr="decomposeCount">
                 <param name="taskName" expr="taskName"/>
                 <param name="taskDescription" expr="taskDescription"/>
-                <param name="from" expr="_parentGid"/>
             </call>
         </transition>
 
@@ -149,7 +151,10 @@
         </transition>
 
         <transition cond="count eq decomposeCount" target="DecomposeVoting">
-            <call name="decomposeVoteTask" instancesExpr="decomposeVoteCount"/>
+            <call name="decomposeVoteTask" instancesExpr="decomposeVoteCount">
+                <param name="taskName" expr="taskName"/>
+                <param name="taskDescription" expr="taskDescription"/>
+            </call>
         </transition>
 
         <onexit>
@@ -244,7 +249,10 @@
         </transition>
 
         <transition cond="count eq solveCount" target="SolveVoting">
-            <call name="solveVoteTask" instancesExpr="solveVoteCount"/>
+            <call name="solveVoteTask" instancesExpr="solveVoteCount">
+                <param name="taskName" expr="taskName"/>
+                <param name="taskDescription" expr="taskDescription"/>
+            </call>
         </transition>
 
         <onexit>

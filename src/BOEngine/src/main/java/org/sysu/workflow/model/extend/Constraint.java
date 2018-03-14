@@ -5,6 +5,8 @@
 package org.sysu.workflow.model.extend;
 
 import org.sysu.workflow.ActionExecutionContext;
+import org.sysu.workflow.Context;
+import org.sysu.workflow.Evaluator;
 import org.sysu.workflow.SCXMLExpressionException;
 import org.sysu.workflow.model.ModelException;
 import org.sysu.workflow.model.Param;
@@ -34,11 +36,11 @@ public class Constraint extends ParamsContainer implements Serializable {
      * Generate descriptor for this constraint.
      * @return string descriptor
      */
-    public String GenerateDescriptor() {
+    public String GenerateDescriptor(Evaluator evaluator, Context ctx) throws Exception {
         StringBuilder sb = new StringBuilder();
         sb.append("{");
         for (Param p : this.getParams()) {
-            sb.append(p.GenerateDescriptor()).append(",");
+            sb.append(p.GenerateDescriptor(evaluator, ctx)).append(",");
         }
         String jsonifyParam = sb.toString();
         if (jsonifyParam.length() > 1) {

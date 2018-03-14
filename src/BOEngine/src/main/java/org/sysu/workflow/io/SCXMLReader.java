@@ -265,19 +265,19 @@ public final class SCXMLReader {
     private static final String ATTR_VERSION = "version";
 
     //---- workflow扩展的属性 ----//
-    /*newbo元素的属性*/
+    /*newbo extend*/
     private static final String ATTR_BOO_INSTANCES = "instances";
     private static final String ATTR_BOO_INSTANCESEXPR = "instancesExpr";
     private static final String ATTR_BOO_IDEXPR = "idExpr";
-    /*send元素扩展的属性*/
+    /*send extend*/
     private static final String ATTR_BOO_MESSAGEMODE="messageMode";
     private static final String ATTR_BOO_TARGETNAME="targetName";
     private static final String ATTR_BOO_TARGETSTATE="targetState";
-    /*task元素的属性*/
+    /*task extend*/
     private static final String ATTR_BOO_BROLE = "brole";
     private static final String ATTR_BOO_ON = "on";
     private static final String ATTR_BOO_HOOK = "hook";
-    /*businessclass元素扩展的属性*/
+    /*businessclass extend*/
     private static final String ATTR_BOO_EXTENDS = "extends";
     /*principle extend*/
     private static final String ATTR_BOO_METHOD = "method";
@@ -296,10 +296,10 @@ public final class SCXMLReader {
     }
 
     /**
-     * 按照提供的路径解析xml文档
+     * Read scxml from a path.
      *
-     * @param scxmlPath SCXML文档真实路径
-     * @return 解析得到的SCXML对象
+     * @param scxmlPath SCXML read path
+     * @return SCXML instance
      * @throws IOException        An IO error during parsing.
      * @throws ModelException     The Commons SCXML object model is incomplete or inconsistent (includes
      *                            errors in the SCXML document that may not be identified by the schema).
@@ -312,7 +312,7 @@ public final class SCXMLReader {
     }
 
     /**
-     * 根据给定的 {@link Configuration}和路径解析SCXML
+     * Read SCXML from given {@link Configuration}.
      *
      * @param scxmlPath     The real path to the SCXML document.
      * @param configuration The {@link Configuration} to use when parsing the SCXML document.
@@ -330,17 +330,15 @@ public final class SCXMLReader {
         }
         SCXML scxml = readInternal(configuration, null, scxmlPath, null, null, null);
         if (scxml != null) {
-
-            //为初始执行SCXML做准备
             ModelUpdater.updateSCXML(scxml);
         }
         return scxml;
     }
 
     /**
-     * 按照提供的 {@link URL} 解析xml文档
+     * Read SCXML from a {@link URL}.
      *
-     * @param scxmlURL 需要解析的SCXML 文档的 {@link URL}
+     * @param scxmlURL SCXML location {@link URL}
      * @return The parsed output, the Commons SCXML object model corresponding to the SCXML document.
      * @throws IOException        An IO error during parsing.
      * @throws ModelException     The Commons SCXML object model is incomplete or inconsistent (includes
@@ -372,15 +370,13 @@ public final class SCXMLReader {
         }
         SCXML scxml = readInternal(configuration, scxmlURL, null, null, null, null);
         if (scxml != null) {
-
-            //为初始执行SCXML做准备
             ModelUpdater.updateSCXML(scxml);
         }
         return scxml;
     }
 
     /**
-     * 根据给出的 {@link InputStream}.来解析SCXML文档
+     * Read SCXML from an {@link InputStream}.
      *
      * @param scxmlStream The {@link InputStream} supplying the SCXML document to parse.
      * @return The parsed output, the Commons SCXML object model corresponding to the SCXML document.
@@ -422,7 +418,7 @@ public final class SCXMLReader {
     }
 
     /**
-     * 通过给定的字节流 {@link Reader}来解析文档
+     * Read SCXML from a {@link Reader}.
      *
      * @param scxmlReader The {@link Reader} supplying the SCXML document to parse.
      * @return The parsed output, the Commons SCXML object model corresponding to the SCXML document.
@@ -456,8 +452,6 @@ public final class SCXMLReader {
         }
         SCXML scxml = readInternal(configuration, null, null, null, scxmlReader, null);
         if (scxml != null) {
-
-            //为初始执行SCXML做准备
             ModelUpdater.updateSCXML(scxml);
         }
         return scxml;
@@ -479,7 +473,7 @@ public final class SCXMLReader {
         return read(scxmlSource, new Configuration());
     }
 
-    //---------------------- 私有的工具方法 ----------------------//
+    //---------------------- PRIVATE ----------------------//
 
     /**
      * Parse the SCXML document supplied by the given {@link Source} with the given {@link Configuration}.
@@ -500,15 +494,13 @@ public final class SCXMLReader {
         }
         SCXML scxml = readInternal(configuration, null, null, null, null, scxmlSource);
         if (scxml != null) {
-
-            //为初始执行SCXML做准备
             ModelUpdater.updateSCXML(scxml);
         }
         return scxml;
     }
 
     /**
-     * 通过给定的 {@link URL} 和 {@link Configuration}, but do not
+     * Using given {@link URL} and {@link Configuration}, but do not
      * wire up the object model to be usable just yet. Exactly one of the url, path, stream, reader or source
      * parameters must be provided.
      *
@@ -543,7 +535,7 @@ public final class SCXMLReader {
     }
 
     /**
-     * 私有的方法用来阅读整个文档，通过{@link XMLStreamReader}.
+     * Private method for reading SCXML via {@link XMLStreamReader}.
      *
      * @param reader        The {@link XMLStreamReader} providing the SCXML document to parse.
      * @param configuration The {@link Configuration} to use while parsing.
@@ -584,7 +576,7 @@ public final class SCXMLReader {
     }
 
     /**
-     * 读取 scxml 元素的内容.
+     * Read scxml, as business class content.
      *
      * @param reader        The {@link XMLStreamReader} providing the SCXML document to parse.
      * @param configuration The {@link Configuration} to use while parsing.

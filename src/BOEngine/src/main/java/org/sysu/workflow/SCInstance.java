@@ -418,15 +418,6 @@ public class SCInstance implements Serializable {
                 SCXMLExecutionContext executionContext = ((SCXMLExecutionContext) this.internalIOProcessor);
                 systemContext.getContext().set(SCXMLSystemContext.NOTIFIABLE_ID_KEY, executionContext.NotifiableId);
                 systemContext.getContext().set(SCXMLSystemContext.GLOBAL_ID_KEY, executionContext.NodeId);
-                RTreeNode parentNode = InstanceManager.GetInstanceTree(executionContext.Rtid).GetNodeById(executionContext.NodeId).Parent;
-                if (parentNode != null) {
-                    systemContext.getContext().set(SCXMLSystemContext.PARENT_GLOBAL_ID_KEY, parentNode.getExect().NodeId);
-                    systemContext.getContext().set(SCXMLSystemContext.PARENT_NOTIFIABLE_ID_KEY, parentNode.getExect().NotifiableId);
-                }
-                else {
-                    systemContext.getContext().set(SCXMLSystemContext.PARENT_GLOBAL_ID_KEY, "");
-                    systemContext.getContext().set(SCXMLSystemContext.PARENT_NOTIFIABLE_ID_KEY, "");
-                }
                 systemContext.getPlatformVariables().put(SCXMLSystemContext.STATUS_KEY, currentStatus);
             }
         }

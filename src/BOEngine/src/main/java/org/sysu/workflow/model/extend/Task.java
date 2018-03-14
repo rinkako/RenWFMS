@@ -6,6 +6,8 @@ package org.sysu.workflow.model.extend;
 
 import org.sysu.renCommon.utility.CommonUtil;
 import org.sysu.workflow.ActionExecutionContext;
+import org.sysu.workflow.Context;
+import org.sysu.workflow.Evaluator;
 import org.sysu.workflow.model.Param;
 import org.sysu.workflow.model.ParamsContainer;
 import org.sysu.workflow.utility.SerializationUtil;
@@ -66,11 +68,11 @@ public class Task extends ParamsContainer implements Serializable {
      * Generate descriptor for this constraint.
      * @return string descriptor
      */
-    public String GenerateParamDescriptor() {
+    public String GenerateParamDescriptor() throws Exception {
         StringBuilder sb = new StringBuilder();
         sb.append("{");
         for (Param p : this.getParams()) {
-            sb.append(p.GenerateDescriptor()).append(",");
+            sb.append(p.GenerateDescriptor(null, null)).append(",");
         }
         String jsonifyParam = sb.toString();
         if (jsonifyParam.length() > 1) {

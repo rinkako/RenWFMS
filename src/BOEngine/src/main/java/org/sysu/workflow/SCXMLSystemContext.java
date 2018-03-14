@@ -34,9 +34,7 @@ public class SCXMLSystemContext implements Context, Serializable {
      */
     public static final String INSTANCEINDEX_KEY = "_instanceIndex";
     public static final String NOTIFIABLE_ID_KEY = "_id";
-    public static final String PARENT_NOTIFIABLE_ID_KEY = "_parentId";
     public static final String GLOBAL_ID_KEY = "_gid";
-    public static final String PARENT_GLOBAL_ID_KEY = "_parentGid";
 
 
     /**
@@ -50,7 +48,7 @@ public class SCXMLSystemContext implements Context, Serializable {
      */
     private static final Set<String> PROTECTED_NAMES = new HashSet<String>(Arrays.asList(
             EVENT_KEY, SESSIONID_KEY, SCXML_NAME_KEY, IOPROCESSORS_KEY, X_KEY, INSTANCEINDEX_KEY,
-            NOTIFIABLE_ID_KEY, PARENT_NOTIFIABLE_ID_KEY, GLOBAL_ID_KEY, PARENT_GLOBAL_ID_KEY));
+            NOTIFIABLE_ID_KEY, GLOBAL_ID_KEY));
 
     /**
      * The wrapped system context

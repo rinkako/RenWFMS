@@ -25,6 +25,7 @@ namespace ArticleCrowdSourcingDemo.Form
         {
             InitializeComponent();
             this.Label_Username.Content = GlobalDataPackage.CurrentUsername;
+            this.RefreshList();
         }
 
         public void RefreshList()
@@ -58,10 +59,10 @@ namespace ArticleCrowdSourcingDemo.Form
             }
             var listItem = this.ListBox_Solver_Tasks.SelectedItem as ListBoxItem;
             var itemDict = (listItem.Tag as Tuple<Dictionary<String, String>, Dictionary<String, String>>).Item1;
-            var argDict = (listItem.Tag as Tuple<Dictionary<String, String>, Dictionary<String, String>>).Item2;
-            var request = CSCore.GetRequestByRTID(itemDict["Rtid"]);
+            //var argDict = (listItem.Tag as Tuple<Dictionary<String, String>, Dictionary<String, String>>).Item2;
+            //var request = CSCore.GetRequestByRTID(itemDict["Rtid"]);
             var passedArguments = ReturnDataHelper.DecodeDictionaryByString(itemDict["Argument"]);
-            switch (argDict["TaskName"])
+            switch (itemDict["TaskName"])
             {
                 case "judgeTask":
                     new JudgeTaskWindow(passedArguments["taskName"], passedArguments["taskDescription"], itemDict["Wid"]).ShowDialog();
@@ -73,8 +74,10 @@ namespace ArticleCrowdSourcingDemo.Form
                     new DecomposeVoteWindow(passedArguments["taskName"], passedArguments["taskDescription"], itemDict["Wid"], itemDict["Rtid"], itemDict["CallbackNodeId"]).ShowDialog();
                     break;
                 case "solveTask":
+                    new SolveWindow(passedArguments["taskName"], passedArguments["taskDescription"], itemDict["Wid"], itemDict["Rtid"], itemDict["CallbackNodeId"]).ShowDialog();
                     break;
                 case "solveVoteTask":
+                    new SolveVoteWindow(passedArguments["taskName"], passedArguments["taskDescription"], itemDict["Wid"], itemDict["Rtid"], itemDict["CallbackNodeId"]).ShowDialog();
                     break;
             }
             this.RefreshList();

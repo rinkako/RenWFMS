@@ -5,6 +5,7 @@ using System.Data;
 using System.Linq;
 using System.Threading;
 using System.Windows;
+using ArticleCrowdSourcingDemo.Utility;
 
 namespace ArticleCrowdSourcingDemo
 {
@@ -16,8 +17,15 @@ namespace ArticleCrowdSourcingDemo
         private static readonly CSServer server = new CSServer();
         public App()
         {
-            var t = new Thread(new ThreadStart(server.BeginAsyncAccept));
-            t.Start();
+            try
+            {
+                var t = new Thread(new ThreadStart(server.BeginAsyncAccept));
+                t.Start();
+            }
+            catch (Exception ex)
+            {
+                LogUtils.LogLine(ex.ToString(), LogLevel.Warning);
+            }
         }
     }
 }

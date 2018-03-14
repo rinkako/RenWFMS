@@ -14,6 +14,8 @@
         <data id="decomposeVoteCount" expr=""/>
         <data id="solveCount" expr=""/>
         <data id="solveVoteCount" expr=""/>
+        <data id="supervisor" expr=""/>
+        <data id="ordinal" expr="0"/>
         <data id="steps" expr="0"/>
         <data id="count" expr="0"/>
         <data id="complexCount" expr="0"/>
@@ -24,41 +26,57 @@
     <!-- 任务模型 -->
     <tasks>
         <task id="judge" name="judgeTask" brole="judger">
-            <principle method="Allocate" distributor="ShortestQueue"/>
+            <principle method="Allocate" distributor="Round"/>
             <callback on="complete" event="judgeComplete"/>
             <documentation>Judge task let judgers judge crowdsourcing task to be simple or complex.</documentation>
+            <param name="taskName"/>
+            <param name="taskDescription"/>
         </task>
         <task id="decompose" name="decomposeTask" brole="decomposer">
-            <principle method="Allocate" distributor="ShortestQueue"/>
+            <principle method="Allocate" distributor="Round"/>
             <callback on="complete" event="decomposeComplete"/>
             <documentation>Decompose task let decomposers decompose crowdsourcing task to be several sub tasks.</documentation>
+            <param name="taskName"/>
+            <param name="taskDescription"/>
         </task>
         <task id="decomposeVote" name="decomposeVoteTask" brole="decomposeVoter">
-            <principle method="Allocate" distributor="ShortestQueue"/>
+            <principle method="Allocate" distributor="Round"/>
             <callback on="complete" event="decomposeVoteComplete"/>
             <documentation>DecomposeVote task let decomposeVoters vote for decompose plans of a crowdsourcing task.</documentation>
+            <param name="taskName"/>
+            <param name="taskDescription"/>
         </task>
-        <task id="getBestSchema" name="getBestSchemaTask" brole="automicQuerier">
+        <task id="getBestSchema" name="getBestSchemaTask" brole="decomposeQuerier">
             <principle method="Allocate" distributor="Random"/>
             <callback on="complete" event="queryComplete"/>
             <documentation>GetBestSchema task let a automicQuerier agent query for the best decompose schema in the database and return.</documentation>
         </task>
         <task id="solve" name="solveTask" brole="solver">
-            <principle method="Allocate" distributor="ShortestQueue"/>
+            <principle method="Allocate" distributor="Round"/>
             <callback on="complete" event="solveComplete"/>
             <documentation>Solve task let solvers solve a crowdsourcing task.</documentation>
+            <param name="taskName"/>
+            <param name="taskDescription"/>
         </task>
         <task id="solveVoting" name="solveVoteTask" brole="solveVoter">
-            <principle method="Allocate" distributor="ShortestQueue"/>
+            <principle method="Allocate" distributor="Round"/>
             <callback on="complete" event="solveVoteComplete"/>
             <documentation>SolveVote task let solveVoters vote for solutions of a crowdsourcing task.</documentation>
+            <param name="taskName"/>
+            <param name="taskDescription"/>
+        </task>
+        <task id="getBestSolution" name="getBestSolutionTask" brole="solutionQuerier">
+            <principle method="Allocate" distributor="Random"/>
+            <callback on="complete" event="choseComplete"/>
+            <documentation>GetBestSchema task let a automicQuerier agent query for the best solution in the database and return.</documentation>
+            <param name="supervisor"/>
+            <param name="ordinal"/>
         </task>
         <task id="merge" name="mergeTask" brole="merger">
             <principle method="Allocate" distributor="Random"/>
             <callback on="complete" event="merged"/>
             <documentation>Merge task let a merger agent merge solutions of sub tasks to be a complete solution of a crowdsourcing task.</documentation>
         </task>
-
     </tasks>
 
 
@@ -70,7 +88,10 @@
             <log label="CS_init" expr="'entry Initial state'"/>
         </onentry>
         <transition target="Judging">
-            <call name="judgeTask"/>
+            <call name="judgeTask" instancesExpr="judgeCount">
+                <param name="taskName" expr="taskName"/>
+                <param name="taskDescription" expr="taskDescription"/>
+            </call>
         </transition>
         <onexit>
             <log label="CS_init" expr="'exit Initial state'"/>
@@ -84,9 +105,9 @@
         </onentry>
 
         <transition event="judgeComplete">
-            <if cond="_event.data.get('simple') eq 0">
+            <if cond="_event.data.get('simple') eq 1">
                 <assign location="simpleCount" expr="simpleCount + 1"/>
-            <elseif cond="_event.data.get('simple') eq 1"/>
+            <elseif cond="_event.data.get('simple') eq 0"/>
                 <assign location="complexCount" expr="complexCount + 1"/>
             </if>
             <if cond="simpleCount + complexCount eq judgeCount">
@@ -95,11 +116,17 @@
         </transition>
 
         <transition cond="judgeCompleted and simpleCount gt complexCount" target="Solving">
-            <call name="solveTask" instancesExpr="solveCount"/>
+            <call name="solveTask" instancesExpr="solveCount">
+                <param name="taskName" expr="taskName"/>
+                <param name="taskDescription" expr="taskDescription"/>
+            </call>
         </transition>
 
         <transition cond="judgeCompleted and simpleCount lt complexCount" target="Decomposing">
-            <call name="decomposeTask" instancesExpr="decomposeCount"/>
+            <call name="decomposeTask" instancesExpr="decomposeCount">
+                <param name="taskName" expr="taskName"/>
+                <param name="taskDescription" expr="taskDescription"/>
+            </call>
         </transition>
 
         <onexit>
@@ -119,12 +146,15 @@
         </onentry>
 
         <transition event="decomposeComplete">
-            <!-- 写入数据库: 每个decomposer的分解方案 -->
+            <!-- 每个decomposer的分解方案 -->
             <assign location="count" expr="count + 1"/>
         </transition>
 
         <transition cond="count eq decomposeCount" target="DecomposeVoting">
-            <call name="decomposeVoteTask" instancesExpr="decomposeVoteCount"/>
+            <call name="decomposeVoteTask" instancesExpr="decomposeVoteCount">
+                <param name="taskName" expr="taskName"/>
+                <param name="taskDescription" expr="taskDescription"/>
+            </call>
         </transition>
 
         <onexit>
@@ -143,8 +173,7 @@
             <assign location="count" expr="count + 1"/>
         </transition>
 
-        <transition cond="count eq decomposeVoteCount" target="Temp">
-            <!--标记将票数最高的分配方案-->
+        <transition cond="count eq decomposeVoteCount" target="HandlingBestDecompose">
             <call name="getBestSchemaTask" instancesExpr="1"/>
         </transition>
 
@@ -153,9 +182,9 @@
         </onexit>
     </state>
 
-    <state id="Temp">
+    <state id="HandlingBestDecompose">
         <transition event="queryComplete" target="Waiting">
-            <foreach array="_event.data" item="kvpair">
+            <foreach array="_event.data" item="kvpair" index="currentIdx">
                 <newbo src="CrowdSourcing.xml" instancesExpr="1">
                     <param name="employer" expr="employer"/>
                     <param name="taskName" expr="taskName"/>
@@ -165,6 +194,8 @@
                     <param name="decomposeVoteCount" expr="decomposeVoteCount"/>
                     <param name="solveCount" expr="solveCount"/>
                     <param name="solveVoteCount" expr="solveVoteCount"/>
+                    <param name="supervisor" expr="_id"/>
+                    <param name="ordinal" expr="currentIdx"/>
                 </newbo>
                 <assign location="steps" expr="steps + 1"/>
             </foreach>
@@ -218,7 +249,10 @@
         </transition>
 
         <transition cond="count eq solveCount" target="SolveVoting">
-            <call name="solveVoteTask" instancesExpr="solveVoteCount"/>
+            <call name="solveVoteTask" instancesExpr="solveVoteCount">
+                <param name="taskName" expr="taskName"/>
+                <param name="taskDescription" expr="taskDescription"/>
+            </call>
         </transition>
 
         <onexit>
@@ -237,9 +271,11 @@
             <assign location="count" expr="count + 1"/>
         </transition>
 
-        <transition cond="count eq solveVoteCount" target="Final">
-            <send event="finish" type="scxml" messageMode="TO_PARENT"/>
-            <!--标记票数最高的solution-->
+        <transition cond="count eq solveVoteCount" target="HandlingBestSolution">
+            <call name="getBestSolutionTask" instancesExpr="1">
+                <param name="supervisor" expr="supervisor"/>
+                <param name="ordinal" expr="ordinal"/>
+            </call>
         </transition>
 
         <onexit>
@@ -247,6 +283,14 @@
         </onexit>
     </state>
 
+    <!-- Handle best solution state  -->
+    <state id="HandlingBestSolution">
+        <transition event="choseComplete" target="Final">
+            <send event="finish" type="scxml" messageMode="TO_PARENT"/>
+        </transition>
+    </state>
+
+    <!-- Final state  -->
     <final id="Final">
         <onentry>
             <log label="CS_final" expr="' entry Final state '"/>

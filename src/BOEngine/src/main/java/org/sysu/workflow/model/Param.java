@@ -1,6 +1,10 @@
 
 package org.sysu.workflow.model;
 
+import org.sysu.workflow.ActionExecutionContext;
+import org.sysu.workflow.Context;
+import org.sysu.workflow.Evaluator;
+import org.sysu.workflow.SCXMLExecutionContext;
 import org.sysu.workflow.utility.SerializationUtil;
 
 import java.io.Serializable;
@@ -57,8 +61,9 @@ public class Param implements NamespacePrefixesHolder, Serializable {
      * Generate descriptor for this param.
      * @return string descriptor
      */
-    public String GenerateDescriptor() {
-        return String.format("\"%s\":%s", this.name, SerializationUtil.JsonSerialization(this.expr, ""));
+    public String GenerateDescriptor(Evaluator evaluator, Context ctx) throws Exception {
+        Object valueStr = evaluator == null || ctx == null ? this.expr : evaluator.eval(ctx, this.expr);
+        return String.format("\"%s\":%s", this.name, SerializationUtil.JsonSerialization(valueStr, ""));
     }
 
     /**

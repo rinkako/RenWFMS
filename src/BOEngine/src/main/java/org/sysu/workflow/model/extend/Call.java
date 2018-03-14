@@ -107,7 +107,12 @@ public class Call extends ParamsContainer implements Serializable {
                         StringBuilder sb = new StringBuilder();
                         sb.append("{");
                         for (Param p : this.getParams()) {
-                            sb.append(p.GenerateDescriptor()).append(",");
+                            try {
+                                sb.append(p.GenerateDescriptor(scxmlExecContext.getEvaluator(), ctx)).append(",");
+                            }
+                            catch (Exception ex) {
+                                LogUtil.Log(ex.toString(), Call.class.getName(), LogLevelType.ERROR, scxmlExecContext.Rtid);
+                            }
                         }
                         String jsonifyParam = sb.toString();
                         if (jsonifyParam.length() > 1) {
@@ -151,7 +156,12 @@ public class Call extends ParamsContainer implements Serializable {
                         StringBuilder sb = new StringBuilder();
                         sb.append("{");
                         for (Param p : this.getParams()) {
-                            sb.append(p.GenerateDescriptor()).append(",");
+                            try {
+                                sb.append(p.GenerateDescriptor(scxmlExecContext.getEvaluator(), ctx)).append(",");
+                            }
+                            catch (Exception ex) {
+                                LogUtil.Log(ex.toString(), Call.class.getName(), LogLevelType.ERROR, scxmlExecContext.Rtid);
+                            }
                         }
                         String jsonifyParam = sb.toString();
                         if (jsonifyParam.length() > 1) {

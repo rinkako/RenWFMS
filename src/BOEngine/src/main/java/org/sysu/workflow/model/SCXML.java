@@ -91,7 +91,7 @@ public class SCXML implements Serializable, Observable, NamespacePrefixesHolder 
     /**
      * The tasks which is a container of task
      */
-    private Tasks tasks;
+    private Tasks tasks = new Tasks();
 
     /**
      * The resources catalogue

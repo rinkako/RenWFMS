@@ -219,7 +219,8 @@ namespace ArticleCrowdSourcingDemo
                 new KeyValuePair<string, string>("solver", "Capa_ceecb54f-24da-11e8-84a6-2c4d54f01cf2"),
                 new KeyValuePair<string, string>("solveVoter", "Capa_d3e7e29e-24da-11e8-8487-2c4d54f01cf2"),
                 new KeyValuePair<string, string>("merger", "Capa_cb8b61e1-24da-11e8-a3d8-2c4d54f01cf2"),
-                new KeyValuePair<string, string>("automicQuerier", "Capa_1f54376e-25a3-11e8-8267-2c4d54f01cf2")
+                new KeyValuePair<string, string>("decomposeQuerier", "Capa_1f54376e-25a3-11e8-8267-2c4d54f01cf2"),
+                new KeyValuePair<string, string>("solutionQuerier", "Capa_1f54376e-25a3-11e8-8267-2c4d54f01cf2")
             };
             GlobalDataPackage.Mappings = new List<KeyValuePair<string, string>>();
             foreach (var mapItem in CurrentMap)
@@ -231,6 +232,7 @@ namespace ArticleCrowdSourcingDemo
 
         public static string GeneratePostMapStringOfMappings()
         {
+            InteractionManager.PerformMappingBRole();
             var retStr = GlobalDataPackage.Mappings.Aggregate(String.Empty, (current, mapKVP) => current + String.Format("{0},{1};", mapKVP.Key, mapKVP.Value));
             if (retStr.Length > 0)
             {
