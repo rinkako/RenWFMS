@@ -50,7 +50,7 @@ namespace ArticleCrowdSourcingDemo.Entity
         /// <returns>List in .NET</returns>
         public static List<String> DecodeListByString(string response)
         {
-            var responseList = JsonConvert.DeserializeObject<JObject>(response);
+            var responseList = JsonConvert.DeserializeObject<JArray>(response);
             return responseList.ToObject<List<String>>();
         }
 

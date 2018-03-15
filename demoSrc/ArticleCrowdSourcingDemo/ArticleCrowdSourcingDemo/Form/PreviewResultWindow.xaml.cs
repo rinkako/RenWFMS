@@ -19,9 +19,12 @@ namespace ArticleCrowdSourcingDemo.Form
     /// </summary>
     public partial class PreviewResultWindow : MetroWindow
     {
-        public PreviewResultWindow()
+        public PreviewResultWindow(string taskName, string taskDescription, string solution)
         {
             InitializeComponent();
+            this.TextBox_Title.Text = $"[Description: {taskName}]";
+            this.TextBox_Description.Text = taskDescription;
+            this.TextBox_Solution.Text = solution;
         }
     }
 }

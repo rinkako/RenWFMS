@@ -163,7 +163,7 @@ public class NewBO extends NamelistHolder implements PathResolverHolder {
                     List boList = session.createQuery(String.format("FROM RenBoEntity WHERE pid = '%s'", currentExecutionContext.Pid)).list();
                     for (Object bo : boList) {
                         RenBoEntity boEntity = (RenBoEntity) bo;
-                        if (boEntity.getBoName().equals(boName)) {
+                        if (boEntity.getBoName().equalsIgnoreCase(boName)) {
                             serializedBO = boEntity.getSerialized();
                             break;
                         }

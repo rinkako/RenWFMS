@@ -11,6 +11,7 @@
 
     <state id="first">
         <onentry>
+            <log label="MAIN" expr="_id"/>
             <newbo src="InitBOTestSub.xml" instancesExpr="3" idExpr="SubPrefix + _instanceIndex">
                 <param name="dataA" expr="666"></param>
             </newbo>

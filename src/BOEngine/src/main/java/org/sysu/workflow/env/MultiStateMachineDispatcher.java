@@ -409,7 +409,7 @@ public class MultiStateMachineDispatcher extends SimpleDispatcher implements Ser
      * @param data               event payload
      */
     private void sendToTarget(ArrayList<RTreeNode> targetTreeNodeList, String targetState, String event, Object data) {
-        //cif the target state is not null
+        // if the target state is not null
         if (targetState != null && !"".equals(targetState)) {
             for (RTreeNode treeNode : targetTreeNodeList) {
                 // get the unique scxml executor for each tree node

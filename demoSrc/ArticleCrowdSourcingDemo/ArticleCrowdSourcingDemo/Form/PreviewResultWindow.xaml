@@ -14,8 +14,8 @@
             <RowDefinition Height="10*" MinHeight="32" MaxHeight="32"/>
             <RowDefinition Height="70*"/>
         </Grid.RowDefinitions>
-        <TextBox Grid.Row="0" FontSize="18" IsReadOnly="True" Background="AliceBlue" Foreground="Blue" TextAlignment="Center">
-            [Description]
+        <TextBox Name="TextBox_Title" Grid.Row="0" FontSize="18" IsReadOnly="True" Background="AliceBlue" Foreground="Blue" TextAlignment="Center">
+            [Description: TaskName]
         </TextBox>
         <TextBox Name="TextBox_Description" IsReadOnly="True" Grid.Row="1" FontSize="15">
             test description

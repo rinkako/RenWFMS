@@ -67,7 +67,7 @@ namespace ArticleCrowdSourcingDemo
             InteractionManager.StartAndComplete(GlobalDataPackage.CurrentUserWorkerId, workitemId);
             var decomposed = JsonConvert.SerializeObject(decomposeList);
             DBUtil.CommitToDB("insert into ren_decompose(rtid, nodeId, workerId, decompose, voted) values " +
-                              $"(\"{rtid}\", \"{nodeId}\", \"{GlobalDataPackage.CurrentUserWorkerId}\", \"{decomposed}\", 0)");
+                              $"(\"{rtid}\", \"{nodeId}\", \"{GlobalDataPackage.CurrentUserWorkerId}\", \"{decomposed.Replace("\"", "\\\"")}\", 0)");
         }
 
         public static List<Tuple<string, List<string>>> GetDecomposeList(string rtid, string nodeId)
@@ -90,7 +90,7 @@ namespace ArticleCrowdSourcingDemo
         {
             InteractionManager.StartAndComplete(GlobalDataPackage.CurrentUserWorkerId, workitemId);
             DBUtil.CommitToDB("insert into ren_midsolution(rtid, nodeId, workerId, solution, voted) values " +
-                              $"(\"{rtid}\", \"{nodeId}\", \"{GlobalDataPackage.CurrentUserWorkerId}\", \"{solution}\", 0)");
+                              $"(\"{rtid}\", \"{nodeId}\", \"{GlobalDataPackage.CurrentUserWorkerId}\", \"{solution.Replace("\"", "\\\"")}\", 0)");
         }
 
         public static List<Tuple<string, string>> GetSolveList(string rtid, string nodeId)
@@ -155,10 +155,14 @@ namespace ArticleCrowdSourcingDemo
                 }
             }
             DBUtil.CommitToDB($"insert into ren_solution(supervisor, ordinal, solution) values (\"{supervisor}\", \"{ordinal}\", \"{selected}\")");
+            if (supervisor == String.Empty)
+            {
+                DBUtil.CommitToDB($"update ren_request set solution = \"{selected}\", status = \"{SolvePhase.Solved.ToString()}\" where rtid = \"{rtid}\"");
+            }
             InteractionManager.StartAndComplete(GlobalDataPackage.CurrentUserWorkerId, workitemId);  // todo worker id of agent
         }
 
-        public static void DoMerge(string rtid, string currentNodeId, string currentSupervisor, string currentOrdinal)
+        public static void DoMerge(string rtid, string currentNodeId, string currentSupervisor, string currentOrdinal, string workitemId)
         {
             var solutions = DBUtil.CommitToDB($"select * from ren_solution where supervisor = \"{currentNodeId}\"").Tables[0];
             var list = (from object row
@@ -172,8 +176,10 @@ namespace ArticleCrowdSourcingDemo
                               $"(\"{currentSupervisor}\", \"{currentOrdinal}\", \"{merged}\")");
             if (currentSupervisor == String.Empty)
             {
-                DBUtil.CommitToDB($"update ren_request set solution = \"{merged}\" where rtid = \"{rtid}\"");
+                DBUtil.CommitToDB($"update ren_request set solution = \"{merged}\", status = \"{SolvePhase.Solved.ToString()}\" where rtid = \"{rtid}\"");
             }
+            InteractionManager.StartAndComplete(GlobalDataPackage.CurrentUserWorkerId, workitemId);
+            LogUtils.LogLine($"Merge Finish, at node:{currentNodeId}, supervisor:{currentSupervisor}, ordinal:{currentOrdinal}", LogLevel.Important);
         }
     }
 }

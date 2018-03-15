@@ -18,11 +18,11 @@
         <Label Content="Judge Count" HorizontalAlignment="Left" Margin="10,227,0,0" VerticalAlignment="Top" Width="159"/>
         <TextBox Text="3" x:Name="TextBox_JudgeCount" HorizontalAlignment="Left" Height="23" Margin="174,227,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="185" TabIndex="1"/>
         <Label Content="Decompose Count" HorizontalAlignment="Left" Margin="10,258,0,0" VerticalAlignment="Top" Width="159"/>
-        <TextBox Text="3" x:Name="TextBox_DecomposeCount" HorizontalAlignment="Left" Height="23" Margin="174,258,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="185" TabIndex="1"/>
+        <TextBox Text="2" x:Name="TextBox_DecomposeCount" HorizontalAlignment="Left" Height="23" Margin="174,258,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="185" TabIndex="1"/>
         <Label Content="Decompose Vote Count" HorizontalAlignment="Left" Margin="10,289,0,0" VerticalAlignment="Top" Width="159"/>
         <TextBox Text="3" x:Name="TextBox_DecomposeVoteCount" HorizontalAlignment="Left" Height="23" Margin="174,289,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="185" TabIndex="1"/>
         <Label Content="Solve Count" HorizontalAlignment="Left" Margin="10,320,0,0" VerticalAlignment="Top" Width="159"/>
-        <TextBox Text="3" x:Name="TextBox_SolveCount" HorizontalAlignment="Left" Height="23" Margin="174,320,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="185" TabIndex="1"/>
+        <TextBox Text="2" x:Name="TextBox_SolveCount" HorizontalAlignment="Left" Height="23" Margin="174,320,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="185" TabIndex="1"/>
         <Label Content="Solve Vote Count" HorizontalAlignment="Left" Margin="10,351,0,0" VerticalAlignment="Top" Width="159"/>
         <TextBox Text="3" x:Name="TextBox_SolveVoteCount" HorizontalAlignment="Left" Height="23" Margin="174,351,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="185" TabIndex="1"/>
     </Grid>

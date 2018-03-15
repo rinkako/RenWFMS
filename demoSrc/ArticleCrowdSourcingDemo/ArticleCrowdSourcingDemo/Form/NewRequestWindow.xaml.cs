@@ -65,7 +65,7 @@ namespace ArticleCrowdSourcingDemo.Form
 
         private void MetroWindow_Closing(object sender, System.ComponentModel.CancelEventArgs e)
         {
-            if (this.isCancel)
+            if (this.isCancel && !this.isReadonly)
             {
                 InteractionManager.DoCallback("cancel", "Request", null);
             }

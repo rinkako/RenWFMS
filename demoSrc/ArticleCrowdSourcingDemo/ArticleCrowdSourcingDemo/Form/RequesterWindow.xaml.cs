@@ -65,5 +65,18 @@ namespace ArticleCrowdSourcingDemo.Form
             new NewRequestWindow(true).ShowDialog();
             this.RefreshRequestList();
         }
+
+        private void DataGrid_Requests_MouseDoubleClick(object sender, MouseButtonEventArgs e)
+        {
+            if (this.DataGrid_Requests.SelectedIndex == -1)
+            {
+                return;
+            }
+            var sc = this.requests.Rows[this.DataGrid_Requests.SelectedIndex];
+            if (String.Compare(sc["status"].ToString(), SolvePhase.Solved.ToString(), StringComparison.CurrentCultureIgnoreCase) == 0)
+            {
+                new PreviewResultWindow(sc["name"].ToString(), sc["description"].ToString(), sc["solution"].ToString()).ShowDialog();
+            }
+        }
     }
 }

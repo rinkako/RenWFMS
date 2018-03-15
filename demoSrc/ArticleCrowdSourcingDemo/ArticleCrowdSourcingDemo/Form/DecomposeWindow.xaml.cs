@@ -48,6 +48,7 @@ namespace ArticleCrowdSourcingDemo.Form
         private void Button_PlanAdd_Click(object sender, RoutedEventArgs e)
         {
             this.ListBox_MyPlans.Items.Add(this.TextBox_StepPlan.Text);
+            this.TextBox_StepPlan.Text = String.Empty;
         }
 
         private void Button_PlanRemove_Click(object sender, RoutedEventArgs e)

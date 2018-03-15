@@ -97,11 +97,11 @@ namespace ArticleCrowdSourcingDemo
                     break;
                 case "getBestSolutionTask":
                     var sArgDict = JsonConvert.DeserializeObject<Dictionary<string, string>>(pDict["Argument"]);
-                    CSCore.DoQueryBestSolution(pDict["Rtid"], pDict["NodeId"], sArgDict["supervisor"], sArgDict["ordinal"], pDict["Wid"]);
+                    CSCore.DoQueryBestSolution(pDict["Rtid"], pDict["CallbackNodeId"], sArgDict["supervisor"], sArgDict["ordinal"], pDict["Wid"]);
                     break;
                 case "mergeTask":
                     var mArgDict = JsonConvert.DeserializeObject<Dictionary<string, string>>(pDict["Argument"]);
-                    CSCore.DoMerge(pDict["Rtid"], pDict["CallbackNodeId"], mArgDict["supervisor"], mArgDict["ordinal"]);
+                    CSCore.DoMerge(pDict["Rtid"], pDict["CallbackNodeId"], mArgDict["supervisor"], mArgDict["ordinal"], pDict["Wid"]);
                     break;
             }
         }

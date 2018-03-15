@@ -21,7 +21,7 @@
         <Button Content="New Request" Grid.Row="0" Grid.Column="1" Margin="0,5,5,5" HorizontalAlignment="Right" Width="150" mah:ControlsHelper.ContentCharacterCasing="Normal" Click="Button_Click_1"/>
         <GroupBox Header="My Requests" Grid.Row="1" mah:GroupBoxHelper.HeaderForeground="White" mah:ControlsHelper.ContentCharacterCasing="Normal" Grid.ColumnSpan="2" Grid.Column="0">
             <Grid>
-                <DataGrid Name="DataGrid_Requests" CanUserReorderColumns="False" CanUserResizeRows="False" Background="FloralWhite" SelectionMode="Single" IsReadOnly="True"/>
+                <DataGrid Name="DataGrid_Requests" CanUserReorderColumns="False" CanUserResizeRows="False" Background="FloralWhite" SelectionMode="Single" IsReadOnly="True" MouseDoubleClick="DataGrid_Requests_MouseDoubleClick"/>
             </Grid>
         </GroupBox>
         <Button Content="Refresh" Grid.Row="0" Grid.Column="1" Margin="0,5,160,5" HorizontalAlignment="Right" Width="100" mah:ControlsHelper.ContentCharacterCasing="Normal" Click="Button_Click"/>

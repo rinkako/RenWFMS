@@ -14,7 +14,7 @@
         <data id="decomposeVoteCount" expr=""/>
         <data id="solveCount" expr=""/>
         <data id="solveVoteCount" expr=""/>
-        <data id="supervisor" expr=""/>
+        <data id="supervisor" expr="''"/>
         <data id="ordinal" expr="0"/>
         <data id="steps" expr="0"/>
         <data id="count" expr="0"/>
@@ -185,8 +185,7 @@
     <state id="HandlingBestDecompose">
         <transition event="queryComplete" target="Waiting">
             <foreach array="_event.data" item="kvpair" index="currentIdx">
-                <newbo src="CrowdSourcing.xml" instancesExpr="1">
-                    <param name="employer" expr="employer"/>
+                <newbo src="Crowdsourcing.xml" instancesExpr="1">
                     <param name="taskName" expr="taskName"/>
                     <param name="taskDescription" expr="kvpair.getValue()"/>
                     <param name="judgeCount" expr="judgeCount"/>
@@ -194,7 +193,7 @@
                     <param name="decomposeVoteCount" expr="decomposeVoteCount"/>
                     <param name="solveCount" expr="solveCount"/>
                     <param name="solveVoteCount" expr="solveVoteCount"/>
-                    <param name="supervisor" expr="_id"/>
+                    <param name="supervisor" expr="_gid"/>
                     <param name="ordinal" expr="currentIdx"/>
                 </newbo>
                 <assign location="steps" expr="steps + 1"/>

@@ -226,7 +226,7 @@ public class WorkitemContext implements Serializable, RCacheablesContext {
             WorkitemContext retCtx = new WorkitemContext();
             retCtx.entity = rwe;
             retCtx.argsDict = SerializationUtil.JsonDeserialization(rwe.getArguments(), HashMap.class);
-            retCtx.taskContext = TaskContext.GetContext(rtid, boName, taskName);
+            retCtx.taskContext = TaskContext.GetContext(rwe.getRtid(), boName, taskName);
             ContextCachePool.AddOrUpdate(wid, retCtx);
             return retCtx;
         }
