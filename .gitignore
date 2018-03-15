@@ -1,8 +1,6 @@
 # Created by .ignore support plugin (hsz.mobi)
 ### Java template
 # Compiled class file
-*.class
-
 # Log file
 *.log
 
@@ -13,7 +11,6 @@
 .mtj.tmp/
 
 # Package Files #
-*.jar
 *.war
 *.ear
 *.zip
@@ -30,8 +27,6 @@ hs_err_pid*
 .idea/**/workspace.xml
 .idea/**/tasks.xml
 .idea/dictionaries
-.idea/workspace.xml
-
 # Sensitive or high-churn files:
 .idea/**/dataSources/
 .idea/**/dataSources.ids
@@ -96,7 +91,6 @@ parts/
 sdist/
 var/
 wheels/
-*.egg-info/
 .installed.cfg
 *.egg
 MANIFEST
@@ -175,7 +169,6 @@ venv.bak/
 # mypy
 .mypy_cache/
 
-.idea/dataSources.local.xml
 COrgan/GlobalConfigContext.pyc
 ModelChecker/target/classes/org/
 ModelChecker/target/generated-sources/
@@ -184,8 +177,6 @@ RenResourceService/target/classes/org/sysu/renResourcing/resource/Agent.class
 RenResourceService/target/classes/org/sysu/renResourcing/resource/Human.class
 RenResourceService/target/generated-sources/
 RenResourceService/target/generated-test-sources/
-/venv/
-/.idea/workspace.xml
 /COrgan/COrgan.iml
 /RenMasterPanel/RenMasterPanel/bin/
 /RenMasterPanel/RenMasterPanel/obj/
@@ -271,3 +262,7 @@ RenResourceService/target/generated-test-sources/
 /demoSrc/ArticleCrowdSourcingDemo/ArticleCrowdSourcingDemo/obj/
 /demoSrc/ArticleCrowdSourcingDemo/ArticleCrowdSourcingDemo/bin/
 /demoSrc/ArticleCrowdSourcingDemo/packages/
+/demoSrc/ArticleCrowdSourcingQueueMonitor/packages/
+/demoSrc/ArticleCrowdSourcingQueueMonitor/.vs/
+/demoSrc/ArticleCrowdSourcingQueueMonitor/CSQueueMonitor/obj/
+/demoSrc/ArticleCrowdSourcingQueueMonitor/CSQueueMonitor/bin/

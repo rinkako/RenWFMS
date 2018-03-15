@@ -24,7 +24,7 @@
         <TextBox Grid.Row="2" IsReadOnly="True" FontSize="18" Background="Beige" Foreground="Coral" TextAlignment="Center">
             [Solution]
         </TextBox>
-        <TextBox Name="TextBox_Solution" Grid.Row="3" FontSize="15" Text=""/>
+        <TextBox Name="TextBox_Solution" Grid.Row="3" FontSize="15" Text="" TextWrapping="Wrap" AcceptsReturn="True"/>
         <Grid Grid.Row="4" Background="Lavender">
             <Button Name="Button_Submit" Content="Submit" Margin="250,5,250,5" Click="Button_Submit_Click"/>
         </Grid>

@@ -76,6 +76,8 @@
             <principle method="Allocate" distributor="Random"/>
             <callback on="complete" event="merged"/>
             <documentation>Merge task let a merger agent merge solutions of sub tasks to be a complete solution of a crowdsourcing task.</documentation>
+			<param name="supervisor"/>
+            <param name="ordinal"/>
         </task>
     </tasks>
 
@@ -183,6 +185,10 @@
     </state>
 
     <state id="HandlingBestDecompose">
+		<onentry>
+            <log label="CS_HandlingBestDecompose" expr="'entry HandlingBestDecompose state'"/>
+            <assign location="steps" expr="0"/>
+        </onentry>
         <transition event="queryComplete" target="Waiting">
             <foreach array="_event.data" item="kvpair" index="currentIdx">
                 <newbo src="Crowdsourcing.xml" instancesExpr="1">
@@ -213,7 +219,10 @@
         </transition>
 
         <transition cond="count eq steps" target="Merging">
-            <call name="mergeTask"/>
+            <call name="mergeTask">
+				<param name="supervisor" expr="supervisor"/>
+                <param name="ordinal" expr="ordinal"/>
+			</call>
         </transition>
 
         <onexit>
