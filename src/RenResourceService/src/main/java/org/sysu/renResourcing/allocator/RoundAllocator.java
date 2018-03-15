@@ -22,7 +22,7 @@ public class RoundAllocator extends RAllocator {
      * Allocator description.
      */
     public static final String Descriptor = "The round allocator is special allocator. It will " +
-            "allocate the workitem copies to all valid participants.";
+            "allocate the workitem to a participant never receive this type of workitem.";
 
     /**
      * Constructor for reflect.

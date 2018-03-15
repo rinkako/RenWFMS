@@ -238,6 +238,22 @@ namespace ArticleCrowdSourcingDemo
                         }
                     }
                 }
+                else
+                {
+                    var ss = request.Request.InputStream;
+                    var sr = new StreamReader(ss);
+                    var argStr = sr.ReadToEnd();
+                    sr.Close();
+                    ss.Close();
+                    var argItem = argStr.Split('&');
+                    HttpListenerPostValueList.AddRange(argItem
+                        .Select(argKVP => argKVP.Split('='))
+                        .Select(argPair => new HttpListenerPostValue
+                        {
+                            Key = argPair[0],
+                            DirectStr = argPair[1]
+                        }));
+                }
                 return HttpListenerPostValueList;
             }
             catch (Exception)
@@ -256,25 +272,15 @@ namespace ArticleCrowdSourcingDemo
     /// HttpListenner监听Post请求参数值实体  
     /// </summary>  
     public class HttpListenerPostValue
-    {
-        /// <summary>
-        /// 获取或设置Post键值对的类型：0-参数；1-文件
-        /// </summary>  
-        public int Type = 0;
-
-        /// <summary>
-        /// 获取或设置参数键
-        /// </summary>
+    { 
+        public int Type;
+        
         public string Key { get; set; }
-
-        /// <summary>
-        /// 获取或设置参数键值的字节流
-        /// </summary>
+        
         public byte[] RawValueData { get; set; }
 
-        /// <summary>
-        /// 获取参数键值字节流的UTF-8编码的裁去末尾换行符号的字符串
-        /// </summary>
-        public string ValueString => Encoding.UTF8.GetString(this.RawValueData).TrimEnd('\r', '\n');
+        public string DirectStr { get; set; }
+
+        public string ValueString => this.DirectStr ?? Encoding.UTF8.GetString(this.RawValueData).TrimEnd('\r', '\n');
     }
 }
