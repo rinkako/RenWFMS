@@ -7,7 +7,7 @@ package org.sysu.workflow.restful;
 import org.springframework.web.bind.annotation.*;
 import org.sysu.renCommon.enums.LogLevelType;
 import org.sysu.workflow.restful.service.InteractionService;
-import org.sysu.workflow.restful.service.LaunchProcessService;
+import org.sysu.workflow.restful.service.RuntimeManagementService;
 import org.sysu.workflow.utility.LogUtil;
 import org.sysu.workflow.utility.SerializationUtil;
 import org.sysu.renCommon.dto.ReturnModel;
@@ -44,7 +44,7 @@ public class EngineController {
                 return ReturnModelHelper.MissingParametersResponse(missingParams);
             }
             // logic
-            LaunchProcessService.LaunchProcess(rtid);
+            RuntimeManagementService.LaunchProcess(rtid);
             // return
             ReturnModelHelper.StandardResponse(rnModel, StatusCode.OK, "OK");
         } catch (Exception e) {
@@ -71,7 +71,7 @@ public class EngineController {
                 return ReturnModelHelper.MissingParametersResponse(missingParams);
             }
             // logic
-            String jsonify = SerializationUtil.JsonSerialization(LaunchProcessService.SerializeBO(boidlist), "");
+            String jsonify = SerializationUtil.JsonSerialization(RuntimeManagementService.SerializeBO(boidlist), "");
             // return
             ReturnModelHelper.StandardResponse(rnModel, StatusCode.OK, jsonify);
         } catch (Exception e) {

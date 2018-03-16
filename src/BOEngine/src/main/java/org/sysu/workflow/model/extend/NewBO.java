@@ -16,7 +16,7 @@ import org.sysu.workflow.io.SCXMLReader;
 import org.sysu.workflow.*;
 import org.sysu.workflow.model.*;
 import org.sysu.workflow.restful.entity.RenBoEntity;
-import org.sysu.workflow.restful.service.LaunchProcessService;
+import org.sysu.workflow.restful.service.RuntimeManagementService;
 import org.sysu.workflow.utility.HibernateUtil;
 import org.sysu.workflow.utility.LogUtil;
 import org.sysu.workflow.utility.SerializationUtil;
@@ -176,7 +176,7 @@ public class NewBO extends NamelistHolder implements PathResolverHolder {
                         transaction.rollback();
                     }
                     LogUtil.Log("When read bo by rtid, exception occurred, " + e.toString() + ", service rollback",
-                            LaunchProcessService.class.getName(), LogLevelType.ERROR, currentExecutionContext.Rtid);
+                            RuntimeManagementService.class.getName(), LogLevelType.ERROR, currentExecutionContext.Rtid);
                 } finally {
                     HibernateUtil.CloseLocalSession();
                 }

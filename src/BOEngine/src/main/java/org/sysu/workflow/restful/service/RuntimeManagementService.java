@@ -34,9 +34,9 @@ import static org.sysu.workflow.utility.SerializationUtil.DeserializationSCXMLBy
 /**
  * Author: Ariana
  * Date  : 2018/1/22
- * Usage : All process launch service will be handled in this service module.
+ * Usage : All process runtime management services will be handled in this service module.
  */
-public final class LaunchProcessService {
+public final class RuntimeManagementService {
 
     /**
      * obtain main bo xml content from database according to the process id, and then read and execute it
@@ -67,18 +67,18 @@ public final class LaunchProcessService {
             cmtFlag = true;
             if (mainBoEntity == null) {
                 LogUtil.Log("Main BO not exist for launching process: " + rtid,
-                        LaunchProcessService.class.getName(), LogLevelType.ERROR, rtid);
+                        RuntimeManagementService.class.getName(), LogLevelType.ERROR, rtid);
                 return;
             }
             byte[] serializedBO = mainBoEntity.getSerialized();
             SCXML DeserializedBO = DeserializationSCXMLByByteArray(serializedBO);
-            LaunchProcessService.ExecuteBO(DeserializedBO, rtid, pid);
+            RuntimeManagementService.ExecuteBO(DeserializedBO, rtid, pid);
         } catch (Exception e) {
             if (!cmtFlag) {
                 transaction.rollback();
             }
             LogUtil.Log("When read bo by rtid, exception occurred, " + e.toString() + ", service rollback",
-                    LaunchProcessService.class.getName(), LogLevelType.ERROR, rtid);
+                    RuntimeManagementService.class.getName(), LogLevelType.ERROR, rtid);
         } finally {
             HibernateUtil.CloseLocalSession();
         }
@@ -99,11 +99,11 @@ public final class LaunchProcessService {
             for (String boid : boidItems) {
                 RenBoEntity rbe = session.get(RenBoEntity.class, boid);
                 assert rbe != null;
-                SCXML scxml = LaunchProcessService.ParseStringToSCXML(rbe.getBoContent());
+                SCXML scxml = RuntimeManagementService.ParseStringToSCXML(rbe.getBoContent());
                 if (scxml == null) {
                     continue;
                 }
-                HashSet<String> oneInvolves = LaunchProcessService.GetInvolvedBusinessRole(scxml);
+                HashSet<String> oneInvolves = RuntimeManagementService.GetInvolvedBusinessRole(scxml);
                 retSet.addAll(oneInvolves);
                 rbe.setBroles(SerializationUtil.JsonSerialization(oneInvolves, ""));
                 rbe.setSerialized(SerializationUtil.SerializationSCXMLToByteArray(scxml));
@@ -129,7 +129,7 @@ public final class LaunchProcessService {
         } catch (Exception ex) {
             transaction.rollback();
             LogUtil.Log(String.format("When serialize BOList(%s), exception occurred, %s, service rollback", boidList, ex),
-                    LaunchProcessService.class.getName(), LogLevelType.ERROR, boidList);
+                    RuntimeManagementService.class.getName(), LogLevelType.ERROR, boidList);
         } finally {
             HibernateUtil.CloseLocalSession();
         }
@@ -145,7 +145,6 @@ public final class LaunchProcessService {
      */
     private static void ExecuteBO(SCXML scxml, String rtid, String pid) {
         try {
-//          Evaluator evaluator = new JexlEvaluator();
             Evaluator evaluator = EvaluatorFactory.getEvaluator(scxml);
             SCXMLExecutor executor = new SCXMLExecutor(evaluator, new MultiStateMachineDispatcher(), new SimpleErrorReporter());
             Context rootContext = evaluator.newContext(null);
@@ -156,7 +155,7 @@ public final class LaunchProcessService {
             executor.go();
         } catch (Exception e) {
             LogUtil.Log("When ExecuteBO, exception occurred, " + e.toString(),
-                    LaunchProcessService.class.getName(), LogLevelType.ERROR, rtid);
+                    RuntimeManagementService.class.getName(), LogLevelType.ERROR, rtid);
         }
     }
 
@@ -172,7 +171,7 @@ public final class LaunchProcessService {
             return SCXMLReader.read(inputStream);
         } catch (Exception ex) {
             LogUtil.Log(String.format("When read BO XML data, exception occurred, %s", ex),
-                    LaunchProcessService.class.getName(), LogLevelType.ERROR, boXMLContent);
+                    RuntimeManagementService.class.getName(), LogLevelType.ERROR, boXMLContent);
         }
         return null;
     }

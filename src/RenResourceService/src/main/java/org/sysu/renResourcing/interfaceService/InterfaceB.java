@@ -33,6 +33,7 @@ import java.util.*;
  * Usage : Implementation of Interface B of Resource Service.
  *         Interface B is responsible for control workitems life-cycle, and provide
  *         workqueue operations for participants.
+ * TODO  ：Check workitem status changed valid, such as suspend->unoffered is invalid.
  */
 public class InterfaceB {
 
