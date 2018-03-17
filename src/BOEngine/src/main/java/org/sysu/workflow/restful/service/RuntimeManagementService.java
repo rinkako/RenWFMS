@@ -7,13 +7,14 @@ package org.sysu.workflow.restful.service;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
 import org.sysu.renCommon.enums.LogLevelType;
-import org.sysu.workflow.Context;
-import org.sysu.workflow.Evaluator;
-import org.sysu.workflow.EvaluatorFactory;
-import org.sysu.workflow.SCXMLExecutor;
+import org.sysu.workflow.*;
 import org.sysu.workflow.env.MultiStateMachineDispatcher;
 import org.sysu.workflow.env.SimpleErrorReporter;
+import org.sysu.workflow.instanceTree.InstanceManager;
+import org.sysu.workflow.instanceTree.RInstanceTree;
+import org.sysu.workflow.instanceTree.RTreeNode;
 import org.sysu.workflow.io.SCXMLReader;
+import org.sysu.workflow.model.EnterableState;
 import org.sysu.workflow.model.SCXML;
 import org.sysu.workflow.model.extend.Task;
 import org.sysu.workflow.model.extend.Tasks;
@@ -25,6 +26,7 @@ import org.sysu.workflow.utility.HibernateUtil;
 import org.sysu.workflow.utility.LogUtil;
 import org.sysu.workflow.utility.SerializationUtil;
 
+import javax.validation.constraints.NotNull;
 import java.io.ByteArrayInputStream;
 import java.io.InputStream;
 import java.util.*;
@@ -32,7 +34,7 @@ import java.util.*;
 import static org.sysu.workflow.utility.SerializationUtil.DeserializationSCXMLByByteArray;
 
 /**
- * Author: Ariana
+ * Author: Ariana, Rinkako
  * Date  : 2018/1/22
  * Usage : All process runtime management services will be handled in this service module.
  */
@@ -137,6 +139,46 @@ public final class RuntimeManagementService {
     }
 
     /**
+     * Get a user-friendly descriptor of an instance tree.
+     *
+     * @param rtid process runtime record id
+     * @return a descriptor of span instance tree
+     */
+    public static FriendlyTreeNode GetSpanTreeDescriptor(String rtid) {
+        RInstanceTree tree = InstanceManager.GetInstanceTree(rtid);
+        if (tree == null || tree.Root == null) {
+            return null;
+        }
+        FriendlyTreeNode rootFNode = new FriendlyTreeNode();
+        RuntimeManagementService.Nephren(tree.Root, rootFNode);
+        return rootFNode;
+    }
+
+    /**
+     * Recursively handle span the user-friendly package tree of a specific instance tree.
+     * This method is to commemorate a girl devoted her love to guard the happiness of who she loved. -RKK
+     *
+     * @param node current span root node
+     * @param fNode user-friendly package node of current span node
+     */
+    private static void Nephren(@NotNull RTreeNode node, @NotNull FriendlyTreeNode fNode) {
+        fNode.BOName = node.getExect().getScInstance().getStateMachine().getName();
+        fNode.GlobalId = node.getGlobalId();
+        fNode.NotifiableId = node.getExect().NotifiableId;
+        Set<EnterableState> status = node.getExect().getScInstance().getCurrentStatus().getActiveStates();
+        HashSet<String> stringSet = new HashSet<>();
+        for (EnterableState st : status) {
+            stringSet.add(st.getId());
+        }
+        fNode.StatusDescriptor = SerializationUtil.JsonSerialization(stringSet, node.getExect().Rtid);
+        for (RTreeNode sub : node.Children) {
+            FriendlyTreeNode subFn = new FriendlyTreeNode();
+            RuntimeManagementService.Nephren(sub, subFn);
+            fNode.Children.add(subFn);
+        }
+    }
+
+    /**
      * execute the main bo of the current process
      *
      * @param scxml scxml instance
@@ -189,5 +231,21 @@ public final class RuntimeManagementService {
             retSet.add(task.getBrole());
         }
         return retSet;
+    }
+
+    /**
+     * A class for user-friendly tree node data package.
+     */
+    private static class FriendlyTreeNode {
+
+        public String NotifiableId;
+
+        public String GlobalId;
+
+        public String BOName;
+
+        public String StatusDescriptor;
+
+        public ArrayList<FriendlyTreeNode> Children = new ArrayList<>();
     }
 }

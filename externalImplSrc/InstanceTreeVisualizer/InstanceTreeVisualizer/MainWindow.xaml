@@ -1,0 +1,30 @@
+﻿<mah:MetroWindow x:Class="InstanceTreeVisualizer.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:InstanceTreeVisualizer"
+        xmlns:mah="http://metro.mahapps.com/winfx/xaml/controls"
+        mc:Ignorable="d"
+        Title="Nephren Tree Visualizer" Height="420" Width="600" MinHeight="420" MinWidth="600" WindowStartupLocation="CenterScreen">
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="60*"/>
+            <ColumnDefinition Width="40*"/>
+        </Grid.ColumnDefinitions>
+        <TreeView Name="TreeView_InstanceTree" Margin="5,36,0,5" BorderThickness="1" BorderBrush="CornflowerBlue">
+            <TreeView.ItemTemplate>
+                <HierarchicalDataTemplate ItemsSource="{Binding Children}">
+                    <StackPanel>
+                        <TextBlock VerticalAlignment="Center" FontSize="14" Text="{Binding deptName}" Margin="2,0,0,0"></TextBlock>
+                    </StackPanel>
+                </HierarchicalDataTemplate>
+            </TreeView.ItemTemplate>
+        </TreeView>
+        <TextBox Name="TextBox_RTID" Grid.Column="0" HorizontalAlignment="Left" Height="23" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="270" Margin="5,5,0,0" ToolTip="RTID to query"/>
+        <Button Grid.Column="0" Content="Refresh" Margin="280,4,0,0" VerticalAlignment="Top" HorizontalAlignment="Left" Width="75" Click="Button_Click"/>
+        <TextBox Name="TextBox_Description" IsReadOnly="True" Grid.Column="1" Margin="5,5,5,5" TextWrapping="Wrap" Text=""/>
+
+    </Grid>
+</mah:MetroWindow>
+

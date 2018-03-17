@@ -81,6 +81,33 @@ public class EngineController {
     }
 
     /**
+     * Get a user-friendly descriptor of an instance tree.
+     * @param rtid process rtid
+     * @return response package
+     */
+    @RequestMapping(value = "/getSpanTree", produces = {"application/json", "application/xml"})
+    @ResponseBody
+    @Transactional
+    public ReturnModel GetSpanTreeByRTID(@RequestParam(value = "rtid", required = false) String rtid) {
+        ReturnModel rnModel = new ReturnModel();
+        try {
+            // miss params
+            ArrayList<String> missingParams = new ArrayList<String>();
+            if (rtid == null) missingParams.add("rtid");
+            if (missingParams.size() > 0) {
+                return ReturnModelHelper.MissingParametersResponse(missingParams);
+            }
+            // logic
+            String jsonify = SerializationUtil.JsonSerialization(RuntimeManagementService.GetSpanTreeDescriptor(rtid), rtid);
+            // return
+            ReturnModelHelper.StandardResponse(rnModel, StatusCode.OK, jsonify);
+        } catch (Exception e) {
+            ReturnModelHelper.ExceptionResponse(rnModel, e.toString());
+        }
+        return rnModel;
+    }
+
+    /**
      * Receive callback event from Name Service.
      * @param rtid process rtid (required)
      * @param bo from which BO (required)

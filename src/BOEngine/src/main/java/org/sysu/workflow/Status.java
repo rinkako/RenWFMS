@@ -8,7 +8,6 @@ import java.io.Serializable;
 import java.util.Set;
 
 /**
- * 对状态机的当前状态的一个不可变的封装
  * The immutable encapsulation of the current state of a state machine.
  */
 public class Status implements Serializable {
