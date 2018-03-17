@@ -55,6 +55,7 @@ public class WorkitemContext implements Serializable, RCacheablesContext {
 
     /**
      * Get workitem entity.
+     *
      * @return workitem entity object
      */
     public RenWorkitemEntity getEntity() {
@@ -63,6 +64,7 @@ public class WorkitemContext implements Serializable, RCacheablesContext {
 
     /**
      * Get workitem argument dictionary.
+     *
      * @return parameter-argument hash map
      */
     public HashMap<String, String> getArgsDict() {
@@ -71,6 +73,7 @@ public class WorkitemContext implements Serializable, RCacheablesContext {
 
     /**
      * Get the template task context of this workitem.
+     *
      * @return TaskContext
      */
     public TaskContext getTaskContext() {
@@ -78,7 +81,18 @@ public class WorkitemContext implements Serializable, RCacheablesContext {
     }
 
     /**
+     * Check if this workitem at a specific resourcing status.
+     *
+     * @param rtype status to be checked
+     * @return true if in this resourcing status
+     */
+    public boolean IsAtResourcingStatus(WorkitemResourcingStatusType rtype) {
+        return rtype.name().equalsIgnoreCase(this.entity.getResourceStatus());
+    }
+
+    /**
      * Generate a user-friendly workitem package.
+     *
      * @param workitem workitem context
      * @return HashMap of workitem descriptor
      */
@@ -107,19 +121,16 @@ public class WorkitemContext implements Serializable, RCacheablesContext {
         try {
             relations = (ArrayList<RenQueueitemsEntity>) session.createQuery(String.format("FROM RenQueueitemsEntity WHERE workitemId = '%s'", workitemId)).list();
             transaction.commit();
-        }
-        catch (Exception ex) {
+        } catch (Exception ex) {
             LogUtil.Log("GenerateResponseWorkitem but cannot read relation from steady, " + ex,
                     WorkitemContext.class.getName(), LogLevelType.ERROR, entity.getRtid());
             transaction.rollback();
-        }
-        finally {
+        } finally {
             HibernateUtil.CloseLocalSession();
         }
         if (relations == null) {
             retMap.put("WorkerIdList", "[]");
-        }
-        else {
+        } else {
             StringBuilder workerIdSb = new StringBuilder();
             workerIdSb.append("[");
             for (RenQueueitemsEntity rqe : relations) {
@@ -139,7 +150,8 @@ public class WorkitemContext implements Serializable, RCacheablesContext {
 
     /**
      * Generate a list of user-friendly workitem packages.
-     * @param wList list of workitem context
+     *
+     * @param wList      list of workitem context
      * @param onlyActive whether only get active workitems
      * @return ArrayList of HashMap of workitem descriptor
      */
@@ -159,6 +171,7 @@ public class WorkitemContext implements Serializable, RCacheablesContext {
 
     /**
      * Get Workitem Context by RTID.
+     *
      * @param rtid process rtid
      * @return ArrayList of workitem context
      */
@@ -175,20 +188,19 @@ public class WorkitemContext implements Serializable, RCacheablesContext {
                 retList.add(WorkitemContext.GetContext(rwe.getWid(), rwe.getRtid()));
             }
             return retList;
-        }
-        catch (Exception ex) {
+        } catch (Exception ex) {
             if (!cmtFlag) {
                 transaction.rollback();
             }
             return null;
-        }
-        finally {
+        } finally {
             HibernateUtil.CloseLocalSession();
         }
     }
 
     /**
      * Get an exist workitem context from cache or steady.
+     *
      * @param wid workitem global id
      * @return workitem context
      */
@@ -198,8 +210,9 @@ public class WorkitemContext implements Serializable, RCacheablesContext {
 
     /**
      * Get an exist workitem context.
-     * @param wid workitem global id
-     * @param rtid process rtid
+     *
+     * @param wid         workitem global id
+     * @param rtid        process rtid
      * @param forceReload force reload from steady and refresh cache
      * @return workitem context
      */
@@ -229,25 +242,24 @@ public class WorkitemContext implements Serializable, RCacheablesContext {
             retCtx.taskContext = TaskContext.GetContext(rwe.getRtid(), boName, taskName);
             ContextCachePool.AddOrUpdate(wid, retCtx);
             return retCtx;
-        }
-        catch (Exception ex) {
+        } catch (Exception ex) {
             if (!cmtFlag) {
                 transaction.rollback();
             }
             LogUtil.Log("Get workitem context but exception occurred, " + ex,
                     WorkitemContext.class.getName(), LogLevelType.ERROR, rtid);
             throw ex;
-        }
-        finally {
+        } finally {
             HibernateUtil.CloseLocalSession();
         }
     }
 
     /**
      * Generate a workitem context and save it to steady by a task context.
-     * @param taskContext task context to be the generation template
-     * @param rtid process rtid
-     * @param args parameter-arguments map
+     *
+     * @param taskContext    task context to be the generation template
+     * @param rtid           process rtid
+     * @param args           parameter-arguments map
      * @param callbackNodeId producer instance tree node global id for callback
      * @return workitem context
      */
@@ -287,22 +299,21 @@ public class WorkitemContext implements Serializable, RCacheablesContext {
             // handle callback and hook
             InterfaceA.HandleCallbackAndHook(WorkitemStatusType.Enabled, wCtx, taskContext, null);
             return wCtx;
-        }
-        catch (Exception ex) {
+        } catch (Exception ex) {
             if (!cmtFlag) {
                 transaction.rollback();
             }
             LogUtil.Log("Generate workitem context but exception occurred, " + ex,
                     WorkitemContext.class.getName(), LogLevelType.ERROR, rtid);
             throw ex;
-        }
-        finally {
+        } finally {
             HibernateUtil.CloseLocalSession();
         }
     }
 
     /**
      * Save changes context to steady memory.
+     *
      * @param context context to be saved
      */
     public static void SaveToSteady(WorkitemContext context) {
@@ -316,13 +327,11 @@ public class WorkitemContext implements Serializable, RCacheablesContext {
         try {
             session.update(context.entity);
             transaction.commit();
-        }
-        catch (Exception ex) {
+        } catch (Exception ex) {
             transaction.rollback();
             LogUtil.Log("Save workitem context but exception occurred, " + ex,
                     WorkitemContext.class.getName(), LogLevelType.ERROR, context.getEntity().getRtid());
-        }
-        finally {
+        } finally {
             HibernateUtil.CloseLocalSession();
         }
     }
