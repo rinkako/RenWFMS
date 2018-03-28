@@ -2,7 +2,6 @@
 package org.sysu.workflow.model;
 
 import org.sysu.workflow.*;
-import org.sysu.workflow.*;
 import org.sysu.workflow.invoke.Invoker;
 import org.sysu.workflow.invoke.InvokerException;
 import org.sysu.workflow.semantics.ErrorConstants;
@@ -25,7 +24,7 @@ public class Invoke extends NamelistHolder implements PathResolverHolder, Conten
 
     /**
      * 当前SCXML执行上下文的key
-     * The default context variable key under which the current SCXMLExecutionContext is provided
+     * The default context variable key under which the current BOXMLExecutionContext is provided
      */
     private static final String CURRENT_EXECUTION_CONTEXT_KEY = "_CURRENT_EXECUTION_CONTEXT";
 
@@ -296,7 +295,7 @@ public class Invoke extends NamelistHolder implements PathResolverHolder, Conten
 
     /**
      * 返回local context 变量名字，
-     * @return The local context variable name under which the current SCXMLExecutionContext is provided to the Invoke
+     * @return The local context variable name under which the current BOXMLExecutionContext is provided to the Invoke
      */
     public String getCurrentSCXMLExecutionContextKey() {
         return CURRENT_EXECUTION_CONTEXT_KEY;
@@ -347,9 +346,9 @@ public class Invoke extends NamelistHolder implements PathResolverHolder, Conten
         Context ctx = axctx.getContext(parentState);
 
         //得到当前状态机的执行上下文
-        SCXMLExecutionContext exctx = (SCXMLExecutionContext) ctx.getVars().get(getCurrentSCXMLExecutionContextKey());
+        BOXMLExecutionContext exctx = (BOXMLExecutionContext) ctx.getVars().get(getCurrentSCXMLExecutionContextKey());
         if (exctx == null) {  //状态机的执行上下文为空，抛出异常
-            throw new ModelException("Missing current SCXMLExecutionContext instance in context under key: " + getCurrentSCXMLExecutionContextKey());
+            throw new ModelException("Missing current BOXMLExecutionContext instance in context under key: " + getCurrentSCXMLExecutionContextKey());
         }
         try {
             //状态所在的上下文添加命名空间
@@ -372,7 +371,7 @@ public class Invoke extends NamelistHolder implements PathResolverHolder, Conten
 
             //如果在文档中type 和typeexpr都没有指定，默认类型就是调用一个scxml会话
             if (typeValue == null) {
-                typeValue = SCXMLExecutionContext.SCXML_INVOKER_TYPE;
+                typeValue = BOXMLExecutionContext.SCXML_INVOKER_TYPE;
             }
             //实例化一个调用者
             Invoker invoker = exctx.newInvoker(typeValue);
@@ -381,7 +380,7 @@ public class Invoke extends NamelistHolder implements PathResolverHolder, Conten
             String invokeId = getId();
             if (invokeId == null) {
 
-                invokeId = parentState.getId() + "." + ctx.get(SCXMLSystemContext.SESSIONID_KEY);
+                invokeId = parentState.getId() + "." + ctx.get(BOXMLSystemContext.SESSIONID_KEY);
             }
             //如果idlocation不为空，求IDlocation的值
             if (getId() == null && getIdlocation() != null) {

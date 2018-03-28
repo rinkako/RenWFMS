@@ -4,7 +4,7 @@
  */
 package org.sysu.workflow.instanceTree;
 
-import org.sysu.workflow.SCXMLExecutionContext;
+import org.sysu.workflow.BOXMLExecutionContext;
 
 import java.util.ArrayList;
 
@@ -22,7 +22,7 @@ public class RTreeNode {
      * @param exect binding execution context
      * @param parent parent tree node reference
      */
-    public RTreeNode(String filename, String globalId, SCXMLExecutionContext exect, RTreeNode parent) {
+    public RTreeNode(String filename, String globalId, BOXMLExecutionContext exect, RTreeNode parent) {
         this.name = filename;
         this.Parent = parent;
         this.globalId = globalId;
@@ -49,9 +49,9 @@ public class RTreeNode {
 
     /**
      * Get binding BO execution context.
-     * @return SCXMLExecutionContext instance
+     * @return BOXMLExecutionContext instance
      */
-    public SCXMLExecutionContext getExect() {
+    public BOXMLExecutionContext getExect() {
         return exect;
     }
 
@@ -86,5 +86,5 @@ public class RTreeNode {
     /**
      * Binding execution context.
      */
-    private SCXMLExecutionContext exect;
+    private BOXMLExecutionContext exect;
 }

@@ -1,8 +1,8 @@
 
 package org.sysu.workflow.env;
 
+import org.sysu.workflow.BOXMLSystemContext;
 import org.sysu.workflow.Context;
-import org.sysu.workflow.SCXMLSystemContext;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
@@ -33,7 +33,7 @@ public class SimpleContext implements Context, Serializable {
      */
     private Map<String, Object> vars;
 
-    protected final SCXMLSystemContext systemContext;
+    protected final BOXMLSystemContext systemContext;
 
     /**
      * Constructor.
@@ -59,8 +59,8 @@ public class SimpleContext implements Context, Serializable {
      */
     public SimpleContext(final Context parent, final Map<String, Object> initialVars) {
         this.parent = parent;
-        this.systemContext = parent instanceof SCXMLSystemContext ?
-                (SCXMLSystemContext) parent : parent != null ? parent.getSystemContext() : null;
+        this.systemContext = parent instanceof BOXMLSystemContext ?
+                (BOXMLSystemContext) parent : parent != null ? parent.getSystemContext() : null;
         if (initialVars == null) {
             setVars(new HashMap<String, Object>());
         } else {
@@ -147,11 +147,11 @@ public class SimpleContext implements Context, Serializable {
     }
 
     /**
-     * Get the SCXMLSystemContext for this Context, should not be null unless this is the root Context
+     * Get the BOXMLSystemContext for this Context, should not be null unless this is the root Context
      *
-     * @return The SCXMLSystemContext in a chained Context environment
+     * @return The BOXMLSystemContext in a chained Context environment
      */
-    public final SCXMLSystemContext getSystemContext() {
+    public final BOXMLSystemContext getSystemContext() {
         return systemContext;
     }
 

@@ -12,7 +12,7 @@ import org.sysu.workflow.instanceTree.InstanceManager;
 import org.sysu.workflow.instanceTree.RTreeNode;
 import org.sysu.workflow.instanceTree.RInstanceTree;
 import org.sysu.workflow.env.SimpleErrorReporter;
-import org.sysu.workflow.io.SCXMLReader;
+import org.sysu.workflow.io.BOXMLReader;
 import org.sysu.workflow.*;
 import org.sysu.workflow.model.*;
 import org.sysu.workflow.restful.entity.RenBoEntity;
@@ -149,7 +149,7 @@ public class NewBO extends NamelistHolder implements PathResolverHolder {
 
             SCXML scxml = null;
 
-            SCXMLExecutionContext currentExecutionContext = (SCXMLExecutionContext) exctx.getInternalIOProcessor();
+            BOXMLExecutionContext currentExecutionContext = (BOXMLExecutionContext) exctx.getInternalIOProcessor();
             String boName = getSrc().split("\\.")[0];
 
             //read BO from database
@@ -195,7 +195,7 @@ public class NewBO extends NamelistHolder implements PathResolverHolder {
                     url = this.getClass().getClassLoader().getResource(getSrc());
                 }
                 try {
-                    scxml = SCXMLReader.read(url);
+                    scxml = BOXMLReader.read(url);
                 } catch (Exception e) {
                     System.out.println("couldn't find :" + getSrc());
                     e.printStackTrace();
@@ -209,7 +209,7 @@ public class NewBO extends NamelistHolder implements PathResolverHolder {
             Context tmpCtx = evaluator.newContext(ctx);
             int instanceNum = (int) evaluator.eval(ctx, this.instancesExpr);
             for (int i = 0; i < instanceNum; i++) {
-                SCXMLExecutor executor = new SCXMLExecutor(evaluator, new MultiStateMachineDispatcher(), new SimpleErrorReporter(), null, currentExecutionContext.RootNodeId);
+                BOXMLExecutor executor = new BOXMLExecutor(evaluator, new MultiStateMachineDispatcher(), new SimpleErrorReporter(), null, currentExecutionContext.RootNodeId);
                 executor.setRtid(currentExecutionContext.Rtid);
                 executor.setPid(currentExecutionContext.Pid);
                 executor.setStateMachine(scxml);

@@ -411,9 +411,9 @@ public class Send extends NamelistHolder implements ContentContainer {
         }
         if (typeValue == null) {
             // must default to 'scxml' when unspecified
-            typeValue = SCXMLIOProcessor.DEFAULT_EVENT_PROCESSOR;
-        } else if (!SCXMLIOProcessor.DEFAULT_EVENT_PROCESSOR.equals(typeValue) && typeValue.trim().equalsIgnoreCase(SCXMLIOProcessor.SCXML_EVENT_PROCESSOR)) {
-            typeValue = SCXMLIOProcessor.DEFAULT_EVENT_PROCESSOR;
+            typeValue = BOXMLIOProcessor.DEFAULT_EVENT_PROCESSOR;
+        } else if (!BOXMLIOProcessor.DEFAULT_EVENT_PROCESSOR.equals(typeValue) && typeValue.trim().equalsIgnoreCase(BOXMLIOProcessor.SCXML_EVENT_PROCESSOR)) {
+            typeValue = BOXMLIOProcessor.DEFAULT_EVENT_PROCESSOR;
         }
 
         //得到消息传播模式
@@ -458,7 +458,7 @@ public class Send extends NamelistHolder implements ContentContainer {
                         + "\" evaluated to null");
             }
         }
-        Map<String, SCXMLIOProcessor> ioProcessors = (Map<String, SCXMLIOProcessor>) ctx.get(SCXMLSystemContext.IOPROCESSORS_KEY);
+        Map<String, BOXMLIOProcessor> ioProcessors = (Map<String, BOXMLIOProcessor>) ctx.get(BOXMLSystemContext.IOPROCESSORS_KEY);
         ctx.setLocal(getNamespacesKey(), null);
         if (exctx.getAppLog().isDebugEnabled()) {
             exctx.getAppLog().debug("<send>: Dispatching event '" + eventValue
@@ -468,7 +468,7 @@ public class Send extends NamelistHolder implements ContentContainer {
         }
         if (exctx.getEventDispatcher() instanceof MultiStateMachineDispatcher){
             if (messageModeValue != null) {
-                SCXMLExecutionContext execctx = (SCXMLExecutionContext)exctx.getInternalIOProcessor();
+                BOXMLExecutionContext execctx = (BOXMLExecutionContext)exctx.getInternalIOProcessor();
                 exctx.getEventDispatcher().send(execctx.Rtid, execctx.NodeId, id, messageModeValue,
                         targetNameValue, targetStateValue, typeValue, eventValue, payloadDataMap, hintsValue, wait);
             } else {

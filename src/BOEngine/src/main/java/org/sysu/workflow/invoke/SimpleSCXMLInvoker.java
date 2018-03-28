@@ -1,12 +1,12 @@
 
 package org.sysu.workflow.invoke;
 
+import org.sysu.workflow.BOXMLExecutor;
 import org.sysu.workflow.Context;
-import org.sysu.workflow.SCXMLExecutor;
-import org.sysu.workflow.SCXMLIOProcessor;
+import org.sysu.workflow.BOXMLIOProcessor;
 import org.sysu.workflow.TriggerEvent;
 import org.sysu.workflow.env.SimpleSCXMLListener;
-import org.sysu.workflow.io.SCXMLReader;
+import org.sysu.workflow.io.BOXMLReader;
 import org.sysu.workflow.model.ModelException;
 import org.sysu.workflow.model.SCXML;
 
@@ -34,15 +34,15 @@ public class SimpleSCXMLInvoker implements Invoker, Serializable {
      */
     private String parentStateId;
     /**
-     * Invoking parent SCXMLExecutor
+     * Invoking parent BOXMLExecutor
      * 调用者的 引擎
      */
-    private SCXMLExecutor parentSCXMLExecutor;
+    private BOXMLExecutor parentSCXMLExecutor;
     /**
      * The invoked state machine executor.
      * 被调用的状态机（本状态机）的引擎
      */
-    private SCXMLExecutor executor;
+    private BOXMLExecutor executor;
     /**
      * Cancellation status.
      * 是否取消了
@@ -71,7 +71,7 @@ public class SimpleSCXMLInvoker implements Invoker, Serializable {
      * {@inheritDoc}.
      */
 
-    public void setParentSCXMLExecutor(SCXMLExecutor parentSCXMLExecutor) {
+    public void setParentSCXMLExecutor(BOXMLExecutor parentSCXMLExecutor) {
         this.parentSCXMLExecutor = parentSCXMLExecutor;
     }
 
@@ -79,14 +79,14 @@ public class SimpleSCXMLInvoker implements Invoker, Serializable {
      * {@inheritDoc}.
      */
 
-    public SCXMLIOProcessor getChildIOProcessor() {
+    public BOXMLIOProcessor getChildIOProcessor() {
         // not used
         return executor;
     }
 
     /**
      * 开始调用了，
-     * 有很多东西（ executor = new SCXMLExecutor(parentSCXMLExecutor);）
+     * 有很多东西（ executor = new BOXMLExecutor(parentSCXMLExecutor);）
      * 语义，求值器，事件分发器，错误报告都是直接利用父状态机的内容
      *
      * {@inheritDoc}.
@@ -98,7 +98,7 @@ public class SimpleSCXMLInvoker implements Invoker, Serializable {
         //构造被调用的状态机
         SCXML scxml;
         try {
-            scxml = SCXMLReader.read(new URL(source));
+            scxml = BOXMLReader.read(new URL(source));
         } catch (ModelException me) {
             throw new InvokerException(me.getMessage(), me.getCause());
         } catch (IOException ioe) {
@@ -106,7 +106,7 @@ public class SimpleSCXMLInvoker implements Invoker, Serializable {
         } catch (XMLStreamException xse) {
             throw new InvokerException(xse.getMessage(), xse.getCause());
         }
-        executor = new SCXMLExecutor(parentSCXMLExecutor);
+        executor = new BOXMLExecutor(parentSCXMLExecutor);
         try {
             executor.setStateMachine(scxml);
         } catch (ModelException me) {

@@ -50,7 +50,7 @@ public class BOInheritHandler {
      * @return the base object id for this scxml
      */
     private static String PushSCXML(URL baseUrl, Stack<SCXML> inheritStack) throws Exception {
-        SCXML scxml = SCXMLReader.read(baseUrl);
+        SCXML scxml = BOXMLReader.read(baseUrl);
         inheritStack.push(scxml);
         return scxml.getBaseBusinessObjectName();
     }

@@ -21,36 +21,36 @@ import java.util.concurrent.ConcurrentLinkedQueue;
 /**
  * <p>The SCXML &quot;engine&quot; that executes SCXML documents. The
  * particular semantics used by this engine for executing the SCXML are
- * encapsulated in the SCXMLSemantics implementation that it uses.</p>
+ * encapsulated in the BOXMLSemantics implementation that it uses.</p>
  *
  * <p>The default implementation is
  * <code>org.apache.commons.scxml.semantics.SCXMLSemanticsImpl</code></p>
  *
  * Modified by Rinkako, for extending Instance Tree support.
  *
- * @see SCXMLSemantics
+ * @see BOXMLSemantics
  */
-public class SCXMLExecutor implements SCXMLIOProcessor {
+public class BOXMLExecutor implements BOXMLIOProcessor {
 
     /**
-     * The Logger for the SCXMLExecutor.
+     * The Logger for the BOXMLExecutor.
      */
-    private Log log = LogFactory.getLog(SCXMLExecutor.class);
+    private Log log = LogFactory.getLog(BOXMLExecutor.class);
 
     /**
-     * Parent SCXMLExecutor
+     * Parent BOXMLExecutor
      */
-    private SCXMLExecutor parentSCXMLExecutor;
+    private BOXMLExecutor parentSCXMLExecutor;
 
     /**
      * Interpretation semantics.
      */
-    private SCXMLSemantics semantics;
+    private BOXMLSemantics semantics;
 
     /**
      * The state machine execution context.
      */
-    private SCXMLExecutionContext exctx;
+    private BOXMLExecutionContext exctx;
 
     /**
      * The index of this executor in application.
@@ -75,7 +75,7 @@ public class SCXMLExecutor implements SCXMLIOProcessor {
     /**
      * Convenience constructor.
      */
-    public SCXMLExecutor() {
+    public BOXMLExecutor() {
         this(null, null, null, null);
     }
 
@@ -86,7 +86,7 @@ public class SCXMLExecutor implements SCXMLIOProcessor {
      * @param evtDisp      The event dispatcher
      * @param errRep       The error reporter
      */
-    public SCXMLExecutor(final Evaluator expEvaluator,
+    public BOXMLExecutor(final Evaluator expEvaluator,
                          final EventDispatcher evtDisp, final ErrorReporter errRep) {
         this(expEvaluator, evtDisp, errRep, null);
     }
@@ -99,11 +99,11 @@ public class SCXMLExecutor implements SCXMLIOProcessor {
      * @param errRep       The error reporter
      * @param semantics    The SCXML semantics
      */
-    public SCXMLExecutor(final Evaluator expEvaluator,
+    public BOXMLExecutor(final Evaluator expEvaluator,
                          final EventDispatcher evtDisp, final ErrorReporter errRep,
-                         final SCXMLSemantics semantics) {
+                         final BOXMLSemantics semantics) {
         this.semantics = semantics != null ? semantics : new SCXMLSemanticsImpl();
-        this.exctx = new SCXMLExecutionContext(this, expEvaluator, evtDisp, errRep);
+        this.exctx = new BOXMLExecutionContext(this, expEvaluator, evtDisp, errRep);
         this.exctx.NodeId = this.NodeId;
         this.exctx.RootNodeId = this.RootNodeId;
     }
@@ -117,35 +117,35 @@ public class SCXMLExecutor implements SCXMLIOProcessor {
      * @param semantics    The SCXML semantics
      * @param rootNodeId      Root state machine id
      */
-    public SCXMLExecutor(final Evaluator expEvaluator,
+    public BOXMLExecutor(final Evaluator expEvaluator,
                          final EventDispatcher evtDisp, final ErrorReporter errRep,
-                         final SCXMLSemantics semantics,
+                         final BOXMLSemantics semantics,
                          final String rootNodeId) {
         this.semantics = semantics != null ? semantics : new SCXMLSemanticsImpl();
-        this.exctx = new SCXMLExecutionContext(this, expEvaluator, evtDisp, errRep);
+        this.exctx = new BOXMLExecutionContext(this, expEvaluator, evtDisp, errRep);
         this.RootNodeId = rootNodeId;
         this.exctx.NodeId = this.NodeId;
         this.exctx.RootNodeId = this.RootNodeId;
     }
 
     /**
-     * Constructor using a parent SCXMLExecutor
+     * Constructor using a parent BOXMLExecutor
      *
-     * @param parentSCXMLExecutor the parent SCXMLExecutor
+     * @param parentSCXMLExecutor the parent BOXMLExecutor
      */
-    public SCXMLExecutor(final SCXMLExecutor parentSCXMLExecutor) {
+    public BOXMLExecutor(final BOXMLExecutor parentSCXMLExecutor) {
         this.parentSCXMLExecutor = parentSCXMLExecutor;
         this.semantics = parentSCXMLExecutor.semantics;
-        this.exctx = new SCXMLExecutionContext(this, parentSCXMLExecutor.getEvaluator(),
+        this.exctx = new BOXMLExecutionContext(this, parentSCXMLExecutor.getEvaluator(),
                 parentSCXMLExecutor.getEventdispatcher(), parentSCXMLExecutor.getErrorReporter());
         this.exctx.NodeId = this.NodeId;
         this.exctx.RootNodeId = this.RootNodeId;
     }
 
     /**
-     * Get parent SCXMLExecutor
+     * Get parent BOXMLExecutor
      */
-    protected SCXMLExecutor getParentSCXMLExecutor() {
+    protected BOXMLExecutor getParentSCXMLExecutor() {
         return parentSCXMLExecutor;
     }
 
@@ -168,8 +168,8 @@ public class SCXMLExecutor implements SCXMLIOProcessor {
      * @param atomicStateIds The set of atomic state ids for the state machine
      * @throws ModelException when the state machine hasn't been properly configured yet, when an unknown or illegal
      *                        stateId is specified, or when the specified active configuration does not represent a legal configuration.
-     * @see SCInstance#initialize()
-     * @see SCXMLSemantics#isLegalConfiguration(Set, ErrorReporter)
+     * @see BOInstance#initialize()
+     * @see BOXMLSemantics#isLegalConfiguration(Set, ErrorReporter)
      */
     public synchronized void setConfiguration(Set<String> atomicStateIds) throws ModelException {
         exctx.initialize();
@@ -414,9 +414,9 @@ public class SCXMLExecutor implements SCXMLIOProcessor {
     }
 
     /**
-     * Detach the current SCInstance to allow external serialization.
+     * Detach the current BOInstance to allow external serialization.
      * <p>
-     * {@link #attachInstance(SCInstance)} can be used to re-attach a previously detached instance
+     * {@link #attachInstance(BOInstance)} can be used to re-attach a previously detached instance
      * </p>
      * <p>
      * Note: until an instance is re-attached, no operations are allowed (and probably throw exceptions) except
@@ -426,19 +426,19 @@ public class SCXMLExecutor implements SCXMLIOProcessor {
      *
      * @return the detached instance
      */
-    public SCInstance detachInstance() {
+    public BOInstance detachInstance() {
         return exctx.detachInstance();
     }
 
     /**
-     * Re-attach a previously detached SCInstance.
+     * Re-attach a previously detached BOInstance.
      * <p>
      * Note: an already attached instance will get overwritten (and thus lost).
      * </p>
      *
-     * @param instance An previously detached SCInstance
+     * @param instance An previously detached BOInstance
      */
-    public void attachInstance(SCInstance instance) {
+    public void attachInstance(BOInstance instance) {
         exctx.attachInstance(instance);
     }
 
@@ -493,7 +493,7 @@ public class SCXMLExecutor implements SCXMLIOProcessor {
     }
 
     /**
-     * Add a new external event, which may be done concurrently, and even when the current SCInstance is detached.
+     * Add a new external event, which may be done concurrently, and even when the current BOInstance is detached.
      * <p>
      * No processing of the vent will be done, until the next triggerEvent methods is invoked.
      * </p>
@@ -579,11 +579,11 @@ public class SCXMLExecutor implements SCXMLIOProcessor {
     }
 
     /**
-     * Get binding SCInstance.
+     * Get binding BOInstance.
      *
-     * @return The SCInstance for this executor.
+     * @return The BOInstance for this executor.
      */
-    protected SCInstance getSCInstance() {
+    protected BOInstance getSCInstance() {
         return exctx.getScInstance();
     }
 
@@ -611,7 +611,7 @@ public class SCXMLExecutor implements SCXMLIOProcessor {
         this.executorIndex = executorIndex;
     }
 
-    public SCXMLExecutionContext getExctx() {
+    public BOXMLExecutionContext getExctx() {
         return exctx;
     }
 

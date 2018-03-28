@@ -2,7 +2,7 @@
 package org.sysu.workflow;
 
 import org.junit.Before;
-import org.sysu.workflow.io.SCXMLReader;
+import org.sysu.workflow.io.BOXMLReader;
 import org.sysu.workflow.model.extend.InheritableContext;
 import org.sysu.workflow.env.MultiStateMachineDispatcher;
 import org.sysu.workflow.env.SimpleErrorReporter;
@@ -76,7 +76,7 @@ public class SCXMLReaderTest {
         long startTime=System.currentTimeMillis();
         URL url = SCXMLTestHelper.getResource("GuestOrder.xml");
         //URL url = new URL("file", "", "E:\\Documents\\GitProject\\BOOWorkflow\\BOWorkflow\\target\\classes\\GuestOrder.xml");
-        SCXML scxml = new SCXMLReader().read(url);
+        SCXML scxml = new BOXMLReader().read(url);
         long endTime=System.currentTimeMillis();
         System.out.println("COST TIME： " + (endTime-startTime) + "ms");
 
@@ -115,50 +115,50 @@ public class SCXMLReaderTest {
 
         Evaluator evaluator = new JexlEvaluator();
         EventDispatcher dispatcher = new MultiStateMachineDispatcher();
-        SCXMLExecutor executor = new SCXMLExecutor(evaluator, dispatcher, new SimpleErrorReporter());
+        BOXMLExecutor executor = new BOXMLExecutor(evaluator, dispatcher, new SimpleErrorReporter());
         executor.setStateMachine(scxml);
         executor.setRtid("TEST_RTID");
         executor.go();
 
 
 
-        SCXMLExecutionContext ctx = executor.getExctx();
+        BOXMLExecutionContext ctx = executor.getExctx();
 
-        dispatcher.send("TEST_RTID", ctx.NodeId, "", MessageMode.MULTICAST, "GuestOrder", "", SCXMLIOProcessor.DEFAULT_EVENT_PROCESSOR,
+        dispatcher.send("TEST_RTID", ctx.NodeId, "", MessageMode.MULTICAST, "GuestOrder", "", BOXMLIOProcessor.DEFAULT_EVENT_PROCESSOR,
                 "submit", null, "", 0);
         System.out.println("send submit");
 
-        dispatcher.send("TEST_RTID", ctx.NodeId, "", MessageMode.TO_CHILD, "KitchenOrder", "", SCXMLIOProcessor.DEFAULT_EVENT_PROCESSOR,
+        dispatcher.send("TEST_RTID", ctx.NodeId, "", MessageMode.TO_CHILD, "KitchenOrder", "", BOXMLIOProcessor.DEFAULT_EVENT_PROCESSOR,
                 "produced", null, "", 0);
         System.out.println("send produced");
 
         EventDataPackage edp = new EventDataPackage();
         edp.passed = "1";
-        dispatcher.send("TEST_RTID", ctx.NodeId, "", MessageMode.TO_CHILD, "KitchenOrder", "", SCXMLIOProcessor.DEFAULT_EVENT_PROCESSOR,
+        dispatcher.send("TEST_RTID", ctx.NodeId, "", MessageMode.TO_CHILD, "KitchenOrder", "", BOXMLIOProcessor.DEFAULT_EVENT_PROCESSOR,
                 "testCompleted", edp, "", 0);
         System.out.println("send testCompleted");
 
-        dispatcher.send("TEST_RTID", ctx.NodeId, "", MessageMode.TO_CHILD, "KitchenOrder", "", SCXMLIOProcessor.DEFAULT_EVENT_PROCESSOR,
+        dispatcher.send("TEST_RTID", ctx.NodeId, "", MessageMode.TO_CHILD, "KitchenOrder", "", BOXMLIOProcessor.DEFAULT_EVENT_PROCESSOR,
                 "delivered", null, "", 0);
         System.out.println("send delivered");
 
-        dispatcher.send("TEST_RTID", ctx.NodeId, "", MessageMode.TO_CHILD, "KitchenOrder", "", SCXMLIOProcessor.DEFAULT_EVENT_PROCESSOR,
+        dispatcher.send("TEST_RTID", ctx.NodeId, "", MessageMode.TO_CHILD, "KitchenOrder", "", BOXMLIOProcessor.DEFAULT_EVENT_PROCESSOR,
                 "archived", null, "", 0);
         System.out.println("send archived");
 
-        dispatcher.send("TEST_RTID", ctx.NodeId, "", MessageMode.MULTICAST, "GuestOrder", "", SCXMLIOProcessor.DEFAULT_EVENT_PROCESSOR,
+        dispatcher.send("TEST_RTID", ctx.NodeId, "", MessageMode.MULTICAST, "GuestOrder", "", BOXMLIOProcessor.DEFAULT_EVENT_PROCESSOR,
                 "requestCheck", null, "", 0);
         System.out.println("send requestCheck");
 
-        dispatcher.send("TEST_RTID", ctx.NodeId, "", MessageMode.TO_CHILD, "GuestCheck", "", SCXMLIOProcessor.DEFAULT_EVENT_PROCESSOR,
+        dispatcher.send("TEST_RTID", ctx.NodeId, "", MessageMode.TO_CHILD, "GuestCheck", "", BOXMLIOProcessor.DEFAULT_EVENT_PROCESSOR,
                 "calculated", null, "", 0);
         System.out.println("send calculated");
 
-        dispatcher.send("TEST_RTID", ctx.NodeId, "", MessageMode.TO_CHILD, "GuestCheck", "", SCXMLIOProcessor.DEFAULT_EVENT_PROCESSOR,
+        dispatcher.send("TEST_RTID", ctx.NodeId, "", MessageMode.TO_CHILD, "GuestCheck", "", BOXMLIOProcessor.DEFAULT_EVENT_PROCESSOR,
                 "paid", null, "", 0);
         System.out.println("send paid");
 
-        dispatcher.send("TEST_RTID", ctx.NodeId, "", MessageMode.TO_CHILD, "GuestCheck", "", SCXMLIOProcessor.DEFAULT_EVENT_PROCESSOR,
+        dispatcher.send("TEST_RTID", ctx.NodeId, "", MessageMode.TO_CHILD, "GuestCheck", "", BOXMLIOProcessor.DEFAULT_EVENT_PROCESSOR,
                 "archived", null, "", 0);
         System.out.println("send archived");
 

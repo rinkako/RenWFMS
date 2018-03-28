@@ -8,7 +8,6 @@ import org.sysu.workflow.instanceTree.InstanceManager;
 import org.sysu.workflow.invoke.Invoker;
 import org.sysu.workflow.invoke.InvokerException;
 import org.sysu.workflow.model.*;
-import org.sysu.workflow.model.extend.Call;
 import org.sysu.workflow.utility.LogUtil;
 import org.sysu.workflow.system.EventVariable;
 
@@ -25,7 +24,7 @@ import java.util.*;
  * <p/>
  * it easier to extend, reuse and test its behavior.</p>
  */
-public class SCXMLSemanticsImpl implements SCXMLSemantics {
+public class SCXMLSemanticsImpl implements BOXMLSemantics {
 
     /**
      * Suffix for error event that are triggered in reaction to invalid data
@@ -34,7 +33,7 @@ public class SCXMLSemanticsImpl implements SCXMLSemantics {
     public static final String ERR_ILLEGAL_ALLOC = ".error.illegalalloc";
 
     /**
-     * Optional post processing immediately following SCXMLReader. May be used
+     * Optional post processing immediately following BOXMLReader. May be used
      * for removing pseudo-states etc.
      *
      * @param input  SCXML state machine
@@ -60,7 +59,7 @@ public class SCXMLSemanticsImpl implements SCXMLSemantics {
      * machine again before returning.
      * </p>
      * <p>
-     * If the state machine no longer is running after all this, first the {@link #finalStep(SCXMLExecutionContext)}
+     * If the state machine no longer is running after all this, first the {@link #finalStep(BOXMLExecutionContext)}
      * will be called for cleanup before returning.
      * </p>
      *
@@ -68,7 +67,7 @@ public class SCXMLSemanticsImpl implements SCXMLSemantics {
      * @throws ModelException if the state machine instance failed to initialize or a SCXML model error occurred during
      *                        the execution.
      */
-    public void firstStep(final SCXMLExecutionContext exctx) throws ModelException {
+    public void firstStep(final BOXMLExecutionContext exctx) throws ModelException {
         // (re)initialize the execution context and state machine instance
         //清除所有的执行上下文和状态机实例
         exctx.initialize();
@@ -103,19 +102,19 @@ public class SCXMLSemanticsImpl implements SCXMLSemantics {
      * external event, up to the blocking wait for another external event.
      * </p>
      * <p>
-     * If the state machine isn't {@link SCXMLExecutionContext#isRunning()} (any more), invoking this method will simply
+     * If the state machine isn't {@link BOXMLExecutionContext#isRunning()} (any more), invoking this method will simply
      * do nothing.
      * </p>
      * <p>
      * If the provided event is a {@link TriggerEvent#CANCEL_EVENT}, the state machine will stop running.
      * </p>
      * <p>
-     * Otherwise, the event is set in the {@link SCXMLSystemContext} and processing of the event then is started, and
+     * Otherwise, the event is set in the {@link BOXMLSystemContext} and processing of the event then is started, and
      * if the event leads to any transitions a microStep for this event will be performed, followed up by a macroStep
      * to stabilize the state machine again before returning.
      * </p>
      * <p>
-     * If the state machine no longer is running after all this, first the {@link #finalStep(SCXMLExecutionContext)}
+     * If the state machine no longer is running after all this, first the {@link #finalStep(BOXMLExecutionContext)}
      * will be called for cleanup before returning.
      * </p>
      *
@@ -123,7 +122,7 @@ public class SCXMLSemanticsImpl implements SCXMLSemantics {
      * @param event The event to process
      * @throws ModelException if a SCXML model error occurred during the execution.
      */
-    public void nextStep(final SCXMLExecutionContext exctx, final TriggerEvent event) throws ModelException {
+    public void nextStep(final BOXMLExecutionContext exctx, final TriggerEvent event) throws ModelException {
         if (!exctx.isRunning()) {
             return;
         }
@@ -156,7 +155,7 @@ public class SCXMLSemanticsImpl implements SCXMLSemantics {
      * state machine stopped running.
      * </p>
      * <p>
-     * If the state machine still is {@link SCXMLExecutionContext#isRunning()} invoking this method will simply
+     * If the state machine still is {@link BOXMLExecutionContext#isRunning()} invoking this method will simply
      * do nothing.
      * </p>
      * <p>
@@ -169,7 +168,7 @@ public class SCXMLSemanticsImpl implements SCXMLSemantics {
      * @param exctx The execution context for this step
      * @throws ModelException if a SCXML model error occurred during the execution.
      */
-    public void finalStep(SCXMLExecutionContext exctx) throws ModelException {
+    public void finalStep(BOXMLExecutionContext exctx) throws ModelException {
         if (exctx.isRunning()) {
             return;
         }
@@ -225,7 +224,7 @@ public class SCXMLSemanticsImpl implements SCXMLSemantics {
      *                       macro step
      * @throws ModelException if a SCXML model error occurred during the execution.
      */
-    public void microStep(final SCXMLExecutionContext exctx, final Step step,
+    public void microStep(final BOXMLExecutionContext exctx, final Step step,
                           final Set<TransitionalState> statesToInvoke)
             throws ModelException {
         //针对当前配置构建退出集合和进入集合，给出step的转移列表
@@ -255,7 +254,7 @@ public class SCXMLSemanticsImpl implements SCXMLSemantics {
      * @param step  The step containing the list of transitions to be taken
      * @throws ModelException if the result of taking the transitions would lead to an illegal configuration
      */
-    public void buildStep(final SCXMLExecutionContext exctx, final Step step) throws ModelException {
+    public void buildStep(final BOXMLExecutionContext exctx, final Step step) throws ModelException {
         step.clearIntermediateState();
 
         // compute exitSet, if there is something to exit and record their History configurations if applicable
@@ -298,7 +297,7 @@ public class SCXMLSemanticsImpl implements SCXMLSemantics {
      *                       macro step
      * @throws ModelException if a SCXML model error occurred during the execution.
      */
-    public void macroStep(final SCXMLExecutionContext exctx, final Set<TransitionalState> statesToInvoke)
+    public void macroStep(final BOXMLExecutionContext exctx, final Set<TransitionalState> statesToInvoke)
             throws ModelException {
         //循环一直等待
         do {
@@ -343,7 +342,7 @@ public class SCXMLSemanticsImpl implements SCXMLSemantics {
      * <p/>
      *
      * @param step               The step containing the list of transitions to be taken
-     * @param stateConfiguration The current configuration of the state machine ({@link SCInstance#getStateConfiguration()}).
+     * @param stateConfiguration The current configuration of the state machine ({@link BOInstance#getStateConfiguration()}).
      */
     public void computeExitSet(final Step step, final StateConfiguration stateConfiguration) {
         if (!stateConfiguration.getActiveStates().isEmpty()) {
@@ -384,11 +383,11 @@ public class SCXMLSemanticsImpl implements SCXMLSemantics {
      * Record the history configurations for states to exit if applicable and temporarily store this in the step.
      * <p>
      * These history configurations must be pre-recorded as they might impact (re)entrance calculation during
-     * {@link #computeEntrySet(SCXMLExecutionContext, Step)}.
+     * {@link #computeEntrySet(BOXMLExecutionContext, Step)}.
      * </p>
      * <p>
      * Only after the new configuration has been validated (see: {@link #isLegalConfiguration(Set, ErrorReporter)}), the
-     * history configurations will be persisted during the actual {@link #exitStates(SCXMLExecutionContext, Step, Set)}
+     * history configurations will be persisted during the actual {@link #exitStates(BOXMLExecutionContext, Step, Set)}
      * processing.
      * </p>
      *
@@ -436,7 +435,7 @@ public class SCXMLSemanticsImpl implements SCXMLSemantics {
      * @param exctx The execution context for this step
      * @param step  The step containing the list of transitions to be taken
      */
-    public void computeEntrySet(final SCXMLExecutionContext exctx, final Step step) {
+    public void computeEntrySet(final BOXMLExecutionContext exctx, final Step step) {
         Set<History> historyTargets = new HashSet<History>();
         Set<EnterableState> entrySet = new HashSet<EnterableState>();
         for (SimpleTransition st : step.getTransitList()) {
@@ -470,7 +469,7 @@ public class SCXMLSemanticsImpl implements SCXMLSemantics {
      * @param step  The step
      * @param tt    The TransitionTarget
      */
-    public void addDescendantStatesToEnter(final SCXMLExecutionContext exctx, final Step step,
+    public void addDescendantStatesToEnter(final BOXMLExecutionContext exctx, final Step step,
                                            final TransitionTarget tt) {
         if (tt instanceof History) {
             History h = (History) tt;
@@ -523,7 +522,7 @@ public class SCXMLSemanticsImpl implements SCXMLSemantics {
      * @param tt       The TransitionTarget
      * @param ancestor The ancestor TransitionTarget
      */
-    public void addAncestorStatesToEnter(final SCXMLExecutionContext exctx, final Step step,
+    public void addAncestorStatesToEnter(final BOXMLExecutionContext exctx, final Step step,
                                          final TransitionTarget tt, TransitionTarget ancestor) {
         // for for anc in getProperAncestors(tt,ancestor)
         for (int i = tt.getNumberOfAncestors() - 1; i > -1; i--) {
@@ -567,7 +566,7 @@ public class SCXMLSemanticsImpl implements SCXMLSemantics {
      * @param step  The step
      * @throws ModelException if there is a fatal SCXML state error
      */
-    public void selectTransitions(final SCXMLExecutionContext exctx, final Step step) throws ModelException {
+    public void selectTransitions(final BOXMLExecutionContext exctx, final Step step) throws ModelException {
 
         //step里面的转移清理了
         step.getTransitList().clear();
@@ -616,7 +615,7 @@ public class SCXMLSemanticsImpl implements SCXMLSemantics {
      * @param step               The step
      * @param enabledTransitions The list of enabled transitions
      */
-    public void removeConflictingTransitions(final SCXMLExecutionContext exctx, final Step step,
+    public void removeConflictingTransitions(final BOXMLExecutionContext exctx, final Step step,
                                              final List<Transition> enabledTransitions) {
         LinkedHashSet<Transition> filteredTransitions = new LinkedHashSet<Transition>();
         LinkedHashSet<Transition> preemptedTransitions = new LinkedHashSet<Transition>();
@@ -678,7 +677,7 @@ public class SCXMLSemanticsImpl implements SCXMLSemantics {
      * @return Returns true if the transition matches against the provided eventName, or is event-less when no eventName
      * is provided, <em>AND</em> its (optional) condition guard evaluates to true.
      */
-    public boolean matchTransition(final SCXMLExecutionContext exctx, final Transition transition, final String eventName) {
+    public boolean matchTransition(final BOXMLExecutionContext exctx, final Transition transition, final String eventName) {
         if (eventName != null) {
             if (!(transition.isNoEventsTransition() || transition.isAllEventsTransition())) {
                 boolean eventMatch = false;
@@ -847,7 +846,7 @@ public class SCXMLSemanticsImpl implements SCXMLSemantics {
      * @param event      The event being stored
      * @param internal   Flag indicating the event was received internally or externally
      */
-    public void setSystemEventVariable(final SCInstance scInstance, final TriggerEvent event, boolean internal) {
+    public void setSystemEventVariable(final BOInstance scInstance, final TriggerEvent event, boolean internal) {
         Context systemContext = scInstance.getSystemContext();
         EventVariable eventVar = null;
         if (event != null) {
@@ -861,7 +860,7 @@ public class SCXMLSemanticsImpl implements SCXMLSemantics {
             // TODO: determine sendid, origin, originType and invokeid based on context later.
             eventVar = new EventVariable(event.getName(), eventType, null, null, null, null, event.getPayload());
         }
-        systemContext.setLocal(SCXMLSystemContext.EVENT_KEY, eventVar);
+        systemContext.setLocal(BOXMLSystemContext.EVENT_KEY, eventVar);
     }
 
     /**
@@ -870,7 +869,7 @@ public class SCXMLSemanticsImpl implements SCXMLSemantics {
      * @param exctx The execution context
      * @throws ModelException if a SCXML model error occurred during the execution.
      */
-    public void executeGlobalScript(final SCXMLExecutionContext exctx) throws ModelException {
+    public void executeGlobalScript(final BOXMLExecutionContext exctx) throws ModelException {
         Script globalScript = exctx.getStateMachine().getGlobalScript();
         if (globalScript != null) {
             try {
@@ -884,7 +883,7 @@ public class SCXMLSemanticsImpl implements SCXMLSemantics {
 
     /**
      * This method corresponds to the Algorithm for SCXML processing exitStates() procedure, where the states to exit
-     * already have been pre-computed in {@link #microStep(SCXMLExecutionContext, Step, Set)}.
+     * already have been pre-computed in {@link #microStep(BOXMLExecutionContext, Step, Set)}.
      * 这个方法对应于SCXML规范描述的算法 exitStates() 程序，
      *
      *
@@ -894,7 +893,7 @@ public class SCXMLSemanticsImpl implements SCXMLSemantics {
      *                       macro step
      * @throws ModelException if a SCXML model error occurred during the execution.
      */
-    public void exitStates(final SCXMLExecutionContext exctx, final Step step,
+    public void exitStates(final BOXMLExecutionContext exctx, final Step step,
                            final Set<TransitionalState> statesToInvoke)
             throws ModelException {
         if (step.getExitSet().isEmpty()) { //当前不的退出集合是空的，直接返回，例如状态机刚启动的时候退出集合是空的
@@ -951,7 +950,7 @@ public class SCXMLSemanticsImpl implements SCXMLSemantics {
      * @param step  the step
      * @throws ModelException if a SCXML model error occurred during the execution.
      */
-    public void executeTransitionContent(final SCXMLExecutionContext exctx, final Step step) throws ModelException {
+    public void executeTransitionContent(final BOXMLExecutionContext exctx, final Step step) throws ModelException {
         for (SimpleTransition transition : step.getTransitList()) {
             executeContent(exctx, transition);
         }
@@ -964,7 +963,7 @@ public class SCXMLSemanticsImpl implements SCXMLSemantics {
      * @param exec  the executable providing the execution content
      * @throws ModelException if a SCXML model error occurred during the execution.
      */
-    public void executeContent(SCXMLExecutionContext exctx, Executable exec) throws ModelException {
+    public void executeContent(BOXMLExecutionContext exctx, Executable exec) throws ModelException {
         //对于 onentry, onexit, transition里面的action，调用各自action的execute方法，传递actionexetioncontext
         try {
             for (Action action : exec.getActions()) {
@@ -995,9 +994,9 @@ public class SCXMLSemanticsImpl implements SCXMLSemantics {
      * @param t      The Transition taken
      * @param target The target of the Transition
      */
-    public void notifyOnTransition(final SCXMLExecutionContext exctx, final Transition t,
+    public void notifyOnTransition(final BOXMLExecutionContext exctx, final Transition t,
                                    final TransitionTarget target) {
-        EventVariable event = (EventVariable) exctx.getScInstance().getSystemContext().getVars().get(SCXMLSystemContext.EVENT_KEY);
+        EventVariable event = (EventVariable) exctx.getScInstance().getSystemContext().getVars().get(BOXMLSystemContext.EVENT_KEY);
         String eventName = event != null ? event.getName() : null;
         exctx.getNotificationRegistry().fireOnTransition(t, t.getParent(), target, t, eventName);
         exctx.getNotificationRegistry().fireOnTransition(exctx.getStateMachine(), t.getParent(), target, t, eventName);
@@ -1005,7 +1004,7 @@ public class SCXMLSemanticsImpl implements SCXMLSemantics {
 
     /**
      * This method corresponds to the Algorithm for SCXML processing enterStates() procedure, where the states to enter
-     * already have been pre-computed in {@link #microStep(SCXMLExecutionContext, Step, Set)}.
+     * already have been pre-computed in {@link #microStep(BOXMLExecutionContext, Step, Set)}.
      *
      * 这个方法对应于SCXML中的enterStates() ,
      *
@@ -1015,7 +1014,7 @@ public class SCXMLSemanticsImpl implements SCXMLSemantics {
      *                       macro step
      * @throws ModelException if a SCXML model error occurred during the execution.
      */
-    public void enterStates(final SCXMLExecutionContext exctx, final Step step,
+    public void enterStates(final BOXMLExecutionContext exctx, final Step step,
                             final Set<TransitionalState> statesToInvoke)
             throws ModelException {
         //如果进入集合是空，直接退出。
@@ -1083,7 +1082,7 @@ public class SCXMLSemanticsImpl implements SCXMLSemantics {
      * @param statesToInvoke the set of activated states which invokes need to be invoked
      * @throws ModelException if there is a fatal SCXML state error
      */
-    public void initiateInvokes(final SCXMLExecutionContext exctx,
+    public void initiateInvokes(final BOXMLExecutionContext exctx,
                                 final Set<TransitionalState> statesToInvoke) throws ModelException {
         ActionExecutionContext aexctx = exctx.getActionExecutionContext();
         for (TransitionalState ts : statesToInvoke) {
@@ -1106,7 +1105,7 @@ public class SCXMLSemanticsImpl implements SCXMLSemantics {
      * @param event The events to be forwarded
      * @throws ModelException in case there is a fatal SCXML object model problem.
      */
-    public void processInvokes(final SCXMLExecutionContext exctx, final TriggerEvent event) throws ModelException {
+    public void processInvokes(final BOXMLExecutionContext exctx, final TriggerEvent event) throws ModelException {
         for (Map.Entry<Invoke, String> entry : exctx.getInvokeIds().entrySet()) {
             if (!isInvokerEvent(entry.getValue(), event)) {
                 if (entry.getKey().isAutoForward()) {

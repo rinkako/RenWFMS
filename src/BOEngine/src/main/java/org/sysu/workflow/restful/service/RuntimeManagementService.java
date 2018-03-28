@@ -13,7 +13,7 @@ import org.sysu.workflow.env.SimpleErrorReporter;
 import org.sysu.workflow.instanceTree.InstanceManager;
 import org.sysu.workflow.instanceTree.RInstanceTree;
 import org.sysu.workflow.instanceTree.RTreeNode;
-import org.sysu.workflow.io.SCXMLReader;
+import org.sysu.workflow.io.BOXMLReader;
 import org.sysu.workflow.model.EnterableState;
 import org.sysu.workflow.model.SCXML;
 import org.sysu.workflow.model.extend.Task;
@@ -188,7 +188,7 @@ public final class RuntimeManagementService {
     private static void ExecuteBO(SCXML scxml, String rtid, String pid) {
         try {
             Evaluator evaluator = EvaluatorFactory.getEvaluator(scxml);
-            SCXMLExecutor executor = new SCXMLExecutor(evaluator, new MultiStateMachineDispatcher(), new SimpleErrorReporter());
+            BOXMLExecutor executor = new BOXMLExecutor(evaluator, new MultiStateMachineDispatcher(), new SimpleErrorReporter());
             Context rootContext = evaluator.newContext(null);
             executor.setRootContext(rootContext);
             executor.setRtid(rtid);
@@ -210,7 +210,7 @@ public final class RuntimeManagementService {
     private static SCXML ParseStringToSCXML(String boXMLContent) {
         try {
             InputStream inputStream = new ByteArrayInputStream(boXMLContent.getBytes());
-            return SCXMLReader.read(inputStream);
+            return BOXMLReader.read(inputStream);
         } catch (Exception ex) {
             LogUtil.Log(String.format("When read BO XML data, exception occurred, %s", ex),
                     RuntimeManagementService.class.getName(), LogLevelType.ERROR, boXMLContent);

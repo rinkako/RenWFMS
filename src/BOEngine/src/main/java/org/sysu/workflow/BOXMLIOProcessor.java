@@ -7,7 +7,7 @@ import org.sysu.workflow.invoke.Invoker;
  * The SCXML I/O Processor provides the interface for either an internal process or an external system or invoked child
  * SCXML process ({@link Invoker}) to send events into the SCXML processor queue.
  */
-public interface SCXMLIOProcessor {
+public interface BOXMLIOProcessor {
 
     /**
      * The name of the default SCXML I/O Event Processor

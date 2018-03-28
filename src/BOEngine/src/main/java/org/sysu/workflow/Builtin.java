@@ -26,7 +26,7 @@ public class Builtin implements Serializable {
      */
     @SuppressWarnings("unchecked")
     public static boolean isMember(final Context ctx, final String state) {
-        return ((Status) ctx.getSystemContext().getPlatformVariables().get(SCXMLSystemContext.STATUS_KEY)).isInState(state);
+        return ((Status) ctx.getSystemContext().getPlatformVariables().get(BOXMLSystemContext.STATUS_KEY)).isInState(state);
     }
 }
 

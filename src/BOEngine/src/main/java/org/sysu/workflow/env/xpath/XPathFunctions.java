@@ -1,7 +1,7 @@
 
 package org.sysu.workflow.env.xpath;
 
-import org.sysu.workflow.SCXMLSystemContext;
+import org.sysu.workflow.BOXMLSystemContext;
 import org.sysu.workflow.Status;
 import org.apache.commons.jxpath.ExpressionContext;
 import org.apache.commons.jxpath.Variables;
@@ -23,7 +23,7 @@ public class XPathFunctions {
     @SuppressWarnings("unchecked")
     public static boolean In(ExpressionContext expressionContext, String state) {
         Variables variables = expressionContext.getJXPathContext().getVariables();
-        Map<String, Object> platformVariables = (Map<String, Object>) variables.getVariable(SCXMLSystemContext.X_KEY);
-        return ((Status) platformVariables.get(SCXMLSystemContext.STATUS_KEY)).isInState(state);
+        Map<String, Object> platformVariables = (Map<String, Object>) variables.getVariable(BOXMLSystemContext.X_KEY);
+        return ((Status) platformVariables.get(BOXMLSystemContext.STATUS_KEY)).isInState(state);
     }
 }

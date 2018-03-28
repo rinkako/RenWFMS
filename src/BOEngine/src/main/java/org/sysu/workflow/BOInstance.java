@@ -15,12 +15,12 @@ import java.util.*;
 
 /**
  * <p/>
- * The <code>SCInstance</code> performs book-keeping functions for
+ * The <code>BOInstance</code> performs book-keeping functions for
  * a particular execution of a state chart represented by a
  * <code>SCXML</code> object.
  * <p/>
  */
-public class SCInstance implements Serializable {
+public class BOInstance implements Serializable {
 
     /**
      * Serial version UID.
@@ -28,14 +28,14 @@ public class SCInstance implements Serializable {
     private static final long serialVersionUID = 2L;
 
     /**
-     * SCInstance no state machine error.
+     * BOInstance no state machine error.
      */
-    private static final String ERR_NO_STATE_MACHINE = "SCInstance: State machine not set";
+    private static final String ERR_NO_STATE_MACHINE = "BOInstance: State machine not set";
 
     /**
-     * SCInstance not set error.
+     * BOInstance not set error.
      */
-    private static final String ERR_NO_ERROR_REPORTER = "SCInstance: ErrorReporter not set";
+    private static final String ERR_NO_ERROR_REPORTER = "BOInstance: ErrorReporter not set";
 
     /**
      * Initialized flag.
@@ -65,7 +65,7 @@ public class SCInstance implements Serializable {
     /**
      * SCXML execution context.
      */
-    private transient SCXMLIOProcessor internalIOProcessor;
+    private transient BOXMLIOProcessor internalIOProcessor;
 
     /**
      * Evaluator reference.
@@ -95,7 +95,7 @@ public class SCInstance implements Serializable {
     /**
      * The wrapped system context.
      */
-    private SCXMLSystemContext systemContext;
+    private BOXMLSystemContext systemContext;
 
     /**
      * The global context
@@ -115,7 +115,7 @@ public class SCInstance implements Serializable {
      * @param evaluator           The evaluator
      * @param errorReporter       The error reporter
      */
-    protected SCInstance(final SCXMLIOProcessor internalIOProcessor, final Evaluator evaluator,
+    protected BOInstance(final BOXMLIOProcessor internalIOProcessor, final Evaluator evaluator,
                          final ErrorReporter errorReporter) {
         this.internalIOProcessor = internalIOProcessor;
         this.evaluator = evaluator;
@@ -174,7 +174,7 @@ public class SCInstance implements Serializable {
      *
      * @param internalIOProcessor the I/O Processor
      */
-    protected void setInternalIOProcessor(SCXMLIOProcessor internalIOProcessor) {
+    protected void setInternalIOProcessor(BOXMLIOProcessor internalIOProcessor) {
         this.internalIOProcessor = internalIOProcessor;
     }
 
@@ -196,7 +196,7 @@ public class SCInstance implements Serializable {
                 // change of evaluator after initialization: re-initialize
                 initialize();
             } else if (evaluator == null) {
-                throw new ModelException("SCInstance: re-attached without Evaluator");
+                throw new ModelException("BOInstance: re-attached without Evaluator");
             }
         }
     }
@@ -247,7 +247,7 @@ public class SCInstance implements Serializable {
 
     public void setSingleContext(boolean singleContext) throws ModelException {
         if (initialized) {
-            throw new ModelException("SCInstance: already initialized");
+            throw new ModelException("BOInstance: already initialized");
         }
         this.singleContext = singleContext;
     }
@@ -346,7 +346,7 @@ public class SCInstance implements Serializable {
 
 
     public String getExecContextSessionId() {
-        return ((SCXMLExecutionContext)this.internalIOProcessor).getSessionId();
+        return ((BOXMLExecutionContext)this.internalIOProcessor).getSessionId();
     }
 
     /**
@@ -409,14 +409,14 @@ public class SCInstance implements Serializable {
             if (rootContext != null) {
                 Context internalContext = Evaluator.NULL_DATA_MODEL.equals(evaluator.getSupportedDatamodel()) ?
                         new SimpleContext(systemContext) : evaluator.newContext(rootContext);
-                systemContext = new SCXMLSystemContext(internalContext);
-                systemContext.getContext().set(SCXMLSystemContext.SESSIONID_KEY, UUID.randomUUID().toString());
+                systemContext = new BOXMLSystemContext(internalContext);
+                systemContext.getContext().set(BOXMLSystemContext.SESSIONID_KEY, UUID.randomUUID().toString());
                 String _name = stateMachine != null && stateMachine.getName() != null ? stateMachine.getName() : "";
-                systemContext.getContext().set(SCXMLSystemContext.SCXML_NAME_KEY, _name);
-                SCXMLExecutionContext executionContext = ((SCXMLExecutionContext) this.internalIOProcessor);
-                systemContext.getContext().set(SCXMLSystemContext.NOTIFIABLE_ID_KEY, executionContext.NotifiableId);
-                systemContext.getContext().set(SCXMLSystemContext.GLOBAL_ID_KEY, executionContext.NodeId);
-                systemContext.getPlatformVariables().put(SCXMLSystemContext.STATUS_KEY, currentStatus);
+                systemContext.getContext().set(BOXMLSystemContext.SCXML_NAME_KEY, _name);
+                BOXMLExecutionContext executionContext = ((BOXMLExecutionContext) this.internalIOProcessor);
+                systemContext.getContext().set(BOXMLSystemContext.NOTIFIABLE_ID_KEY, executionContext.NotifiableId);
+                systemContext.getContext().set(BOXMLSystemContext.GLOBAL_ID_KEY, executionContext.NodeId);
+                systemContext.getPlatformVariables().put(BOXMLSystemContext.STATUS_KEY, currentStatus);
             }
         }
         return systemContext != null ? systemContext.getContext() : null;

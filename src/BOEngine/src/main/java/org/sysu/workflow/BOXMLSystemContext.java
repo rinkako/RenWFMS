@@ -5,13 +5,13 @@ import java.io.Serializable;
 import java.util.*;
 
 /**
- * The SCXMLSystemContext is used as a read only Context wrapper
+ * The BOXMLSystemContext is used as a read only Context wrapper
  * <p/>
  * and provides the SCXML (read only) system variables which are injected via the unwrapped {@link #getContext()}.
  *
  * @see <a href="http://www.w3.org/TR/scxml/#SystemVariables">http://www.w3.org/TR/scxml/#SystemVariables</a>
  */
-public class SCXMLSystemContext implements Context, Serializable {
+public class BOXMLSystemContext implements Context, Serializable {
 
     /**
      * Serial version UID.
@@ -86,7 +86,7 @@ public class SCXMLSystemContext implements Context, Serializable {
      */
     private Map<String, Object> protectedVars;
 
-    public SCXMLSystemContext(Context systemContext) {
+    public BOXMLSystemContext(Context systemContext) {
         setSystemContext(systemContext);
     }
 
@@ -139,7 +139,7 @@ public class SCXMLSystemContext implements Context, Serializable {
     }
 
 
-    public SCXMLSystemContext getSystemContext() {
+    public BOXMLSystemContext getSystemContext() {
         return this;
     }
 

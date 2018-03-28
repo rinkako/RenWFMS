@@ -13,7 +13,7 @@ import java.util.StringTokenizer;
 /**
  * The ModelUpdater provides the utility methods to check the Commons
  * SCXML model for inconsistencies, detect errors, and wire the Commons
- * SCXML model appropriately post document parsing by the SCXMLReader to make
+ * SCXML model appropriately post document parsing by the BOXMLReader to make
  * it executor ready.
  */
 final class ModelUpdater {
@@ -98,16 +98,16 @@ final class ModelUpdater {
     }
 
     /*
-     * Post-processing methods to make the SCXML object SCXMLExecutor ready.
+     * Post-processing methods to make the SCXML object BOXMLExecutor ready.
      */
 
     /**
-     * <p>Update the SCXML object model and make it SCXMLExecutor ready.
+     * <p>Update the SCXML object model and make it BOXMLExecutor ready.
      * This is part of post-read processing, and sets up the necessary
      * object references throughtout the SCXML object model for the parsed
      * document.</p>
      *
-     * @param scxml The SCXML object (output from SCXMLReader)
+     * @param scxml The SCXML object (output from BOXMLReader)
      * @throws ModelException If the object model is flawed
      */
     static void updateSCXML(final SCXML scxml) throws ModelException {

@@ -1,7 +1,7 @@
 
 package org.sysu.workflow.invoke;
 
-import org.sysu.workflow.SCXMLIOProcessor;
+import org.sysu.workflow.BOXMLIOProcessor;
 import org.sysu.workflow.TriggerEvent;
 
 /**
@@ -15,7 +15,7 @@ class AsyncTrigger implements Runnable {
      * SCXML 状态机I/O processor，需要传递到这个状态机的i/o processor
      * The SCXML state machine I/O Processor to deliver the event to.
      */
-    private final SCXMLIOProcessor ioProcessor;
+    private final BOXMLIOProcessor ioProcessor;
     /**
      * The event to be triggered.
      * 需要触发的事件
@@ -26,10 +26,10 @@ class AsyncTrigger implements Runnable {
      * Constructor.
      * 构造函数
      *
-     * @param ioProcessor The {@link SCXMLIOProcessor} to trigger the event on.
+     * @param ioProcessor The {@link BOXMLIOProcessor} to trigger the event on.
      * @param event       The {@link TriggerEvent}.
      */
-    AsyncTrigger(final SCXMLIOProcessor ioProcessor, final TriggerEvent event) {
+    AsyncTrigger(final BOXMLIOProcessor ioProcessor, final TriggerEvent event) {
         this.ioProcessor = ioProcessor;
         this.event = event;
     }

@@ -12,7 +12,6 @@ import org.sysu.workflow.model.ModelException;
 import org.sysu.workflow.model.Param;
 import org.sysu.workflow.model.ParamsContainer;
 import org.sysu.workflow.utility.LogUtil;
-import org.sysu.workflow.utility.SerializationUtil;
 
 import java.io.Serializable;
 import java.util.HashMap;
@@ -89,7 +88,7 @@ public class Call extends ParamsContainer implements Serializable {
         if (GlobalContext.IsLocalDebug) {
             LogUtil.Echo(">>> CALL: " + this.name, Call.class.getName(), LogLevelType.INFO);
         }
-        SCXMLExecutionContext scxmlExecContext = (SCXMLExecutionContext) exctx.getInternalIOProcessor();
+        BOXMLExecutionContext scxmlExecContext = (BOXMLExecutionContext) exctx.getInternalIOProcessor();
         EnterableState parentState = getParentEnterableState();
         Context ctx = exctx.getContext(parentState);
         ctx.setLocal(getNamespacesKey(), getNamespaces());
@@ -132,7 +131,7 @@ public class Call extends ParamsContainer implements Serializable {
                                 if (timesBorder != 1) {
                                     LogUtil.Log("Method is Offer but instance not 1 is invalid, use default value 1.",
                                             Call.class.getName(), LogLevelType.WARNING,
-                                            ((SCXMLExecutionContext) exctx.getInternalIOProcessor()).Rtid);
+                                            ((BOXMLExecutionContext) exctx.getInternalIOProcessor()).Rtid);
                                 }
                                 timesBorder = 1;
                             }

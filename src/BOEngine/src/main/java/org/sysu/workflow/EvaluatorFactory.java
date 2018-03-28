@@ -16,7 +16,7 @@ import java.util.concurrent.ConcurrentHashMap;
  * A static singleton factory for {@link EvaluatorProvider}s by supported SCXML datamodel type.
  * <p>
  * The EvaluatorFactory is used to automatically create an {@link Evaluator} instance for an SCXML
- * statemachine when none has been pre-defined and configured for the {@link SCXMLExecutor}.
+ * statemachine when none has been pre-defined and configured for the {@link BOXMLExecutor}.
  * <p/>
  * <p>
  * The builtin supported providers are:

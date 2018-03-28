@@ -281,7 +281,7 @@ public class GroovyEvaluator implements Evaluator, Serializable {
         }
         try {
             final GroovyContext effective = getEffectiveContext(groovyCtx);
-            final boolean inGlobalContext = groovyCtx.getParent() instanceof SCXMLSystemContext;
+            final boolean inGlobalContext = groovyCtx.getParent() instanceof BOXMLSystemContext;
             final Script script = getScript(effective, groovyCtx.getScriptBaseClass(), scriptSource);
             final Object result = script.run();
             if (inGlobalContext && useInitialScriptAsBaseScript) {

@@ -1,8 +1,8 @@
 
 package org.sysu.workflow.invoke;
 
-import org.sysu.workflow.SCXMLExecutor;
-import org.sysu.workflow.SCXMLIOProcessor;
+import org.sysu.workflow.BOXMLExecutor;
+import org.sysu.workflow.BOXMLIOProcessor;
 import org.sysu.workflow.TriggerEvent;
 
 import java.util.Map;
@@ -36,7 +36,7 @@ import java.util.Map;
  * <li>Instantiation via {@link Class#newInstance()}
  * (Invoker implementation requires accessible constructor).</li>
  * <li>Configuration (setters for invoke ID and
- * {@link SCXMLExecutor}).</li>
+ * {@link BOXMLExecutor}).</li>
  * <li>Initiation of invoked activity via invoke() method, passing
  * the source URI and the map of params.</li>
  * <li>Zero or more bi-directional event triggering.</li>
@@ -67,11 +67,11 @@ public interface Invoker {
     void setInvokeId(String invokeId);
 
     /**
-     * Sets the parent SCXMLExecutor through which this Invoker is initiated
+     * Sets the parent BOXMLExecutor through which this Invoker is initiated
      *
-     * @param scxmlExecutor the parent SCXMLExecutor
+     * @param scxmlExecutor the parent BOXMLExecutor
      */
-    void setParentSCXMLExecutor(SCXMLExecutor scxmlExecutor);
+    void setParentSCXMLExecutor(BOXMLExecutor scxmlExecutor);
 
     /**
      * Get the child IO Processor to register for communication with
@@ -79,7 +79,7 @@ public interface Invoker {
      *
      * @return Child IO Processor
      */
-    SCXMLIOProcessor getChildIOProcessor();
+    BOXMLIOProcessor getChildIOProcessor();
 
     /**
      * Begin this invocation.

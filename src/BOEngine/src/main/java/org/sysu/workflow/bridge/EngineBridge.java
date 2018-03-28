@@ -1,6 +1,6 @@
 package org.sysu.workflow.bridge;
 
-import org.sysu.workflow.SCXMLExecutor;
+import org.sysu.workflow.BOXMLExecutor;
 import org.sysu.workflow.TriggerEvent;
 import org.sysu.workflow.model.ModelException;
 
@@ -35,7 +35,7 @@ public class EngineBridge {
      * 为桥设置一个状态机处理器
      * @param executor 要绑定的状态机处理器
      */
-    public void SetExecutorReference(String executorId, SCXMLExecutor executor) {
+    public void SetExecutorReference(String executorId, BOXMLExecutor executor) {
         executor.setExecutorIndex(executorId);
         this.executorMap.put(executorId, executor);
     }
@@ -45,7 +45,7 @@ public class EngineBridge {
      * @param executorId 状态机的编号
      * @return 状态机处理器的引用
      */
-    public SCXMLExecutor GetExecutorReference(int executorId) {
+    public BOXMLExecutor GetExecutorReference(int executorId) {
         Integer intPackage = Integer.valueOf(executorId);
         return this.executorMap.get(intPackage);
     }
@@ -151,13 +151,13 @@ public class EngineBridge {
      */
     private EngineBridge() {
         this.stateMachieMessageQueue = new LinkedBlockingDeque<BOMessage>();
-        this.executorMap = new Hashtable<String, SCXMLExecutor>();
+        this.executorMap = new Hashtable<String, BOXMLExecutor>();
     }
 
     /**
      * 引擎处理器的引用，她是整个状态机树上的根
      */
-    private Map<String, SCXMLExecutor> executorMap;
+    private Map<String, BOXMLExecutor> executorMap;
 
     /**
      * 应用程序消息处理器的引用

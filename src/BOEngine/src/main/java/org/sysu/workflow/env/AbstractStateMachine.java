@@ -4,7 +4,7 @@ package org.sysu.workflow.env;
 import org.sysu.workflow.*;
 import org.sysu.workflow.env.jexl.JexlContext;
 import org.sysu.workflow.env.jexl.JexlEvaluator;
-import org.sysu.workflow.io.SCXMLReader;
+import org.sysu.workflow.io.BOXMLReader;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.sysu.workflow.model.*;
@@ -48,7 +48,7 @@ public abstract class AbstractStateMachine {
     /**
      * The instance specific SCXML engine.
      */
-    private SCXMLExecutor engine;
+    private BOXMLExecutor engine;
 
     /**
      * The log.
@@ -96,7 +96,7 @@ public abstract class AbstractStateMachine {
                                 final Context rootCtx, final Evaluator evaluator) throws ModelException {
         log = LogFactory.getLog(this.getClass());
         try {
-            stateMachine = SCXMLReader.read(scxmlDocument);
+            stateMachine = BOXMLReader.read(scxmlDocument);
         } catch (IOException ioe) {
             logError(ioe);
         } catch (XMLStreamException xse) {
@@ -150,7 +150,7 @@ public abstract class AbstractStateMachine {
      */
     private void initialize(final SCXML stateMachine,
                             final Context rootCtx, final Evaluator evaluator) throws ModelException {
-        engine = new SCXMLExecutor(evaluator, new SimpleDispatcher(),
+        engine = new BOXMLExecutor(evaluator, new SimpleDispatcher(),
                 new SimpleErrorReporter());
         engine.setStateMachine(stateMachine);
         engine.setRootContext(rootCtx);
@@ -186,7 +186,7 @@ public abstract class AbstractStateMachine {
      *
      * @return Returns the engine.
      */
-    public SCXMLExecutor getEngine() {
+    public BOXMLExecutor getEngine() {
         return engine;
     }
 

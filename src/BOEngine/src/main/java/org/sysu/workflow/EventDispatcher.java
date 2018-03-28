@@ -37,7 +37,7 @@ public interface EventDispatcher {
      *                     used by the implementing platform to configure the event processor
      * @param delay        The event is dispatched after the delay interval elapses
      */
-    void send(Map<String, SCXMLIOProcessor> ioProcessors, String id, String target, String type, String event,
+    void send(Map<String, BOXMLIOProcessor> ioProcessors, String id, String target, String type, String event,
               Object data, Object hints, long delay);
 
 

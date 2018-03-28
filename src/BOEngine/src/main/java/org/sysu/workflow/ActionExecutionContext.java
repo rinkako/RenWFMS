@@ -15,14 +15,14 @@ public class ActionExecutionContext {
     /**
      * The SCXML execution context this action exection context belongs to
      */
-    private final SCXMLExecutionContext exctx;
+    private final BOXMLExecutionContext exctx;
 
     /**
      * Constructor
      *
      * @param exctx The SCXML execution context this action execution context belongs to
      */
-    public ActionExecutionContext(SCXMLExecutionContext exctx) {
+    public ActionExecutionContext(BOXMLExecutionContext exctx) {
         this.exctx = exctx;
     }
 
@@ -73,7 +73,7 @@ public class ActionExecutionContext {
     /**
      * @return Returns the I/O Processor for the internal event queue
      */
-    public SCXMLIOProcessor getInternalIOProcessor() {
+    public BOXMLIOProcessor getInternalIOProcessor() {
         return exctx;
     }
 

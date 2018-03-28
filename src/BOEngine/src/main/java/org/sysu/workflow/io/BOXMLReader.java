@@ -33,19 +33,19 @@ import java.text.MessageFormat;
 import java.util.*;
 
 /**
- * <p>The SCXMLReader provides the ability to read a SCXML document into
+ * <p>The BOXMLReader provides the ability to read a SCXML document into
  * the Java object model provided in the model package.</p>
  * <p/>
  * <p>See latest version of the SCXML Working Draft for more details.</p>
  * <p/>
- * <p><b>NOTE:</b> The SCXMLReader assumes that the SCXML document to be
+ * <p><b>NOTE:</b> The BOXMLReader assumes that the SCXML document to be
  * parsed is well-formed and correct. If that assumption does not hold,
  * any subsequent behavior is undefined.</p>
  * <p/>
  *
  * @since 1.0
  */
-public final class SCXMLReader {
+public final class BOXMLReader {
 
     //---------------------- PRIVATE CONSTANTS ----------------------//
     //---- NAMESPACES ----//
@@ -291,7 +291,7 @@ public final class SCXMLReader {
     /**
      * Discourage instantiation since this is a utility class.
      */
-    public SCXMLReader() {
+    public BOXMLReader() {
 
     }
 
@@ -920,7 +920,7 @@ public final class SCXMLReader {
         // Parse external document
         SCXML externalSCXML;
         try {
-            externalSCXML = SCXMLReader.readInternal(configuration, new URL(location), null, null, null, null);
+            externalSCXML = BOXMLReader.readInternal(configuration, new URL(location), null, null, null, null);
         } catch (Exception e) {
             MessageFormat msgFormat = new MessageFormat(ERR_STATE_SRC);
             String errMsg = msgFormat.format(new Object[]{src});
@@ -2378,7 +2378,7 @@ public final class SCXMLReader {
             cl = Thread.currentThread().getContextClassLoader();
         }
         if (cl == null) {
-            cl = SCXMLReader.class.getClassLoader();
+            cl = BOXMLReader.class.getClassLoader();
         }
         Class<?> clazz;
         try {
@@ -2666,7 +2666,7 @@ public final class SCXMLReader {
         while (reader.hasNext()) {
             switch (reader.next()) {
                 case XMLStreamConstants.START_ELEMENT:
-                    log = LogFactory.getLog(SCXMLReader.class);
+                    log = LogFactory.getLog(BOXMLReader.class);
                     log.warn("Ignoring XML content in <script> element, encountered element with local name: "
                             + reader.getLocalName());
                     skipToEndElement(reader);
@@ -2789,7 +2789,7 @@ public final class SCXMLReader {
                                              final String parent, final String nsURI, final String name)
             throws XMLStreamException, ModelException {
 
-        org.apache.commons.logging.Log log = LogFactory.getLog(SCXMLReader.class);
+        org.apache.commons.logging.Log log = LogFactory.getLog(BOXMLReader.class);
         StringBuilder sb = new StringBuilder();
         sb.append("Ignoring unknown or invalid element <").append(name)
                 .append("> in namespace \"").append(nsURI)
@@ -2843,7 +2843,7 @@ public final class SCXMLReader {
                                                final String element, final String attr, final String value)
             throws XMLStreamException, ModelException {
 
-        org.apache.commons.logging.Log log = LogFactory.getLog(SCXMLReader.class);
+        org.apache.commons.logging.Log log = LogFactory.getLog(BOXMLReader.class);
         StringBuilder sb = new StringBuilder();
         sb.append("Ignoring unknown or invalid <").append(element).append("> attribute ").append(attr)
                 .append("=\"").append(value).append("\" at ").append(reader.getLocation());
@@ -2876,7 +2876,7 @@ public final class SCXMLReader {
                                                    final String element, final String attr, final String conflictingAttr)
             throws XMLStreamException, ModelException {
 
-        org.apache.commons.logging.Log log = LogFactory.getLog(SCXMLReader.class);
+        org.apache.commons.logging.Log log = LogFactory.getLog(BOXMLReader.class);
         StringBuilder sb = new StringBuilder();
         sb.append("Ignoring <").append(element).append("> attribute \"").append(conflictingAttr)
                 .append("\" which conflicts with already defined attribute \"").append(attr)
@@ -2939,7 +2939,7 @@ public final class SCXMLReader {
 
     /**
      * Use the supplied {@link Configuration} to create an appropriate {@link XMLStreamReader} for this
-     * {@link SCXMLReader}. Exactly one of the url, path, stream, reader or source parameters must be provided.
+     * {@link BOXMLReader}. Exactly one of the url, path, stream, reader or source parameters must be provided.
      *
      * @param configuration The {@link Configuration} to be used.
      * @param url           The {@link URL} to the SCXML document to read.
@@ -3047,7 +3047,7 @@ public final class SCXMLReader {
 
     /**
      * <p>
-     * Configuration for the {@link SCXMLReader}. The configuration properties necessary for the following are
+     * Configuration for the {@link BOXMLReader}. The configuration properties necessary for the following are
      * covered:
      * </p>
      * <p/>
@@ -3063,7 +3063,7 @@ public final class SCXMLReader {
     public static class Configuration {
 
         /*
-         * Configuration properties for this {@link SCXMLReader}.
+         * Configuration properties for this {@link BOXMLReader}.
          */
         // XMLInputFactory configuration properties.
         /**

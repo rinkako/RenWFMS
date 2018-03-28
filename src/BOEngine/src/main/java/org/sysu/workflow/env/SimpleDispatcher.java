@@ -2,7 +2,7 @@
 package org.sysu.workflow.env;
 
 import org.sysu.workflow.EventDispatcher;
-import org.sysu.workflow.SCXMLIOProcessor;
+import org.sysu.workflow.BOXMLIOProcessor;
 import org.sysu.workflow.TriggerEvent;
 import org.sysu.workflow.model.extend.MessageMode;
 import org.apache.commons.logging.Log;
@@ -84,7 +84,7 @@ public class SimpleDispatcher implements EventDispatcher, Serializable {
     /**
      * @see EventDispatcher#send(Map, String, String, String, String, Object, Object, long)
      */
-    public void send(final Map<String, SCXMLIOProcessor> ioProcessors, final String id, final String target,
+    public void send(final Map<String, BOXMLIOProcessor> ioProcessors, final String id, final String target,
                      final String type, final String event, final Object data, final Object hints, final long delay) {
         if (log.isInfoEnabled()) {
             StringBuilder buf = new StringBuilder();
@@ -101,27 +101,27 @@ public class SimpleDispatcher implements EventDispatcher, Serializable {
 
         // We only handle the "scxml" type (which is the default too) and optionally the #_internal target
 
-        if (type == null || type.equalsIgnoreCase(SCXMLIOProcessor.SCXML_EVENT_PROCESSOR) ||
-                type.equals(SCXMLIOProcessor.DEFAULT_EVENT_PROCESSOR)) {
+        if (type == null || type.equalsIgnoreCase(BOXMLIOProcessor.SCXML_EVENT_PROCESSOR) ||
+                type.equals(BOXMLIOProcessor.DEFAULT_EVENT_PROCESSOR)) {
 
-            SCXMLIOProcessor ioProcessor;
+            BOXMLIOProcessor ioProcessor;
 
             boolean internal = false;
 
             if (target == null) {
-                ioProcessor = ioProcessors.get(SCXMLIOProcessor.SCXML_EVENT_PROCESSOR);
+                ioProcessor = ioProcessors.get(BOXMLIOProcessor.SCXML_EVENT_PROCESSOR);
             } else if (ioProcessors.containsKey(target)) {
                 ioProcessor = ioProcessors.get(target);
-                internal = SCXMLIOProcessor.INTERNAL_EVENT_PROCESSOR.equals(target);
-            } else if (SCXMLIOProcessor.INTERNAL_EVENT_PROCESSOR.equals(target)) {
-                ioProcessor = ioProcessors.get(SCXMLIOProcessor.INTERNAL_EVENT_PROCESSOR);
+                internal = BOXMLIOProcessor.INTERNAL_EVENT_PROCESSOR.equals(target);
+            } else if (BOXMLIOProcessor.INTERNAL_EVENT_PROCESSOR.equals(target)) {
+                ioProcessor = ioProcessors.get(BOXMLIOProcessor.INTERNAL_EVENT_PROCESSOR);
                 internal = true;
             } else {
                 // We know of no other target
                 if (log.isWarnEnabled()) {
                     log.warn("<send>: Unavailable target - " + target);
                 }
-                ioProcessors.get(SCXMLIOProcessor.INTERNAL_EVENT_PROCESSOR).
+                ioProcessors.get(BOXMLIOProcessor.INTERNAL_EVENT_PROCESSOR).
                         addEvent(new TriggerEvent(TriggerEvent.ERROR_EXECUTION, TriggerEvent.ERROR_EVENT));
                 return; // done
             }
@@ -130,7 +130,7 @@ public class SimpleDispatcher implements EventDispatcher, Serializable {
                 if (log.isWarnEnabled()) {
                     log.warn("<send>: Cannot send without event name");
                 }
-                ioProcessors.get(SCXMLIOProcessor.INTERNAL_EVENT_PROCESSOR).
+                ioProcessors.get(BOXMLIOProcessor.INTERNAL_EVENT_PROCESSOR).
                         addEvent(new TriggerEvent(TriggerEvent.ERROR_EXECUTION, TriggerEvent.ERROR_EVENT));
             } else if (!internal && delay > 0L) {
                 // Need to schedule this one
@@ -149,7 +149,7 @@ public class SimpleDispatcher implements EventDispatcher, Serializable {
             if (log.isWarnEnabled()) {
                 log.warn("<send>: Unsupported type - " + type);
             }
-            ioProcessors.get(SCXMLIOProcessor.INTERNAL_EVENT_PROCESSOR).
+            ioProcessors.get(BOXMLIOProcessor.INTERNAL_EVENT_PROCESSOR).
                     addEvent(new TriggerEvent(TriggerEvent.ERROR_EXECUTION, TriggerEvent.ERROR_EVENT));
         }
     }
@@ -181,7 +181,7 @@ public class SimpleDispatcher implements EventDispatcher, Serializable {
         /**
          * The target io processor
          */
-        private SCXMLIOProcessor target;
+        private BOXMLIOProcessor target;
 
         /**
          * Constructor for events with payload.
@@ -191,7 +191,7 @@ public class SimpleDispatcher implements EventDispatcher, Serializable {
          * @param payload The event payload, if any.
          * @param target  The target io processor
          */
-        DelayedEventTask(final String id, final String event, final Object payload, SCXMLIOProcessor target) {
+        DelayedEventTask(final String id, final String event, final Object payload, BOXMLIOProcessor target) {
             super();
             this.id = id;
             this.event = event;

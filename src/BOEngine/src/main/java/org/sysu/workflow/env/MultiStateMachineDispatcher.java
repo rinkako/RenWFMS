@@ -5,9 +5,9 @@
 package org.sysu.workflow.env;
 
 import org.sysu.renCommon.enums.LogLevelType;
+import org.sysu.workflow.BOXMLExecutor;
 import org.sysu.workflow.EventDispatcher;
-import org.sysu.workflow.SCXMLExecutor;
-import org.sysu.workflow.SCXMLIOProcessor;
+import org.sysu.workflow.BOXMLIOProcessor;
 import org.sysu.workflow.TriggerEvent;
 import org.sysu.workflow.instanceTree.InstanceManager;
 import org.sysu.workflow.instanceTree.RTreeNode;
@@ -94,7 +94,7 @@ public class MultiStateMachineDispatcher extends SimpleDispatcher implements Ser
      * @see EventDispatcher#send(Map, String, String, String, String, Object, Object, long)
      */
     @Override
-    public void send(Map<String, SCXMLIOProcessor> ioProcessors, String id, String target, String type, String event, Object data, Object hints, long delay) {
+    public void send(Map<String, BOXMLIOProcessor> ioProcessors, String id, String target, String type, String event, Object data, Object hints, long delay) {
         super.send(ioProcessors, id, target, type, event, data, hints, delay);
     }
 
@@ -116,9 +116,9 @@ public class MultiStateMachineDispatcher extends SimpleDispatcher implements Ser
                     ", delay: " + delay + ')';
             log.info(buf);
         }
-        if (type == null || type.equalsIgnoreCase(SCXMLIOProcessor.SCXML_EVENT_PROCESSOR) ||
-                type.equals(SCXMLIOProcessor.DEFAULT_EVENT_PROCESSOR)) {
-            SCXMLIOProcessor ioProcessor = InstanceManager.GetExecutor(rtid, currentId);
+        if (type == null || type.equalsIgnoreCase(BOXMLIOProcessor.SCXML_EVENT_PROCESSOR) ||
+                type.equals(BOXMLIOProcessor.DEFAULT_EVENT_PROCESSOR)) {
+            BOXMLIOProcessor ioProcessor = InstanceManager.GetExecutor(rtid, currentId);
             // null event handle
             if (event == null) {
                 if (log.isWarnEnabled()) {
@@ -413,7 +413,7 @@ public class MultiStateMachineDispatcher extends SimpleDispatcher implements Ser
         if (targetState != null && !"".equals(targetState)) {
             for (RTreeNode treeNode : targetTreeNodeList) {
                 // get the unique scxml executor for each tree node
-                SCXMLExecutor scxmlExecutor = treeNode.getExect().getSCXMLExecutor();
+                BOXMLExecutor scxmlExecutor = treeNode.getExect().getSCXMLExecutor();
                 if (scxmlExecutor != null) {
                     if (scxmlExecutor.getStatus().isInState(targetState)) {
                         try {
@@ -429,7 +429,7 @@ public class MultiStateMachineDispatcher extends SimpleDispatcher implements Ser
             }
         } else {
             for (RTreeNode treeNode : targetTreeNodeList) {
-                SCXMLExecutor scxmlExecutor = treeNode.getExect().getSCXMLExecutor();
+                BOXMLExecutor scxmlExecutor = treeNode.getExect().getSCXMLExecutor();
                 // put the event to the external queue no matter which state the node is in currently
                 if (scxmlExecutor != null) {
                     try {
@@ -504,7 +504,7 @@ public class MultiStateMachineDispatcher extends SimpleDispatcher implements Ser
         /**
          * The target io processor
          */
-        private SCXMLIOProcessor target;
+        private BOXMLIOProcessor target;
 
         /**
          * Constructor for events with payload.
@@ -514,7 +514,7 @@ public class MultiStateMachineDispatcher extends SimpleDispatcher implements Ser
          * @param payload The event payload, if any.
          * @param target  The target io processor
          */
-        DelayedEventTask(final String id, final String event, final Object payload, SCXMLIOProcessor target) {
+        DelayedEventTask(final String id, final String event, final Object payload, BOXMLIOProcessor target) {
             super();
             this.id = id;
             this.event = event;

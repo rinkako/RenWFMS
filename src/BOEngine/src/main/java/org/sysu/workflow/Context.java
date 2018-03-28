@@ -80,10 +80,10 @@ public interface Context {
     Context getParent();
 
     /**
-     * Get the SCXMLSystemContext for this Context, should not be null unless this is the root Context.
+     * Get the BOXMLSystemContext for this Context, should not be null unless this is the root Context.
      *
-     * @return The SCXMLSystemContext in a chained Context environment
+     * @return The BOXMLSystemContext in a chained Context environment
      */
-    SCXMLSystemContext getSystemContext();
+    BOXMLSystemContext getSystemContext();
 
 }

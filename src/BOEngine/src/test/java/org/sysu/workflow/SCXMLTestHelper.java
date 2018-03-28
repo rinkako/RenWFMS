@@ -3,7 +3,7 @@ package org.sysu.workflow;
 
 import org.sysu.workflow.env.SimpleDispatcher;
 import org.sysu.workflow.env.Tracer;
-import org.sysu.workflow.io.SCXMLReader;
+import org.sysu.workflow.io.BOXMLReader;
 import org.sysu.workflow.model.CustomAction;
 import org.sysu.workflow.model.EnterableState;
 import org.sysu.workflow.model.SCXML;
@@ -61,8 +61,8 @@ public class SCXMLTestHelper {
 
     public static SCXML parse(final URL url, final List<CustomAction> customActions) throws Exception {
         Assert.assertNotNull(url);
-        SCXMLReader.Configuration configuration = new SCXMLReader.Configuration(null, null, customActions);
-        SCXML scxml = SCXMLReader.read(url, configuration);
+        BOXMLReader.Configuration configuration = new BOXMLReader.Configuration(null, null, customActions);
+        SCXML scxml = BOXMLReader.read(url, configuration);
         Assert.assertNotNull(scxml);
         SCXML roundtrip = testModelSerializability(scxml);
         return roundtrip;
@@ -70,46 +70,46 @@ public class SCXMLTestHelper {
 
     public static SCXML parse(final Reader scxmlReader, final List<CustomAction> customActions) throws Exception {
         Assert.assertNotNull(scxmlReader);
-        SCXMLReader.Configuration configuration = new SCXMLReader.Configuration(null, null, customActions);
-        SCXML scxml = SCXMLReader.read(scxmlReader, configuration);
+        BOXMLReader.Configuration configuration = new BOXMLReader.Configuration(null, null, customActions);
+        SCXML scxml = BOXMLReader.read(scxmlReader, configuration);
         Assert.assertNotNull(scxml);
         SCXML roundtrip = testModelSerializability(scxml);
         return roundtrip;
     }
 
-    public static SCXMLExecutor getExecutor(final URL url) throws Exception {
+    public static BOXMLExecutor getExecutor(final URL url) throws Exception {
         return getExecutor(parse(url), null);
     }
 
-    public static SCXMLExecutor getExecutor(final String scxmlResource) throws Exception {
+    public static BOXMLExecutor getExecutor(final String scxmlResource) throws Exception {
         return getExecutor(parse(scxmlResource), null);
     }
 
-    public static SCXMLExecutor getExecutor(final SCXML scxml) throws Exception {
+    public static BOXMLExecutor getExecutor(final SCXML scxml) throws Exception {
         return getExecutor(scxml, null);
     }
 
-    public static SCXMLExecutor getExecutor(final URL url, final Evaluator evaluator) throws Exception {
+    public static BOXMLExecutor getExecutor(final URL url, final Evaluator evaluator) throws Exception {
         return getExecutor(parse(url), evaluator);
     }
 
-    public static SCXMLExecutor getExecutor(final SCXML scxml, final Evaluator evaluator) throws Exception {
+    public static BOXMLExecutor getExecutor(final SCXML scxml, final Evaluator evaluator) throws Exception {
         return getExecutor(scxml, evaluator, new SimpleDispatcher());
     }
 
-    public static SCXMLExecutor getExecutor(final SCXML scxml, final Evaluator evaluator, final EventDispatcher eventDispatcher) throws Exception {
+    public static BOXMLExecutor getExecutor(final SCXML scxml, final Evaluator evaluator, final EventDispatcher eventDispatcher) throws Exception {
         Tracer trc = new Tracer();
-        SCXMLExecutor exec = new SCXMLExecutor(evaluator, eventDispatcher, trc);
+        BOXMLExecutor exec = new BOXMLExecutor(evaluator, eventDispatcher, trc);
         exec.setStateMachine(scxml);
         exec.addListener(scxml, trc);
         return exec;
     }
 
-    public static TransitionTarget lookupTransitionTarget(SCXMLExecutor exec, String id) {
+    public static TransitionTarget lookupTransitionTarget(BOXMLExecutor exec, String id) {
         return exec.getStateMachine().getTargets().get(id);
     }
 
-    public static Context lookupContext(SCXMLExecutor exec, String id) {
+    public static Context lookupContext(BOXMLExecutor exec, String id) {
         TransitionTarget tt = lookupTransitionTarget(exec, id);
         if (tt == null || !(tt instanceof EnterableState)) {
             return null;
@@ -117,7 +117,7 @@ public class SCXMLTestHelper {
         return exec.getSCInstance().lookupContext((EnterableState) tt);
     }
 
-    public static void assertState(SCXMLExecutor exec, String expectedStateId) {
+    public static void assertState(BOXMLExecutor exec, String expectedStateId) {
         Set<EnterableState> currentStates = exec.getStatus().getStates();
         Assert.assertEquals("Expected 1 simple (leaf) state with id '"
                         + expectedStateId + "' but found " + currentStates.size() + " states instead.",
@@ -126,49 +126,49 @@ public class SCXMLTestHelper {
                 next().getId());
     }
 
-    public static Set<EnterableState> fireEvent(SCXMLExecutor exec, String name) throws Exception {
+    public static Set<EnterableState> fireEvent(BOXMLExecutor exec, String name) throws Exception {
         return fireEvent(exec, name, null);
     }
 
-    public static Set<EnterableState> fireEvent(SCXMLExecutor exec, String name, Object payload) throws Exception {
+    public static Set<EnterableState> fireEvent(BOXMLExecutor exec, String name, Object payload) throws Exception {
         TriggerEvent[] evts = {new TriggerEvent(name, TriggerEvent.SIGNAL_EVENT, payload)};
         exec.triggerEvents(evts);
         return exec.getStatus().getStates();
     }
 
-    public static Set<EnterableState> fireEvent(SCXMLExecutor exec, TriggerEvent te) throws Exception {
+    public static Set<EnterableState> fireEvent(BOXMLExecutor exec, TriggerEvent te) throws Exception {
         exec.triggerEvent(te);
         return exec.getStatus().getStates();
     }
 
-    public static Set<EnterableState> fireEvents(SCXMLExecutor exec, TriggerEvent[] evts) throws Exception {
+    public static Set<EnterableState> fireEvents(BOXMLExecutor exec, TriggerEvent[] evts) throws Exception {
         exec.triggerEvents(evts);
         return exec.getStatus().getStates();
     }
 
-    public static void assertPostTriggerState(SCXMLExecutor exec,
+    public static void assertPostTriggerState(BOXMLExecutor exec,
                                               String triggerEventName, String expectedStateId) throws Exception {
         assertPostTriggerState(exec, triggerEventName, null, expectedStateId);
     }
 
-    public static void assertPostTriggerState(SCXMLExecutor exec,
+    public static void assertPostTriggerState(BOXMLExecutor exec,
                                               String triggerEventName, Object payload, String expectedStateId) throws Exception {
         assertPostTriggerState(exec, new TriggerEvent(triggerEventName,
                 TriggerEvent.SIGNAL_EVENT, payload), expectedStateId);
     }
 
-    public static void assertPostTriggerStates(SCXMLExecutor exec,
+    public static void assertPostTriggerStates(BOXMLExecutor exec,
                                                String triggerEventName, String[] expectedStateIds) throws Exception {
         assertPostTriggerStates(exec, triggerEventName, null, expectedStateIds);
     }
 
-    public static void assertPostTriggerStates(SCXMLExecutor exec,
+    public static void assertPostTriggerStates(BOXMLExecutor exec,
                                                String triggerEventName, Object payload, String[] expectedStateIds) throws Exception {
         assertPostTriggerStates(exec, new TriggerEvent(triggerEventName,
                 TriggerEvent.SIGNAL_EVENT, payload), expectedStateIds);
     }
 
-    public static void assertPostTriggerState(SCXMLExecutor exec,
+    public static void assertPostTriggerState(BOXMLExecutor exec,
                                               TriggerEvent triggerEvent, String expectedStateId) throws Exception {
         Set<EnterableState> currentStates = fireEvent(exec, triggerEvent);
         Assert.assertEquals("Expected 1 simple (leaf) state with id '"
@@ -179,7 +179,7 @@ public class SCXMLTestHelper {
                 next().getId());
     }
 
-    public static void assertPostTriggerStates(SCXMLExecutor exec,
+    public static void assertPostTriggerStates(BOXMLExecutor exec,
                                                TriggerEvent triggerEvent, String[] expectedStateIds) throws Exception {
         if (expectedStateIds == null || expectedStateIds.length == 0) {
             Assert.fail("Must specify an array of one or more "
@@ -224,7 +224,7 @@ public class SCXMLTestHelper {
         return roundtrip;
     }
 
-    public static SCXMLExecutor testInstanceSerializability(final SCXMLExecutor exec) throws Exception {
+    public static BOXMLExecutor testInstanceSerializability(final BOXMLExecutor exec) throws Exception {
         File fileDir = new File(SERIALIZATION_DIR);
         if (!fileDir.exists()) {
             fileDir.mkdirs();
@@ -237,7 +237,7 @@ public class SCXMLTestHelper {
         out.close();
         ObjectInputStream in =
                 new ObjectInputStream(new FileInputStream(filename));
-        exec.attachInstance((SCInstance) in.readObject());
+        exec.attachInstance((BOInstance) in.readObject());
         in.close();
         return exec;
     }

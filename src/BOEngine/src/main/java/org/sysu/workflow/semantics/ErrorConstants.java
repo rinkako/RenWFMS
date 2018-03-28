@@ -6,7 +6,7 @@ import org.sysu.workflow.model.State;
 
 /**
  * 错误的变量
- * Errors reported by the default SCXMLSemantics implementation.
+ * Errors reported by the default BOXMLSemantics implementation.
  */
 public class ErrorConstants {
 

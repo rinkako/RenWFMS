@@ -15,10 +15,10 @@ import org.apache.commons.logging.LogFactory;
 import java.util.*;
 
 /**
- * SCXMLExecutionContext provides all the services and internal data used during the interpretation of an SCXML
+ * BOXMLExecutionContext provides all the services and internal data used during the interpretation of an SCXML
  * state machine across micro and macro steps.
  */
-public class SCXMLExecutionContext implements SCXMLIOProcessor {
+public class BOXMLExecutionContext implements BOXMLIOProcessor {
 
     /**
      * Default and required supported SCXML Processor Invoker service URI
@@ -36,9 +36,9 @@ public class SCXMLExecutionContext implements SCXMLIOProcessor {
     private final ActionExecutionContext actionExecutionContext;
 
     /**
-     * The SCXMLExecutor of this SCXMLExecutionContext
+     * The BOXMLExecutor of this BOXMLExecutionContext
      */
-    private final SCXMLExecutor scxmlExecutor;
+    private final BOXMLExecutor scxmlExecutor;
 
     /**
      * The internal event queue
@@ -63,17 +63,17 @@ public class SCXMLExecutionContext implements SCXMLIOProcessor {
     /**
      * The Map of the current ioProcessors
      */
-    private final Map<String, SCXMLIOProcessor> ioProcessors = new HashMap<String, SCXMLIOProcessor>();
+    private final Map<String, BOXMLIOProcessor> ioProcessors = new HashMap<String, BOXMLIOProcessor>();
 
     /**
      * SCXML Execution Logger for the application.
      */
-    private Log appLog = LogFactory.getLog(SCXMLExecutionContext.class);
+    private Log appLog = LogFactory.getLog(BOXMLExecutionContext.class);
 
     /**
-     * The SCInstance.
+     * The BOInstance.
      */
-    private SCInstance scInstance;
+    private BOInstance scInstance;
 
     /**
      * The evaluator for expressions.
@@ -83,7 +83,7 @@ public class SCXMLExecutionContext implements SCXMLIOProcessor {
     /**
      * The external IOProcessor for Invokers to communicate back on
      */
-    private SCXMLIOProcessor externalIOProcessor;
+    private BOXMLIOProcessor externalIOProcessor;
 
     /**
      * The event dispatcher to interface with external documents etc.
@@ -106,7 +106,7 @@ public class SCXMLExecutionContext implements SCXMLIOProcessor {
     private boolean checkLegalConfiguration = true;
 
     /**
-     * Local cache of the SCInstance sessionId, to be able to check against clear/reinitialization
+     * Local cache of the BOInstance sessionId, to be able to check against clear/reinitialization
      */
     private String sessionId;
 
@@ -138,12 +138,12 @@ public class SCXMLExecutionContext implements SCXMLIOProcessor {
     /**
      * 构造器
      *
-     * @param scxmlExecutor   The SCXMLExecutor of this SCXMLExecutionContext
+     * @param scxmlExecutor   The BOXMLExecutor of this BOXMLExecutionContext
      * @param evaluator       The evaluator
      * @param eventDispatcher The event dispatcher, if null a SimpleDispatcher instance will be used
      * @param errorReporter   The error reporter, if null a SimpleErrorReporter instance will be used
      */
-    protected SCXMLExecutionContext(SCXMLExecutor scxmlExecutor, Evaluator evaluator,
+    protected BOXMLExecutionContext(BOXMLExecutor scxmlExecutor, Evaluator evaluator,
                                     EventDispatcher eventDispatcher, ErrorReporter errorReporter) {
         this.scxmlExecutor = scxmlExecutor;
         this.externalIOProcessor = scxmlExecutor;
@@ -153,29 +153,29 @@ public class SCXMLExecutionContext implements SCXMLIOProcessor {
         this.notificationRegistry = new NotificationRegistry();
 
 
-        this.scInstance = new SCInstance(this, this.evaluator, this.errorReporter);
+        this.scInstance = new BOInstance(this, this.evaluator, this.errorReporter);
         this.actionExecutionContext = new ActionExecutionContext(this);
 
-        ioProcessors.put(SCXMLIOProcessor.DEFAULT_EVENT_PROCESSOR, getExternalIOProcessor());
-        ioProcessors.put(SCXMLIOProcessor.SCXML_EVENT_PROCESSOR, getExternalIOProcessor());
-        ioProcessors.put(SCXMLIOProcessor.INTERNAL_EVENT_PROCESSOR, getInternalIOProcessor());
+        ioProcessors.put(BOXMLIOProcessor.DEFAULT_EVENT_PROCESSOR, getExternalIOProcessor());
+        ioProcessors.put(BOXMLIOProcessor.SCXML_EVENT_PROCESSOR, getExternalIOProcessor());
+        ioProcessors.put(BOXMLIOProcessor.INTERNAL_EVENT_PROCESSOR, getInternalIOProcessor());
         if (scxmlExecutor.getParentSCXMLExecutor() != null) {
-            ioProcessors.put(SCXMLIOProcessor.PARENT_EVENT_PROCESSOR, scxmlExecutor.getParentSCXMLExecutor());
+            ioProcessors.put(BOXMLIOProcessor.PARENT_EVENT_PROCESSOR, scxmlExecutor.getParentSCXMLExecutor());
         }
         initializeIOProcessors();
         registerInvokerClass(SCXML_INVOKER_TYPE_URI, SimpleSCXMLInvoker.class);
         registerInvokerClass(SCXML_INVOKER_TYPE, SimpleSCXMLInvoker.class);
     }
 
-    public SCXMLExecutor getSCXMLExecutor() {
+    public BOXMLExecutor getSCXMLExecutor() {
         return scxmlExecutor;
     }
 
-    public SCXMLIOProcessor getExternalIOProcessor() {
+    public BOXMLIOProcessor getExternalIOProcessor() {
         return externalIOProcessor;
     }
 
-    public SCXMLIOProcessor getInternalIOProcessor() {
+    public BOXMLIOProcessor getInternalIOProcessor() {
         return this;
     }
 
@@ -278,9 +278,9 @@ public class SCXMLExecutionContext implements SCXMLIOProcessor {
     }
 
     /**
-     * @return Returns the SCInstance
+     * @return Returns the BOInstance
      */
-    public SCInstance getScInstance() {
+    public BOInstance getScInstance() {
         return scInstance;
     }
 
@@ -357,46 +357,46 @@ public class SCXMLExecutionContext implements SCXMLIOProcessor {
     protected void initializeIOProcessors() {
         if (scInstance.getEvaluator() != null) {
             // lazy register/reset #_scxml_sessionId event target
-            String currentSessionId = (String) getScInstance().getSystemContext().get(SCXMLSystemContext.SESSIONID_KEY);
+            String currentSessionId = (String) getScInstance().getSystemContext().get(BOXMLSystemContext.SESSIONID_KEY);
             if (sessionId != null && !sessionId.equals(currentSessionId)) {
                 // remove possible old/stale #_scxml_sessionId target
-                ioProcessors.remove(SCXMLIOProcessor.SCXML_SESSION_EVENT_PROCESSOR_PREFIX + sessionId);
+                ioProcessors.remove(BOXMLIOProcessor.SCXML_SESSION_EVENT_PROCESSOR_PREFIX + sessionId);
             }
             sessionId = currentSessionId;
-            if (!ioProcessors.containsKey(SCXMLIOProcessor.SCXML_SESSION_EVENT_PROCESSOR_PREFIX + sessionId)) {
-                ioProcessors.put(SCXMLIOProcessor.SCXML_SESSION_EVENT_PROCESSOR_PREFIX + sessionId, getExternalIOProcessor());
+            if (!ioProcessors.containsKey(BOXMLIOProcessor.SCXML_SESSION_EVENT_PROCESSOR_PREFIX + sessionId)) {
+                ioProcessors.put(BOXMLIOProcessor.SCXML_SESSION_EVENT_PROCESSOR_PREFIX + sessionId, getExternalIOProcessor());
             }
-            getScInstance().getSystemContext().setLocal(SCXMLSystemContext.IOPROCESSORS_KEY, Collections.unmodifiableMap(ioProcessors));
+            getScInstance().getSystemContext().setLocal(BOXMLSystemContext.IOPROCESSORS_KEY, Collections.unmodifiableMap(ioProcessors));
         }
     }
 
     /**
-     * Detach the current SCInstance to allow external serialization.
+     * Detach the current BOInstance to allow external serialization.
      * <p>
-     * {@link #attachInstance(SCInstance)} can be used to re-attach a previously detached instance
+     * {@link #attachInstance(BOInstance)} can be used to re-attach a previously detached instance
      * </p>
      *
      * @return the detached instance
      */
-    protected SCInstance detachInstance() {
-        SCInstance instance = scInstance;
+    protected BOInstance detachInstance() {
+        BOInstance instance = scInstance;
         scInstance.detach();
         Map<String, Object> systemVars = scInstance.getSystemContext().getVars();
-        systemVars.remove(SCXMLSystemContext.IOPROCESSORS_KEY);
-        systemVars.remove(SCXMLSystemContext.EVENT_KEY);
+        systemVars.remove(BOXMLSystemContext.IOPROCESSORS_KEY);
+        systemVars.remove(BOXMLSystemContext.EVENT_KEY);
         scInstance = null;
         return instance;
     }
 
     /**
-     * Re-attach a previously detached SCInstance.
+     * Re-attach a previously detached BOInstance.
      * <p>
      * Note: an already attached instance will get overwritten (and thus lost).
      * </p>
      *
-     * @param instance An previously detached SCInstance
+     * @param instance An previously detached BOInstance
      */
-    protected void attachInstance(SCInstance instance) {
+    protected void attachInstance(BOInstance instance) {
         if (scInstance != null) {
             scInstance.detach();
         }
@@ -485,7 +485,7 @@ public class SCXMLExecutionContext implements SCXMLIOProcessor {
         }
         invokeIds.put(invoke, invokeId);
         invokers.put(invokeId, invoker);
-        ioProcessors.put(SCXMLIOProcessor.EVENT_PROCESSOR_ALIAS_PREFIX + invoke.getId(), invoker.getChildIOProcessor());
+        ioProcessors.put(BOXMLIOProcessor.EVENT_PROCESSOR_ALIAS_PREFIX + invoke.getId(), invoker.getChildIOProcessor());
         initializeIOProcessors();
     }
 
@@ -496,7 +496,7 @@ public class SCXMLExecutionContext implements SCXMLIOProcessor {
      */
     public void removeInvoker(final Invoke invoke) {
         invokers.remove(invokeIds.remove(invoke));
-        ioProcessors.remove(SCXMLIOProcessor.EVENT_PROCESSOR_ALIAS_PREFIX + invoke.getId());
+        ioProcessors.remove(BOXMLIOProcessor.EVENT_PROCESSOR_ALIAS_PREFIX + invoke.getId());
         initializeIOProcessors();
     }
 

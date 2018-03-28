@@ -4,10 +4,9 @@
  */
 package org.sysu.workflow.instanceTree;
 
-import org.omg.CORBA.PUBLIC_MEMBER;
 import org.sysu.renCommon.enums.LogLevelType;
-import org.sysu.workflow.SCXMLExecutionContext;
-import org.sysu.workflow.SCXMLExecutor;
+import org.sysu.workflow.BOXMLExecutionContext;
+import org.sysu.workflow.BOXMLExecutor;
 import org.sysu.workflow.utility.LogUtil;
 
 import java.util.Hashtable;
@@ -25,7 +24,7 @@ public class InstanceManager {
      * @param nodeId tree node global id
      * @return executor at fetched node
      */
-    public static SCXMLExecutor GetExecutor(String tid, String nodeId) {
+    public static BOXMLExecutor GetExecutor(String tid, String nodeId) {
         return InstanceManager.GetExecContext(tid, nodeId).getSCXMLExecutor();
     }
 
@@ -35,7 +34,7 @@ public class InstanceManager {
      * @param nodeId tree node global id
      * @return execution context at fetched node
      */
-    public static SCXMLExecutionContext GetExecContext(String rtid, String nodeId) {
+    public static BOXMLExecutionContext GetExecContext(String rtid, String nodeId) {
         return InstanceManager.GetInstanceTree(rtid).GetNodeById(nodeId).getExect();
     }
 

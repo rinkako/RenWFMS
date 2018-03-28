@@ -1,10 +1,8 @@
 
 package org.sysu.workflow.model;
 
-import org.sysu.workflow.ActionExecutionContext;
 import org.sysu.workflow.Context;
 import org.sysu.workflow.Evaluator;
-import org.sysu.workflow.SCXMLExecutionContext;
 import org.sysu.workflow.utility.SerializationUtil;
 
 import java.io.Serializable;

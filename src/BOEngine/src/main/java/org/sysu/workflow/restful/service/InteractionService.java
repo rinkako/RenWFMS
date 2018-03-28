@@ -5,8 +5,8 @@
 package org.sysu.workflow.restful.service;
 
 import org.sysu.renCommon.enums.LogLevelType;
-import org.sysu.workflow.SCXMLExecutionContext;
-import org.sysu.workflow.SCXMLIOProcessor;
+import org.sysu.workflow.BOXMLExecutionContext;
+import org.sysu.workflow.BOXMLIOProcessor;
 import org.sysu.workflow.env.MultiStateMachineDispatcher;
 import org.sysu.workflow.instanceTree.InstanceManager;
 import org.sysu.workflow.instanceTree.RInstanceTree;
@@ -50,9 +50,9 @@ public class InteractionService {
             LogUtil.Log(String.format("Dispatch callback(BO:%s | ON:%s | EVT:%s | P:%s )",
                     bo, on, event, payload), InteractionService.class.getName(), LogLevelType.INFO, rtid);
             MultiStateMachineDispatcher dispatcher = (MultiStateMachineDispatcher) mainBONode.getExect().getEventDispatcher();
-            SCXMLExecutionContext ctx = mainBONode.getExect();
+            BOXMLExecutionContext ctx = mainBONode.getExect();
             dispatcher.send(ctx.Rtid, ctx.NodeId, "", MessageMode.UNICAST, bo, "",
-                    SCXMLIOProcessor.DEFAULT_EVENT_PROCESSOR, event, payloadMap, "", 0);
+                    BOXMLIOProcessor.DEFAULT_EVENT_PROCESSOR, event, payloadMap, "", 0);
         }
         catch (Exception ex) {
             LogUtil.Log(String.format("Dispatch callback(BO:%s | ON:%s | EVT:%s | P:%s ), but exception occurred, %s",
@@ -87,9 +87,9 @@ public class InteractionService {
             LogUtil.Log(String.format("Dispatch callback(Notifiable:%s | ON:%s | EVT:%s | P:%s )",
                     id, on, event, payload), InteractionService.class.getName(), LogLevelType.INFO, rtid);
             MultiStateMachineDispatcher dispatcher = (MultiStateMachineDispatcher) mainBONode.getExect().getEventDispatcher();
-            SCXMLExecutionContext ctx = mainBONode.getExect();
+            BOXMLExecutionContext ctx = mainBONode.getExect();
             dispatcher.send(ctx.Rtid, ctx.NodeId, "", MessageMode.TO_NOTIFIABLE_ID, id, "",
-                    SCXMLIOProcessor.DEFAULT_EVENT_PROCESSOR, event, payloadMap, "", 0);
+                    BOXMLIOProcessor.DEFAULT_EVENT_PROCESSOR, event, payloadMap, "", 0);
         }
         catch (Exception ex) {
             LogUtil.Log(String.format("Dispatch callback(Notifiable:%s | ON:%s | EVT:%s | P:%s ), but exception occurred, %s",
