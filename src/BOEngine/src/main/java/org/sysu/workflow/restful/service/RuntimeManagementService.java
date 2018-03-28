@@ -156,7 +156,7 @@ public final class RuntimeManagementService {
 
     /**
      * Recursively handle span the user-friendly package tree of a specific instance tree.
-     * This method is to commemorate a girl devoted her love to guard the happiness of who she loved. -RKK
+     * This method is to commemorate a girl devoted her love to guard the happiness of who she loved and his lover. -RK
      *
      * @param node current span root node
      * @param fNode user-friendly package node of current span node

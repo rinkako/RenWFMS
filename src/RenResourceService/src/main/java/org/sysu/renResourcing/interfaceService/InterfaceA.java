@@ -24,7 +24,6 @@ import org.sysu.renResourcing.plugin.AsyncPluginRunner;
 import org.sysu.renResourcing.utility.HibernateUtil;
 import org.sysu.renResourcing.utility.LogUtil;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Hashtable;
 import java.util.List;

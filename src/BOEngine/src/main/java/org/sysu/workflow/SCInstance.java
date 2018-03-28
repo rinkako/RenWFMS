@@ -2,8 +2,6 @@
 package org.sysu.workflow;
 
 import org.sysu.workflow.env.SimpleContext;
-import org.sysu.workflow.instanceTree.InstanceManager;
-import org.sysu.workflow.instanceTree.RTreeNode;
 import org.sysu.workflow.model.*;
 import org.sysu.workflow.semantics.ErrorConstants;
 import org.w3c.dom.Document;
