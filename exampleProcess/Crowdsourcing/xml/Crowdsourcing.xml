@@ -24,7 +24,7 @@
     </datamodel>
 
     <!-- 任务模型 -->
-    <tasks>
+    <operations>
         <task id="judge" name="judgeTask" brole="judger">
             <principle method="Allocate" distributor="Round"/>
             <callback on="complete" event="judgeComplete"/>
@@ -79,7 +79,7 @@
 			<param name="supervisor"/>
             <param name="ordinal"/>
         </task>
-    </tasks>
+    </operations>
 
 
     <!-- 生命周期模型 -->
