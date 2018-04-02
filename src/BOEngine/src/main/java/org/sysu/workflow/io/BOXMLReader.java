@@ -217,7 +217,7 @@ public final class BOXMLReader {
 
     //---- BOO拓展的元素 ----//
     private static final String ELEM_BOO_LAYOUT = "layout";
-    private static final String ELEM_BOO_TASKS = "tasks";
+    private static final String ELEM_BOO_TASKS = "operations";
     private static final String ELEM_BOO_TASK = "task";
     private static final String ELEM_BOO_CALL = "call";
     private static final String ELEM_BOO_NEWBO = "newbo";
