@@ -1,8 +1,5 @@
-<businessclass
-        version="1.0"
-        xmlns="http://www.w3.org/2005/07/scxml"
-        name="Crowdsourcing"
-        initial="Initial">
+<businessclass version="1.0" name="Crowdsourcing" initial="Initial"
+        xmlns="http://www.w3.org/2005/07/scxml">
 
     <!-- 数据模型：定义业务对象在业务执行过程中需要使用的业务数据 -->
     <datamodel>

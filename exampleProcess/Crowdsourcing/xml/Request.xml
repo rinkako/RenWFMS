@@ -1,8 +1,5 @@
-<businessclass
-        version="1.0"
-        xmlns="http://www.w3.org/2005/07/scxml"
-        name="Request"
-        initial="Initial">
+<businessclass version="1.0" name="Request" initial="Initial"
+        xmlns="http://www.w3.org/2005/07/scxml">
 
     <datamodel>
         <!--继承自父业务类的数据模型不需要在这里重新进行定义-->

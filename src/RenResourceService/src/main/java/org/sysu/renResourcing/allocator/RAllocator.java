@@ -30,35 +30,11 @@ public abstract class RAllocator extends RSelector implements Serializable {
     protected static final String ParameterInstanceCount = "instance";
 
     /**
-     * How many instance should be generated and allocate.
-     */
-    protected int instanceCount = 1;
-
-    /**
-     * Get the instance count of this allocator.
-     * @return instance count number, default by 1
-     */
-    public int getInstanceCount() {
-        return this.instanceCount;
-    }
-
-    /**
      * Apply principle to configure selector.
      */
     @Override
     protected void ApplyPrinciple() {
-        Map distributorArgs = this.principle.getDistributorArgsMap();
-        Object instanceCount = distributorArgs.get(RAllocator.ParameterInstanceCount);
-        try {
-            if (instanceCount != null) {
-                this.instanceCount = Integer.parseInt(instanceCount.toString());
-            }
-        }
-        catch (Exception ex) {
-            LogUtil.Log("Parse allocation instance number failed, use default value 1. Ex: " + ex,
-                    RAllocator.class.getName(), LogLevelType.ERROR, "");
-            this.instanceCount = 1;
-        }
+
     }
 
     /**

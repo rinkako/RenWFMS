@@ -1,8 +1,4 @@
-<businessclass
-        initial="Initial"
-        name="GuestOrder"
-        version="1.0"
-        xmlns="http://www.w3.org/2005/07/scxml">
+<businessclass initial="Initial" name="GuestOrder" version="1.0" xmlns="http://www.w3.org/2005/07/scxml">
     <datamodel>
         <data expr="0" id="startKOCount"/>
         <data expr="0" id="finishKOCount"/>
