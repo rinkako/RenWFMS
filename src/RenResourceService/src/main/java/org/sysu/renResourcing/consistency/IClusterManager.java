@@ -65,20 +65,20 @@ public interface IClusterManager {
      * Lock a global node path.
      * @param path global data path
      */
-    void Lock(String path);
+    void Lock(String path) throws Exception;
 
     /**
      * Try to lock a global node path.
      * @param path global data path
      * @return true if get locked by this method
      */
-    boolean TryLock(String path);
+    boolean TryLock(String path) throws Exception;
 
     /**
      * Unlock a global node path.
      * @param path global data path
      */
-    void Unlock(String path);
+    void Unlock(String path) throws Exception;
 
     /**
      * Cluster data namespace.

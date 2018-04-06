@@ -8,8 +8,12 @@ import org.apache.curator.RetryPolicy;
 import org.apache.curator.framework.CuratorFramework;
 import org.apache.curator.framework.CuratorFrameworkFactory;
 import org.apache.curator.framework.CuratorFrameworkFactory.Builder;
+import org.apache.curator.framework.recipes.locks.InterProcessMutex;
+import org.apache.curator.framework.recipes.locks.InterProcessReadWriteLock;
 import org.apache.curator.retry.ExponentialBackoffRetry;
 
+import java.util.HashMap;
+import java.util.Hashtable;
 import java.util.List;
 
 /**
@@ -24,7 +28,7 @@ public class ZKCluster implements IClusterManager {
      * This method is thread SAFE.
      * @return ZKCluster instance.
      */
-    public static ZKCluster GetInstance() {
+    public static ZKCluster GetInstance() throws Exception {
         if (ZKCluster.syncObj == null) {
             synchronized (ZKCluster.class) {
                 if (ZKCluster.syncObj == null) {
@@ -65,7 +69,7 @@ public class ZKCluster implements IClusterManager {
      */
     @Override
     public void WriteNode(String path, byte[] content) throws Exception {
-        this.ZClient.newNamespaceAwareEnsurePath(path).ensure(this.ZClient.getZookeeperClient());
+        this.ZClient.checkExists().creatingParentContainersIfNeeded().forPath(path);
         this.ZClient.setData().forPath(path, content);
     }
 
@@ -118,8 +122,13 @@ public class ZKCluster implements IClusterManager {
      * @param path global data path
      */
     @Override
-    public void Lock(String path) {
-        // todo
+    public synchronized void Lock(String path) throws Exception {
+        InterProcessReadWriteLock lock = ZKCluster.ZLockTable.get(path);
+        if (lock == null) {
+            lock = new InterProcessReadWriteLock(this.ZClient, path);
+            ZKCluster.ZLockTable.put(path, lock);
+        }
+        lock.writeLock().acquire();
     }
 
     /**
@@ -129,9 +138,15 @@ public class ZKCluster implements IClusterManager {
      * @return true if get locked by this method
      */
     @Override
-    public boolean TryLock(String path) {
-        // todo
-        return false;
+    public synchronized boolean TryLock(String path) throws Exception {
+        InterProcessReadWriteLock lock = ZKCluster.ZLockTable.get(path);
+        if (lock == null) {
+            lock = new InterProcessReadWriteLock(this.ZClient, path);
+            ZKCluster.ZLockTable.put(path, lock);
+            lock.writeLock().acquire();
+            return true;
+        }
+        return lock.writeLock().isOwnedByCurrentThread();
     }
 
     /**
@@ -140,14 +155,18 @@ public class ZKCluster implements IClusterManager {
      * @param path global data path
      */
     @Override
-    public void Unlock(String path) {
-        // todo
+    public synchronized void Unlock(String path) throws Exception {
+        InterProcessReadWriteLock lock = ZKCluster.ZLockTable.get(path);
+        if (lock == null) {
+            return;
+        }
+        lock.writeLock().release();
     }
 
     /**
      * Private constructor for preventing created outside.
      */
-    private ZKCluster() {
+    private ZKCluster() throws Exception {
         RetryPolicy rp = new ExponentialBackoffRetry(1000, 3);
         Builder builder = CuratorFrameworkFactory.builder()
                 .connectString(ZKCluster.ConnectZKAddress)
@@ -157,13 +176,18 @@ public class ZKCluster implements IClusterManager {
                 .namespace(ZKCluster.NameSpace);
         this.ZClient = builder.build();
         this.ZClient.start();
-        this.ZClient.newNamespaceAwareEnsurePath(ZKCluster.NameSpace);
+        this.ZClient.create().creatingParentContainersIfNeeded().forPath(ZKCluster.NameSpace);
     }
 
     /**
      * ZooKeeper Client.
      */
     private CuratorFramework ZClient;
+
+    /**
+     * Cluster lock table.
+     */
+    private static final HashMap<String, InterProcessReadWriteLock> ZLockTable = new HashMap<>();
 
     /**
      * [Configurable]
