@@ -62,23 +62,35 @@ public interface IClusterManager {
     boolean Contains(String path) throws Exception;
 
     /**
-     * Lock a global node path.
+     * WriteLock a global node path.
      * @param path global data path
      */
-    void Lock(String path) throws Exception;
+    void WriteLock(String path) throws Exception;
 
     /**
      * Try to lock a global node path.
      * @param path global data path
      * @return true if get locked by this method
      */
-    boolean TryLock(String path) throws Exception;
+    boolean TryWriteLock(String path) throws Exception;
 
     /**
-     * Unlock a global node path.
+     * WriteUnlock a global node path.
      * @param path global data path
      */
-    void Unlock(String path) throws Exception;
+    void WriteUnlock(String path) throws Exception;
+
+    /**
+     * ReadLock a global node path.
+     * @param path global data path
+     */
+    void ReadLock(String path) throws Exception;
+
+    /**
+     * ReadUnlock a global node path.
+     * @param path global data path
+     */
+    void ReadUnlock(String path) throws Exception;
 
     /**
      * Cluster data namespace.

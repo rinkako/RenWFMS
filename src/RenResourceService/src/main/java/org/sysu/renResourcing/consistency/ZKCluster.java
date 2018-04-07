@@ -8,12 +8,10 @@ import org.apache.curator.RetryPolicy;
 import org.apache.curator.framework.CuratorFramework;
 import org.apache.curator.framework.CuratorFrameworkFactory;
 import org.apache.curator.framework.CuratorFrameworkFactory.Builder;
-import org.apache.curator.framework.recipes.locks.InterProcessMutex;
 import org.apache.curator.framework.recipes.locks.InterProcessReadWriteLock;
 import org.apache.curator.retry.ExponentialBackoffRetry;
 
 import java.util.HashMap;
-import java.util.Hashtable;
 import java.util.List;
 
 /**
@@ -47,7 +45,7 @@ public class ZKCluster implements IClusterManager {
      */
     @Override
     public void WriteNodeByString(String path, String content) throws Exception {
-        this.WriteNode(path, content.getBytes());
+        this.WriteNode(this.NormalizePath(path), content.getBytes());
     }
 
     /**
@@ -58,7 +56,7 @@ public class ZKCluster implements IClusterManager {
      */
     @Override
     public String ReadNodeByString(String path) throws Exception {
-        return new String(this.ReadNode(path));
+        return new String(this.ReadNode(this.NormalizePath(path)));
     }
 
     /**
@@ -69,8 +67,9 @@ public class ZKCluster implements IClusterManager {
      */
     @Override
     public void WriteNode(String path, byte[] content) throws Exception {
-        this.ZClient.checkExists().creatingParentContainersIfNeeded().forPath(path);
-        this.ZClient.setData().forPath(path, content);
+        String nPath = this.NormalizePath(path);
+        this.ZClient.checkExists().creatingParentContainersIfNeeded().forPath(nPath);
+        this.ZClient.setData().forPath(nPath, content);
     }
 
     /**
@@ -81,7 +80,7 @@ public class ZKCluster implements IClusterManager {
      */
     @Override
     public byte[] ReadNode(String path) throws Exception {
-        return this.ZClient.getData().forPath(path);
+        return this.ZClient.getData().forPath(this.NormalizePath(path));
     }
 
     /**
@@ -92,7 +91,7 @@ public class ZKCluster implements IClusterManager {
      */
     @Override
     public List<String> GetChildren(String path) throws Exception {
-        return this.ZClient.getChildren().forPath(path);
+        return this.ZClient.getChildren().forPath(this.NormalizePath(path));
     }
 
     /**
@@ -102,7 +101,7 @@ public class ZKCluster implements IClusterManager {
      */
     @Override
     public void RemoveNode(String path) throws Exception {
-        this.ZClient.delete().guaranteed().deletingChildrenIfNeeded().forPath(path);
+        this.ZClient.delete().guaranteed().deletingChildrenIfNeeded().forPath(this.NormalizePath(path));
     }
 
     /**
@@ -113,20 +112,21 @@ public class ZKCluster implements IClusterManager {
      */
     @Override
     public boolean Contains(String path) throws Exception {
-        return this.ZClient.checkExists().forPath(path) != null;
+        return this.ZClient.checkExists().forPath(this.NormalizePath(path)) != null;
     }
 
     /**
-     * Lock a global node path.
+     * WriteLock a global node path.
      *
      * @param path global data path
      */
     @Override
-    public synchronized void Lock(String path) throws Exception {
-        InterProcessReadWriteLock lock = ZKCluster.ZLockTable.get(path);
+    public synchronized void WriteLock(String path) throws Exception {
+        String nPath = this.NormalizePath(path);
+        InterProcessReadWriteLock lock = ZKCluster.ZLockTable.get(nPath);
         if (lock == null) {
-            lock = new InterProcessReadWriteLock(this.ZClient, path);
-            ZKCluster.ZLockTable.put(path, lock);
+            lock = new InterProcessReadWriteLock(this.ZClient, nPath);
+            ZKCluster.ZLockTable.put(nPath, lock);
         }
         lock.writeLock().acquire();
     }
@@ -138,11 +138,12 @@ public class ZKCluster implements IClusterManager {
      * @return true if get locked by this method
      */
     @Override
-    public synchronized boolean TryLock(String path) throws Exception {
-        InterProcessReadWriteLock lock = ZKCluster.ZLockTable.get(path);
+    public synchronized boolean TryWriteLock(String path) throws Exception {
+        String nPath = this.NormalizePath(path);
+        InterProcessReadWriteLock lock = ZKCluster.ZLockTable.get(nPath);
         if (lock == null) {
-            lock = new InterProcessReadWriteLock(this.ZClient, path);
-            ZKCluster.ZLockTable.put(path, lock);
+            lock = new InterProcessReadWriteLock(this.ZClient, nPath);
+            ZKCluster.ZLockTable.put(nPath, lock);
             lock.writeLock().acquire();
             return true;
         }
@@ -150,17 +151,56 @@ public class ZKCluster implements IClusterManager {
     }
 
     /**
-     * Unlock a global node path.
+     * WriteUnlock a global node path.
      *
      * @param path global data path
      */
     @Override
-    public synchronized void Unlock(String path) throws Exception {
-        InterProcessReadWriteLock lock = ZKCluster.ZLockTable.get(path);
+    public synchronized void WriteUnlock(String path) throws Exception {
+        InterProcessReadWriteLock lock = ZKCluster.ZLockTable.get(this.NormalizePath(path));
         if (lock == null) {
             return;
         }
         lock.writeLock().release();
+    }
+
+    /**
+     * ReadLock a global node path.
+     *
+     * @param path global data path
+     */
+    @Override
+    public void ReadLock(String path) throws Exception {
+        String nPath = this.NormalizePath(path);
+        InterProcessReadWriteLock lock = ZKCluster.ZLockTable.get(nPath);
+        if (lock == null) {
+            lock = new InterProcessReadWriteLock(this.ZClient, nPath);
+            ZKCluster.ZLockTable.put(nPath, lock);
+        }
+        lock.readLock().acquire();
+    }
+
+    /**
+     * ReadUnlock a global node path.
+     *
+     * @param path global data path
+     */
+    @Override
+    public void ReadUnlock(String path) throws Exception {
+        InterProcessReadWriteLock lock = ZKCluster.ZLockTable.get(this.NormalizePath(path));
+        if (lock == null) {
+            return;
+        }
+        lock.readLock().release();
+    }
+
+    /**
+     * Normalize an URI to global URL.
+     * @param uri uri of path
+     * @return url of path
+     */
+    private String NormalizePath(String uri) {
+        return String.format("/%s/%s", ZKCluster.NameSpace, uri);
     }
 
     /**
@@ -176,7 +216,7 @@ public class ZKCluster implements IClusterManager {
                 .namespace(ZKCluster.NameSpace);
         this.ZClient = builder.build();
         this.ZClient.start();
-        this.ZClient.create().creatingParentContainersIfNeeded().forPath(ZKCluster.NameSpace);
+        this.ZClient.create().creatingParentContainersIfNeeded().forPath("/" + ZKCluster.NameSpace);
     }
 
     /**

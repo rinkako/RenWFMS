@@ -12,7 +12,7 @@ import java.util.UUID;
 /**
  * Author: Rinkako
  * Date  : 2017/11/20 0020
- * Usage : Global access data context.
+ * Usage : [Configurable] Global access data context.
  */
 public class GlobalContext {
 

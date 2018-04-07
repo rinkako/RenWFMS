@@ -23,7 +23,7 @@ import java.util.concurrent.locks.ReentrantReadWriteLock;
 public class ContextLockManager {
 
     /**
-     * Lock table.
+     * WriteLock table.
      */
     private static ConcurrentHashMap<String, ReentrantReadWriteLock> lockTable = new ConcurrentHashMap<>();
 
@@ -94,7 +94,7 @@ public class ContextLockManager {
     }
 
     /**
-     * Unlock a read lock.
+     * WriteUnlock a read lock.
      * @param clazz context class
      * @param contextId context id
      */
@@ -107,7 +107,7 @@ public class ContextLockManager {
     }
 
     /**
-     * Unlock a write lock.
+     * WriteUnlock a write lock.
      * @param clazz context class
      * @param contextId context id
      */
