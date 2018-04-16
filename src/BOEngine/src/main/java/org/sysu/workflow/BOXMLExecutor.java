@@ -616,7 +616,7 @@ public class BOXMLExecutor implements BOXMLIOProcessor {
     }
 
     public void setRtid(String rtid) {
-        this.exctx.Rtid = rtid;
+        this.exctx.SetRtid(rtid);
     }
 
     public void setPid(String pid) {

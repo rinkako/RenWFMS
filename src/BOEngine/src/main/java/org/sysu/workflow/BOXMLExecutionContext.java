@@ -555,6 +555,11 @@ public class BOXMLExecutionContext implements BOXMLIOProcessor {
         return sessionId;
     }
 
+    public void SetRtid(String rtid) {
+        this.Rtid = rtid;
+        this.scInstance.Rtid = this.Rtid;
+    }
+
     public void setSessionId(String sessionId) { this.sessionId = sessionId; }
 
 }

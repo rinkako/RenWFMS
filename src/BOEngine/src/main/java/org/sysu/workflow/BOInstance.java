@@ -38,6 +38,11 @@ public class BOInstance implements Serializable {
     private static final String ERR_NO_ERROR_REPORTER = "BOInstance: ErrorReporter not set";
 
     /**
+     * Binding rtid.
+     */
+    public String Rtid;
+
+    /**
      * Initialized flag.
      */
     private boolean initialized;

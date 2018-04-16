@@ -1,0 +1,29 @@
+<!--suppress ALL -->
+<businessclass initial="first" name="Attaching" version="1.0" xmlns="http://www.w3.org/2005/07/scxml">
+    <datamodel>
+        <data id="FlagVar" expr="0"></data>
+    </datamodel>
+    <state id="first">
+        <onentry>
+            <log label="MAIN" expr="'First'"/>
+        </onentry>
+        <transition event="next" target="second"/>
+    </state>
+    <state id="second">
+        <onentry>
+            <log label="MAIN Second" expr="'Second'"/>
+        </onentry>
+        <transition event="next" target="third"/>
+    </state>
+	<state id="third">
+        <onentry>
+            <log label="MAIN Second" expr="'Third'"/>
+        </onentry>
+        <transition event="next" target="finished"/>
+    </state>
+    <final id="finished">
+        <onentry>
+            <log label="MAIN" expr="'finished'"/>
+        </onentry>
+    </final>
+</businessclass>

@@ -4,9 +4,12 @@
  */
 package org.sysu.workflow.instanceTree;
 
+import org.hibernate.Session;
+import org.hibernate.Transaction;
 import org.sysu.renCommon.enums.LogLevelType;
 import org.sysu.workflow.BOXMLExecutionContext;
 import org.sysu.workflow.BOXMLExecutor;
+import org.sysu.workflow.utility.HibernateUtil;
 import org.sysu.workflow.utility.LogUtil;
 
 import java.util.Hashtable;
@@ -14,7 +17,7 @@ import java.util.Hashtable;
 /**
  * Author: Rinkako
  * Date  : 2017/3/15
- * Usage : Maintaining all running BO tree.
+ * Usage : Maintaining all running BO trees and providing methods for stateless operations.
  */
 public class InstanceManager {
 
@@ -81,8 +84,38 @@ public class InstanceManager {
         InstanceManager.InstanceTreeTable.remove(rtid);
     }
 
+    // todo
+    public static void AttachTree(String rtid) {
+        Session session = HibernateUtil.GetLocalSession();
+        Transaction transaction = session.beginTransaction();
+        try {
+
+        }
+        catch (Exception ex) {
+
+        }
+        finally {
+            HibernateUtil.CloseLocalSession();
+        }
+    }
+
+    // todo
+    public static void DetachTree(String rtid) {
+        Session session = HibernateUtil.GetLocalSession();
+        Transaction transaction = session.beginTransaction();
+        try {
+
+        }
+        catch (Exception ex) {
+
+        }
+        finally {
+            HibernateUtil.CloseLocalSession();
+        }
+    }
+
     /**
-     * Forest of instance tree, mapping (RTID, Tree).
+     * Forest of instance tree, mapping (Rtid, Tree).
      */
     private static Hashtable<String, RInstanceTree> InstanceTreeTable = new Hashtable<String, RInstanceTree>();
 }
