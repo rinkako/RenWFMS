@@ -30,7 +30,7 @@ public class ClusterController {
      * @param tag object tag
      * @return response package
      */
-    @PostMapping(value = "/doki", produces = {"application/json", "application/xml"})
+    @PostMapping(value = "/doki", produces = {"application/json"})
     @ResponseBody
     @Transactional
     public ReturnModel Doki(@RequestParam(value="from", required = false)String from,
@@ -66,7 +66,7 @@ public class ClusterController {
      * @param tag
      * @return
      */
-    @PostMapping(value = "/sync", produces = {"application/json", "application/xml"})
+    @PostMapping(value = "/sync", produces = {"application/json"})
     @ResponseBody
     public ReturnModel Sync(@RequestParam(value="from", required = false)String from,
                             @RequestParam(value="timestamp", required = false)String timestamp,
@@ -100,7 +100,7 @@ public class ClusterController {
      * @param to
      * @return
      */
-    @PostMapping(value = "/flush", produces = {"application/json", "application/xml"})
+    @PostMapping(value = "/flush", produces = {"application/json"})
     @ResponseBody
     public ReturnModel Flush(@RequestParam(value="from", required = false)String from,
                              @RequestParam(value="to", required = false)String to) {
@@ -131,7 +131,7 @@ public class ClusterController {
      * @param to
      * @return
      */
-    @PostMapping(value = "/fin", produces = {"application/json", "application/xml"})
+    @PostMapping(value = "/fin", produces = {"application/json"})
     @ResponseBody
     public ReturnModel Fin(@RequestParam(value="from", required = false)String from,
                            @RequestParam(value="to", required = false)String to) {

@@ -31,7 +31,7 @@ public class EngineController {
      * @param rtid the runtime record of a process
      * @return response package
      */
-    @RequestMapping(value = "/launchProcess", produces = {"application/json", "application/xml"})
+    @RequestMapping(value = "/launchProcess", produces = {"application/json"})
     @ResponseBody
     @Transactional
     public ReturnModel LaunchProcess(@RequestParam(value = "rtid", required = false) String rtid) {
@@ -58,7 +58,7 @@ public class EngineController {
      * @param boidlist BOs to be serialized, separated by `,`
      * @return response package
      */
-    @RequestMapping(value = "/serializeBO", produces = {"application/json", "application/xml"})
+    @RequestMapping(value = "/serializeBO", produces = {"application/json"})
     @ResponseBody
     @Transactional
     public ReturnModel SerializeBO(@RequestParam(value = "boidlist", required = false) String boidlist) {
@@ -85,7 +85,7 @@ public class EngineController {
      * @param rtid process rtid
      * @return response package
      */
-    @RequestMapping(value = "/getSpanTree", produces = {"application/json", "application/xml"})
+    @RequestMapping(value = "/getSpanTree", produces = {"application/json"})
     @ResponseBody
     @Transactional
     public ReturnModel GetSpanTreeByRTID(@RequestParam(value = "rtid", required = false) String rtid) {
@@ -116,7 +116,7 @@ public class EngineController {
      * @param payload event send to engine
      * @return response package
      */
-    @RequestMapping(value = "/callback", produces = {"application/json", "application/xml"})
+    @RequestMapping(value = "/callback", produces = {"application/json"})
     @ResponseBody
     @Transactional
     public ReturnModel Callback(@RequestParam(value="rtid", required = false)String rtid,

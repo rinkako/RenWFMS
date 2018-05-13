@@ -32,7 +32,7 @@ public class AuthorizationController {
      * @param password password (required)
      * @return response package
      */
-    @PostMapping(value = "/connect", produces = {"application/json", "application/xml"})
+    @PostMapping(value = "/connect", produces = {"application/json"})
     @ResponseBody
     @Transactional
     public ReturnModel Connect(@RequestParam(value="username", required = false)String username,
@@ -61,7 +61,7 @@ public class AuthorizationController {
      * @param token auth token (required)
      * @return response package
      */
-    @PostMapping(value = "/disconnect", produces = {"application/json", "application/xml"})
+    @PostMapping(value = "/disconnect", produces = {"application/json"})
     @ResponseBody
     @Transactional
     public ReturnModel Disconnect(@RequestParam(value="token", required = false)String token) {
@@ -88,7 +88,7 @@ public class AuthorizationController {
      * @param token auth token (required)
      * @return response package
      */
-    @PostMapping(value = "/check", produces = {"application/json", "application/xml"})
+    @PostMapping(value = "/check", produces = {"application/json"})
     @ResponseBody
     @Transactional
     public ReturnModel Check(@RequestParam(value="token", required = false)String token) {
@@ -119,7 +119,7 @@ public class AuthorizationController {
      * @param corgan COrgan gateway URL
      * @return response package
      */
-    @PostMapping(value = "/domain/add", produces = {"application/json", "application/xml"})
+    @PostMapping(value = "/domain/add", produces = {"application/json"})
     @ResponseBody
     @Transactional
     public ReturnModel AddDomain(@RequestParam(value="token", required = false)String token,
@@ -160,7 +160,7 @@ public class AuthorizationController {
      * @param name domain unique name (required)
      * @return response package
      */
-    @PostMapping(value = "/domain/remove", produces = {"application/json", "application/xml"})
+    @PostMapping(value = "/domain/remove", produces = {"application/json"})
     @ResponseBody
     @Transactional
     public ReturnModel RemoveDomain(@RequestParam(value="token", required = false)String token,
@@ -197,7 +197,7 @@ public class AuthorizationController {
      * @param corgan new COrgan gateway URL
      * @return response package
      */
-    @PostMapping(value = "/domain/update", produces = {"application/json", "application/xml"})
+    @PostMapping(value = "/domain/update", produces = {"application/json"})
     @ResponseBody
     @Transactional
     public ReturnModel UpdateDomain(@RequestParam(value="token", required = false)String token,
@@ -256,7 +256,7 @@ public class AuthorizationController {
      * @param name domain unique name
      * @return response package
      */
-    @PostMapping(value = "/domain/contain", produces = {"application/json", "application/xml"})
+    @PostMapping(value = "/domain/contain", produces = {"application/json"})
     @ResponseBody
     @Transactional
     public ReturnModel ContainDomain(@RequestParam(value="token", required = false)String token,
@@ -290,7 +290,7 @@ public class AuthorizationController {
      * @param name domain unique name
      * @return response package
      */
-    @PostMapping(value = "/domain/get", produces = {"application/json", "application/xml"})
+    @PostMapping(value = "/domain/get", produces = {"application/json"})
     @ResponseBody
     @Transactional
     public ReturnModel GetDomain(@RequestParam(value="token", required = false)String token,
@@ -323,7 +323,7 @@ public class AuthorizationController {
      * @param token auth token
      * @return response package
      */
-    @PostMapping(value = "/domain/getall", produces = {"application/json", "application/xml"})
+    @PostMapping(value = "/domain/getall", produces = {"application/json"})
     @ResponseBody
     @Transactional
     public ReturnModel GetAllDomain(@RequestParam(value="token", required = false)String token) {
@@ -358,7 +358,7 @@ public class AuthorizationController {
      * @param domain domain name (required)
      * @return response package
      */
-    @PostMapping(value = "/user/add", produces = {"application/json", "application/xml"})
+    @PostMapping(value = "/user/add", produces = {"application/json"})
     @ResponseBody
     @Transactional
     public ReturnModel AddAuthorization(@RequestParam(value="token", required = false)String token,
@@ -401,7 +401,7 @@ public class AuthorizationController {
      * @param domain domain name (required)
      * @return response package
      */
-    @PostMapping(value = "/user/remove", produces = {"application/json", "application/xml"})
+    @PostMapping(value = "/user/remove", produces = {"application/json"})
     @ResponseBody
     @Transactional
     public ReturnModel RemoveAuthorization(@RequestParam(value="token", required = false)String token,
@@ -442,7 +442,7 @@ public class AuthorizationController {
      * @param status new deletion status
      * @return response package
      */
-    @PostMapping(value = "/user/update", produces = {"application/json", "application/xml"})
+    @PostMapping(value = "/user/update", produces = {"application/json"})
     @ResponseBody
     @Transactional
     public ReturnModel UpdateAuthorization(@RequestParam(value="token", required = false)String token,
@@ -503,7 +503,7 @@ public class AuthorizationController {
      * @param username user unique name
      * @return response package
      */
-    @PostMapping(value = "/user/contain", produces = {"application/json", "application/xml"})
+    @PostMapping(value = "/user/contain", produces = {"application/json"})
     @ResponseBody
     @Transactional
     public ReturnModel ContainAuthorization(@RequestParam(value="token", required = false)String token,
@@ -540,7 +540,7 @@ public class AuthorizationController {
      * @param username user unique name
      * @return response package
      */
-    @PostMapping(value = "/user/get", produces = {"application/json", "application/xml"})
+    @PostMapping(value = "/user/get", produces = {"application/json"})
     @ResponseBody
     @Transactional
     public ReturnModel GetAuthorization(@RequestParam(value="token", required = false)String token,
@@ -576,7 +576,7 @@ public class AuthorizationController {
      * @param token auth token
      * @return response package
      */
-    @PostMapping(value = "/user/getall", produces = {"application/json", "application/xml"})
+    @PostMapping(value = "/user/getall", produces = {"application/json"})
     @ResponseBody
     @Transactional
     public ReturnModel GetAllAuthorization(@RequestParam(value="token", required = false)String token,

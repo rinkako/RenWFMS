@@ -32,7 +32,7 @@ public class WorkQueueController {
      * @param type queue type name
      * @return response package
      */
-    @RequestMapping(value = "/get", produces = { "application/json", "application/xml"})
+    @RequestMapping(value = "/get", produces = { "application/json"})
     @ResponseBody
     @Transactional
     public ReturnModel GetWorkQueue(@RequestParam(value="rtid", required = false)String rtid,
@@ -70,7 +70,7 @@ public class WorkQueueController {
      * @param type queue type name
      * @return response package
      */
-    @RequestMapping(value = "/getlist", produces = { "application/json", "application/xml"})
+    @RequestMapping(value = "/getlist", produces = { "application/json"})
     @ResponseBody
     @Transactional
     public ReturnModel GetWorkQueueList(@RequestParam(value="rtid", required = false)String rtid,

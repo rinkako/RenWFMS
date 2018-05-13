@@ -38,7 +38,7 @@ public class NameSpacingController {
      * @param mainbo main bo name (required)
      * @return response package
      */
-    @RequestMapping(value = "/createProcess", produces = {"application/json", "application/xml"})
+    @RequestMapping(value = "/createProcess", produces = {"application/json"})
     @ResponseBody
     @Transactional
     public ReturnModel CreateProcess(@RequestParam(value = "token", required = false) String token,
@@ -84,7 +84,7 @@ public class NameSpacingController {
      * @param content BO content (required)
      * @return response package
      */
-    @RequestMapping(value = "/uploadBO", produces = {"application/json", "application/xml"})
+    @RequestMapping(value = "/uploadBO", produces = {"application/json"})
     @ResponseBody
     @Transactional
     public ReturnModel UploadBO(@RequestParam(value = "token", required = false) String token,
@@ -128,7 +128,7 @@ public class NameSpacingController {
      * @param pid   process id (required)
      * @return response package
      */
-    @RequestMapping(value = "/getProcessBOList", produces = {"application/json", "application/xml"})
+    @RequestMapping(value = "/getProcessBOList", produces = {"application/json"})
     @ResponseBody
     @Transactional
     public ReturnModel GetProcessBOList(@RequestParam(value = "token", required = false) String token,
@@ -166,7 +166,7 @@ public class NameSpacingController {
      * @param renid ren user id (required)
      * @return response package
      */
-    @RequestMapping(value = "/getProcessByRenId", produces = {"application/json", "application/xml"})
+    @RequestMapping(value = "/getProcessByRenId", produces = {"application/json"})
     @ResponseBody
     @Transactional
     public ReturnModel GetProcessByRenId(@RequestParam(value = "token", required = false) String token,
@@ -205,7 +205,7 @@ public class NameSpacingController {
      * @param processName process unique name to be checked (required)
      * @return response package
      */
-    @RequestMapping(value = "/containProcess", produces = {"application/json", "application/xml"})
+    @RequestMapping(value = "/containProcess", produces = {"application/json"})
     @ResponseBody
     @Transactional
     public ReturnModel ContainProcess(@RequestParam(value = "token", required = false) String token,
@@ -247,7 +247,7 @@ public class NameSpacingController {
      * @param rtid  process rtid
      * @return response package
      */
-    @RequestMapping(value = "/getBO", produces = {"application/json", "application/xml"})
+    @RequestMapping(value = "/getBO", produces = {"application/json"})
     @ResponseBody
     @Transactional
     public ReturnModel GetBO(@RequestParam(value = "token", required = false) String token,
@@ -291,7 +291,7 @@ public class NameSpacingController {
      * @param binding     resource binding data
      * @return response package
      */
-    @RequestMapping(value = "/submitProcess", produces = {"application/json", "application/xml"})
+    @RequestMapping(value = "/submitProcess", produces = {"application/json"})
     @ResponseBody
     @Transactional
     public ReturnModel SubmitProcess(@RequestParam(value = "token", required = false) String token,
@@ -350,7 +350,7 @@ public class NameSpacingController {
      * @param rtid  process rtid (required)
      * @return response package
      */
-    @RequestMapping(value = "/startProcess", produces = {"application/json", "application/xml"})
+    @RequestMapping(value = "/startProcess", produces = {"application/json"})
     @ResponseBody
     @Transactional
     public ReturnModel StartProcess(@RequestParam(value = "token", required = false) String token,
@@ -388,7 +388,7 @@ public class NameSpacingController {
      * @param rtid      process rtid (required)
      * @return response package
      */
-    @RequestMapping(value = "/checkFinish", produces = {"application/json", "application/xml"})
+    @RequestMapping(value = "/checkFinish", produces = {"application/json"})
     @ResponseBody
     @Transactional
     public ReturnModel CheckFinish(@RequestParam(value = "signature", required = false) String signature,
@@ -430,7 +430,7 @@ public class NameSpacingController {
      * @param payload   payload map in JSON encoded
      * @return response package
      */
-    @RequestMapping(value = "/callback", produces = {"application/json", "application/xml"})
+    @RequestMapping(value = "/callback", produces = {"application/json"})
     @ResponseBody
     @Transactional
     public ReturnModel TransshipCallback(@RequestParam(value = "signature", required = false) String signature,
@@ -487,7 +487,7 @@ public class NameSpacingController {
      * @param payload    payload map in JSON encoded
      * @return response package in JSON
      */
-    @RequestMapping(value = "/workitem/start", produces = {"application/json", "application/xml"})
+    @RequestMapping(value = "/workitem/start", produces = {"application/json"})
     @ResponseBody
     @Transactional
     public ReturnModel TransshipStartWorkitem(@RequestParam(value = "signature", required = false) String signature,
@@ -533,7 +533,7 @@ public class NameSpacingController {
      * @param payload    payload map in JSON encoded
      * @return response package in JSON
      */
-    @RequestMapping(value = "/workitem/accept", produces = {"application/json", "application/xml"})
+    @RequestMapping(value = "/workitem/accept", produces = {"application/json"})
     @ResponseBody
     @Transactional
     public ReturnModel TransshipAcceptWorkitem(@RequestParam(value = "signature", required = false) String signature,
@@ -579,7 +579,7 @@ public class NameSpacingController {
      * @param payload    payload map in JSON encoded
      * @return response package in JSON
      */
-    @RequestMapping(value = "/workitem/acceptStart", produces = {"application/json", "application/xml"})
+    @RequestMapping(value = "/workitem/acceptStart", produces = {"application/json"})
     @ResponseBody
     @Transactional
     public ReturnModel TransshipAcceptAndStartWorkitem(@RequestParam(value = "signature", required = false) String signature,
@@ -625,7 +625,7 @@ public class NameSpacingController {
      * @param payload    payload map in JSON encoded
      * @return response package in JSON
      */
-    @RequestMapping(value = "/workitem/complete", produces = {"application/json", "application/xml"})
+    @RequestMapping(value = "/workitem/complete", produces = {"application/json"})
     @ResponseBody
     @Transactional
     public ReturnModel TransshipCompleteWorkitem(@RequestParam(value = "signature", required = false) String signature,
@@ -671,7 +671,7 @@ public class NameSpacingController {
      * @param payload    payload map in JSON encoded
      * @return response package in JSON
      */
-    @RequestMapping(value = "/workitem/suspend", produces = {"application/json", "application/xml"})
+    @RequestMapping(value = "/workitem/suspend", produces = {"application/json"})
     @ResponseBody
     @Transactional
     public ReturnModel TransshipSuspendWorkitem(@RequestParam(value = "signature", required = false) String signature,
@@ -717,7 +717,7 @@ public class NameSpacingController {
      * @param payload    payload map in JSON encoded
      * @return response package in JSON
      */
-    @RequestMapping(value = "/workitem/unsuspend", produces = {"application/json", "application/xml"})
+    @RequestMapping(value = "/workitem/unsuspend", produces = {"application/json"})
     @ResponseBody
     @Transactional
     public ReturnModel TransshipUnsuspendWorkitem(@RequestParam(value = "signature", required = false) String signature,
@@ -763,7 +763,7 @@ public class NameSpacingController {
      * @param payload    payload map in JSON encoded
      * @return response package in JSON
      */
-    @RequestMapping(value = "/workitem/skip", produces = {"application/json", "application/xml"})
+    @RequestMapping(value = "/workitem/skip", produces = {"application/json"})
     @ResponseBody
     @Transactional
     public ReturnModel TransshipSkipWorkitem(@RequestParam(value = "signature", required = false) String signature,
@@ -809,7 +809,7 @@ public class NameSpacingController {
      * @param payload    payload map in JSON encoded
      * @return response package in JSON
      */
-    @RequestMapping(value = "/workitem/reallocate", produces = {"application/json", "application/xml"})
+    @RequestMapping(value = "/workitem/reallocate", produces = {"application/json"})
     @ResponseBody
     @Transactional
     public ReturnModel TransshipReallocateWorkitem(@RequestParam(value = "signature", required = false) String signature,
@@ -855,7 +855,7 @@ public class NameSpacingController {
      * @param payload    payload map in JSON encoded
      * @return response package in JSON
      */
-    @RequestMapping(value = "/workitem/deallocate", produces = {"application/json", "application/xml"})
+    @RequestMapping(value = "/workitem/deallocate", produces = {"application/json"})
     @ResponseBody
     @Transactional
     public ReturnModel TransshipDeallocateWorkitem(@RequestParam(value = "signature", required = false) String signature,
@@ -901,7 +901,7 @@ public class NameSpacingController {
      * @param type      queue type name
      * @return response package
      */
-    @RequestMapping(value = "/queue/get", produces = {"application/json", "application/xml"})
+    @RequestMapping(value = "/queue/get", produces = {"application/json"})
     @ResponseBody
     @Transactional
     public ReturnModel TransshipGetWorkQueue(@RequestParam(value = "signature", required = false) String signature,
@@ -948,7 +948,7 @@ public class NameSpacingController {
      * @param type         queue type name
      * @return response package
      */
-    @RequestMapping(value = "/queue/getlist", produces = {"application/json", "application/xml"})
+    @RequestMapping(value = "/queue/getlist", produces = {"application/json"})
     @ResponseBody
     @Transactional
     public ReturnModel TransshipGetWorkQueueList(@RequestParam(value = "signature", required = false) String signature,
@@ -993,7 +993,7 @@ public class NameSpacingController {
      * @param rtid      process rtid
      * @return response package
      */
-    @RequestMapping(value = "/workitem/getAll", produces = {"application/json", "application/xml"})
+    @RequestMapping(value = "/workitem/getAll", produces = {"application/json"})
     @ResponseBody
     @Transactional
     public ReturnModel TransshipGetAllWorkitems(@RequestParam(value = "signature", required = false) String signature,

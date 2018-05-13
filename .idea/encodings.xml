@@ -3,6 +3,7 @@
   <component name="Encoding">
     <file url="file://$PROJECT_DIR$/src/BOEngine" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/src/BOEngine/src/main/java/org/sysu/workflow/env/MultiStateMachineDispatcher.java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/src/DataStoreService" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/src/RenCommon" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/src/RenNameService" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/src/RenResourceService" charset="UTF-8" />

@@ -67,7 +67,7 @@ public class EngineController {
      * @param successFlag success flag, 0 unknown, 1 success, -1 failed, default by 1
      * @return response package
      */
-    @PostMapping(value = "/finRtid", produces = {"application/json", "application/xml"})
+    @PostMapping(value = "/finRtid", produces = {"application/json"})
     @ResponseBody
     @Transactional
     public ReturnModel FinRtid(@RequestParam(value="rtid", required = false)String rtid,

@@ -31,7 +31,7 @@ public class RoleMappingController {
      * @param brole business role name (required)
      * @return response package
      */
-    @RequestMapping(value = "/getWorkerByBRole", produces = {"application/json", "application/xml"})
+    @RequestMapping(value = "/getWorkerByBRole", produces = {"application/json"})
     @ResponseBody
     @Transactional
     public ReturnModel GetWorkerByBusinessRole(@RequestParam(value="token", required = false)String token,
@@ -71,7 +71,7 @@ public class RoleMappingController {
      * @param gid worker global id (required)
      * @return response package
      */
-    @RequestMapping(value = "/getBRoleByWorker", produces = {"application/json", "application/xml"})
+    @RequestMapping(value = "/getBRoleByWorker", produces = {"application/json"})
     @ResponseBody
     @Transactional
     public ReturnModel GetBusinessRoleByGlobalId(@RequestParam(value="token", required = false)String token,
@@ -115,7 +115,7 @@ public class RoleMappingController {
      * @return response package
      */
     @SuppressWarnings("ConstantConditions")
-    @RequestMapping(value = "/register", produces = {"application/json", "application/xml"})
+    @RequestMapping(value = "/register", produces = {"application/json"})
     @ResponseBody
     @Transactional
     public ReturnModel RegisterRoleMapService(@RequestParam(value="token", required = false)String token,
@@ -160,7 +160,7 @@ public class RoleMappingController {
      * @param rtid process rtid (required)
      * @return response package
      */
-    @RequestMapping(value = "/fin", produces = {"application/json", "application/xml"})
+    @RequestMapping(value = "/fin", produces = {"application/json"})
     @ResponseBody
     @Transactional
     public ReturnModel FinishRoleMapService(@RequestParam(value="token", required = false)String token,
@@ -196,7 +196,7 @@ public class RoleMappingController {
      * @param rtid process rtid (required)
      * @return response package
      */
-    @RequestMapping(value = "/getInvolved", produces = {"application/json", "application/xml"})
+    @RequestMapping(value = "/getInvolved", produces = {"application/json"})
     @ResponseBody
     @Transactional
     public ReturnModel GetInvolvedResource(@RequestParam(value="token", required = false)String token,
@@ -234,7 +234,7 @@ public class RoleMappingController {
      * @param rtid process runtime record id (required)
      * @return response package
      */
-    @RequestMapping(value = "/loadParticipant", produces = {"application/json", "application/xml"})
+    @RequestMapping(value = "/loadParticipant", produces = {"application/json"})
     @ResponseBody
     @Transactional
     public ReturnModel LoadParticipant(@RequestParam(value="token", required = false)String token,
@@ -274,7 +274,7 @@ public class RoleMappingController {
      * @param rtid process runtime record id (required)
      * @return response package
      */
-    @RequestMapping(value = "/unloadParticipant", produces = {"application/json", "application/xml"})
+    @RequestMapping(value = "/unloadParticipant", produces = {"application/json"})
     @ResponseBody
     @Transactional
     public ReturnModel UnLoadParticipant(@RequestParam(value="token", required = false)String token,
@@ -311,7 +311,7 @@ public class RoleMappingController {
      * @param renid ren auth user id (required)
      * @return response package
      */
-    @RequestMapping(value = "/getAllResourceFromCOrgan", produces = {"application/json", "application/xml"})
+    @RequestMapping(value = "/getAllResourceFromCOrgan", produces = {"application/json"})
     @ResponseBody
     @Transactional
     public ReturnModel GetAllResourceFromCOrgan(@RequestParam(value="token", required = false)String token,
@@ -348,7 +348,7 @@ public class RoleMappingController {
      * @param renid ren auth user id (required)
      * @return response package
      */
-    @RequestMapping(value = "/getAllConnectionFromCOrgan", produces = {"application/json", "application/xml"})
+    @RequestMapping(value = "/getAllConnectionFromCOrgan", produces = {"application/json"})
     @ResponseBody
     @Transactional
     public ReturnModel GetAllConnectionFromCOrgan(@RequestParam(value="token", required = false)String token,
@@ -384,7 +384,7 @@ public class RoleMappingController {
      * @param token auth token (required)
      * @return response package
      */
-    @RequestMapping(value = "/getDataVersionAndGidFromCOrgan", produces = {"application/json", "application/xml"})
+    @RequestMapping(value = "/getDataVersionAndGidFromCOrgan", produces = {"application/json"})
     @ResponseBody
     @Transactional
     public ReturnModel GetDataVersionAndGidFromCOrgan(@RequestParam(value="token", required = false)String token,
