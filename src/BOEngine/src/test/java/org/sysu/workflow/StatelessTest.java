@@ -72,6 +72,13 @@ public class StatelessTest {
                 "next", null, "", 0);
         Assert.assertFalse(executor.getStatus().isFinal());
 
+        BOInstance bi = executor.getExctx().detachInstance();
+
+        byte[] serialized = SerializationUtil.SerializationBOInstanceToByteArray(bi);
+
+        BOInstance afterBi = SerializationUtil.DeserializationBOInstanceByByteArray(serialized);
+
+        executor.getExctx().attachInstance(afterBi);
 
         dispatcher.send("testRTID", ctx.NodeId, "", MessageMode.TO_NOTIFIABLE_ID, "Attaching", "", BOXMLIOProcessor.DEFAULT_EVENT_PROCESSOR,
                 "next", null, "", 0);

@@ -5,6 +5,7 @@
 package org.sysu.workflow.utility;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.sysu.renCommon.enums.LogLevelType;
+import org.sysu.workflow.BOInstance;
 import org.sysu.workflow.model.SCXML;
 
 import java.io.ByteArrayInputStream;
@@ -85,6 +86,43 @@ public class SerializationUtil {
         }
         catch (Exception ex) {
             LogUtil.Log("When DeSerializationSCXML exception occurred, " + ex.toString(),
+                    SerializationUtil.class.getName(), LogLevelType.ERROR, "");
+            return null;
+        }
+    }
+
+    /**
+     * Serialize BO instance to a string.
+     * @param instance {@code BOInstance} instance
+     * @return serialized string
+     */
+    public static byte[] SerializationBOInstanceToByteArray(BOInstance instance) {
+        try {
+            ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
+            ObjectOutputStream out = new ObjectOutputStream(byteArrayOutputStream);
+            out.writeObject(instance);
+            return byteArrayOutputStream.toByteArray();
+        }
+        catch (Exception ex) {
+            LogUtil.Log("When SerializationBOInstanceToString exception occurred, " + ex.toString(),
+                    SerializationUtil.class.getName(), LogLevelType.ERROR, "");
+            return null;
+        }
+    }
+
+    /**
+     * Deserialize string to BO instance.
+     * @param serialized string to be deserialized
+     * @return {@code SCXML} instance.
+     */
+    public static BOInstance DeserializationBOInstanceByByteArray(byte[] serialized) {
+        try {
+            ByteArrayInputStream byteArrayInputStream = new ByteArrayInputStream(serialized);
+            ObjectInputStream objectInputStream = new ObjectInputStream(byteArrayInputStream);
+            return (BOInstance) objectInputStream.readObject();
+        }
+        catch (Exception ex) {
+            LogUtil.Log("When DeSerializationBOInstance exception occurred, " + ex.toString(),
                     SerializationUtil.class.getName(), LogLevelType.ERROR, "");
             return null;
         }
