@@ -8,6 +8,7 @@ import org.sysu.workflow.instanceTree.InstanceManager;
 import org.sysu.workflow.invoke.Invoker;
 import org.sysu.workflow.invoke.InvokerException;
 import org.sysu.workflow.model.*;
+import org.sysu.workflow.stateless.SteadyStepService;
 import org.sysu.workflow.utility.LogUtil;
 import org.sysu.workflow.system.EventVariable;
 
@@ -69,27 +70,21 @@ public class SCXMLSemanticsImpl implements BOXMLSemantics {
      */
     public void firstStep(final BOXMLExecutionContext exctx) throws ModelException {
         // (re)initialize the execution context and state machine instance
-        //清除所有的执行上下文和状态机实例
         exctx.initialize();
-
-        //执行全局 Script
         // execute global script if defined
         executeGlobalScript(exctx);
-
-        //执行初始化第一步（进入初始状态）
         // enter initial states
-        HashSet<TransitionalState> statesToInvoke = new HashSet<TransitionalState>();
+        HashSet<TransitionalState> statesToInvoke = new HashSet<>();
         Step step = new Step(null);
         step.getTransitList().add(exctx.getStateMachine().getInitialTransition());
         microStep(exctx, step, statesToInvoke);
-
-        // Execute Immediate Transitions，执行即时转移
-
-        //在执行完第一次的microstep 微步之后，再看状态机有没有在运行中，如果有，就执行即时转移
+        // Execute Immediate Transitions
         if (exctx.isRunning()) {
             macroStep(exctx, statesToInvoke);
         }
-        //最后判断是否停止运行了，如果停止了，就执行finalStep
+        // write steady step
+        SteadyStepService.WriteSteady(exctx.Rtid, exctx);
+        // if stop, goto finalStep
         if (!exctx.isRunning()) {
             finalStep(exctx);
         }
@@ -130,19 +125,20 @@ public class SCXMLSemanticsImpl implements BOXMLSemantics {
             exctx.stopRunning();
         } else {
             setSystemEventVariable(exctx.getScInstance(), event, false);
-
-
             processInvokes(exctx, event);
             Step step = new Step(event);
             selectTransitions(exctx, step);
             if (!step.getTransitList().isEmpty()) {
-                HashSet<TransitionalState> statesToInvoke = new HashSet<TransitionalState>();
+                HashSet<TransitionalState> statesToInvoke = new HashSet<>();
                 microStep(exctx, step, statesToInvoke);
                 if (exctx.isRunning()) {
                     macroStep(exctx, statesToInvoke);
                 }
             }
         }
+        // write steady step
+        SteadyStepService.WriteSteady(exctx.Rtid, exctx);
+        // handle goto final
         if (!exctx.isRunning()) {
             finalStep(exctx);
         }
@@ -172,14 +168,12 @@ public class SCXMLSemanticsImpl implements BOXMLSemantics {
         if (exctx.isRunning()) {
             return;
         }
-        ArrayList<EnterableState> configuration = new ArrayList<EnterableState>(exctx.getScInstance().getStateConfiguration().getActiveStates());
+        ArrayList<EnterableState> configuration = new ArrayList<>(exctx.getScInstance().getStateConfiguration().getActiveStates());
         Collections.sort(configuration, DocumentOrder.reverseDocumentOrderComparator);
         for (EnterableState es : configuration) {
-            //执行所有退出状态的onexit中的内容
             for (OnExit onexit : es.getOnExits()) {
                 executeContent(exctx, onexit);
             }
-            //取消所有正在执行的invoke
             if (es instanceof TransitionalState) {
                 // check if invokers are active in this state
                 for (Invoke inv : ((TransitionalState) es).getInvokes()) {
@@ -193,7 +187,7 @@ public class SCXMLSemanticsImpl implements BOXMLSemantics {
             }
             // else: keep final Final
             // TODO: returnDoneEvent(s.donedata)?
-            HashMap<String, String> args = new HashMap<String, String>();
+            HashMap<String, String> args = new HashMap<>();
             args.put("rtid", exctx.Rtid);
             if (!GlobalContext.IsLocalDebug) {
                 try {
@@ -272,7 +266,7 @@ public class SCXMLSemanticsImpl implements BOXMLSemantics {
         if (!step.getExitSet().isEmpty()) {
             // calculate result states by taking current states, subtracting exitSet and adding entrySet
             //将当前的所有原子状态机集合放入states
-            states = new HashSet<EnterableState>(exctx.getScInstance().getStateConfiguration().getStates());
+            states = new HashSet<>(exctx.getScInstance().getStateConfiguration().getStates());
             states.removeAll(step.getExitSet());   //移除所有退出状态集合
             states.addAll(step.getEntrySet()); //再加上所有的进入状态集合
         }
@@ -299,21 +293,18 @@ public class SCXMLSemanticsImpl implements BOXMLSemantics {
      */
     public void macroStep(final BOXMLExecutionContext exctx, final Set<TransitionalState> statesToInvoke)
             throws ModelException {
-        //循环一直等待
+        // main loop
         do {
-            //这一大步是否结束了
             boolean macroStepDone = false;
-            //
             do {
-                //构造一大步的每一次Step
                 Step step = new Step(null);
                 selectTransitions(exctx, step);
-                if (step.getTransitList().isEmpty()) {   //如果转移列表是空的
-                    TriggerEvent event = exctx.nextInternalEvent();  //得到内部事件队列中的下一个内部事件
-                    if (event != null) {  //如果内部事件不是空的
-                        if (isCancelEvent(event)) {      //先判断这个内部事件是不是 《取消事件》
+                if (step.getTransitList().isEmpty()) {
+                    TriggerEvent event = exctx.nextInternalEvent();
+                    if (event != null) {
+                        if (isCancelEvent(event)) {
                             exctx.stopRunning();
-                        } else {      //不是取消事件，设置系统变量，
+                        } else {
                             setSystemEventVariable(exctx.getScInstance(), event, true);
                             step = new Step(event);
                             selectTransitions(exctx, step);
@@ -405,7 +396,7 @@ public class SCXMLSemanticsImpl implements BOXMLSemantics {
                     if (h.isDeep()) {
                         if (deep == null) {
                             //calculate deep history for a given state once
-                            deep = new HashSet<EnterableState>();
+                            deep = new HashSet<>();
                             for (EnterableState ott : atomicStates) {
                                 if (ott.isDescendantOf(es)) {
                                     deep.add(ott);
@@ -416,7 +407,7 @@ public class SCXMLSemanticsImpl implements BOXMLSemantics {
                     } else {
                         if (shallow == null) {
                             //calculate shallow history for a given state once
-                            shallow = new HashSet<EnterableState>(ts.getChildren());
+                            shallow = new HashSet<>(ts.getChildren());
                             shallow.retainAll(activeStates);
                         }
                         step.getNewHistoryConfigurations().put(h, shallow);
@@ -436,8 +427,8 @@ public class SCXMLSemanticsImpl implements BOXMLSemantics {
      * @param step  The step containing the list of transitions to be taken
      */
     public void computeEntrySet(final BOXMLExecutionContext exctx, final Step step) {
-        Set<History> historyTargets = new HashSet<History>();
-        Set<EnterableState> entrySet = new HashSet<EnterableState>();
+        Set<History> historyTargets = new HashSet<>();
+        Set<EnterableState> entrySet = new HashSet<>();
         for (SimpleTransition st : step.getTransitList()) {
             for (TransitionTarget tt : st.getTargets()) {
                 if (tt instanceof EnterableState) {
@@ -570,12 +561,12 @@ public class SCXMLSemanticsImpl implements BOXMLSemantics {
 
         //step里面的转移清理了
         step.getTransitList().clear();
-        ArrayList<Transition> enabledTransitions = new ArrayList<Transition>();
+        ArrayList<Transition> enabledTransitions = new ArrayList<>();
 
-        ArrayList<EnterableState> configuration = new ArrayList<EnterableState>(exctx.getScInstance().getStateConfiguration().getActiveStates());
+        ArrayList<EnterableState> configuration = new ArrayList<>(exctx.getScInstance().getStateConfiguration().getActiveStates());
         Collections.sort(configuration, DocumentOrder.documentOrderComparator);
 
-        HashSet<EnterableState> visited = new HashSet<EnterableState>();
+        HashSet<EnterableState> visited = new HashSet<>();
 
         String eventName = step.getEvent() != null ? step.getEvent().getName() : null;
         for (EnterableState es : configuration) {
@@ -617,9 +608,9 @@ public class SCXMLSemanticsImpl implements BOXMLSemantics {
      */
     public void removeConflictingTransitions(final BOXMLExecutionContext exctx, final Step step,
                                              final List<Transition> enabledTransitions) {
-        LinkedHashSet<Transition> filteredTransitions = new LinkedHashSet<Transition>();
-        LinkedHashSet<Transition> preemptedTransitions = new LinkedHashSet<Transition>();
-        Map<Transition, Set<EnterableState>> exitSets = new HashMap<Transition, Set<EnterableState>>();
+        LinkedHashSet<Transition> filteredTransitions = new LinkedHashSet<>();
+        LinkedHashSet<Transition> preemptedTransitions = new LinkedHashSet<>();
+        Map<Transition, Set<EnterableState>> exitSets = new HashMap<>();
 
         Set<EnterableState> configuration = exctx.getScInstance().getStateConfiguration().getActiveStates();
         Collections.sort(enabledTransitions, DocumentOrder.documentOrderComparator);
@@ -629,13 +620,13 @@ public class SCXMLSemanticsImpl implements BOXMLSemantics {
             Set<EnterableState> t1ExitSet = exitSets.get(t1);
             for (Transition t2 : filteredTransitions) {
                 if (t1ExitSet == null) {
-                    t1ExitSet = new HashSet<EnterableState>();
+                    t1ExitSet = new HashSet<>();
                     computeExitSet(t1, t1ExitSet, configuration);
                     exitSets.put(t1, t1ExitSet);
                 }
                 Set<EnterableState> t2ExitSet = exitSets.get(t2);
                 if (t2ExitSet == null) {
-                    t2ExitSet = new HashSet<EnterableState>();
+                    t2ExitSet = new HashSet<>();
                     computeExitSet(t2, t2ExitSet, configuration);
                     exitSets.put(t2, t2ExitSet);
                 }
@@ -788,14 +779,14 @@ public class SCXMLSemanticsImpl implements BOXMLSemantics {
          * states = active configuration.
          */
         boolean legalConfig = true; // let's be optimists
-        Map<EnterableState, Set<EnterableState>> counts = new HashMap<EnterableState, Set<EnterableState>>();
-        Set<EnterableState> scxmlCount = new HashSet<EnterableState>();
+        Map<EnterableState, Set<EnterableState>> counts = new HashMap<>();
+        Set<EnterableState> scxmlCount = new HashSet<>();
         for (EnterableState es : states) {
             EnterableState parent;
             while ((parent = es.getParent()) != null) {
                 Set<EnterableState> cnt = counts.get(parent);
                 if (cnt == null) {
-                    cnt = new HashSet<EnterableState>();
+                    cnt = new HashSet<>();
                     counts.put(parent, cnt);
                 }
                 cnt.add(es);
@@ -900,7 +891,7 @@ public class SCXMLSemanticsImpl implements BOXMLSemantics {
             return;
         }
         //将要退出的状态放入arraylist， 并按照文档逆序顺序排好序
-        ArrayList<EnterableState> exitList = new ArrayList<EnterableState>(step.getExitSet());
+        ArrayList<EnterableState> exitList = new ArrayList<>(step.getExitSet());
         Collections.sort(exitList, DocumentOrder.reverseDocumentOrderComparator);
 
         //对于每一个需要退出的状态
@@ -1022,7 +1013,7 @@ public class SCXMLSemanticsImpl implements BOXMLSemantics {
             return;
         }
         //得到文档顺序的进入集合
-        ArrayList<EnterableState> entryList = new ArrayList<EnterableState>(step.getEntrySet());
+        ArrayList<EnterableState> entryList = new ArrayList<>(step.getEntrySet());
         Collections.sort(entryList, DocumentOrder.documentOrderComparator);
         //对于每一个进入状态
         for (EnterableState es : entryList) {

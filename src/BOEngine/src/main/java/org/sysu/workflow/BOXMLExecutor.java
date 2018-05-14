@@ -4,6 +4,7 @@
  */
 package org.sysu.workflow;
 
+import org.sysu.renCommon.enums.LogLevelType;
 import org.sysu.renCommon.utility.CommonUtil;
 import org.sysu.workflow.instanceTree.RInstanceTree;
 import org.sysu.workflow.invoke.Invoker;
@@ -13,6 +14,7 @@ import org.apache.commons.logging.LogFactory;
 import org.apache.commons.logging.Log;
 import org.sysu.workflow.instanceTree.InstanceManager;
 import org.sysu.workflow.instanceTree.RTreeNode;
+import org.sysu.workflow.utility.LogUtil;
 
 
 import java.util.*;
@@ -471,8 +473,7 @@ public class BOXMLExecutor implements BOXMLIOProcessor {
                 this.exctx.RootNodeId = this.RootNodeId;
             }
         } catch (Exception e) {
-            System.out.println("Executor error at go");
-            e.printStackTrace();
+            LogUtil.Log("Go BO failed, " + e, BOXMLExecutor.class.getName(), LogLevelType.ERROR, this.exctx.Rtid);
         }
         // same as reset
         this.reset();
@@ -486,7 +487,6 @@ public class BOXMLExecutor implements BOXMLIOProcessor {
     public void reset() throws ModelException {
         // clear any pending external events
         externalEventQueue.clear();
-
         // go
         semantics.firstStep(exctx);
         logState();

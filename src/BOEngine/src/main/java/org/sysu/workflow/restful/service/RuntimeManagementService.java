@@ -31,7 +31,6 @@ import java.io.ByteArrayInputStream;
 import java.io.InputStream;
 import java.util.*;
 
-import static org.sysu.workflow.utility.SerializationUtil.DeserializationSCXMLByByteArray;
 
 /**
  * Author: Ariana, Rinkako
@@ -53,6 +52,8 @@ public final class RuntimeManagementService {
             RenRuntimerecordEntity rre = session.get(RenRuntimerecordEntity.class, rtid);
             assert rre != null;
             String pid = rre.getProcessId();
+            rre.setInterpreterId(GlobalContext.ENGINE_GLOBAL_ID);
+            session.save(rre);
             RenProcessEntity rpe = session.get(RenProcessEntity.class, pid);
             assert rpe != null;
             String mainBO = rpe.getMainBo();
@@ -73,7 +74,7 @@ public final class RuntimeManagementService {
                 return;
             }
             byte[] serializedBO = mainBoEntity.getSerialized();
-            SCXML DeserializedBO = DeserializationSCXMLByByteArray(serializedBO);
+            SCXML DeserializedBO = SerializationUtil.DeserializationSCXMLByByteArray(serializedBO);
             RuntimeManagementService.ExecuteBO(DeserializedBO, rtid, pid);
         } catch (Exception e) {
             if (!cmtFlag) {
@@ -93,7 +94,7 @@ public final class RuntimeManagementService {
      * @return HashSet of Involved business role name
      */
     public static HashSet<String> SerializeBO(String boidList) {
-        HashSet<String> retSet = new HashSet<String>();
+        HashSet<String> retSet = new HashSet<>();
         Session session = HibernateUtil.GetLocalSession();
         Transaction transaction = session.beginTransaction();
         try {
