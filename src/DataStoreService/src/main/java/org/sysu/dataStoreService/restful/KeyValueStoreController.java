@@ -76,6 +76,39 @@ public class KeyValueStoreController {
     }
 
     /**
+     * Add a key value data to the store.
+     * @param rtid process rtid (required)
+     * @param keys data key in JSON list (required)
+     * @param values data value in JSON string in JSON list (required)
+     * @return response package
+     */
+    @RequestMapping(value = "/add", produces = {"application/json"})
+    @ResponseBody
+    @Transactional
+    public ReturnModel AddManyKVStore(@RequestParam(value="rtid", required = false)String rtid,
+                                      @RequestParam(value="keys", required = false)String keys,
+                                      @RequestParam(value="values", required = false)String values) {
+        ReturnModel rnModel = new ReturnModel();
+        try {
+            // miss params
+            List<String> missingParams = new ArrayList<>();
+            if (rtid == null) missingParams.add("rtid");
+            if (keys == null) missingParams.add("keys");
+            if (values == null) missingParams.add("values");
+            if (missingParams.size() > 0) {
+                return ReturnModelHelper.MissingParametersResponse(missingParams);
+            }
+            // logic
+            String jsonifyResult = "ADD_MANY";
+            // return
+            ReturnModelHelper.StandardResponse(rnModel, StatusCode.OK, jsonifyResult);
+        } catch (Exception e) {
+            ReturnModelHelper.ExceptionResponse(rnModel, e.getClass().getName());
+        }
+        return rnModel;
+    }
+
+    /**
      * Retrieve a key value data from the store.
      * @param rtid process rtid (required)
      * @param key data key (required)

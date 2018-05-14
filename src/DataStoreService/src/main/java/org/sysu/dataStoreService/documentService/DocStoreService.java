@@ -7,4 +7,19 @@ package org.sysu.dataStoreService.documentService;
  */
 public class DocStoreService {
 
+    public static void RegisterDocument(String renid, String docName, byte[] originalData) {
+
+    }
+
+    public static byte[] RetrieveDocument(String renid, String docName) {
+        return null;
+    }
+
+    public static void RemoveDocument(String renid, String docName) {
+
+    }
+
+    public static void ClearDocument(String renid) {
+
+    }
 }
