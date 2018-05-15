@@ -1,4 +1,4 @@
-package org.sysu.workflow.restful.entity;
+package org.sysu.workflow.entity;
 
 import javax.persistence.*;
 

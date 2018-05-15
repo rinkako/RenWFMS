@@ -7,7 +7,7 @@ import org.springframework.stereotype.Component;
 import org.sysu.renCommon.enums.LogLevelType;
 
 /**
- * Author: Ariana
+ * Author: Rinkako
  * Date  : 2018/1/22
  * Usage : Common methods for hibernate.
  */

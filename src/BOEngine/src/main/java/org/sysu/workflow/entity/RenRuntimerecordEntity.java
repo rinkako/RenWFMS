@@ -2,7 +2,7 @@
  * Project Ren @ 2018
  * Rinkako, Ariana, Gordan. SYSU SDCS.
  */
-package org.sysu.workflow.restful.entity;
+package org.sysu.workflow.entity;
 
 import javax.persistence.*;
 import java.sql.Timestamp;

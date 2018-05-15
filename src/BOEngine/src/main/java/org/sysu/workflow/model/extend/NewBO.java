@@ -15,8 +15,8 @@ import org.sysu.workflow.env.SimpleErrorReporter;
 import org.sysu.workflow.io.BOXMLReader;
 import org.sysu.workflow.*;
 import org.sysu.workflow.model.*;
-import org.sysu.workflow.restful.entity.RenBoEntity;
-import org.sysu.workflow.restful.service.RuntimeManagementService;
+import org.sysu.workflow.entity.RenBoEntity;
+import org.sysu.workflow.stateless.RuntimeManagementService;
 import org.sysu.workflow.utility.HibernateUtil;
 import org.sysu.workflow.utility.LogUtil;
 import org.sysu.workflow.utility.SerializationUtil;
@@ -244,13 +244,13 @@ public class NewBO extends NamelistHolder implements PathResolverHolder {
                     tmpCtx.setLocal("_instanceIndex", i);
                     executor.setNotifiableId(evaluator.eval(tmpCtx, this.idExpr).toString());
                 }
+                // maintain the relation of this sub state machine on the instance tree
+                RTreeNode subNode = new RTreeNode(boName, executor.NodeId, executor.getExctx(), curNode);
+                curNode.AddChild(subNode);
                 // start sub state machine
                 executor.setRootContext(rootContext);
                 executor.setExecutorIndex(iTree.Root.getExect().getSCXMLExecutor().getExecutorIndex());
                 executor.go();
-                // maintain the relation of this sub state machine on the instance tree
-                RTreeNode subNode = new RTreeNode(boName, executor.NodeId, executor.getExctx(), curNode);
-                curNode.AddChild(subNode);
             }
         } catch (Exception e) {
             e.printStackTrace();

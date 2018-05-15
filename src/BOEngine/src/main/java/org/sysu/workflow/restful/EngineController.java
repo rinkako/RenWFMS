@@ -6,8 +6,8 @@ package org.sysu.workflow.restful;
 
 import org.springframework.web.bind.annotation.*;
 import org.sysu.renCommon.enums.LogLevelType;
-import org.sysu.workflow.restful.service.InteractionService;
-import org.sysu.workflow.restful.service.RuntimeManagementService;
+import org.sysu.workflow.stateless.InteractionService;
+import org.sysu.workflow.stateless.RuntimeManagementService;
 import org.sysu.workflow.utility.LogUtil;
 import org.sysu.workflow.utility.SerializationUtil;
 import org.sysu.renCommon.dto.ReturnModel;

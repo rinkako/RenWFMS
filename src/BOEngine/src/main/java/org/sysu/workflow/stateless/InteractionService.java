@@ -2,7 +2,7 @@
  * Project Ren @ 2018
  * Rinkako, Ariana, Gordan. SYSU SDCS.
  */
-package org.sysu.workflow.restful.service;
+package org.sysu.workflow.stateless;
 
 import org.sysu.renCommon.enums.LogLevelType;
 import org.sysu.workflow.BOXMLExecutionContext;

@@ -2,7 +2,7 @@
  * Project Ren @ 2018
  * Rinkako, Ariana, Gordan. SYSU SDCS.
  */
-package org.sysu.workflow.restful.service;
+package org.sysu.workflow.stateless;
 
 import org.hibernate.Session;
 import org.hibernate.Transaction;
@@ -18,10 +18,10 @@ import org.sysu.workflow.model.EnterableState;
 import org.sysu.workflow.model.SCXML;
 import org.sysu.workflow.model.extend.Task;
 import org.sysu.workflow.model.extend.Tasks;
-import org.sysu.workflow.restful.entity.RenBoEntity;
-import org.sysu.workflow.restful.entity.RenProcessEntity;
-import org.sysu.workflow.restful.entity.RenRstaskEntity;
-import org.sysu.workflow.restful.entity.RenRuntimerecordEntity;
+import org.sysu.workflow.entity.RenBoEntity;
+import org.sysu.workflow.entity.RenProcessEntity;
+import org.sysu.workflow.entity.RenRstaskEntity;
+import org.sysu.workflow.entity.RenRuntimerecordEntity;
 import org.sysu.workflow.utility.HibernateUtil;
 import org.sysu.workflow.utility.LogUtil;
 import org.sysu.workflow.utility.SerializationUtil;

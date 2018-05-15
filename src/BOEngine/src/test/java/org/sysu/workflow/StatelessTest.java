@@ -15,7 +15,6 @@ import org.sysu.workflow.instanceTree.RInstanceTree;
 import org.sysu.workflow.io.BOXMLReader;
 import org.sysu.workflow.model.SCXML;
 import org.sysu.workflow.model.extend.MessageMode;
-import org.sysu.workflow.restful.service.RuntimeManagementService;
 import org.sysu.workflow.utility.SerializationUtil;
 
 import java.net.URL;

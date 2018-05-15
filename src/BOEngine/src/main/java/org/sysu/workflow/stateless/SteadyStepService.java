@@ -4,10 +4,13 @@ import org.hibernate.Session;
 import org.hibernate.Transaction;
 import org.sysu.renCommon.enums.LogLevelType;
 import org.sysu.workflow.*;
+import org.sysu.workflow.entity.RenBinstepEntity;
 import org.sysu.workflow.env.MultiStateMachineDispatcher;
 import org.sysu.workflow.env.SimpleErrorReporter;
-import org.sysu.workflow.restful.entity.RenBinstepEntity;
-import org.sysu.workflow.restful.entity.RenRuntimerecordEntity;
+import org.sysu.workflow.entity.RenRuntimerecordEntity;
+import org.sysu.workflow.instanceTree.InstanceManager;
+import org.sysu.workflow.instanceTree.RInstanceTree;
+import org.sysu.workflow.instanceTree.RTreeNode;
 import org.sysu.workflow.utility.HibernateUtil;
 import org.sysu.workflow.utility.LogUtil;
 import org.sysu.workflow.utility.SerializationUtil;
@@ -28,18 +31,45 @@ public class SteadyStepService {
         Session session = HibernateUtil.GetLocalSession();
         Transaction transaction = session.beginTransaction();
         try {
-            RenBinstepEntity binStep = session.get(RenBinstepEntity.class, rtid);
+            RenBinstepEntity binStep = session.get(RenBinstepEntity.class, exctx.NodeId);
             if (binStep == null) {
                 binStep = new RenBinstepEntity();
                 binStep.setRtid(rtid);
+                binStep.setNodeId(exctx.NodeId);
+                RInstanceTree tree = InstanceManager.GetInstanceTree(rtid);
+                RTreeNode parentNode = tree.GetNodeById(exctx.NodeId).Parent;
+                binStep.setSupervisorId(parentNode != null ? parentNode.getExect().NodeId : "");
             }
-            binStep.setBinlog(SerializationUtil.SerializationBOInstanceToByteArray(exctx.getScInstance()));
+            BOInstance boInstance = exctx.getSCXMLExecutor().detachInstance();
+            binStep.setBinlog(SerializationUtil.SerializationBOInstanceToByteArray(boInstance));
+            exctx.getSCXMLExecutor().attachInstance(boInstance);
             session.saveOrUpdate(binStep);
             transaction.commit();
         }
         catch (Exception ex) {
             transaction.rollback();
             LogUtil.Log("Write stateless steady step to DB failed, save action rollback.",
+                    SteadyStepService.class.getName(), LogLevelType.ERROR, rtid);
+        }
+        finally {
+            HibernateUtil.CloseLocalSession();
+        }
+    }
+
+    /**
+     * Clear steady step snapshot after final state.
+     * @param rtid process runtime record id
+     */
+    public static void ClearSteady(String rtid) {
+        Session session = HibernateUtil.GetLocalSession();
+        Transaction transaction = session.beginTransaction();
+        try {
+            session.createQuery(String.format("DELETE RenBinstepEntity AS p WHERE p.rtid = '%s'", rtid)).executeUpdate();
+            transaction.commit();
+        }
+        catch (Exception ex) {
+            transaction.rollback();
+            LogUtil.Log("Clear stateless steady step failed, action rollback.",
                     SteadyStepService.class.getName(), LogLevelType.ERROR, rtid);
         }
         finally {

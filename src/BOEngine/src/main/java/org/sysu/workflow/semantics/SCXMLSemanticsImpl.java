@@ -136,11 +136,13 @@ public class SCXMLSemanticsImpl implements BOXMLSemantics {
                 }
             }
         }
-        // write steady step
-        SteadyStepService.WriteSteady(exctx.Rtid, exctx);
         // handle goto final
         if (!exctx.isRunning()) {
             finalStep(exctx);
+        }
+        // write steady step if running
+        else {
+            SteadyStepService.WriteSteady(exctx.Rtid, exctx);
         }
     }
 
@@ -187,19 +189,23 @@ public class SCXMLSemanticsImpl implements BOXMLSemantics {
             }
             // else: keep final Final
             // TODO: returnDoneEvent(s.donedata)?
-            HashMap<String, String> args = new HashMap<>();
-            args.put("rtid", exctx.Rtid);
-            if (!GlobalContext.IsLocalDebug) {
-                try {
-                    // only remove the tree when root BO finish
-                    if (exctx.NodeId.equals(exctx.RootNodeId)) {
-                        InstanceManager.UnregisterInstanceTree(exctx.Rtid);
+            try {
+                // only remove the tree when root BO finish
+                if (exctx.NodeId.equals(exctx.RootNodeId)) {
+                    // remove instance tree
+                    InstanceManager.UnregisterInstanceTree(exctx.Rtid);
+                    // remove steady snapshot
+                    SteadyStepService.ClearSteady(exctx.Rtid);
+                    // notify resource service GC
+                    if (!GlobalContext.IsLocalDebug) {
+                        HashMap<String, String> args = new HashMap<>();
+                        args.put("rtid", exctx.Rtid);
                         GlobalContext.Interaction.Send(LocationContext.URL_RS_FINISH, args, exctx.Rtid);
                     }
-                } catch (Exception e) {
-                    LogUtil.Log("When send finish Rtid to resource service, exception occurred, " + e.toString(),
-                            SCXMLSemanticsImpl.class.getName(), LogLevelType.ERROR, exctx.Rtid);
                 }
+            } catch (Exception e) {
+                LogUtil.Log("When clear finish tree and send finish Rtid to resource service, exception occurred, " + e.toString(),
+                        SCXMLSemanticsImpl.class.getName(), LogLevelType.ERROR, exctx.Rtid);
             }
         }
     }
