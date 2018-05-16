@@ -16,6 +16,7 @@ import org.sysu.workflow.utility.HibernateUtil;
 import org.sysu.workflow.utility.LogUtil;
 import org.sysu.workflow.utility.SerializationUtil;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Stack;
 import java.util.stream.Collectors;
@@ -23,12 +24,13 @@ import java.util.stream.Collectors;
 /**
  * Author: Rinkako
  * Date  : 2018/5/15
- * Usage : Methods for making business object stateless and able to rollback.
+ * Usage : Methods for making business object stateless.
  */
 public class SteadyStepService {
 
     /**
      * Write a steady step to steady memory.
+     *
      * @param exctx BOXML execution context
      */
     public static void WriteSteady(BOXMLExecutionContext exctx) {
@@ -50,19 +52,18 @@ public class SteadyStepService {
             exctx.getSCXMLExecutor().attachInstance(boInstance);
             session.saveOrUpdate(binStep);
             transaction.commit();
-        }
-        catch (Exception ex) {
+        } catch (Exception ex) {
             transaction.rollback();
             LogUtil.Log("Write stateless steady step to DB failed, save action rollback.",
                     SteadyStepService.class.getName(), LogLevelType.ERROR, exctx.Rtid);
-        }
-        finally {
+        } finally {
             HibernateUtil.CloseLocalSession();
         }
     }
 
     /**
      * Clear steady step snapshot after final state.
+     *
      * @param rtid process runtime record id
      */
     public static void ClearSteady(String rtid) {
@@ -71,19 +72,35 @@ public class SteadyStepService {
         try {
             session.createQuery(String.format("DELETE RenBinstepEntity AS p WHERE p.rtid = '%s'", rtid)).executeUpdate();
             transaction.commit();
-        }
-        catch (Exception ex) {
+        } catch (Exception ex) {
             transaction.rollback();
             LogUtil.Log("Clear stateless steady step failed, action rollback.",
                     SteadyStepService.class.getName(), LogLevelType.ERROR, rtid);
-        }
-        finally {
+        } finally {
             HibernateUtil.CloseLocalSession();
         }
     }
 
     /**
+     * Resume instances from steady memory, and register it to instance manager.
+     *
+     * @param rtidList rtid in JSON list
+     */
+    @SuppressWarnings("unchecked")
+    public static List<String> ResumeSteadyMany(String rtidList) {
+        List<String> rtidItems = SerializationUtil.JsonDeserialization(rtidList, List.class);
+        List<String> failedList = new ArrayList<>();
+        for (String rtid : rtidItems) {
+            if (!SteadyStepService.ResumeSteady(rtid)) {
+                failedList.add(rtid);
+            }
+        }
+        return failedList;
+    }
+
+    /**
      * Resume a instance from steady memory, and register it to instance manager.
+     *
      * @param rtid process runtime record id
      */
     public static boolean ResumeSteady(String rtid) {

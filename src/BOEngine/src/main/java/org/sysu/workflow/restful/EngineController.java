@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.*;
 import org.sysu.renCommon.enums.LogLevelType;
 import org.sysu.workflow.stateless.InteractionService;
 import org.sysu.workflow.stateless.RuntimeManagementService;
+import org.sysu.workflow.stateless.SteadyStepService;
 import org.sysu.workflow.utility.LogUtil;
 import org.sysu.workflow.utility.SerializationUtil;
 import org.sysu.renCommon.dto.ReturnModel;
@@ -15,12 +16,13 @@ import org.sysu.renCommon.dto.StatusCode;
 
 import javax.transaction.Transactional;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 /**
- * Author: Ariana
+ * Author: Rinkako
  * Date  : 2018/1/20
- * Usage : Handle requests from other modules.
+ * Usage : Handle requests passed to engine, like process launching or delegation.
  */
 @RestController
 @RequestMapping("/gateway")
@@ -99,6 +101,62 @@ public class EngineController {
             }
             // logic
             String jsonify = SerializationUtil.JsonSerialization(RuntimeManagementService.GetSpanTreeDescriptor(rtid), rtid);
+            // return
+            ReturnModelHelper.StandardResponse(rnModel, StatusCode.OK, jsonify);
+        } catch (Exception e) {
+            ReturnModelHelper.ExceptionResponse(rnModel, e.toString());
+        }
+        return rnModel;
+    }
+
+    /**
+     * Resume a running process from steady binlog.
+     * @param rtid process rtid
+     * @return response package
+     */
+    @RequestMapping(value = "/resume", produces = {"application/json"})
+    @ResponseBody
+    @Transactional
+    public ReturnModel Resume(@RequestParam(value = "rtid", required = false) String rtid) {
+        ReturnModel rnModel = new ReturnModel();
+        try {
+            // miss params
+            ArrayList<String> missingParams = new ArrayList<String>();
+            if (rtid == null) missingParams.add("rtid");
+            if (missingParams.size() > 0) {
+                return ReturnModelHelper.MissingParametersResponse(missingParams);
+            }
+            // logic
+            String jsonify = SerializationUtil.JsonSerialization(SteadyStepService.ResumeSteady(rtid), rtid);
+            // return
+            ReturnModelHelper.StandardResponse(rnModel, StatusCode.OK, jsonify);
+        } catch (Exception e) {
+            ReturnModelHelper.ExceptionResponse(rnModel, e.toString());
+        }
+        return rnModel;
+    }
+
+    /**
+     * Resume a running process from steady binlog.
+     * @param rtidList process rtid in JSON list
+     * @return response package
+     */
+    @RequestMapping(value = "/resumeMany", produces = {"application/json"})
+    @ResponseBody
+    @Transactional
+    public ReturnModel ResumeMany(@RequestParam(value = "rtidList", required = false) String rtidList) {
+        ReturnModel rnModel = new ReturnModel();
+        try {
+            // miss params
+            ArrayList<String> missingParams = new ArrayList<String>();
+            if (rtidList == null) missingParams.add("rtidList");
+            if (missingParams.size() > 0) {
+                return ReturnModelHelper.MissingParametersResponse(missingParams);
+            }
+            // logic
+            HashMap<String, List> retMap = new HashMap<>();
+            retMap.put("failed", SteadyStepService.ResumeSteadyMany(rtidList));
+            String jsonify = SerializationUtil.JsonSerialization(retMap, "");
             // return
             ReturnModelHelper.StandardResponse(rnModel, StatusCode.OK, jsonify);
         } catch (Exception e) {
