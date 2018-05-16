@@ -83,7 +83,7 @@ public class SCXMLSemanticsImpl implements BOXMLSemantics {
             macroStep(exctx, statesToInvoke);
         }
         // write steady step
-        SteadyStepService.WriteSteady(exctx.Rtid, exctx);
+        SteadyStepService.WriteSteady(exctx);
         // if stop, goto finalStep
         if (!exctx.isRunning()) {
             finalStep(exctx);
@@ -142,7 +142,7 @@ public class SCXMLSemanticsImpl implements BOXMLSemantics {
         }
         // write steady step if running
         else {
-            SteadyStepService.WriteSteady(exctx.Rtid, exctx);
+            SteadyStepService.WriteSteady(exctx);
         }
     }
 

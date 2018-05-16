@@ -480,6 +480,38 @@ public class BOXMLExecutor implements BOXMLIOProcessor {
     }
 
     /**
+     * Begin execute this state machine by resume from other bin step.
+     *
+     * @param supervisorNodeId supervisor id for this resume node
+     */
+    public void resume(String supervisorNodeId) {
+        // if notifiable id not exist, use BO name by default
+        if (CommonUtil.IsNullOrEmpty(this.exctx.NotifiableId)) {
+            this.setNotifiableId(this.exctx.getStateMachine().getId());
+        }
+        // register a new instance tree if this state-machine is the root one
+        try {
+            if (CommonUtil.IsNullOrEmpty(supervisorNodeId)) {
+                RInstanceTree myTree = new RInstanceTree();
+                RTreeNode nRoot = new RTreeNode(this.exctx.getStateMachine().getName(), this.NodeId, this.exctx, null);
+                myTree.SetRoot(nRoot);
+                InstanceManager.RegisterInstanceTree(this.exctx.Rtid, myTree);
+                this.RootNodeId = this.NodeId;
+                this.exctx.RootNodeId = this.RootNodeId;
+            }
+            // add self node to the tree
+            else {
+                RInstanceTree myTree = InstanceManager.GetInstanceTree(this.exctx.Rtid);
+                RTreeNode supervisor = myTree.GetNodeById(supervisorNodeId);
+                RTreeNode curNode = new RTreeNode(this.exctx.getStateMachine().getName(), this.NodeId, this.exctx, supervisor);
+                supervisor.AddChild(curNode);
+            }
+        } catch (Exception e) {
+            LogUtil.Log("Resume BO failed, " + e, BOXMLExecutor.class.getName(), LogLevelType.ERROR, this.exctx.Rtid);
+        }
+    }
+
+    /**
      * Reset the state machine and clear all events.
      *
      * @throws ModelException if the state machine instance failed to initialize

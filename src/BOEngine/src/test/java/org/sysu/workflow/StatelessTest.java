@@ -7,6 +7,9 @@ package org.sysu.workflow;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.context.junit4.SpringRunner;
 import org.sysu.workflow.env.MultiStateMachineDispatcher;
 import org.sysu.workflow.env.SimpleErrorReporter;
 import org.sysu.workflow.env.jexl.JexlEvaluator;
@@ -24,6 +27,8 @@ import java.net.URL;
  * Date  : 2018/3/6
  * Usage :
  */
+@RunWith(SpringRunner.class)
+@SpringBootTest
 public class StatelessTest {
 
     @Before

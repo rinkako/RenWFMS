@@ -2,6 +2,9 @@
 package org.sysu.workflow;
 
 import org.junit.Before;
+import org.junit.runner.RunWith;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.context.junit4.SpringRunner;
 import org.sysu.workflow.io.BOXMLReader;
 import org.sysu.workflow.model.extend.InheritableContext;
 import org.sysu.workflow.env.MultiStateMachineDispatcher;
@@ -26,6 +29,8 @@ import java.security.NoSuchAlgorithmException;
 /**
  * Unit tests
  */
+@RunWith(SpringRunner.class)
+@SpringBootTest
 public class SCXMLReaderTest {
 
     @Before

@@ -3,6 +3,7 @@ package org.sysu.workflow.stateless;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
 import org.sysu.renCommon.enums.LogLevelType;
+import org.sysu.renCommon.utility.CommonUtil;
 import org.sysu.workflow.*;
 import org.sysu.workflow.entity.RenBinstepEntity;
 import org.sysu.workflow.env.MultiStateMachineDispatcher;
@@ -15,6 +16,12 @@ import org.sysu.workflow.utility.HibernateUtil;
 import org.sysu.workflow.utility.LogUtil;
 import org.sysu.workflow.utility.SerializationUtil;
 
+import java.util.HashSet;
+import java.util.List;
+import java.util.Optional;
+import java.util.Stack;
+import java.util.stream.Collectors;
+
 /**
  * Author: Rinkako
  * Date  : 2018/5/15
@@ -24,19 +31,18 @@ public class SteadyStepService {
 
     /**
      * Write a steady step to steady memory.
-     * @param rtid process runtime record id
      * @param exctx BOXML execution context
      */
-    public static void WriteSteady(String rtid, BOXMLExecutionContext exctx) {
+    public static void WriteSteady(BOXMLExecutionContext exctx) {
         Session session = HibernateUtil.GetLocalSession();
         Transaction transaction = session.beginTransaction();
         try {
             RenBinstepEntity binStep = session.get(RenBinstepEntity.class, exctx.NodeId);
             if (binStep == null) {
                 binStep = new RenBinstepEntity();
-                binStep.setRtid(rtid);
+                binStep.setRtid(exctx.Rtid);
                 binStep.setNodeId(exctx.NodeId);
-                RInstanceTree tree = InstanceManager.GetInstanceTree(rtid);
+                RInstanceTree tree = InstanceManager.GetInstanceTree(exctx.Rtid);
                 RTreeNode parentNode = tree.GetNodeById(exctx.NodeId).Parent;
                 binStep.setSupervisorId(parentNode != null ? parentNode.getExect().NodeId : "");
             }
@@ -49,7 +55,7 @@ public class SteadyStepService {
         catch (Exception ex) {
             transaction.rollback();
             LogUtil.Log("Write stateless steady step to DB failed, save action rollback.",
-                    SteadyStepService.class.getName(), LogLevelType.ERROR, rtid);
+                    SteadyStepService.class.getName(), LogLevelType.ERROR, exctx.Rtid);
         }
         finally {
             HibernateUtil.CloseLocalSession();
@@ -86,37 +92,37 @@ public class SteadyStepService {
         Transaction transaction = session.beginTransaction();
         boolean cmtFlag = false;
         try {
-            RenBinstepEntity binStep = session.get(RenBinstepEntity.class, rtid);
+            List<RenBinstepEntity> stepItems = session.createQuery(String.format("FROM RenBinstepEntity AS p WHERE p.rtid = '%s'", rtid)).list();
             RenRuntimerecordEntity record = session.get(RenRuntimerecordEntity.class, rtid);
             record.setInterpreterId(GlobalContext.ENGINE_GLOBAL_ID);
             session.saveOrUpdate(record);
             transaction.commit();
             cmtFlag = true;
-            if (binStep == null) {
-                LogUtil.Log("Resume stateless steady step from DB failed, rtid not exist any rollback snapshot.",
-                        SteadyStepService.class.getName(), LogLevelType.ERROR, rtid);
-                return false;
-            }
-            try {
-                BOInstance bin = SerializationUtil.DeserializationBOInstanceByByteArray(binStep.getBinlog());
-                if (bin == null) {
-                    LogUtil.Log("Resume stateless steady step from DB failed, deserialized null.",
-                            SteadyStepService.class.getName(), LogLevelType.ERROR, rtid);
-                    return false;
+            // find root node
+            RenBinstepEntity rootStep = stepItems.stream().filter(t -> CommonUtil.IsNullOrEmpty(t.getSupervisorId())).findFirst().get();
+            String rootNodeId = rootStep.getNodeId();
+            // recovery other node
+            Stack<RenBinstepEntity> workStack = new Stack<>();
+            workStack.push(rootStep);
+            while (!workStack.isEmpty()) {
+                RenBinstepEntity currentStep = workStack.pop();
+                String currentNodeId = currentStep.getNodeId();
+                BOInstance curBin = SerializationUtil.DeserializationBOInstanceByByteArray(currentStep.getBinlog());
+                Evaluator curEvaluator = EvaluatorFactory.getEvaluator(curBin.getStateMachine());
+                BOXMLExecutor curExecutor = new BOXMLExecutor(curEvaluator, new MultiStateMachineDispatcher(), new SimpleErrorReporter());
+                curExecutor.NodeId = currentNodeId;
+                curExecutor.RootNodeId = rootNodeId;
+                curExecutor.setRootContext(curEvaluator.newContext(null));
+                curExecutor.setRtid(rtid);
+                curExecutor.setPid(record.getProcessId());
+                curExecutor.attachInstance(curBin);
+                curExecutor.resume(currentStep.getSupervisorId());
+                List<RenBinstepEntity> currentChildren = stepItems.stream().filter(t -> t.getSupervisorId().equals(currentNodeId)).collect(Collectors.toList());
+                for (RenBinstepEntity cc : currentChildren) {
+                    workStack.push(cc);
                 }
-                Evaluator evaluator = EvaluatorFactory.getEvaluator(bin.getStateMachine());
-                BOXMLExecutor executor = new BOXMLExecutor(evaluator, new MultiStateMachineDispatcher(), new SimpleErrorReporter());
-                executor.setRootContext(evaluator.newContext(null));
-                executor.setRtid(rtid);
-                executor.setPid(record.getProcessId());
-                executor.setStateMachine(bin.getStateMachine());
-                executor.go();
-                return true;
-            } catch (Exception e) {
-                LogUtil.Log("When ResumeBO from steady step, exception occurred, " + e.toString(),
-                        SteadyStepService.class.getName(), LogLevelType.ERROR, rtid);
-                return false;
             }
+            return true;
         } catch (Exception ex) {
             if (!cmtFlag) {
                 transaction.rollback();
