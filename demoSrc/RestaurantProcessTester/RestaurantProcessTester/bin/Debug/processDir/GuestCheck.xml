@@ -2,7 +2,7 @@
     <datamodel>
         <data expr="1" id="Count"/>
     </datamodel>
-    <tasks>
+    <operations>
         <task id="calculate" brole="paymentCalculator" name="calculateTask">
             <principle method="Allocate" distributor="ShortestQueue"/>
             <callback on="complete" event="calculated"/>
@@ -15,7 +15,7 @@
             <principle method="Allocate" distributor="ShortestQueue"/>
             <callback on="complete" event="archived"/>
         </task>
-    </tasks>
+    </operations>
     <state id="Initial">
         <transition target="Preparing"/>
     </state>

@@ -20,3 +20,4 @@ G:\RenWFMS\demoSrc\RestaurantProcessTester\RestaurantProcessTester\obj\Debug\Res
 G:\RenWFMS\demoSrc\RestaurantProcessTester\RestaurantProcessTester\obj\Debug\RestaurantProcessTester.csproj.CoreCompileInputs.cache
 G:\RenWFMS\demoSrc\RestaurantProcessTester\RestaurantProcessTester\obj\Debug\RestaurantProcessTester.exe
 G:\RenWFMS\demoSrc\RestaurantProcessTester\RestaurantProcessTester\obj\Debug\RestaurantProcessTester.pdb
+G:\RenWFMS\demoSrc\RestaurantProcessTester\RestaurantProcessTester\obj\Debug\RestaurantProcessTester.csproj.CopyComplete
