@@ -20,7 +20,7 @@ import java.util.HashMap;
 /**
  * Author: Rinkako
  * Date  : 2018/3/1
- * Usage : Handle state-machine interaction request outside BO Engine
+ * Usage : Methods for handling state-machine interaction request outside BO Engine.
  */
 public class InteractionService {
 

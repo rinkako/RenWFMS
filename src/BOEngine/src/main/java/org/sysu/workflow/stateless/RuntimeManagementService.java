@@ -35,7 +35,7 @@ import java.util.*;
 /**
  * Author: Ariana, Rinkako
  * Date  : 2018/1/22
- * Usage : All process runtime management services will be handled in this service module.
+ * Usage : Methods for processes runtime management.
  */
 public final class RuntimeManagementService {
 
