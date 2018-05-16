@@ -15,6 +15,7 @@ public class RenBinstepEntity {
     private String nodeId;
     private String rtid;
     private String supervisorId;
+    private String notifiableId;
     private byte[] binlog;
 
     @Id
@@ -48,6 +49,16 @@ public class RenBinstepEntity {
     }
 
     @Basic
+    @Column(name = "notifiableId", nullable = false, length = -1)
+    public String getNotifiableId() {
+        return notifiableId;
+    }
+
+    public void setNotifiableId(String notifiableId) {
+        this.notifiableId = notifiableId;
+    }
+
+    @Basic
     @Column(name = "binlog", nullable = true)
     public byte[] getBinlog() {
         return binlog;
@@ -65,13 +76,14 @@ public class RenBinstepEntity {
         return Objects.equals(nodeId, that.nodeId) &&
                 Objects.equals(rtid, that.rtid) &&
                 Objects.equals(supervisorId, that.supervisorId) &&
+                Objects.equals(notifiableId, that.notifiableId) &&
                 Arrays.equals(binlog, that.binlog);
     }
 
     @Override
     public int hashCode() {
 
-        int result = Objects.hash(nodeId, rtid, supervisorId);
+        int result = Objects.hash(nodeId, rtid, supervisorId, notifiableId);
         result = 31 * result + Arrays.hashCode(binlog);
         return result;
     }

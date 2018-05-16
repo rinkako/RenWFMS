@@ -23,7 +23,8 @@ public class InstanceManager {
 
     /**
      * Get the executor of a tree node by tree node global id.
-     * @param tid process rtid
+     *
+     * @param tid    process rtid
      * @param nodeId tree node global id
      * @return executor at fetched node
      */
@@ -33,7 +34,8 @@ public class InstanceManager {
 
     /**
      * Get the execution context of a tree node by tree node global id.
-     * @param rtid process rtid
+     *
+     * @param rtid   process rtid
      * @param nodeId tree node global id
      * @return execution context at fetched node
      */
@@ -43,14 +45,14 @@ public class InstanceManager {
 
     /**
      * Get tree by its global id, means rtid.
+     *
      * @param rtid process rtid
      * @return tree reference
      */
     public static RInstanceTree GetInstanceTree(String rtid) {
         if (InstanceManager.InstanceTreeTable.containsKey(rtid)) {
             return InstanceManager.InstanceTreeTable.get(rtid);
-        }
-        else {
+        } else {
             LogUtil.Log("Instance tree not found: " + rtid, InstanceManager.class.getName(),
                     LogLevelType.WARNING, rtid);
             return null;
@@ -58,7 +60,19 @@ public class InstanceManager {
     }
 
     /**
+     * Check if a instance tree is exist.
+     *
+     * @param rtid process rtid
+     * @return whether tree exist or not
+     */
+    public static boolean ContainsInstanceTree(String rtid) {
+        return InstanceManager.InstanceTreeTable.containsKey(rtid);
+    }
+
+
+    /**
      * Register a new tree.
+     *
      * @param rtid process rtid
      * @param tree Tree reference
      */
@@ -66,52 +80,21 @@ public class InstanceManager {
         if (tree == null || tree.Root == null) {
             LogUtil.Log("Instance tree must not null: " + rtid, InstanceManager.class.getName(),
                     LogLevelType.ERROR, rtid);
-        }
-        else if (InstanceManager.InstanceTreeTable.containsKey(rtid)) {
+        } else if (InstanceManager.InstanceTreeTable.containsKey(rtid)) {
             LogUtil.Log("Duplicated Instance tree: " + rtid, InstanceManager.class.getName(),
                     LogLevelType.WARNING, rtid);
-        }
-        else {
+        } else {
             InstanceManager.InstanceTreeTable.put(rtid, tree);
         }
     }
 
     /**
      * Signal a process runtime over, and remove its instance tree.
+     *
      * @param rtid process rtid
      */
     public static void UnregisterInstanceTree(String rtid) {
         InstanceManager.InstanceTreeTable.remove(rtid);
-    }
-
-    // todo
-    public static void AttachTree(String rtid) {
-        Session session = HibernateUtil.GetLocalSession();
-        Transaction transaction = session.beginTransaction();
-        try {
-
-        }
-        catch (Exception ex) {
-
-        }
-        finally {
-            HibernateUtil.CloseLocalSession();
-        }
-    }
-
-    // todo
-    public static void DetachTree(String rtid) {
-        Session session = HibernateUtil.GetLocalSession();
-        Transaction transaction = session.beginTransaction();
-        try {
-
-        }
-        catch (Exception ex) {
-
-        }
-        finally {
-            HibernateUtil.CloseLocalSession();
-        }
     }
 
     /**

@@ -16,9 +16,7 @@ import org.sysu.workflow.utility.HibernateUtil;
 import org.sysu.workflow.utility.LogUtil;
 import org.sysu.workflow.utility.SerializationUtil;
 
-import java.util.HashSet;
 import java.util.List;
-import java.util.Optional;
 import java.util.Stack;
 import java.util.stream.Collectors;
 
@@ -42,6 +40,7 @@ public class SteadyStepService {
                 binStep = new RenBinstepEntity();
                 binStep.setRtid(exctx.Rtid);
                 binStep.setNodeId(exctx.NodeId);
+                binStep.setNotifiableId(exctx.NotifiableId);
                 RInstanceTree tree = InstanceManager.GetInstanceTree(exctx.Rtid);
                 RTreeNode parentNode = tree.GetNodeById(exctx.NodeId).Parent;
                 binStep.setSupervisorId(parentNode != null ? parentNode.getExect().NodeId : "");
@@ -92,10 +91,13 @@ public class SteadyStepService {
         Transaction transaction = session.beginTransaction();
         boolean cmtFlag = false;
         try {
+            // update runtime record
             List<RenBinstepEntity> stepItems = session.createQuery(String.format("FROM RenBinstepEntity AS p WHERE p.rtid = '%s'", rtid)).list();
             RenRuntimerecordEntity record = session.get(RenRuntimerecordEntity.class, rtid);
-            record.setInterpreterId(GlobalContext.ENGINE_GLOBAL_ID);
-            session.saveOrUpdate(record);
+            if (record != null) {
+                record.setInterpreterId(GlobalContext.ENGINE_GLOBAL_ID);
+                session.saveOrUpdate(record);
+            }
             transaction.commit();
             cmtFlag = true;
             // find root node
@@ -110,12 +112,15 @@ public class SteadyStepService {
                 BOInstance curBin = SerializationUtil.DeserializationBOInstanceByByteArray(currentStep.getBinlog());
                 Evaluator curEvaluator = EvaluatorFactory.getEvaluator(curBin.getStateMachine());
                 BOXMLExecutor curExecutor = new BOXMLExecutor(curEvaluator, new MultiStateMachineDispatcher(), new SimpleErrorReporter());
-                curExecutor.NodeId = currentNodeId;
+                curExecutor.NodeId = curExecutor.getExctx().NodeId = currentNodeId;
                 curExecutor.RootNodeId = rootNodeId;
                 curExecutor.setRootContext(curEvaluator.newContext(null));
                 curExecutor.setRtid(rtid);
-                curExecutor.setPid(record.getProcessId());
+                if (record != null) {
+                    curExecutor.setPid(record.getProcessId());
+                }
                 curExecutor.attachInstance(curBin);
+                curExecutor.setNotifiableId(currentStep.getNotifiableId());
                 curExecutor.resume(currentStep.getSupervisorId());
                 List<RenBinstepEntity> currentChildren = stepItems.stream().filter(t -> t.getSupervisorId().equals(currentNodeId)).collect(Collectors.toList());
                 for (RenBinstepEntity cc : currentChildren) {
