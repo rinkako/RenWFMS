@@ -17,22 +17,22 @@ public class StatisticHelper {
 
     /**
      * Get the average value of a list of Long integer.
+     * This method is overflow safe.
+     *
      * @param longList List of Long
-     * @return average value
+     * @return average value in Double
      */
-    public static long GetAverage(List<Long> longList) {
-        if (longList.size() == 0) {
-            return 0;
+    public static double GetAverage(List<Long> longList) {
+        double curAvg = 0;
+        for (int i = 0; i < longList.size(); i++) {
+            curAvg += (longList.get(i) - curAvg) / (double)i;
         }
-        long longSum = 0;
-        for (long lt : longList) {
-            longSum += lt;
-        }
-        return longSum / longList.size();
+        return curAvg;
     }
 
     /**
      * Get the max long value in the collection.
+     *
      * @param collection collection to be checked
      * @return max long value
      */
@@ -42,6 +42,7 @@ public class StatisticHelper {
 
     /**
      * Get the min long value in the collection.
+     *
      * @param collection collection to be checked
      * @return min long value
      */
