@@ -12,6 +12,7 @@ import java.util.List;
  * Usage : Immediate trigger for executor.
  */
 public class ImmediateTrigger extends RTrigger {
+
     /**
      * Trigger payload package.
      */
@@ -19,9 +20,10 @@ public class ImmediateTrigger extends RTrigger {
 
     /**
      * Create an immediate trigger.
-     * @param id trigger unique id
+     *
+     * @param id       trigger unique id
      * @param listener object to be triggered
-     * @param payload payload for trigger
+     * @param payload  payload for trigger
      */
     public ImmediateTrigger(String id, RTriggerable listener, Object payload) {
         // empty condition for immediate trigger
@@ -32,9 +34,10 @@ public class ImmediateTrigger extends RTrigger {
 
     /**
      * Create an immediate trigger.
-     * @param id trigger unique id
+     *
+     * @param id           trigger unique id
      * @param listenerList list of objects to be triggered
-     * @param payload payload for trigger
+     * @param payload      payload for trigger
      */
     public ImmediateTrigger(String id, List<RTriggerable> listenerList, Object payload) {
         // empty condition for immediate trigger
