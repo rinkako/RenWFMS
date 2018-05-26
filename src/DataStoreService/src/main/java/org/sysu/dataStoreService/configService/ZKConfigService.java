@@ -3,7 +3,10 @@ package org.sysu.dataStoreService.configService;
 import org.apache.curator.RetryPolicy;
 import org.apache.curator.framework.CuratorFramework;
 import org.apache.curator.framework.CuratorFrameworkFactory;
+import org.apache.curator.framework.recipes.locks.InterProcessMutex;
 import org.apache.curator.retry.ExponentialBackoffRetry;
+import org.apache.curator.retry.RetryNTimes;
+import org.apache.zookeeper.CreateMode;
 
 import java.util.HashMap;
 import java.util.List;
@@ -105,7 +108,7 @@ public class ZKConfigService implements IConfigService {
      * @param content content of node
      */
     private void WriteNodeByString(String path, String content) throws Exception {
-        this.WriteNode(this.NormalizePath(path), content.getBytes());
+        this.WriteNode(path, content.getBytes());
     }
 
     /**
@@ -115,7 +118,7 @@ public class ZKConfigService implements IConfigService {
      * @return content of node
      */
     private String ReadNodeByString(String path) throws Exception {
-        return new String(this.ReadNode(this.NormalizePath(path)));
+        return new String(this.ReadNode(path));
     }
 
     /**
@@ -126,8 +129,15 @@ public class ZKConfigService implements IConfigService {
      */
     private void WriteNode(String path, byte[] content) throws Exception {
         String nPath = this.NormalizePath(path);
-        this.ZClient.checkExists().creatingParentContainersIfNeeded().forPath(nPath);
-        this.ZClient.setData().forPath(nPath, content);
+        InterProcessMutex mutex = new InterProcessMutex(this.ZClient, nPath);
+        try {
+            mutex.acquire();
+            this.ZClient.checkExists().creatingParentContainersIfNeeded().forPath(nPath);
+            this.ZClient.create().orSetData().withMode(CreateMode.PERSISTENT).forPath(nPath, content);
+        }
+        finally {
+            mutex.release();
+        }
     }
 
     /**
@@ -137,7 +147,15 @@ public class ZKConfigService implements IConfigService {
      * @return content of node
      */
     private byte[] ReadNode(String path) throws Exception {
-        return this.ZClient.getData().forPath(this.NormalizePath(path));
+        String nPath = this.NormalizePath(path);
+        InterProcessMutex mutex = new InterProcessMutex(this.ZClient, nPath);
+        try {
+            mutex.acquire();
+            return this.ZClient.getData().forPath(nPath);
+        }
+        finally {
+            mutex.release();
+        }
     }
 
     /**
@@ -146,8 +164,16 @@ public class ZKConfigService implements IConfigService {
      * @param path global data path
      * @return a List of string of children path
      */
-    private List<String> GetChildren(String path) throws Exception {
-        return this.ZClient.getChildren().forPath(this.NormalizePath(path));
+    public List<String> GetChildren(String path) throws Exception {
+        String nPath = this.NormalizePath(path);
+        InterProcessMutex mutex = new InterProcessMutex(this.ZClient, nPath);
+        try {
+            mutex.acquire();
+            return this.ZClient.getChildren().forPath(nPath);
+        }
+        finally {
+            mutex.release();
+        }
     }
 
     /**
@@ -156,7 +182,15 @@ public class ZKConfigService implements IConfigService {
      * @param path global data path
      */
     private void RemoveNode(String path) throws Exception {
-        this.ZClient.delete().guaranteed().deletingChildrenIfNeeded().forPath(this.NormalizePath(path));
+        String nPath = this.NormalizePath(path);
+        InterProcessMutex mutex = new InterProcessMutex(this.ZClient, nPath);
+        try {
+            mutex.acquire();
+            this.ZClient.delete().guaranteed().deletingChildrenIfNeeded().forPath(nPath);
+        }
+        finally {
+            mutex.release();
+        }
     }
 
     /**
@@ -166,7 +200,15 @@ public class ZKConfigService implements IConfigService {
      * @return true if node exist
      */
     private boolean Contains(String path) throws Exception {
-        return this.ZClient.checkExists().forPath(this.NormalizePath(path)) != null;
+        String nPath = this.NormalizePath(path);
+        InterProcessMutex mutex = new InterProcessMutex(this.ZClient, nPath);
+        try {
+            mutex.acquire();
+            return this.ZClient.checkExists().forPath(nPath) != null;
+        }
+        finally {
+            mutex.release();
+        }
     }
 
     /**
@@ -182,16 +224,14 @@ public class ZKConfigService implements IConfigService {
      * Private constructor for preventing created outside.
      */
     private ZKConfigService() throws Exception {
-        RetryPolicy rp = new ExponentialBackoffRetry(1000, 3);
+        RetryPolicy rp = new RetryNTimes(10, 1000);
         CuratorFrameworkFactory.Builder builder = CuratorFrameworkFactory.builder()
                 .connectString(ZKConfigService.ConnectZKAddress)
                 .connectionTimeoutMs(ZKConfigService.TimeOut)
                 .sessionTimeoutMs(ZKConfigService.TimeOut)
-                .retryPolicy(rp)
-                .namespace(ZKConfigService.NameSpace);
+                .retryPolicy(rp);
         this.ZClient = builder.build();
         this.ZClient.start();
-        this.ZClient.create().creatingParentContainersIfNeeded().forPath("/" + ZKConfigService.NameSpace);
     }
 
     /**
