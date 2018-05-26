@@ -91,4 +91,21 @@ public class StatisticPrototype implements Serializable {
             this.sampleCount += sampleItems.size();
         }
     }
+
+    /**
+     * Get a prototype context from steady.
+     * NOTICE that prototype must not cache, it need strong consistency not eventually.
+     *
+     * @return prototype instance.
+     */
+    public static StatisticPrototype GetPrototype() {
+        return null;
+    }
+
+    /**
+     * Private constructor prevent from constructing outside.
+     */
+    private StatisticPrototype() {
+
+    }
 }
