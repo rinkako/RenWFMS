@@ -12,7 +12,7 @@ public interface IConfigSlave {
     /**
      * Config store location.
      */
-    String ConfigRoot = "/renConfig";
+    String Namespace = "Configuration";
 
     /**
      * Initialize config store.

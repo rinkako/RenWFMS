@@ -10,11 +10,6 @@ import java.util.Map;
 public interface IConfigService {
 
     /**
-     * Config store location.
-     */
-    String ConfigRoot = "/renConfig";
-
-    /**
      * Add a config to the store.
      *
      * @param service service name
