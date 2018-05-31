@@ -15,6 +15,6 @@ RDBHOST = '127.0.0.1'
 RDBUSER = 'boengine'
 RDBPASSWORD = 'boengine'
 RDBPORT = '3306'
-RDBPATH = 'rencorgan'
+RDBPATH = 'renboengine'
 UNAUTHORIZED = "__COrgan_Unauthorized__"
 LPWDSALT = 'LuMiNous'

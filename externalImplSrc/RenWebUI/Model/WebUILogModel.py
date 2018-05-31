@@ -2,14 +2,14 @@
 # encoding: utf-8
 
 """
-@module : RuntimeLogModel
+@module : WebUILogModel
 @author : Rinkako
 @time   : 2018/5/31
 """
 import time
 
 
-class RuntimeLogModel:
+class WebUILogModel:
     """
     Model Class: Data model operation for runtime logging of Ren Web UI.
     """
@@ -23,20 +23,20 @@ class RuntimeLogModel:
         Initialize the logger.
         :param forced: forced reinitialize
         """
-        if forced is False and RuntimeLogModel._persistDAO is not None:
+        if forced is False and WebUILogModel._persistDAO is not None:
             return
         from DAO import MySQLDAO
-        RuntimeLogModel._persistDAO = MySQLDAO.MySQLDAO()
-        RuntimeLogModel._persistDAO.Initialize()
+        WebUILogModel._persistDAO = MySQLDAO.MySQLDAO()
+        WebUILogModel._persistDAO.Initialize()
 
     @staticmethod
     def Dispose():
         """
         Dispose the resource of runtime logger.
         """
-        if RuntimeLogModel._persistDAO is not None:
-            RuntimeLogModel._persistDAO.Dispose()
-        RuntimeLogModel._persistDAO = None
+        if WebUILogModel._persistDAO is not None:
+            WebUILogModel._persistDAO.Dispose()
+        WebUILogModel._persistDAO = None
 
     @staticmethod
     def LogToSteady(label, level, message, timestamp, dp=0):
@@ -51,9 +51,9 @@ class RuntimeLogModel:
         t = time.strftime("%Y-%m-%d %H:%M:%S", time.localtime(timestamp))
         sql = "INSERT INTO ren_webuilog(label, level, message, timestamp) VALUES ('%s', '%s', '%s', '%s')" \
               % (label, level, message, t)
-        if RuntimeLogModel._persistDAO is None:
-            RuntimeLogModel.Initialize()
-        RuntimeLogModel._persistDAO.ExecuteSQL(sql, False, dp, updateVersion=False)
+        if WebUILogModel._persistDAO is None:
+            WebUILogModel.Initialize()
+        WebUILogModel._persistDAO.ExecuteSQL(sql, False, dp, updateVersion=False)
 
     @staticmethod
     def LogError(label, message, timestamp=None):
@@ -65,7 +65,7 @@ class RuntimeLogModel:
         """
         if timestamp is None:
             timestamp = time.time()
-        RuntimeLogModel.LogToSteady(label, "Error", message, timestamp)
+        WebUILogModel.LogToSteady(label, "Error", message, timestamp)
 
     @staticmethod
     def LogInformation(label, message, timestamp=None):
@@ -77,7 +77,7 @@ class RuntimeLogModel:
         """
         if timestamp is None:
             timestamp = time.time()
-        RuntimeLogModel.LogToSteady(label, "Info", message, timestamp)
+        WebUILogModel.LogToSteady(label, "Info", message, timestamp)
 
     @staticmethod
     def LogUnauthorized(label, message, timestamp=None):
@@ -89,7 +89,7 @@ class RuntimeLogModel:
         """
         if timestamp is None:
             timestamp = time.time()
-        RuntimeLogModel.LogToSteady(label, "Unauthorized", message, timestamp)
+        WebUILogModel.LogToSteady(label, "Unauthorized", message, timestamp)
 
     """
     Persist DAO

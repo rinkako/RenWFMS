@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+    <meta charset="utf-8">
+    <title> COrgan | {{ L_PageTitle }}</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1, user-scalable=no">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/cloud-admin.css') }}" >
+    <link rel="stylesheet" type="text/css"  href="{{ url_for('static', filename='css/themes/default.css') }}" id="skin-switcher" >
+    <link href="{{ url_for('static', filename='font-awesome-4.7.0/css/font-awesome.min.css') }}" rel="stylesheet">
+    {% block LHeader %}
+    {% endblock %}
+    <!-- FONTS -->
+    <link href='http://fonts.googleapis.com/css?family=Open+Sans:300,400,600,700' rel='stylesheet' type='text/css'>
+</head>
+<body>
+<!-- HEADER -->
+<header class="navbar clearfix" id="header">
+    <div class="container">
+        <div class="navbar-brand">
+            <!-- COMPANY LOGO -->
+            <a href="{{ url_for('home') }}">
+                <img src="{{ url_for('static', filename='img/logo/logo.png') }}" alt="Logo" class="img-responsive" height="30" width="120">
+            </a>
+            <!-- /COMPANY LOGO -->
+            <!-- TEAM STATUS FOR MOBILE -->
+            <div class="visible-xs">
+                <a href="#" class="team-status-toggle switcher btn dropdown-toggle">
+                    <i class="fa fa-users"></i>
+                </a>
+            </div>
+            <!-- /TEAM STATUS FOR MOBILE -->
+            <!-- SIDEBAR COLLAPSE -->
+            <div id="sidebar-collapse" class="sidebar-collapse btn">
+                <i class="fa fa-bars"
+                   data-icon1="fa fa-bars"
+                   data-icon2="fa fa-bars" ></i>
+            </div>
+            <!-- /SIDEBAR COLLAPSE -->
+        </div>
+        <!-- BEGIN TOP NAVIGATION MENU -->
+        <ul class="nav navbar-nav pull-right">
+            <!-- BEGIN USER LOGIN DROPDOWN -->
+            <li class="dropdown user" id="header-user">
+                <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                    <img alt="" src="{{ url_for('static', filename='img/avatars/avatar3.jpg') }}" />
+                    <span class="username">
+                        {{ session['AuID'] }}
+                        {% if session['AuType'] > 0 %}
+                            &nbsp;(管理员)
+                        {% endif %}
+                    </span>
+                    <i class="fa fa-angle-down"></i>
+                </a>
+                <ul class="dropdown-menu">
+                    <li><a href="{{ url_for('performLogout') }}"><i class="fa fa-power-off"></i> Log Out</a></li>
+                </ul>
+            </li>
+            <!-- END USER LOGIN DROPDOWN -->
+        </ul>
+        <!-- END TOP NAVIGATION MENU -->
+    </div>
+</header>
+<!-- PAGE -->
+<section id="page">
+    <!-- SIDEBAR -->
+    <div id="sidebar" class="sidebar">
+        <div class="sidebar-menu nav-collapse">
+            <div class="divide-20"></div>
+
+            <!-- SIDEBAR QUICK-LAUNCH -->
+            <!-- <div id="quicklaunch">
+            <!-- /SIDEBAR QUICK-LAUNCH -->
+
+            <!-- SIDEBAR MENU -->
+            <ul>
+                <li id="active-home">
+                    <a href="{{ url_for('home') }}">
+                        <i class="fa fa-tachometer fa-fw"></i>
+                        <span class="menu-text">Welcome</span>
+                        <span id="selected-home"></span>
+                    </a>
+                </li>
+
+                <li id="active-human">
+                    <a class="" href="{{ url_for('humanManagement') }}">
+                        <i class="fa fa-user fa-fw"></i>
+                        <span class="menu-text">Human</span>
+                        <span id="selected-human"></span>
+                    </a>
+                </li>
+
+                <li id="active-agent">
+                    <a class="" href="{{ url_for('agentManagement') }}">
+                        <i class="fa fa-laptop fa-fw"></i>
+                        <span class="menu-text">Agent</span>
+                        <span id="selected-agent"></span>
+                    </a>
+                </li>
+
+                <li id="active-organizable" class="has-sub">
+                    <a class="" href="javascript:;">
+                        <i class="fa fa-cubes fa-fw"></i>
+                        <span class="menu-text">Organizable</span>
+                        <span class="arrow"></span>
+                        <span id="selected-organizable"></span>
+                    </a>
+                    <ul class="sub">
+                        <li id="current-organizable-group">
+                            <a class="" href="{{ url_for('groupManagement') }}">
+                                <span class="sub-menu-text">Group</span>
+                            </a>
+                        </li>
+                        <li id="current-organizable-position">
+                            <a class="" href="{{ url_for('positionManagement') }}">
+                                <span class="sub-menu-text">Position</span>
+                            </a>
+                        </li>
+                        <li id="current-organizable-capability">
+                            <a class="" href="{{ url_for('capabilityManagement') }}">
+                                <span class="sub-menu-text">Capability</span>
+                            </a>
+                        </li>
+                    </ul>
+                </li>
+
+                {% if session['AuType'] > 0 %}
+                <li id="active-userManagement">
+                    <a class="" href="{{ url_for('userManagement') }}">
+                        <i class="fa fa-key fa-fw"></i>
+                        <span class="menu-text">Authority Management</span>
+                        <span id="selected-userManagement"></span>
+                    </a>
+                </li>
+
+                <li id="active-configPage">
+                    <a class="" href="{{ url_for('configManagement') }}">
+                        <i class="fa fa-gear fa-fw"></i>
+                        <span class="menu-text">Config</span>
+                        <span id="selected-configPage"></span>
+                    </a>
+                </li>
+                {% endif %}
+
+            </ul>
+            <!-- /SIDEBAR MENU -->
+        </div>
+    </div>
+    <!-- /SIDEBAR -->
+    <div id="main-content">
+        <!-- SAMPLE BOX CONFIGURATION MODAL FORM-->
+        <div class="modal fade" id="box-config" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                        <h4 class="modal-title">Box Settings</h4>
+                    </div>
+                    <div class="modal-body">
+                        Here goes box setting content.
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                        <button type="button" class="btn btn-primary">Save changes</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- /SAMPLE BOX CONFIGURATION MODAL FORM-->
+        {% block LBody %}{% endblock %}
+    </div>
+</section>
+<!--/PAGE -->
+<!-- JAVASCRIPT -->
+<!-- Placed at the end of the document so the pages load faster -->
+<!-- JQUERY -->
+<script src="{{ url_for('static', filename='js/jquery/jquery-2.0.3.min.js') }}"></script>
+<!-- BOOTSTRAP -->
+<script src="{{ url_for('static', filename='bootstrap-dist/js/bootstrap.min.js') }}"></script>
+<!-- COOKIE -->
+<script type="text/javascript" src="{{ url_for('static', filename='js/jQuery-Cookie/jquery.cookie.min.js') }}"></script>
+<!-- CUSTOM SCRIPT -->
+<script src="{{ url_for('static', filename='js/script.js') }}"></script>
+{% block LScript %}
+{% endblock %}
+<!-- /JAVASCRIPT -->
+</body>
+</html>

@@ -10,6 +10,44 @@ from RenUIController import RenUIController
 app = Flask(__name__, template_folder='templates', static_folder='static')
 
 
+"""
+Warppers of funcs
+"""
+
+
+def authorizeRequire(fn):
+    """
+    Decorator for login required router.
+    """
+    @wraps(fn)
+    def wrapper(*args, **kwds):
+        user = session.get('SID', None)
+        if user:
+            return fn(*args, **kwds)
+        else:
+            return redirect(url_for('Login3'))
+    return wrapper
+
+
+def adminRequire(fn):
+    """
+    Decorator for admin required router.
+    """
+    @wraps(fn)
+    def wrapper(*args, **kwds):
+        auType = session.get('AuType', None)
+        if auType is not None and auType > 0:
+            return fn(*args, **kwds)
+        else:
+            return redirect(url_for('AccessErrorPage', dt='unauthorized'))
+    return wrapper
+
+
+"""
+Router funcs.
+"""
+
+
 @app.route('/', methods=["GET"])
 def home():
     return "hello ren!"
@@ -102,7 +140,11 @@ def ActiveProcessViewInstanceTree():
 
 @app.route('/login/', methods=["GET"])
 def Login():
-    pass
+    _logout()
+    t = {
+        'msg': ''
+    }
+    return render_template('login.html', **t)
 
 
 @app.route('/performLogin/', methods=["POST"])
@@ -111,8 +153,6 @@ def performLogin():
         return redirect(url_for('Login'))
     usrId = request.form["passedUserId"]
     usrPwd = request.form["passedUserPwd"]
-    from Utility.EncryptUtil import EncryptUtil
-    usrPwd = EncryptUtil.EncryptSHA256(usrPwd)
     flag, ret = RenUIController.Auth(usrId, usrPwd)
     if flag is False or ret is None:
         return redirect(url_for('Login2'))
@@ -127,11 +167,29 @@ def logout():
     """
     Perform Logout logic and clear the session.
     """
+    _logout()
+
+
+def _logout():
     if 'SID' in session:
         sid = session['SID']
         if sid != "" and sid is not None:
             flag, ret = RenUIController.Disconnect(session['SID'])
             session.clear()
+
+
+
+@app.route('/failure/<dt>/')
+def AccessErrorPage(dt):
+    t = {'L_PageTitle': u'访问失败',
+         'L_PageDescription': u''}
+    if dt == "unauthorized":
+        t["msg"] = u'COrgan无法为您提供请求的服务，请确认您拥有访问它的权限。'
+    elif dt == "add":
+        t["msg"] = u'添加新资源失败，请确认资源字段的正确性，以及名字是否唯一。'
+    else:
+        t["msg"] = u'COrgan无法为您提供请求的服务。请确认服务器正常，并且您拥有访问它的权限。'
+    return render_template('info_cannotaccess.html', **t)
 
 
 if __name__ == '__main__':

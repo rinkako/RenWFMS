@@ -38,7 +38,7 @@ class AuthorizationModel:
         """
         sql = "SELECT * FROM ren_authuser AS au WHERE au.username = '%s' AND au.domain = '%s' AND au.password = '%s'" \
               % (username, domain, encryptedPassword)
-        ret = AuthorizationModel._persistDAO.ExecuteSQL(sql, False, 0)
+        ret = AuthorizationModel._persistDAO.ExecuteSQL(sql, True, 0)
         if len(ret) > 0:
             return ret[0]
         else:

@@ -1,5 +1,7 @@
 #!/usr/bin/env python
 # encoding: utf-8
+from Model.AuthorizationModel import AuthorizationModel
+from Model.WebUILogModel import WebUILogModel
 from SessionManager import SessionManager
 from Utility.EncryptUtil import EncryptUtil
 
@@ -46,3 +48,6 @@ class RenUIController:
         except Exception as e:
             print "Exception in WebUI: %s" % str(e)
             return False, e
+
+    AuthorizationModel.Initialize(forced=True)
+    WebUILogModel.Initialize(forced=True)
