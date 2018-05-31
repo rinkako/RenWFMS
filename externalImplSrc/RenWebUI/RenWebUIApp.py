@@ -49,8 +49,10 @@ Router funcs.
 
 
 @app.route('/', methods=["GET"])
+@authorizeRequire
 def home():
-    return "hello ren!"
+    t = {'L_PageTitle': 'homepage'}
+    return render_template('index.html', **t)
 
 
 @app.route('/domain/', methods=["GET"])
@@ -138,11 +140,29 @@ def ActiveProcessViewInstanceTree():
     pass
 
 
-@app.route('/login/', methods=["GET"])
+@app.route('/login/')
 def Login():
     _logout()
     t = {
         'msg': ''
+    }
+    return render_template('login.html', **t)
+
+
+@app.route('/login2/')
+def Login2():
+    _logout()
+    t = {
+        'msg': 'Invalid User ID or Password'
+    }
+    return render_template('login.html', **t)
+
+
+@app.route('/loginRequire/')
+def Login3():
+    _logout()
+    t = {
+        'msg': 'Please login first'
     }
     return render_template('login.html', **t)
 
@@ -162,7 +182,15 @@ def performLogin():
     return redirect(url_for('home'))
 
 
-@app.route('/logout', methods=["GET", "POST"])
+@app.route('/performLogout/', methods=["GET", "POST"])
+def performLogout():
+    """
+    Perform logout action.
+    """
+    return redirect(url_for('Login'))
+
+
+@app.route('/logout/', methods=["GET", "POST"])
 def logout():
     """
     Perform Logout logic and clear the session.

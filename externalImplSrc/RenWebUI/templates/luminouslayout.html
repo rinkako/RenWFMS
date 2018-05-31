@@ -3,7 +3,7 @@
 <head>
     <meta http-equiv="content-type" content="text/html; charset=UTF-8">
     <meta charset="utf-8">
-    <title> COrgan | {{ L_PageTitle }}</title>
+    <title> RenWFMS WebUI | {{ L_PageTitle }}</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1, user-scalable=no">
     <meta name="description" content="">
     <meta name="author" content="">
@@ -79,67 +79,67 @@
                 <li id="active-home">
                     <a href="{{ url_for('home') }}">
                         <i class="fa fa-tachometer fa-fw"></i>
-                        <span class="menu-text">Welcome</span>
+                        <span class="menu-text">欢迎</span>
                         <span id="selected-home"></span>
                     </a>
                 </li>
 
-                <li id="active-human">
-                    <a class="" href="{{ url_for('humanManagement') }}">
+                <li id="active-process">
+                    <a class="" href="{{ url_for('home') }}">
+                        <i class="fa fa-rocket fa-fw"></i>
+                        <span class="menu-text">流程</span>
+                        <span id="selected-process"></span>
+                    </a>
+                </li>
+
+                <li id="active-authuser">
+                    <a class="" href="{{ url_for('home') }}">
                         <i class="fa fa-user fa-fw"></i>
-                        <span class="menu-text">Human</span>
-                        <span id="selected-human"></span>
+                        <span class="menu-text">授权用户</span>
+                        <span id="selected-authuser"></span>
                     </a>
                 </li>
 
-                <li id="active-agent">
-                    <a class="" href="{{ url_for('agentManagement') }}">
-                        <i class="fa fa-laptop fa-fw"></i>
-                        <span class="menu-text">Agent</span>
-                        <span id="selected-agent"></span>
-                    </a>
-                </li>
-
-                <li id="active-organizable" class="has-sub">
+                <li id="active-runtime" class="has-sub">
                     <a class="" href="javascript:;">
                         <i class="fa fa-cubes fa-fw"></i>
-                        <span class="menu-text">Organizable</span>
+                        <span class="menu-text">监控</span>
                         <span class="arrow"></span>
-                        <span id="selected-organizable"></span>
+                        <span id="selected-runtime"></span>
                     </a>
                     <ul class="sub">
-                        <li id="current-organizable-group">
-                            <a class="" href="{{ url_for('groupManagement') }}">
-                                <span class="sub-menu-text">Group</span>
+                        <li id="current-runtime-runtimerecord">
+                            <a class="" href="{{ url_for('home') }}">
+                                <span class="sub-menu-text">活动流程</span>
                             </a>
                         </li>
-                        <li id="current-organizable-position">
-                            <a class="" href="{{ url_for('positionManagement') }}">
-                                <span class="sub-menu-text">Position</span>
+                        <li id="current-runtime-worklist">
+                            <a class="" href="{{ url_for('home') }}">
+                                <span class="sub-menu-text">工作列表</span>
                             </a>
                         </li>
-                        <li id="current-organizable-capability">
-                            <a class="" href="{{ url_for('capabilityManagement') }}">
-                                <span class="sub-menu-text">Capability</span>
+                        <li id="current-runtime-except">
+                            <a class="" href="{{ url_for('home') }}">
+                                <span class="sub-menu-text">异常池</span>
                             </a>
                         </li>
                     </ul>
                 </li>
 
                 {% if session['AuType'] > 0 %}
-                <li id="active-userManagement">
-                    <a class="" href="{{ url_for('userManagement') }}">
+                <li id="active-domainManagement">
+                    <a class="" href="{{ url_for('home') }}">
                         <i class="fa fa-key fa-fw"></i>
-                        <span class="menu-text">Authority Management</span>
-                        <span id="selected-userManagement"></span>
+                        <span class="menu-text">租户（域）管理</span>
+                        <span id="selected-domainManagement"></span>
                     </a>
                 </li>
-
-                <li id="active-configPage">
-                    <a class="" href="{{ url_for('configManagement') }}">
-                        <i class="fa fa-gear fa-fw"></i>
-                        <span class="menu-text">Config</span>
-                        <span id="selected-configPage"></span>
+                {% else %}
+                <li id="active-domainConfig">
+                    <a class="" href="{{ url_for('home') }}">
+                        <i class="fa fa-laptop fa-fw"></i>
+                        <span class="menu-text">设置</span>
+                        <span id="selected-domainConfig"></span>
                     </a>
                 </li>
                 {% endif %}

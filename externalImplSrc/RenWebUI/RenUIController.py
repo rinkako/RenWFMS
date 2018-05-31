@@ -23,8 +23,11 @@ class RenUIController:
         :param rawPassword: password without encryption
         :return:
         """
-        retVal = SessionManager.Login(username, EncryptUtil.EncryptSHA256(rawPassword))
-        return retVal is not None, retVal
+        try:
+            retVal = SessionManager.Login(username, EncryptUtil.EncryptSHA256(rawPassword))
+            return retVal is not None, retVal
+        except:
+            return None, False
 
     @staticmethod
     def Disconnect(token):
