@@ -89,8 +89,13 @@ public class ConfigSlave implements IConfigSlave {
         return null;
     }
 
+    /**
+     * Set configuration event listener.
+     *
+     * @param serviceName current service name
+     * @param listener IConfigListener instance
+     */
     private void SetListenter(String serviceName, IConfigListener listener) throws Exception {
-        ExecutorService pool = Executors.newCachedThreadPool();
         TreeCache treeCache = new TreeCache(this.ZClient, "/" + serviceName);
         treeCache.getListenable().addListener((client, event) -> {
             ChildData data = event.getData();
@@ -112,7 +117,7 @@ public class ConfigSlave implements IConfigSlave {
                         break;
                 }
             } else {
-                System.out.println("data is null : " + event.getType());
+                System.out.println("ignore null data for: " + event.getType());
             }
         });
         treeCache.start();
