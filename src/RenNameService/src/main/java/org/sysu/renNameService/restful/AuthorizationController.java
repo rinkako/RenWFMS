@@ -5,6 +5,7 @@
 package org.sysu.renNameService.restful;
 
 import org.springframework.web.bind.annotation.*;
+import org.sysu.renNameService.GlobalContext;
 import org.sysu.renNameService.authorization.AuthTokenManager;
 import org.sysu.renNameService.authorization.AuthorizationService;
 import org.sysu.renCommon.dto.ReturnModel;
@@ -365,7 +366,8 @@ public class AuthorizationController {
                                         @RequestParam(value="username", required = false)String username,
                                         @RequestParam(value="password", required = false)String password,
                                         @RequestParam(value="level", required = false)String level,
-                                        @RequestParam(value="domain", required = false)String domain) {
+                                        @RequestParam(value="domain", required = false)String domain,
+                                        @RequestParam(value="gid", required = false)String gid) {
         ReturnModel rnModel = new ReturnModel();
         try {
             // miss params
@@ -379,13 +381,14 @@ public class AuthorizationController {
                 return ReturnModelHelper.MissingParametersResponse(missingParams);
             }
             // token check
-            if (AuthorizationService.CheckValidLevel(token) < 1 &&
-                    AuthTokenManager.GetDomain(token).equals(domain)) {
+            if ((AuthorizationService.CheckValidLevel(token) < 1 &&
+                    AuthTokenManager.GetDomain(token).equals(domain)) &&
+                    !token.equals(GlobalContext.INTERNAL_TOKEN)) {
                 return ReturnModelHelper.UnauthorizedResponse(token);
             }
             // logic
             assert level != null;
-            String jsonifyResult = AuthorizationService.AddAuthUser(username, password, Integer.valueOf(level), domain);
+            String jsonifyResult = AuthorizationService.AddAuthUser(username, password, Integer.valueOf(level), domain, gid);
             // return
             ReturnModelHelper.StandardResponse(rnModel, StatusCode.OK, jsonifyResult);
         } catch (Exception e) {
@@ -418,8 +421,9 @@ public class AuthorizationController {
                 return ReturnModelHelper.MissingParametersResponse(missingParams);
             }
             // token check
-            if (AuthorizationService.CheckValidLevel(token) < 1 &&
-                    AuthTokenManager.GetDomain(token).equals(domain)) {
+            if ((AuthorizationService.CheckValidLevel(token) < 1 &&
+                    AuthTokenManager.GetDomain(token).equals(domain)) &&
+                    !token.equals(GlobalContext.INTERNAL_TOKEN)) {
                 return ReturnModelHelper.UnauthorizedResponse(token);
             }
             // logic
@@ -450,7 +454,8 @@ public class AuthorizationController {
                                            @RequestParam(value="domain", required = false)String domain,
                                            @RequestParam(value="password", required = false)String password,
                                            @RequestParam(value="level", required = false)String level,
-                                           @RequestParam(value="status", required = false)String status) {
+                                           @RequestParam(value="status", required = false)String status,
+                                           @RequestParam(value="gid", required = false)String gid) {
         ReturnModel rnModel = new ReturnModel();
         try {
             // miss params
@@ -463,13 +468,17 @@ public class AuthorizationController {
             }
             // check token
             int tokenLevel = AuthorizationService.CheckValidLevel(token);
-            if (tokenLevel == -1 || !AuthTokenManager.GetDomain(token).equals(domain)) {
+            if (tokenLevel == -1 || token.equals(GlobalContext.INTERNAL_TOKEN) &&
+                    !token.equals(GlobalContext.INTERNAL_TOKEN)) {
                 return ReturnModelHelper.UnauthorizedResponse(token);
             }
             // logic
             HashMap<String, String> updateArgs = new HashMap<>();
             if (password != null) {
                 updateArgs.put("password", password);
+            }
+            if (gid != null) {
+                updateArgs.put("gid", gid);
             }
             if (level != null) {
                 if (tokenLevel < 1) {  // change user level is ADMIN ONLY
@@ -481,7 +490,7 @@ public class AuthorizationController {
                 if (tokenLevel < 1) {  // change user deletion state is ADMIN ONLY
                     return ReturnModelHelper.UnauthorizedResponse(token);
                 }
-                updateArgs.put("state", status);
+                updateArgs.put("status", status);
             }
             // return
             if (updateArgs.size() == 0) {
@@ -520,8 +529,9 @@ public class AuthorizationController {
                 return ReturnModelHelper.MissingParametersResponse(missingParams);
             }
             // token check
-            if (AuthorizationService.CheckValidLevel(token) < 0 &&
-                    AuthTokenManager.GetDomain(token).equals(domain)) {
+            if ((AuthorizationService.CheckValidLevel(token) < 0 &&
+                    AuthTokenManager.GetDomain(token).equals(domain)) &&
+                    !token.equals(GlobalContext.INTERNAL_TOKEN)) {
                 return ReturnModelHelper.UnauthorizedResponse(token);
             }
             // logic
@@ -557,8 +567,9 @@ public class AuthorizationController {
                 return ReturnModelHelper.MissingParametersResponse(missingParams);
             }
             // token check
-            if (AuthorizationService.CheckValidLevel(token) < 0 &&
-                    AuthTokenManager.GetDomain(token).equals(domain)) {
+            if ((AuthorizationService.CheckValidLevel(token) < 0 &&
+                    AuthTokenManager.GetDomain(token).equals(domain)) &&
+                    !token.equals(GlobalContext.INTERNAL_TOKEN)) {
                 return ReturnModelHelper.UnauthorizedResponse(token);
             }
             // logic
@@ -591,8 +602,9 @@ public class AuthorizationController {
                 return ReturnModelHelper.MissingParametersResponse(missingParams);
             }
             // token check
-            if (AuthorizationService.CheckValidLevel(token) < 0 &&
-                    AuthTokenManager.GetDomain(token).equals(domain)) {
+            if ((AuthorizationService.CheckValidLevel(token) < 0 &&
+                    AuthTokenManager.GetDomain(token).equals(domain)) &&
+                    !token.equals(GlobalContext.INTERNAL_TOKEN)) {
                 return ReturnModelHelper.UnauthorizedResponse(token);
             }
             // logic

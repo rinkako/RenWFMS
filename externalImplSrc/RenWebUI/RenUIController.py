@@ -200,6 +200,106 @@ class RenUIController:
         dt = InteractionUtil.Send(LocationContext.URL_Domain_GetAll)
         return True, json.loads(dt["data"], encoding="utf8")
 
+    """
+    Auth user Management Methods
+    """
+    @adminRequireWarp
+    @ExceptionWarp
+    def AuthUserAdd(self, session, name, domain, raw_password, gid):
+        """
+        Add an auth user.
+        :param session: session id
+        :param name: user name
+        :param domain: domain name
+        :param raw_password: user raw password
+        :param gid: binding resource global id, empty string if none
+        """
+        pd = {"username": name, "domain": domain, "password": raw_password, "gid": gid, "level": 0}
+        return True, InteractionUtil.Send(LocationContext.URL_AuthUser_Add, pd)
+
+    @adminRequireWarp
+    @ExceptionWarp
+    def AuthUserStop(self, session, name, domain):
+        """
+        Ban an auth user.
+        :param session: session id
+        :param name: user name to be stopped
+        :param domain: domain name
+        """
+        pd = {"username": name, "domain": domain, "status": 1}
+        dt = InteractionUtil.Send(LocationContext.URL_AuthUser_Update, pd)
+        return True, json.loads(dt["data"], encoding="utf8")
+
+    @adminRequireWarp
+    @ExceptionWarp
+    def AuthUserResume(self, session, name, domain):
+        """
+        Resume an auth user.
+        :param session: session id
+        :param name: user name to be resumed
+        :param domain: domain name
+        """
+        pd = {"username": name, "domain": domain, "status": 0}
+        dt = InteractionUtil.Send(LocationContext.URL_AuthUser_Update, pd)
+        return True, json.loads(dt["data"], encoding="utf8")
+
+    @authorizeRequireWarp
+    @ExceptionWarp
+    def AuthUserUpdate(self, session, name, domain, new_password, new_gid):
+        """
+        Update an auth user info.
+        :param session: session id
+        :param name: user name to be updated
+        :param domain: domain name
+        :param new_password: new auth user password
+        :param new_gid: new global id
+        """
+        pd = {"username": name, "domain": domain}
+        if new_gid is not None:
+            pd["gid"] = new_gid
+        if new_password is not None:
+            pd["password"] = new_password
+        dt = InteractionUtil.Send(LocationContext.URL_AuthUser_Update, pd)
+        return True, json.loads(dt["data"], encoding="utf8")
+
+    @authorizeRequireWarp
+    @ExceptionWarp
+    def AuthUserGet(self, session, name, domain):
+        """
+        Get an auth user.
+        :param session: session id
+        :param name: user to be retrieve
+        :param domain: domain name
+        """
+        pd = {"username": name, "domain": domain}
+        dt = InteractionUtil.Send(LocationContext.URL_AuthUser_Get, pd)
+        return True, json.loads(dt["data"], encoding="utf8")
+
+    @adminRequireWarp
+    @ExceptionWarp
+    def AuthUserGetAllForDomain(self, session, domain):
+        """
+        Get all users as a list for a domain.
+        :param session: session id
+        :param domain: domain name
+        """
+        d = {"domain": domain}
+        dt = InteractionUtil.Send(LocationContext.URL_AuthUser_GetAll, d)
+        return True, json.loads(dt["data"], encoding="utf8")
+
+    @adminRequireWarp
+    @ExceptionWarp
+    def AuthUserGetAll(self, session):
+        """
+        Get all users as a list.
+        :param session: session id
+        """
+        d = {"domain": ""}
+        dt = InteractionUtil.Send(LocationContext.URL_AuthUser_GetAll, d)
+        return True, json.loads(dt["data"], encoding="utf8")
+
+
+
     AuthorizationModel.Initialize(forced=True)
     WebUILogModel.Initialize(forced=True)
 

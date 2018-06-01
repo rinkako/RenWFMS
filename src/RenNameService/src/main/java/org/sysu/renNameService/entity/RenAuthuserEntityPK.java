@@ -5,11 +5,16 @@ import javax.persistence.Id;
 import java.io.Serializable;
 import java.util.Objects;
 
+/**
+ * Author: Rinkako
+ * Date  : 2018/6/1
+ * Usage :
+ */
 public class RenAuthuserEntityPK implements Serializable {
     private String username;
     private String domain;
 
-    @Column(name = "username")
+    @Column(name = "username", nullable = false, length = 255)
     @Id
     public String getUsername() {
         return username;
@@ -19,7 +24,7 @@ public class RenAuthuserEntityPK implements Serializable {
         this.username = username;
     }
 
-    @Column(name = "domain")
+    @Column(name = "domain", nullable = false, length = 255)
     @Id
     public String getDomain() {
         return domain;

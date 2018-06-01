@@ -126,32 +126,82 @@ def PerformDomainResume(uname):
 
 @app.route('/authuser/', methods=["GET"])
 def AuthUserManagement():
-    pass
+    if session['Domain'] == "admin":
+        flag, res = core.AuthUserGetAll("__test__")
+        title = u"管理平台中的授权用户"
+    else:
+        flag, res = core.AuthUserGetAllForDomain("__test__", session['Domain'])
+        title = u"管理域中的授权用户"
+    if flag is False:
+        return redirect(url_for('AccessErrorPage', dt='x'))
+    t = {'L_PageTitle': u'授权用户管理',
+         'L_PageDescription': title,
+         'itemList': res,
+         'changetime': time.localtime,
+         'strtime': time.strftime}
+    return render_template('authusermanagement.html', **t)
 
 
 @app.route('/authuser/add/', methods=["GET"])
 def AuthUserAdd():
-    pass
+    t = {'L_PageTitle': u'添加授权用户',
+         'L_PageDescription': u'为当前域添加一个授权用户'}
+    return render_template('authusermanagement_add.html', **t)
 
 
 @app.route('/authuser/performAdd/', methods=["POST"])
 def PerformAuthUserAdd():
-    pass
+    flag, res = core.AuthUserAdd('__test__',
+                                 request.form['f_username'],
+                                 session["Domain"],
+                                 request.form['f_nPassword'],
+                                 request.form['f_nGid'])
+    if flag is False or res is None:
+        return redirect(url_for('AccessErrorPage', dt='add'))
+    return redirect(url_for('AuthUserManagement'))
 
 
-@app.route('/authuser/edit/', methods=["GET"])
-def AuthUserEdit():
-    pass
+@app.route('/authuser/edit/<uname>/', methods=["GET"])
+def AuthUserEdit(uname):
+    flag, res = core.AuthUserGet('__test__', uname, session["Domain"])
+    if flag is False:
+        return redirect(url_for('AccessErrorPage', dt='x'))
+    t = {'L_PageTitle': u'编辑: ' + uname,
+         'L_PageDescription': u'编辑授权用户',
+         'UserObj': res}
+    return render_template('authusermanagement_edit.html', **t)
 
 
 @app.route('/authuser/performEdit/', methods=["POST"])
 def PerformAuthUserEdit():
-    pass
+    if "f_nPassword" in request.values:
+        pwd = request.values["f_nPassword"]
+    else:
+        pwd = request.values["h_password"]
+    flag, res = core.AuthUserUpdate('__test__',
+                                    request.values['h_username'],
+                                    session["Domain"],
+                                    pwd,
+                                    request.values['f_nGid'])
+    if flag is False:
+        return redirect(url_for('AccessErrorPage', dt='x'))
+    return redirect(url_for('AuthUserManagement'))
 
 
-@app.route('/authuser/performDelete/', methods=["POST"])
-def PerformAuthUserDelete():
-    pass
+@app.route('/authuser/performDelete/<uname>/', methods=["GET", "POST"])
+def PerformAuthUserDelete(uname):
+    flag, res = core.AuthUserStop('__test__', uname, session["Domain"])
+    if flag is False or res is None:
+        return redirect(url_for('AccessErrorPage', dt='add'))
+    return redirect(url_for('AuthUserManagement'))
+
+
+@app.route('/authuser/performResume/<uname>/', methods=["GET", "POST"])
+def PerformAuthUserResume(uname):
+    flag, res = core.AuthUserResume('__test__', uname, session["Domain"])
+    if flag is False or res is None:
+        return redirect(url_for('AccessErrorPage', dt='add'))
+    return redirect(url_for('AuthUserManagement'))
 
 
 @app.route('/process/', methods=["GET"])
@@ -216,6 +266,7 @@ def performLogin():
     if flag is False or ret is None:
         return redirect(url_for('Login2'))
     session['AuID'] = usrId
+    session['Domain'] = usrId.split('@')[1]
     session['SID'] = ret
     session['AuType'] = 1 if RenUIController.RenUIController.AmIAdmin(ret)[1] is True else 0
     return redirect(url_for('home'))

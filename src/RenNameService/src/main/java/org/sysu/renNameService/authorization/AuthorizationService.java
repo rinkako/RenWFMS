@@ -6,6 +6,7 @@ package org.sysu.renNameService.authorization;
 
 import org.hibernate.Session;
 import org.hibernate.Transaction;
+import org.sysu.renCommon.utility.CommonUtil;
 import org.sysu.renCommon.utility.EncryptUtil;
 import org.sysu.renCommon.utility.TimestampUtil;
 import org.sysu.renNameService.GlobalContext;
@@ -264,9 +265,10 @@ public class AuthorizationService {
      * @param password user password without encryption
      * @param level    user level
      * @param domain   domain name
+     * @param gid      global id of binding resources
      * @return `OK` if success otherwise failed
      */
-    public static String AddAuthUser(String username, String password, int level, String domain) {
+    public static String AddAuthUser(String username, String password, int level, String domain, String gid) {
         Session session = HibernateUtil.GetLocalSession();
         Transaction transaction = session.beginTransaction();
         try {
@@ -289,6 +291,7 @@ public class AuthorizationService {
             rae.setDomain(domain);
             rae.setCreatetimestamp(TimestampUtil.GetCurrentTimestamp());
             rae.setStatus(0);
+            rae.setGid(gid == null ? "" : gid);
             session.save(rae);
             transaction.commit();
             return "OK";
@@ -357,6 +360,9 @@ public class AuthorizationService {
             }
             if (updateArgs.containsKey("password")) {
                 rae.setPassword(EncryptUtil.EncryptSHA256(updateArgs.get("password")));
+            }
+            if (updateArgs.containsKey("gid")) {
+                rae.setGid(updateArgs.get("gid"));
             }
             if (updateArgs.containsKey("status") && isAdmin) {
                 rae.setStatus(Integer.valueOf(updateArgs.get("status")));
@@ -439,7 +445,13 @@ public class AuthorizationService {
         Session session = HibernateUtil.GetLocalSession();
         Transaction transaction = session.beginTransaction();
         try {
-            List<RenAuthuserEntity> rae = session.createQuery(String.format("FROM RenAuthuserEntity WHERE domain = '%s'", domain)).list();
+            List<RenAuthuserEntity> rae;
+            if (CommonUtil.IsNullOrEmpty(domain)) {
+                rae = session.createQuery("FROM RenAuthuserEntity").list();
+            }
+            else {
+                rae = session.createQuery(String.format("FROM RenAuthuserEntity WHERE domain = '%s'", domain)).list();
+            }
             transaction.commit();
             return rae;
         } catch (Exception ex) {

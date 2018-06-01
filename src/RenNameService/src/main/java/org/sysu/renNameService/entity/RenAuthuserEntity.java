@@ -4,6 +4,11 @@ import javax.persistence.*;
 import java.sql.Timestamp;
 import java.util.Objects;
 
+/**
+ * Author: Rinkako
+ * Date  : 2018/6/1
+ * Usage :
+ */
 @Entity
 @Table(name = "ren_authuser", schema = "renboengine", catalog = "")
 @IdClass(RenAuthuserEntityPK.class)
@@ -15,9 +20,10 @@ public class RenAuthuserEntity {
     private int status;
     private Timestamp createtimestamp;
     private Timestamp lastlogin;
+    private String gid;
 
     @Id
-    @Column(name = "username")
+    @Column(name = "username", nullable = false, length = 255)
     public String getUsername() {
         return username;
     }
@@ -27,7 +33,7 @@ public class RenAuthuserEntity {
     }
 
     @Id
-    @Column(name = "domain")
+    @Column(name = "domain", nullable = false, length = 255)
     public String getDomain() {
         return domain;
     }
@@ -37,7 +43,7 @@ public class RenAuthuserEntity {
     }
 
     @Basic
-    @Column(name = "level")
+    @Column(name = "level", nullable = false)
     public int getLevel() {
         return level;
     }
@@ -47,7 +53,7 @@ public class RenAuthuserEntity {
     }
 
     @Basic
-    @Column(name = "password")
+    @Column(name = "password", nullable = false, length = 255)
     public String getPassword() {
         return password;
     }
@@ -57,7 +63,7 @@ public class RenAuthuserEntity {
     }
 
     @Basic
-    @Column(name = "status")
+    @Column(name = "status", nullable = false)
     public int getStatus() {
         return status;
     }
@@ -67,7 +73,7 @@ public class RenAuthuserEntity {
     }
 
     @Basic
-    @Column(name = "createtimestamp")
+    @Column(name = "createtimestamp", nullable = true)
     public Timestamp getCreatetimestamp() {
         return createtimestamp;
     }
@@ -77,13 +83,23 @@ public class RenAuthuserEntity {
     }
 
     @Basic
-    @Column(name = "lastlogin")
+    @Column(name = "lastlogin", nullable = true)
     public Timestamp getLastlogin() {
         return lastlogin;
     }
 
     public void setLastlogin(Timestamp lastlogin) {
         this.lastlogin = lastlogin;
+    }
+
+    @Basic
+    @Column(name = "gid", nullable = true, length = 255)
+    public String getGid() {
+        return gid;
+    }
+
+    public void setGid(String gid) {
+        this.gid = gid;
     }
 
     @Override
@@ -97,12 +113,13 @@ public class RenAuthuserEntity {
                 Objects.equals(domain, that.domain) &&
                 Objects.equals(password, that.password) &&
                 Objects.equals(createtimestamp, that.createtimestamp) &&
-                Objects.equals(lastlogin, that.lastlogin);
+                Objects.equals(lastlogin, that.lastlogin) &&
+                Objects.equals(gid, that.gid);
     }
 
     @Override
     public int hashCode() {
 
-        return Objects.hash(username, domain, level, password, status, createtimestamp, lastlogin);
+        return Objects.hash(username, domain, level, password, status, createtimestamp, lastlogin, gid);
     }
 }
