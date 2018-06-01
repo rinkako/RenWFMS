@@ -9,6 +9,7 @@ import requests
 import json
 import GlobalConfigContext as GCC
 
+
 class InteractionUtil:
     def __init__(self):
         pass
@@ -23,7 +24,7 @@ class InteractionUtil:
         preDict = {"token": GCC.INTERNAL_TOKEN}
         if paraDict is not None:
             preDict.update(paraDict)
-        retVal = InteractionUtil.PostJson(url, paraDict)
+        retVal = InteractionUtil.PostJson(url, preDict)
         if retVal["code"] == "OK":
             return retVal["returnElement"]
         else:
@@ -31,5 +32,5 @@ class InteractionUtil:
 
 
 if __name__ == "__main__":
-    x = InteractionUtil.PostJson("http://127.0.0.1:10234/auth/domain/getall", d)
+    x = InteractionUtil.Send("http://127.0.0.1:10234/auth/domain/getall")
     pass

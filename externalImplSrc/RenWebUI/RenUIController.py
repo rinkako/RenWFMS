@@ -1,11 +1,14 @@
 #!/usr/bin/env python
 # encoding: utf-8
+import json
 from functools import wraps
 
+import LocationContext
 from Model.AuthorizationModel import AuthorizationModel
 from Model.WebUILogModel import WebUILogModel
 from SessionManager import SessionManager
 from Utility.EncryptUtil import EncryptUtil
+from Utility.InteractionUtil import InteractionUtil
 from Utility.LogUtil import LogUtil
 import GlobalConfigContext as GCC
 
@@ -123,60 +126,82 @@ class RenUIController:
             return GCC.UNAUTHORIZED
 
     """
-    COrgan Platform User Management Methods
+    Domain Management Methods
     """
     @adminRequireWarp
-    def PlatformUserAdd(self, session, username, encrypted_password, level):
+    @ExceptionWarp
+    def DomainAdd(self, session, name, raw_password, corgan):
         """
         Add a domain.
         :param session: session id
-        :param username: new user's name
-        :param encrypted_password: new user's password with encryption
-        :param level: new user level flag
+        :param name: domain name
+        :param raw_password: domain password
+        :param corgan: domain binding COrgan location
         """
-        try:
-            UserModel.Add(username, encrypted_password, level)
-            return True, True
-        except:
-            return True, False
+        pd = {"name": name, "password": raw_password, "corgan": corgan}
+        return True, InteractionUtil.Send(LocationContext.URL_Domain_Add, pd)
 
     @adminRequireWarp
-    def PlatformUserRemove(self, session, username):
+    @ExceptionWarp
+    def DomainStop(self, session, name):
         """
-        Remove a platform user.
+        Ban a domain.
         :param session: session id
-        :param username: user's name to be removed
+        :param name: domain's name to be stopped
         """
-        return True, UserModel.Delete(username)
-
-    @authorizeRequireWarp
-    def PlatformUserUpdate(self, session, username, new_encrypted_password, new_level):
-        """
-        Update a platform user.
-        :param session: session id
-        :param username: user's name to be updated
-        :param new_encrypted_password: user's new password with encryption
-        :param new_level: new level flag of user
-        """
-        return True, UserModel.Update(username, new_encrypted_password, new_level)
-
-    @authorizeRequireWarp
-    def PlatformUserGet(self, session, username):
-        """
-        Get a platform user.
-        :param session: session id
-        :param username: user's name to be retrieve
-        """
-        return True, UserModel.Retrieve(username)
+        pd = {"name": name, "status": 1}
+        dt = InteractionUtil.Send(LocationContext.URL_Domain_Update, pd)
+        return True, json.loads(dt["data"], encoding="utf8")
 
     @adminRequireWarp
-    def PlatformUserGetAll(self, session):
+    @ExceptionWarp
+    def DomainResume(self, session, name):
         """
-        Get all platform user as a list.
+        Resume a domain.
+        :param session: session id
+        :param name: domain's name to be resumed
+        """
+        pd = {"name": name, "status": 0}
+        dt = InteractionUtil.Send(LocationContext.URL_Domain_Update, pd)
+        return True, json.loads(dt["data"], encoding="utf8")
+
+    @authorizeRequireWarp
+    @ExceptionWarp
+    def DomainUpdate(self, session, name, new_corgan):
+        """
+        Update a domain info.
+        :param session: session id
+        :param name: domain's name to be updated
+        :param new_corgan: domain new COrgan location
+        """
+        pd = {"name": name, "corgan": new_corgan}
+        dt = InteractionUtil.Send(LocationContext.URL_Domain_Update, pd)
+        return True, json.loads(dt["data"], encoding="utf8")
+
+    @authorizeRequireWarp
+    @ExceptionWarp
+    def DomainGet(self, session, name):
+        """
+        Get a domain.
+        :param session: session id
+        :param name: domain to be retrieve
+        """
+        pd = {"name": name}
+        dt = InteractionUtil.Send(LocationContext.URL_Domain_Get, pd)
+        return True, json.loads(dt["data"], encoding="utf8")
+
+    @adminRequireWarp
+    @ExceptionWarp
+    def DomainGetAll(self, session):
+        """
+        Get all domain as a list.
         :param session: session id
         """
-        return True, UserModel.RetrieveAllValid()
-
+        dt = InteractionUtil.Send(LocationContext.URL_Domain_GetAll)
+        return True, json.loads(dt["data"], encoding="utf8")
 
     AuthorizationModel.Initialize(forced=True)
     WebUILogModel.Initialize(forced=True)
+
+
+RenUIControllerInstance = RenUIController()

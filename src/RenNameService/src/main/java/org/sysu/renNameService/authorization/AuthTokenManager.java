@@ -168,6 +168,10 @@ public class AuthTokenManager {
      * @return token level, -1 if token is invalid
      */
     public static int CheckValidLevel(String token) {
+        // internal service call
+        if (token.equals(GlobalContext.INTERNAL_TOKEN)) {
+            return 999;
+        }
         Session session = HibernateUtil.GetLocalSession();
         Transaction transaction = session.beginTransaction();
         int retVal;

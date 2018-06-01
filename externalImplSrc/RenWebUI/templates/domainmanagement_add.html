@@ -42,23 +42,34 @@
                         <!-- BASIC -->
                         <div class="box border orange">
                             <div class="box-title">
-                                <h4><i class="fa fa-bars"></i>新建授权用户</h4>
+                                <h4><i class="fa fa-bars"></i>新建域</h4>
                             </div>
                             <div class="box-body big">
-                                <form id="addUserForm" role="form" method="post" onsubmit="return check()" action="{{ url_for('performAddPlatformUser') }}">
+                                <form id="addUserForm" role="form" method="post" onsubmit="return check()" action="{{ url_for('PerformDomainAdd') }}">
                                     <div class="form-group">
-                                        <label for="tUsername">唯一用户名(*)</label>
+                                        <label for="tUsername">唯一域名(*)</label>
                                         <input name="f_username" type="text" class="form-control" id="tUsername">
                                     </div>
                                     <div class="form-group">
-                                        <label for="tPassword">密码(*)</label>
-                                        <input name="f_nPassword" type="password" class="form-control" id="tPassword">
-                                    </div>
+										<label for="tPassword">域管理员密码(*)</label>
+										<input name="f_nPassword" type="password" class="form-control" id="tPassword">
+									</div>
+									<div class="form-group">
+										<label for="tBindingLoc">绑定组织架构地址(*)</label>
+										<input name="f_nBindingLoc" type="text" class="form-control" id="tBindingLoc">
+									</div>
                                     <div class="form-group">
-                                        <label for="tType">用户类型(*)</label>
+                                        <label for="tType">服务计费类型(*)</label>
                                         <select name="f_level" id="tType" class="form-control col-md-12">
-                                            <option>平台用户</option>
-                                            <option>管理员</option>
+                                            <option>按可上传流程容量（10个/年）      ¥10000</option>
+                                            <option>按可上传流程容量（50个/年）      ¥30000</option>
+                                            <option>按可上传流程容量（200个/年）     ¥80000</option>
+                                            <option>按可启动流程数量（10000次/年）   ¥5000</option>
+                                            <option>按可启动流程数量（50000次/年）   ¥20000</option>
+                                            <option>按可启动流程数量（200000次/年）  ¥60000</option>
+                                            <option>按任务分派次数（10000次/年）     ¥1000</option>
+                                            <option>按任务分派次数（500000次/年）    ¥10000</option>
+                                            <option>按任务分派次数（5000000次/年）   ¥80000</option>
                                         </select>
                                     </div>
                                     <br/><br/>
@@ -96,10 +107,11 @@
 
 
 	<script>
-        function check(){
+        function check() {
             tusr = document.getElementById("tUsername").value;
             tpwd = document.getElementById("tPassword").value;
-            if (tusr.trim() === '' || tpwd.trim() === '') {
+            tloc = document.getElementById("tBindingLoc").value;
+            if (tusr.trim() === '' || tpwd.trim() === '' || tloc.trim() === '') {
                 alert("请完整填写表单！");
                 return false;
             }
@@ -109,8 +121,8 @@
         }
 
 		jQuery(document).ready(function() {
-				jQuery("#active-userManagement").addClass("active");
-				jQuery("#selected-userManagement").addClass("selected");
+				jQuery("#active-domainManagement").addClass("active");
+				jQuery("#selected-domainManagement").addClass("selected");
 				App.setPage("forms");  //Set current page
 				App.init(); //Initialise plugins and elements
 			});

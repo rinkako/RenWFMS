@@ -100,3 +100,6 @@ class SessionManager:
     """ Active Session Dictionary """
     ActiveSessionDict = {}
 
+    xsession = CSession("__test__", "__test__", "__test__", time.time())
+    xsession.Level = 999
+    ActiveSessionDict["__test__"] = xsession

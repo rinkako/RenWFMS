@@ -1,15 +1,16 @@
 #!/usr/bin/env python
 # encoding: utf-8
-
 from functools import wraps
+
+import time
 from flask import Flask, render_template, redirect, url_for, request, session
 
 import GlobalConfigContext
-from RenUIController import RenUIController
+import RenUIController
 from Utility.EncryptUtil import EncryptUtil
 
 app = Flask(__name__, template_folder='templates', static_folder='./../StaticAssets')
-core = RenUIController
+core = RenUIController.RenUIControllerInstance
 
 """
 Warppers of funcs
@@ -50,7 +51,6 @@ Router funcs.
 
 
 @app.route('/', methods=["GET"])
-@authorizeRequire
 def home():
     t = {'L_PageTitle': 'homepage'}
     return render_template('index.html', **t)
@@ -58,23 +58,33 @@ def home():
 
 @app.route('/domain/', methods=["GET"])
 def DomainManagement():
-    flag, res = core.PlatformUserGetAll(session['SID'])
+    flag, res = core.DomainGetAll("__test__")
     if flag is False:
         return redirect(url_for('AccessErrorPage', dt='x'))
     t = {'L_PageTitle': u'域管理',
          'L_PageDescription': u'管理云平台上的租户（域）',
-         'userList': res}
+         'domainList': res,
+         'changetime': time.localtime,
+         'strtime': time.strftime}
     return render_template('domainmanagement.html', **t)
 
 
 @app.route('/domain/add/', methods=["GET"])
 def DomainAdd():
-    pass
+    t = {'L_PageTitle': u'添加域',
+         'L_PageDescription': u'为WFMS添加一个域账户'}
+    return render_template('domainmanagement_add.html', **t)
 
 
 @app.route('/domain/performAdd/', methods=["POST"])
 def PerformDomainAdd():
-    pass
+    flag, res = core.DomainAdd('__test__',
+                               request.form['f_username'],
+                               request.form['f_nPassword'],
+                               request.form['f_nBindingLoc'])
+    if flag is False or res is None:
+        return redirect(url_for('AccessErrorPage', dt='add'))
+    return redirect(url_for('DomainManagement'))
 
 
 @app.route('/domain/edit/', methods=["GET"])
@@ -87,9 +97,20 @@ def PerformDomainEdit():
     pass
 
 
-@app.route('/domain/performDelete/', methods=["POST"])
-def PerformDomainDelete():
-    pass
+@app.route('/domain/performDelete/<uname>/', methods=["GET", "POST"])
+def PerformDomainDelete(uname):
+    flag, res = core.DomainStop('__test__', uname)
+    if flag is False or res is None:
+        return redirect(url_for('AccessErrorPage', dt='add'))
+    return redirect(url_for('DomainManagement'))
+
+
+@app.route('/domain/performResume/<uname>/', methods=["GET", "POST"])
+def PerformDomainResume(uname):
+    flag, res = core.DomainResume('__test__', uname)
+    if flag is False or res is None:
+        return redirect(url_for('AccessErrorPage', dt='add'))
+    return redirect(url_for('DomainManagement'))
 
 
 @app.route('/authuser/', methods=["GET"])
@@ -180,12 +201,12 @@ def performLogin():
         return redirect(url_for('Login'))
     usrId = request.form["passedUserId"]
     usrPwd = request.form["passedUserPwd"]
-    flag, ret = RenUIController.Auth(usrId, usrPwd)
+    flag, ret = RenUIController.RenUIController.Auth(usrId, usrPwd)
     if flag is False or ret is None:
         return redirect(url_for('Login2'))
     session['AuID'] = usrId
     session['SID'] = ret
-    session['AuType'] = 1 if RenUIController.AmIAdmin(ret)[1] is True else 0
+    session['AuType'] = 1 if RenUIController.RenUIController.AmIAdmin(ret)[1] is True else 0
     return redirect(url_for('home'))
 
 
@@ -209,7 +230,7 @@ def _logout():
     if 'SID' in session:
         sid = session['SID']
         if sid != "" and sid is not None:
-            flag, ret = RenUIController.Disconnect(session['SID'])
+            flag, ret = RenUIController.RenUIController.Disconnect(session['SID'])
             session.clear()
 
 
@@ -218,11 +239,11 @@ def AccessErrorPage(dt):
     t = {'L_PageTitle': u'访问失败',
          'L_PageDescription': u''}
     if dt == "unauthorized":
-        t["msg"] = u'COrgan无法为您提供请求的服务，请确认您拥有访问它的权限。'
+        t["msg"] = u'无法为您提供请求的服务，请确认您拥有访问它的权限。'
     elif dt == "add":
         t["msg"] = u'添加新资源失败，请确认资源字段的正确性，以及名字是否唯一。'
     else:
-        t["msg"] = u'COrgan无法为您提供请求的服务。请确认服务器正常，并且您拥有访问它的权限。'
+        t["msg"] = u'无法为您提供请求的服务。请确认服务器正常，并且您拥有访问它的权限。'
     return render_template('info_cannotaccess.html', **t)
 
 

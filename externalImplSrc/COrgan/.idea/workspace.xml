@@ -14,11 +14,11 @@
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file leaf-file-name="COrganApp.py" pinned="false" current-in-tab="false">
+      <file leaf-file-name="COrganApp.py" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/COrganApp.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="254">
-              <caret line="21" column="32" lean-forward="false" selection-start-line="21" selection-start-column="32" selection-end-line="21" selection-end-column="32" />
+            <state relative-caret-position="380">
+              <caret line="105" column="54" lean-forward="true" selection-start-line="105" selection-start-column="54" selection-end-line="105" selection-end-column="54" />
               <folding>
                 <element signature="e#467#485#0" expanded="true" />
               </folding>
@@ -56,10 +56,10 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="CController.py" pinned="false" current-in-tab="true">
+      <file leaf-file-name="CController.py" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/CController.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="586">
+            <state relative-caret-position="208">
               <caret line="28" column="7" lean-forward="true" selection-start-line="28" selection-start-column="7" selection-end-line="28" selection-end-column="7" />
               <folding>
                 <element signature="e#107#140#0" expanded="true" />
@@ -638,22 +638,22 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/COrganApp.py">
+    <entry file="file://$PROJECT_DIR$/CController.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="254">
-          <caret line="21" column="32" lean-forward="false" selection-start-line="21" selection-start-column="32" selection-end-line="21" selection-end-column="32" />
+        <state relative-caret-position="208">
+          <caret line="28" column="7" lean-forward="true" selection-start-line="28" selection-start-column="7" selection-end-line="28" selection-end-column="7" />
           <folding>
-            <element signature="e#467#485#0" expanded="true" />
+            <element signature="e#107#140#0" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/CController.py">
+    <entry file="file://$PROJECT_DIR$/COrganApp.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="586">
-          <caret line="28" column="7" lean-forward="true" selection-start-line="28" selection-start-column="7" selection-end-line="28" selection-end-column="7" />
+        <state relative-caret-position="380">
+          <caret line="105" column="54" lean-forward="true" selection-start-line="105" selection-start-column="54" selection-end-line="105" selection-end-column="54" />
           <folding>
-            <element signature="e#107#140#0" expanded="true" />
+            <element signature="e#467#485#0" expanded="true" />
           </folding>
         </state>
       </provider>

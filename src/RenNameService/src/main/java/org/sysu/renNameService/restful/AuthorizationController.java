@@ -231,7 +231,7 @@ public class AuthorizationController {
                 if (tokenLevel < 2) {  // change user deletion status is WFMS ADMIN ONLY
                     return ReturnModelHelper.UnauthorizedResponse(token);
                 }
-                updateArgs.put("state", status);
+                updateArgs.put("status", status);
             }
             if (corgan != null) {
                 updateArgs.put("corgan", corgan);
