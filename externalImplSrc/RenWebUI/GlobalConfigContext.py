@@ -16,5 +16,7 @@ RDBUSER = 'boengine'
 RDBPASSWORD = 'boengine'
 RDBPORT = '3306'
 RDBPATH = 'renboengine'
-UNAUTHORIZED = "__COrgan_Unauthorized__"
-LPWDSALT = 'LuMiNous'
+UNAUTHORIZED = "__WebUI_Unauthorized__"
+LPWDSALT = 'bab53e0679c74ren8148b75ea2a7db4e'
+
+INTERNAL_TOKEN = "2ac4a13d-872d-4c59-a1b1-b5c2ecfc2fb0-7df468cd-c9e0-49b4-ad08-5281bbbe4ce0"

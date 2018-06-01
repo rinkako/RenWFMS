@@ -135,6 +135,10 @@ public class AuthTokenManager {
      * @return whether token is valid
      */
     public static boolean CheckValid(String token) {
+        // internal service call
+        if (token.equals(GlobalContext.INTERNAL_TOKEN)) {
+            return true;
+        }
         Session session = HibernateUtil.GetLocalSession();
         Transaction transaction = session.beginTransaction();
         boolean retFlag = true;

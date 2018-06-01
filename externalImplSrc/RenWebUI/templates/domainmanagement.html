@@ -1,0 +1,135 @@
+﻿{% extends "luminouslayout.html" %}
+
+{% block LHeader %}
+    <!-- DATA TABLES -->
+	<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='js/datatables/media/css/jquery.dataTables.min.css') }}" />
+	<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='js/datatables/media/assets/css/datatables.min.css') }}" />
+	<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='js/datatables/extras/TableTools/media/css/TableTools.min.css') }}" />
+{% endblock %}
+
+{% block LBody %}
+	<div class="container">
+		<div class="row">
+			<div id="content" class="col-lg-12">
+                <!-- PAGE HEADER-->
+                <div class="row">
+                    <div class="col-sm-12">
+                        <div class="page-header">
+                            <!-- BREADCRUMBS -->
+                            <ul class="breadcrumb">
+                                <li>
+                                    <i class="fa fa-home"></i>
+                                    <a href="index.html">Home</a>
+                                </li>
+                                <li>{{ L_PageTitle }}</li>
+                            </ul>
+                            <!-- /BREADCRUMBS -->
+                            <div class="clearfix">
+                                <h3 class="content-title pull-left">{{ L_PageTitle }}</h3>
+                            </div>
+                            <div class="description">{{ L_PageDescription }}</div>
+                        </div>
+                    </div>
+                </div>
+                <!-- /PAGE HEADER -->
+                <!-- DATA TABLES -->
+                <div class="row">
+                    <div class="col-md-12">
+                        <!-- BOX -->
+                        <div class="box border blue">
+                            <div class="box-title">
+                                <h4><i class="fa fa-key"></i>授权清单</h4>
+                                <div class="tools hidden-xs">
+                                    <a onclick="refreshMyself()" class="reload">
+                                        <i class="fa fa-refresh"></i>
+                                    </a>
+                                </div>
+                            </div>
+                            <div class="box-body">
+                                <table id="datatable1" cellpadding="0" cellspacing="0" border="0" class="datatable table table-striped table-bordered table-hover">
+                                    <thead>
+                                        <tr>
+                                            <th>ID</th>
+                                            <th>Name</th>
+                                            <th>Level</th>
+                                            <th>CreateTime</th>
+                                            <th>OP.</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        {% for dictItem in userList %}
+                                            <tr class="gradeX">
+                                                <td> {{ dictItem["id"] }} </td>
+                                                <td> {{ dictItem["username"] }} </td>
+                                                <td>
+                                                {% if dictItem["level"] == 0 %}
+                                                    平台用户
+                                                {% else %}
+                                                    管理员
+                                                {% endif %}
+                                                </td>
+                                                <td> {{ dictItem["createtimestamp"] }} </td>
+                                                <td class="center">
+                                                    {% if dictItem["id"] != 1 %}
+                                                        <a href="{{ url_for('userManagement') + "edit/" + dictItem["username"]}}">
+                                                            <button class="btn btn-xs btn-info">编辑</button>
+                                                        </a>
+                                                        &nbsp;
+                                                        <button onClick="delConfirm('{{ url_for('userManagement') + "performdelete/" + dictItem["username"]}}')" class="btn btn-xs btn-danger">删除</button>
+                                                    {% else %}
+                                                        <span style="color: #9d9d9d; ">主管理员不可修改</span>
+                                                    {% endif %}
+                                                </td>
+                                            </tr>
+                                        {% endfor %}
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                        <!-- /BOX -->
+                        <button onClick="addBindingBtn()" class="btn btn-info col-md-1 btn-purple"><i class="fa fa-pencil"></i> 添加</button>
+                    </div>
+                </div>
+                <!-- /DATA TABLES -->
+
+                <div class="footer-tools">
+                    <span class="go-top">
+                        <i class="fa fa-chevron-up"></i> Top
+                    </span>
+                </div>
+			</div><!-- /CONTENT-->
+		</div>
+	</div>
+{% endblock %}
+
+{% block LScript %}
+    <!-- DATA TABLES -->
+	<script type="text/javascript" src="{{ url_for('static', filename='js/datatables/media/js/jquery.dataTables.min.js') }}"></script>
+	<script type="text/javascript" src="{{ url_for('static', filename='js/datatables/media/assets/js/datatables.min.js') }}"></script>
+	<script type="text/javascript" src="{{ url_for('static', filename='js/datatables/extras/TableTools/media/js/TableTools.min.js') }}"></script>
+	<script type="text/javascript" src="{{ url_for('static', filename='js/datatables/extras/TableTools/media/js/ZeroClipboard.min.js') }}"></script>
+	<script>
+		jQuery(document).ready(function() {
+			App.setPage("dynamic_table");  //Set current page
+			App.init(); //Initialise plugins and elements
+            jQuery("#active-userManagement").addClass("active");
+            jQuery("#selected-userManagement").addClass("selected");
+		});
+	</script>
+
+    <script language="JavaScript">
+         function delConfirm(et) {
+             if (confirm("确认要删除？")) {
+                window.location.href = et;
+             }
+         }
+         function addBindingBtn() {
+             window.location.href = "{{ url_for('addPlatformUser') }}"
+         }
+         function refreshMyself() {
+             window.location.href = "{{ url_for('userManagement') }}"
+         }
+    </script>
+{% endblock %}
+
+

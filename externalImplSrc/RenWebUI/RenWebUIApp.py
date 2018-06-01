@@ -6,9 +6,10 @@ from flask import Flask, render_template, redirect, url_for, request, session
 
 import GlobalConfigContext
 from RenUIController import RenUIController
+from Utility.EncryptUtil import EncryptUtil
 
 app = Flask(__name__, template_folder='templates', static_folder='./../StaticAssets')
-
+core = RenUIController
 
 """
 Warppers of funcs
@@ -57,7 +58,13 @@ def home():
 
 @app.route('/domain/', methods=["GET"])
 def DomainManagement():
-    pass
+    flag, res = core.PlatformUserGetAll(session['SID'])
+    if flag is False:
+        return redirect(url_for('AccessErrorPage', dt='x'))
+    t = {'L_PageTitle': u'域管理',
+         'L_PageDescription': u'管理云平台上的租户（域）',
+         'userList': res}
+    return render_template('domainmanagement.html', **t)
 
 
 @app.route('/domain/add/', methods=["GET"])
@@ -206,7 +213,6 @@ def _logout():
             session.clear()
 
 
-
 @app.route('/failure/<dt>/')
 def AccessErrorPage(dt):
     t = {'L_PageTitle': u'访问失败',
@@ -223,4 +229,4 @@ def AccessErrorPage(dt):
 if __name__ == '__main__':
     app.secret_key = GlobalConfigContext.RAPPKEY
     app.debug = True
-    app.run(host='127.0.0.1', port=10239)
+    app.run(host='127.0.0.1', port=10238)

@@ -34,6 +34,11 @@ public final class GlobalContext {
     public static final String PRIVATE_KEY = "MIICdwIBADANBgkqhkiG9w0BAQEFAASCAmEwggJdAgEAAoGBAKHmDilzz5gPxAtdBIjjjW+Rj6q5cl9JLibhBXgVM4LJMFH2tOocam9hFMhMBXmc8dUV56PVzT5ZIncNSikx0i24AwF0pSW8+KA5DBYlKFeXkjOVYYZgULi0IBffg/KhdDh5z/5SPZhQDRvj/e3ccbTvuSm7XesYYpDi4QK07LMDAgMBAAECgYEAijkRJED1Hx1uwkjjQ0AMFBIRt6/mvwWKurTpZ3GqbeH5ODFKmooyMO+Qv8Vv8zmUmtm9z/oM5ktRipU1GOCpUPMJh6i14PMHY4gNB62uuvhkv2pAsHkfcYpkov4CIHVWtdyY+O0i0fyxMrq2ScjbURLlPUKUuj+sXunLI9Kz7RkCQQDmHLD95hZGdvTV/Qc0as+UvyXJJIOQvvaFlgSQQEO3zBiqnM/UYmNbtNFOHwnLyRwLpqhUz1vw/7ckDvX0oUZnAkEAtBzLHdZWGwER4U5j9ZfEw/T6+s87ta/9JgrSXFlfWetZBrnktwVV2laVNV54T/BL7L2xaOPrttrFLvJFRlU1BQJAAWhxiMwsnLfDnb+TmLWCmaVlxMpNZ8hTV9PoKT3LbEd6ayjUeLc1Zm0/zpuQAsgzPLsDUqmGJX5bD4Rr6thFxwJBAICGY3LhNgSDGO078RyZtnFW6Zn8M1GNSgnRgxcfN2mFBbxE/q6TghYR3tt8lEIG6UcAfg6pRdTv+/FqNIDh4LkCQBHszW0gobdBUFD79irxlUkBZiRtw1+SPI8FOwjJmy2Cx/Recv41pk3s3dq/FN6L0gQr5GsH2i7N8nWG2UJdYSE=";
 
     /**
+     * Internal safe token for service requesting.
+     */
+    public static final String INTERNAL_TOKEN = "2ac4a13d-872d-4c59-a1b1-b5c2ecfc2fb0-7df468cd-c9e0-49b4-ad08-5281bbbe4ce0";
+
+    /**
      * Transaction action key in argument dict.
      */
     public static final String TRANSACTION_ACTION_KEY = "?action";

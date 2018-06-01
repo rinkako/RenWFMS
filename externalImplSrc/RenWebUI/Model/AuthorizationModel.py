@@ -44,7 +44,6 @@ class AuthorizationModel:
         else:
             return None
 
-
     """
     Persist DAO reference
     """
