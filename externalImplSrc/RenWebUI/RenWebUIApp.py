@@ -7,7 +7,7 @@ from flask import Flask, render_template, redirect, url_for, request, session
 import GlobalConfigContext
 from RenUIController import RenUIController
 
-app = Flask(__name__, template_folder='templates', static_folder='static')
+app = Flask(__name__, template_folder='templates', static_folder='./../StaticAssets')
 
 
 """
