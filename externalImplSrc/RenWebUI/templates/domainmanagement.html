@@ -77,11 +77,11 @@
                                                 <td> {{ strtime("%Y-%m-%d %H:%M:%S", changetime(dictItem["createtimestamp"] / 1000)) }} </td>
                                                 <td class="center">
                                                     {% if dictItem["name"] != "admin" %}
+                                                        &nbsp;
+                                                        {% if dictItem["status"] == 0 %}
                                                         <a href="{{ url_for('DomainManagement') + "edit/" + dictItem["name"]}}">
                                                             <button class="btn btn-xs btn-info">编辑</button>
                                                         </a>
-                                                        &nbsp;
-                                                        {% if dictItem["status"] == 0 %}
                                                         <button onClick="delConfirm('{{ url_for('DomainManagement') + "performDelete/" + dictItem["name"]}}')" class="btn btn-xs btn-danger">停用</button>
                                                         {% else %}
                                                         <button onClick="resumeConfirm('{{ url_for('DomainManagement') + "performResume/" + dictItem["name"]}}')" class="btn btn-xs btn-danger">恢复</button>

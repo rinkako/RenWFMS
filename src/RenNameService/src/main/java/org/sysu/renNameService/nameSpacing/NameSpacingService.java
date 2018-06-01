@@ -261,6 +261,10 @@ public class NameSpacingService {
             String launcher = AuthDomainHelper.GetAuthNameByRTID(rtid);
             rrte.setLaunchAuthorityId(launcher);
             session.saveOrUpdate(rrte);
+            RenProcessEntity rpe = session.get(RenProcessEntity.class, rrte.getProcessId());
+            rpe.setLaunchCount(rpe.getLaunchCount() + 1);
+            rpe.setLastLaunchTimestamp(TimestampUtil.GetCurrentTimestamp());
+            session.saveOrUpdate(rpe);
             transaction.commit();
         } catch (Exception ex) {
             transaction.rollback();

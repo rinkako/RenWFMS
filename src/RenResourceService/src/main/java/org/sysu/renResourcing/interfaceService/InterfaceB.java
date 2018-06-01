@@ -11,6 +11,7 @@ import org.sysu.renResourcing.GlobalContext;
 import org.sysu.renCommon.enums.*;
 import org.sysu.renResourcing.consistency.ContextLockManager;
 import org.sysu.renResourcing.context.*;
+import org.sysu.renResourcing.context.steady.RenProcessEntity;
 import org.sysu.renResourcing.context.steady.RenRsparticipantEntity;
 import org.sysu.renResourcing.context.steady.RenRuntimerecordEntity;
 import org.sysu.renResourcing.context.steady.RenWorkitemEntity;
@@ -165,6 +166,8 @@ public class InterfaceB {
                     }
                 }
             }
+            RenProcessEntity processEntity = session.get(RenProcessEntity.class, rre.getProcessId());
+            processEntity.setSuccessCount(processEntity.getSuccessCount() + 1);
             transaction.commit();
         } catch (Exception ex) {
             transaction.rollback();

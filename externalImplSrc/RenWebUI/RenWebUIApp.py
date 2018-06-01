@@ -62,7 +62,7 @@ def DomainManagement():
     if flag is False:
         return redirect(url_for('AccessErrorPage', dt='x'))
     t = {'L_PageTitle': u'域管理',
-         'L_PageDescription': u'管理云平台上的租户（域）',
+         'L_PageDescription': u'管理平台上的租户（域）',
          'domainList': res,
          'changetime': time.localtime,
          'strtime': time.strftime}
@@ -72,7 +72,7 @@ def DomainManagement():
 @app.route('/domain/add/', methods=["GET"])
 def DomainAdd():
     t = {'L_PageTitle': u'添加域',
-         'L_PageDescription': u'为WFMS添加一个域账户'}
+         'L_PageDescription': u'为平台添加一个域租户'}
     return render_template('domainmanagement_add.html', **t)
 
 
@@ -87,14 +87,25 @@ def PerformDomainAdd():
     return redirect(url_for('DomainManagement'))
 
 
-@app.route('/domain/edit/', methods=["GET"])
-def DomainEdit():
-    pass
+@app.route('/domain/edit/<uname>/', methods=["GET"])
+def DomainEdit(uname):
+    flag, res = core.DomainGet('__test__', uname)
+    if flag is False:
+        return redirect(url_for('AccessErrorPage', dt='x'))
+    t = {'L_PageTitle': u'编辑: ' + uname,
+         'L_PageDescription': u'编辑域',
+         'UserObj': res}
+    return render_template('domainmanagement_edit.html', **t)
 
 
 @app.route('/domain/performEdit/', methods=["POST"])
 def PerformDomainEdit():
-    pass
+    flag, res = core.DomainUpdate('__test__',
+                                  request.values['h_username'],
+                                  request.values['f_nBindingLoc'])
+    if flag is False:
+        return redirect(url_for('AccessErrorPage', dt='x'))
+    return redirect(url_for('DomainManagement'))
 
 
 @app.route('/domain/performDelete/<uname>/', methods=["GET", "POST"])

@@ -19,8 +19,6 @@ import org.sysu.renResourcing.context.ResourcingContext;
 import org.sysu.renResourcing.context.TaskContext;
 import org.sysu.renResourcing.context.WorkitemContext;
 import org.sysu.renResourcing.context.steady.RenRuntimerecordEntity;
-import org.sysu.renResourcing.plugin.AgentNotifyPlugin;
-import org.sysu.renResourcing.plugin.AsyncPluginRunner;
 import org.sysu.renResourcing.utility.HibernateUtil;
 import org.sysu.renResourcing.utility.LogUtil;
 
@@ -127,6 +125,8 @@ public class InterfaceA {
                 argsMap.put("payload", payloadJSON);
             }
             // NOTICE: here does not internal interaction, DO NOT use interaction router!
+            // TODO: Here should check whether hook URL is to local or not, since internal post here is very dangerous!
+            // TODO: All hook URL with `localhost` or `127.0.0.1` should be banned!
             try {
                 HttpClientUtil.SendPost(hk, argsMap, rtid);
             }
