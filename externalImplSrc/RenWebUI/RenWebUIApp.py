@@ -206,16 +206,34 @@ def PerformAuthUserResume(uname):
 
 @app.route('/process/', methods=["GET"])
 def ProcessManagement():
-    pass
+    flag, res = core.ProcessGetAllForDomain("__test__", session["Domain"])
+    if flag is False:
+        return redirect(url_for('AccessErrorPage', dt='x'))
+    t = {'L_PageTitle': u'流程管理',
+         'L_PageDescription': u'管理当前域下的流程',
+         'itemList': res,
+         'changetime': time.localtime,
+         'strtime': time.strftime}
+    return render_template('processmanagement.html', **t)
+
+
+@app.route('/process/info/<pid>', methods=["GET", "POST"])
+def ProcessInfo(pid):
+    flag, res = core.ProcessGetByPid("__test__", pid)
+    if flag is False:
+        return redirect(url_for('AccessErrorPage', dt='x'))
+    if res["lastLaunchTimestamp"] is None:
+        res["lastLaunchTimestamp"] = -1
+    t = {'L_PageTitle': u'查看流程详细信息',
+         'L_PageDescription': u'流程：' + pid,
+         'processObj': res,
+         'changetime': time.localtime,
+         'strtime': time.strftime}
+    return render_template('processmanagement_view.html', **t)
 
 
 @app.route('/process/performStart/', methods=["POST"])
 def PerformProcessStart():
-    pass
-
-
-@app.route('/process/performDelete/', methods=["POST"])
-def PerformProcessDelete():
     pass
 
 
@@ -268,7 +286,7 @@ def performLogin():
     session['AuID'] = usrId
     session['Domain'] = usrId.split('@')[1]
     session['SID'] = ret
-    session['AuType'] = 1 if RenUIController.RenUIController.AmIAdmin(ret)[1] is True else 0
+    session['AuType'] = RenUIController.RenUIController.GetSessionLevel(ret)[1]
     return redirect(url_for('home'))
 
 

@@ -198,6 +198,82 @@ public class NameSpacingController {
     }
 
     /**
+     * Get process list of a specific domain.
+     *
+     * @param token auth token
+     * @param domain domain name (required)
+     * @return response package
+     */
+    @RequestMapping(value = "/getProcessByDomain", produces = {"application/json"})
+    @ResponseBody
+    @Transactional
+    public ReturnModel GetProcessByDomain(@RequestParam(value = "token", required = false) String token,
+                                          @RequestParam(value = "domain", required = false) String domain) {
+        ReturnModel rnModel = new ReturnModel();
+        try {
+            // miss params
+            List<String> missingParams = new ArrayList<>();
+            if (token == null) missingParams.add("token");
+            if (domain == null) missingParams.add("domain");
+            if (missingParams.size() > 0) {
+                return ReturnModelHelper.MissingParametersResponse(missingParams);
+            }
+            // token check
+            if (!AuthorizationService.CheckValid(token)) {
+                return ReturnModelHelper.UnauthorizedResponse(token);
+            }
+            // logic
+            HashMap<String, String> args = new HashMap<>();
+            args.put("domain", domain);
+            NameServiceTransaction t = TransactionCreator.Create(TransactionType.Namespacing, "getProcessByDomain", args);
+            String jsonifyResult = (String) NameSpacingController.scheduler.Schedule(t);
+            // return
+            ReturnModelHelper.StandardResponse(rnModel, StatusCode.OK, jsonifyResult);
+        } catch (Exception e) {
+            ReturnModelHelper.ExceptionResponse(rnModel, e.getClass().getName());
+        }
+        return rnModel;
+    }
+
+    /**
+     * Get process list of a specific domain.
+     *
+     * @param token auth token
+     * @param pid process global id (required)
+     * @return response package
+     */
+    @RequestMapping(value = "/getProcessByPid", produces = {"application/json"})
+    @ResponseBody
+    @Transactional
+    public ReturnModel GetProcessByPid(@RequestParam(value = "token", required = false) String token,
+                                       @RequestParam(value = "pid", required = false) String pid) {
+        ReturnModel rnModel = new ReturnModel();
+        try {
+            // miss params
+            List<String> missingParams = new ArrayList<>();
+            if (token == null) missingParams.add("token");
+            if (pid == null) missingParams.add("pid");
+            if (missingParams.size() > 0) {
+                return ReturnModelHelper.MissingParametersResponse(missingParams);
+            }
+            // token check
+            if (!AuthorizationService.CheckValid(token)) {
+                return ReturnModelHelper.UnauthorizedResponse(token);
+            }
+            // logic
+            HashMap<String, String> args = new HashMap<>();
+            args.put("pid", pid);
+            NameServiceTransaction t = TransactionCreator.Create(TransactionType.Namespacing, "getProcessByPid", args);
+            String jsonifyResult = (String) NameSpacingController.scheduler.Schedule(t);
+            // return
+            ReturnModelHelper.StandardResponse(rnModel, StatusCode.OK, jsonifyResult);
+        } catch (Exception e) {
+            ReturnModelHelper.ExceptionResponse(rnModel, e.getClass().getName());
+        }
+        return rnModel;
+    }
+
+    /**
      * Check if a ren user already have a process named this.
      *
      * @param token       auth token

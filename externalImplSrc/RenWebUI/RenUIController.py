@@ -82,7 +82,7 @@ class RenUIController:
             retVal = SessionManager.Login(username, EncryptUtil.EncryptSHA256(rawPassword))
             return retVal is not None, retVal
         except:
-            return None, False
+            return False, None
 
     @staticmethod
     def Disconnect(token):
@@ -102,6 +102,19 @@ class RenUIController:
         """
         try:
             return True, SessionManager.CheckAdmin(session)
+        except Exception as e:
+            print "Exception in WebUI: %s" % str(e)
+            return False, e
+
+    @staticmethod
+    def GetSessionLevel(session):
+        """
+        Get session level
+        :param session: session id
+        :return: session level value in int
+        """
+        try:
+            return True, SessionManager.GetSession(session).Level
         except Exception as e:
             print "Exception in WebUI: %s" % str(e)
             return False, e
@@ -203,7 +216,7 @@ class RenUIController:
     """
     Auth user Management Methods
     """
-    @adminRequireWarp
+    @authorizeRequireWarp
     @ExceptionWarp
     def AuthUserAdd(self, session, name, domain, raw_password, gid):
         """
@@ -217,7 +230,7 @@ class RenUIController:
         pd = {"username": name, "domain": domain, "password": raw_password, "gid": gid, "level": 0}
         return True, InteractionUtil.Send(LocationContext.URL_AuthUser_Add, pd)
 
-    @adminRequireWarp
+    @authorizeRequireWarp
     @ExceptionWarp
     def AuthUserStop(self, session, name, domain):
         """
@@ -230,7 +243,7 @@ class RenUIController:
         dt = InteractionUtil.Send(LocationContext.URL_AuthUser_Update, pd)
         return True, json.loads(dt["data"], encoding="utf8")
 
-    @adminRequireWarp
+    @authorizeRequireWarp
     @ExceptionWarp
     def AuthUserResume(self, session, name, domain):
         """
@@ -275,7 +288,7 @@ class RenUIController:
         dt = InteractionUtil.Send(LocationContext.URL_AuthUser_Get, pd)
         return True, json.loads(dt["data"], encoding="utf8")
 
-    @adminRequireWarp
+    @authorizeRequireWarp
     @ExceptionWarp
     def AuthUserGetAllForDomain(self, session, domain):
         """
@@ -296,6 +309,33 @@ class RenUIController:
         """
         d = {"domain": ""}
         dt = InteractionUtil.Send(LocationContext.URL_AuthUser_GetAll, d)
+        return True, json.loads(dt["data"], encoding="utf8")
+
+    """
+    Process Management Methods
+    """
+    @authorizeRequireWarp
+    @ExceptionWarp
+    def ProcessGetAllForDomain(self, session, domain):
+        """
+        Get all processes as a list for a domain.
+        :param session: session id
+        :param domain: domain name
+        """
+        d = {"domain": domain}
+        dt = InteractionUtil.Send(LocationContext.URL_Process_GetAllForDomain, d)
+        return True, json.loads(dt["data"], encoding="utf8")
+
+    @authorizeRequireWarp
+    @ExceptionWarp
+    def ProcessGetByPid(self, session, pid):
+        """
+        Get all processes as a list for a domain.
+        :param session: session id
+        :param pid: process global id
+        """
+        d = {"pid": pid}
+        dt = InteractionUtil.Send(LocationContext.URL_Process_GetByPid, d)
         return True, json.loads(dt["data"], encoding="utf8")
 
 

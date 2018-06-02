@@ -120,6 +120,14 @@ public class NSExecutor extends Observable {
                             ArrayList<RenProcessEntity> processByRenList = NameSpacingService.GetProcessByRenId((String) args.get("renid"));
                             retStr = SerializationUtil.JsonSerialization(processByRenList, "");
                             break;
+                        case "getProcessByDomain":
+                            ArrayList<RenProcessEntity> processByDomainList = NameSpacingService.GetProcessByDomain((String) args.get("domain"));
+                            retStr = SerializationUtil.JsonSerialization(processByDomainList, "");
+                            break;
+                        case "getProcessByPid":
+                            RenProcessEntity processByPid = NameSpacingService.GetProcessByPid((String) args.get("pid"));
+                            retStr = SerializationUtil.JsonSerialization(processByPid, "");
+                            break;
                         case "getProcessBOList":
                             ArrayList<Object> processBOList = NameSpacingService.GetProcessBOList((String) args.get("pid"));
                             retStr = SerializationUtil.JsonSerialization(processBOList, "");

@@ -22,7 +22,7 @@
         <div class="navbar-brand">
             <!-- COMPANY LOGO -->
             <a href="{{ url_for('home') }}">
-                <img src="{{ url_for('static', filename='img/logo/logo.png') }}" alt="Logo" class="img-responsive" height="30" width="120">
+                <img src="{{ url_for('static', filename='img/logo/logo_ren.png') }}" alt="Logo" class="img-responsive" height="30" width="120">
             </a>
             <!-- /COMPANY LOGO -->
             <!-- TEAM STATUS FOR MOBILE -->
@@ -85,7 +85,7 @@
                 </li>
 
                 <li id="active-process">
-                    <a class="" href="{{ url_for('home') }}">
+                    <a class="" href="{{ url_for('ProcessManagement') }}">
                         <i class="fa fa-rocket fa-fw"></i>
                         <span class="menu-text">流程</span>
                         <span id="selected-process"></span>
@@ -126,7 +126,7 @@
                     </ul>
                 </li>
 
-                {% if session['AuType'] > 0 %}
+                {% if session['AuType'] == 999 %}
                 <li id="active-domainManagement">
                     <a class="" href="{{ url_for('DomainManagement') }}">
                         <i class="fa fa-key fa-fw"></i>
@@ -134,16 +134,23 @@
                         <span id="selected-domainManagement"></span>
                     </a>
                 </li>
-                {% else %}
+                {% endif %}
+                {% if session['AuType'] > 0 %}
                 <li id="active-domainConfig">
                     <a class="" href="{{ url_for('home') }}">
-                        <i class="fa fa-laptop fa-fw"></i>
-                        <span class="menu-text">设置</span>
+                        <i class="fa fa-building fa-fw"></i>
+                        <span class="menu-text">域设置</span>
                         <span id="selected-domainConfig"></span>
                     </a>
                 </li>
                 {% endif %}
-
+                <li id="active-selfConfig">
+                    <a class="" href="{{ url_for('home') }}">
+                        <i class="fa fa-address-card fa-fw"></i>
+                        <span class="menu-text">个人设置</span>
+                        <span id="selected-selfConfig"></span>
+                    </a>
+                </li>
             </ul>
             <!-- /SIDEBAR MENU -->
         </div>

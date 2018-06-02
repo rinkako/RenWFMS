@@ -122,6 +122,62 @@ public class NameSpacingService {
     }
 
     /**
+     * Get all processes of one domain.
+     *
+     * @param domain domain name
+     * @return a list of process
+     */
+    @SuppressWarnings("unchecked")
+    public static ArrayList<RenProcessEntity> GetProcessByDomain(String domain) {
+        Session session = HibernateUtil.GetLocalSession();
+        Transaction transaction = session.beginTransaction();
+        boolean cmtFlag = false;
+        try {
+            ArrayList<RenProcessEntity> qRet = (ArrayList<RenProcessEntity>) session.createQuery(String.format("FROM RenProcessEntity WHERE LOCATE('%s', creatorRenid) > 0 AND state = 0", "@" + domain)).list();
+            transaction.commit();
+            cmtFlag = true;
+            ArrayList<RenProcessEntity> pureRet = new ArrayList<>();
+            for (RenProcessEntity cp : qRet) {
+                if (AuthDomainHelper.GetDomainByAuthName(cp.getCreatorRenid()).equals(domain)) {
+                    pureRet.add(cp);
+                }
+            }
+            return pureRet;
+        } catch (Exception ex) {
+            if (!cmtFlag) {
+                transaction.rollback();
+            }
+            LogUtil.Log("Get Processes of domain but exception occurred, service rollback, " + ex, NameSpacingService.class.getName(), LogUtil.LogLevelType.ERROR, "");
+        } finally {
+            HibernateUtil.CloseLocalSession();
+        }
+        return null;
+    }
+
+    /**
+     * Get all processes by process global id.
+     *
+     * @param pid process global id
+     * @return process instance
+     */
+    @SuppressWarnings("unchecked")
+    public static RenProcessEntity GetProcessByPid(String pid) {
+        Session session = HibernateUtil.GetLocalSession();
+        Transaction transaction = session.beginTransaction();
+        try {
+            RenProcessEntity rpe = session.get(RenProcessEntity.class, pid);
+            transaction.commit();
+            return rpe;
+        } catch (Exception ex) {
+            transaction.rollback();
+            LogUtil.Log("Get Processes of pid but exception occurred, service rollback, " + ex, NameSpacingService.class.getName(), LogUtil.LogLevelType.ERROR, "");
+        } finally {
+            HibernateUtil.CloseLocalSession();
+        }
+        return null;
+    }
+
+    /**
      * Get the BOs in a process.
      *
      * @param pid process id
