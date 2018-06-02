@@ -109,6 +109,7 @@ public final class LogUtil {
                 rnle.setLevel(lmp.Level.name());
                 rnle.setMessage(lmp.Message);
                 rnle.setTimestamp(lmp.Timestamp);
+                rnle.setRtid(lmp.Rtid);
                 session.save(rnle);
             }
             session.flush();

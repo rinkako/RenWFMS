@@ -42,7 +42,11 @@
                         <!-- BASIC -->
                         <div class="box border orange">
                             <div class="box-title">
+                                {% if fromConfig == 0 %}
                                 <h4><i class="fa fa-bars"></i>修改授权用户信息</h4>
+                                {% else %}
+                                <h4><i class="fa fa-bars"></i>用户信息</h4>
+                                {% endif %}
                             </div>
                             <div class="box-body big">
                                 <form role="form" method="post" onsubmit="return check()" action="{{ url_for('PerformAuthUserEdit') }}">
@@ -56,7 +60,7 @@
 									</div>
 									<div class="form-group">
 										<label for="tGid">用户在组织架构系统中的唯一标识符</label>
-										<input name="f_nGid" type="text" class="form-control" id="tGid" value="{{ UserObj['gid']|default('') }}">
+										<input name="f_nGid" type="text" class="form-control" id="tGid" value="{{ UserObj['gid'] }}">
 									</div>
 									<br/><br/>
 									<button type="submit" class="btn btn-success col-md-3">提交</button>

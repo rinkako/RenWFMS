@@ -36,7 +36,7 @@ public final class GlobalContext {
     /**
      * Internal safe token for service requesting.
      */
-    public static final String INTERNAL_TOKEN = "2ac4a13d-872d-4c59-a1b1-b5c2ecfc2fb0-7df468cd-c9e0-49b4-ad08-5281bbbe4ce0";
+    public static final String INTERNAL_TOKEN = "AUTH_admin@admin_2ac4a13d-872d-4c59-a1b1-b5c2ecfc2fb0-7df468cd-c9e0-49b4-ad08-5281bbbe4ce0";
 
     /**
      * Transaction action key in argument dict.

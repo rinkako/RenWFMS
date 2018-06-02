@@ -101,20 +101,17 @@
                     </a>
                     <ul class="sub">
                         <li id="current-runtime-runtimerecord">
-                            <a class="" href="{{ url_for('home') }}">
-                                <span class="sub-menu-text">活动流程</span>
+                            <a class="" href="{{ url_for('ActiveProcessManagement') }}">
+                                <span class="sub-menu-text">活动流程总览</span>
                             </a>
                         </li>
+                        {% if session["AuType"] > 0 %}
                         <li id="current-runtime-worklist">
                             <a class="" href="{{ url_for('home') }}">
-                                <span class="sub-menu-text">工作列表</span>
+                                <span class="sub-menu-text">工作列表总览</span>
                             </a>
                         </li>
-                        <li id="current-runtime-except">
-                            <a class="" href="{{ url_for('home') }}">
-                                <span class="sub-menu-text">异常池</span>
-                            </a>
-                        </li>
+                        {% endif %}
                     </ul>
                 </li>
 

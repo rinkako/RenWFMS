@@ -11,6 +11,7 @@ import org.sysu.renCommon.utility.AuthDomainHelper;
 import org.sysu.renCommon.utility.TimestampUtil;
 import org.sysu.renNameService.GlobalContext;
 import org.sysu.renNameService.entity.RenBoEntity;
+import org.sysu.renNameService.entity.RenLogEntity;
 import org.sysu.renNameService.entity.RenProcessEntity;
 import org.sysu.renNameService.entity.RenRuntimerecordEntity;
 import org.sysu.renNameService.utility.*;
@@ -369,6 +370,151 @@ public class NameSpacingService {
         retMap.put("FinishTimestamp", isFinished ? rrte.getFinishTimestamp().toString() : "");
         retMap.put("IsSucceed", rrte.getIsSucceed() == 1 ? "true" : "false");
         return SerializationUtil.JsonSerialization(retMap, rtid);
+    }
+
+    /**
+     * Get a runtime record.
+     *
+     * @param rtid runtime record id
+     * @return RTC instance
+     */
+    @SuppressWarnings("unchecked")
+    public static RenRuntimerecordEntity GetRuntimeRecord(String rtid) {
+        Session session = HibernateUtil.GetLocalSession();
+        Transaction transaction = session.beginTransaction();
+        try {
+            RenRuntimerecordEntity rrte = session.get(RenRuntimerecordEntity.class, rtid);
+            transaction.commit();
+            return rrte;
+        } catch (Exception ex) {
+            transaction.rollback();
+            LogUtil.Log("Get RTC but exception occurred, service rollback, " + ex, NameSpacingService.class.getName(), LogUtil.LogLevelType.ERROR, rtid);
+        } finally {
+            HibernateUtil.CloseLocalSession();
+        }
+        return null;
+    }
+
+    /**
+     * Get all runtime record.
+     *
+     * @param activeOnly whether only get running record
+     * @return a list of RTC
+     */
+    @SuppressWarnings("unchecked")
+    public static ArrayList<RenRuntimerecordEntity> GetAllRuntimeRecord(String activeOnly) {
+        Session session = HibernateUtil.GetLocalSession();
+        Transaction transaction = session.beginTransaction();
+        try {
+            ArrayList<RenRuntimerecordEntity> qRet;
+            if (activeOnly.equalsIgnoreCase("true")) {
+                qRet = (ArrayList<RenRuntimerecordEntity>) session.createQuery("FROM RenRuntimerecordEntity WHERE isSucceed = 0").list();
+            }
+            else {
+                qRet = (ArrayList<RenRuntimerecordEntity>) session.createQuery("FROM RenRuntimerecordEntity").list();
+            }
+            transaction.commit();
+            return qRet;
+        } catch (Exception ex) {
+            transaction.rollback();
+            LogUtil.Log("Get RTC but exception occurred, service rollback, " + ex, NameSpacingService.class.getName(), LogUtil.LogLevelType.ERROR, "");
+        } finally {
+            HibernateUtil.CloseLocalSession();
+        }
+        return null;
+    }
+
+    /**
+     * Get all runtime record in a domain.
+     *
+     * @param domain     domain name
+     * @param activeOnly whether only get running record
+     * @return a list of RTC
+     */
+    @SuppressWarnings("unchecked")
+    public static ArrayList<RenRuntimerecordEntity> GetRuntimeRecordByDomain(String domain, String activeOnly) {
+        Session session = HibernateUtil.GetLocalSession();
+        Transaction transaction = session.beginTransaction();
+        boolean cmtFlag = false;
+        try {
+            ArrayList<RenRuntimerecordEntity> qRet;
+            if (activeOnly.equalsIgnoreCase("true")) {
+                qRet = (ArrayList<RenRuntimerecordEntity>) session.createQuery(String.format("FROM RenRuntimerecordEntity WHERE isSucceed = 0 AND LOCATE('%s', launchAuthorityId) > 0", "@" + domain)).list();
+            }
+            else {
+                qRet = (ArrayList<RenRuntimerecordEntity>) session.createQuery(String.format("FROM RenRuntimerecordEntity WHERE LOCATE('%s', launchAuthorityId) > 0", "@" + domain)).list();
+            }
+            transaction.commit();
+            cmtFlag = true;
+            ArrayList<RenRuntimerecordEntity> pureRet = new ArrayList<>();
+            for (RenRuntimerecordEntity rre : qRet) {
+                if (AuthDomainHelper.GetDomainByAuthName(rre.getLaunchAuthorityId()).equals(domain)) {
+                    pureRet.add(rre);
+                }
+            }
+            return pureRet;
+        } catch (Exception ex) {
+            if (!cmtFlag) {
+                transaction.rollback();
+            }
+            LogUtil.Log("Get RTC but exception occurred, service rollback, " + ex, NameSpacingService.class.getName(), LogUtil.LogLevelType.ERROR, "");
+        } finally {
+            HibernateUtil.CloseLocalSession();
+        }
+        return null;
+    }
+
+    /**
+     * Get all runtime record launched by a user.
+     *
+     * @param launcher   launcher auth name
+     * @param activeOnly whether only get running record
+     * @return a list of RTC
+     */
+    @SuppressWarnings("unchecked")
+    public static ArrayList<RenRuntimerecordEntity> GetRuntimeRecordByLauncher(String launcher, String activeOnly) {
+        Session session = HibernateUtil.GetLocalSession();
+        Transaction transaction = session.beginTransaction();
+        try {
+            ArrayList<RenRuntimerecordEntity> qRet;
+            if (activeOnly.equalsIgnoreCase("true")) {
+                qRet = (ArrayList<RenRuntimerecordEntity>) session.createQuery(String.format("FROM RenRuntimerecordEntity WHERE isSucceed = 0 AND launchAuthorityId = '%s'", launcher)).list();
+            }
+            else {
+                qRet = (ArrayList<RenRuntimerecordEntity>) session.createQuery(String.format("FROM RenRuntimerecordEntity WHERE launchAuthorityId = '%s'", launcher)).list();
+            }
+            transaction.commit();
+            return qRet;
+        } catch (Exception ex) {
+            transaction.rollback();
+            LogUtil.Log("Get RTC but exception occurred, service rollback, " + ex, NameSpacingService.class.getName(), LogUtil.LogLevelType.ERROR, "");
+        } finally {
+            HibernateUtil.CloseLocalSession();
+        }
+        return null;
+    }
+
+    /**
+     * Get all runtime record log for rtid.
+     *
+     * @param rtid   process runtime record id
+     * @return a list of RTC
+     */
+    @SuppressWarnings("unchecked")
+    public static ArrayList<RenLogEntity> GetRuntimeLog(String rtid) {
+        Session session = HibernateUtil.GetLocalSession();
+        Transaction transaction = session.beginTransaction();
+        try {
+            ArrayList<RenLogEntity> qRet = (ArrayList<RenLogEntity>) session.createQuery(String.format("FROM RenLogEntity WHERE rtid = '%s'", rtid)).list();
+            transaction.commit();
+            return qRet;
+        } catch (Exception ex) {
+            transaction.rollback();
+            LogUtil.Log("Get RTC Log but exception occurred, service rollback, " + ex, NameSpacingService.class.getName(), LogUtil.LogLevelType.ERROR, rtid);
+        } finally {
+            HibernateUtil.CloseLocalSession();
+        }
+        return null;
     }
 
     /**

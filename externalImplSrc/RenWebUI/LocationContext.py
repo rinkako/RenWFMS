@@ -21,3 +21,9 @@ URL_AuthUser_Update = "http://127.0.0.1:10234/auth/user/update"
 
 URL_Process_GetAllForDomain = "http://127.0.0.1:10234/ns/getProcessByDomain"
 URL_Process_GetByPid = "http://127.0.0.1:10234/ns/getProcessByPid"
+
+URL_RTC_Get = "http://127.0.0.1:10234/ns/getRuntimeRecord"
+URL_RTC_GetAll = "http://127.0.0.1:10234/ns/getAllRuntimeRecord"
+URL_RTC_GetForDomain = "http://127.0.0.1:10234/ns/getRuntimeRecordByDomain"
+URL_RTC_GetForLauncher = "http://127.0.0.1:10234/ns/getRuntimeRecordByLauncher"
+URL_RTC_GetLogByRTID = "http://127.0.0.1:10234/ns/getRuntimeLogByRTID"

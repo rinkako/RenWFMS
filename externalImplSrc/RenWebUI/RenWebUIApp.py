@@ -249,7 +249,53 @@ def PerformProcessStart():
 
 @app.route('/activeProcess/', methods=["GET"])
 def ActiveProcessManagement():
-    pass
+    if session["AuType"] == 999:
+        flag, res = core.RuntimeRecordGetAll("__test__")
+        desc = u"当前平台所有活动流程清单"
+    elif session["AuType"] > 0:
+        flag, res = core.RuntimeRecordGetAllByDomain("__test__", session["Domain"])
+        desc = u"当前域所有活动流程清单"
+    else:
+        flag, res = core.RuntimeRecordGetAllByLauncher("__test__", session["AuID"])
+        desc = u"当前活动流程清单"
+    if flag is False:
+        return redirect(url_for('AccessErrorPage', dt='x'))
+    t = {'L_PageTitle': u'活动流程管理',
+         'L_PageDescription': desc,
+         'itemList': res,
+         'changetime': time.localtime,
+         'strtime': time.strftime}
+    return render_template('runtimemanagement.html', **t)
+
+
+@app.route('/activeProcess/info/<rtid>', methods=["GET", "POST"])
+def ActiveProcessInfo(rtid):
+    flag, res = core.RuntimeRecordGetAllByRTID("__test__", rtid)
+    if flag is False:
+        return redirect(url_for('AccessErrorPage', dt='x'))
+    flag2, res2 = core.RuntimeLogGetByRTID("__test__", rtid)
+    if flag2 is False:
+        return redirect(url_for('AccessErrorPage', dt='x'))
+    if res["finishTimestamp"] is None:
+        res["finishTimestamp"] = -1
+    if res["isSucceed"] == 1:
+        pStyle = "progress-bar-success"
+        successMsg = '<span class="label label-success label-md">Succeed</span>'
+    elif res["isSucceed"] == 0:
+        pStyle = "progress-bar-info"
+        successMsg = '<span class="label label-primary label-md">Running</span>'
+    else:
+        pStyle = "progress-bar-danger"
+        successMsg = '<span class="label label-danger label-md">Failed</span>'
+    t = {'L_PageTitle': u'查看活动流程详细信息',
+         'L_PageDescription': u'RTID：' + rtid,
+         'processObj': res,
+         'logList': res2,
+         'successMsg': successMsg,
+         'workflowProgressStyle': pStyle,
+         'changetime': time.localtime,
+         'strtime': time.strftime}
+    return render_template('runtimemanagement_view.html', **t)
 
 
 @app.route('/activeProcess/instanceTree', methods=["GET"])

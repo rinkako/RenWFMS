@@ -343,7 +343,66 @@ class RenUIController:
         dt = InteractionUtil.Send(LocationContext.URL_Process_GetByPid, d)
         return True, json.loads(dt["data"], encoding="utf8")
 
+    """
+    Runtime Record Management Methods
+    """
+    @adminRequireWarp
+    @ExceptionWarp
+    def RuntimeRecordGetAll(self, session):
+        """
+        Get all runtime record.
+        :param session: session id
+        """
+        dt = InteractionUtil.Send(LocationContext.URL_RTC_GetAll)
+        return True, json.loads(dt["data"], encoding="utf8")
 
+    @adminRequireWarp
+    @ExceptionWarp
+    def RuntimeRecordGetAllByDomain(self, session, domain):
+        """
+        Get all runtime record for a domain.
+        :param session: session id
+        :param domain: domain name
+        """
+        d = {"domain": domain}
+        dt = InteractionUtil.Send(LocationContext.URL_RTC_GetForDomain, d)
+        return True, json.loads(dt["data"], encoding="utf8")
+
+    @authorizeRequireWarp
+    @ExceptionWarp
+    def RuntimeRecordGetAllByLauncher(self, session, launcher):
+        """
+        Get all runtime record for a launcher.
+        :param session: session id
+        :param domain: domain name
+        """
+        d = {"launcher": launcher}
+        dt = InteractionUtil.Send(LocationContext.URL_RTC_GetForLauncher, d)
+        return True, json.loads(dt["data"], encoding="utf8")
+
+    @authorizeRequireWarp
+    @ExceptionWarp
+    def RuntimeRecordGetAllByRTID(self, session, rtid):
+        """
+        Get all runtime record for a launcher.
+        :param session: session id
+        :param rtid: runtime record id
+        """
+        d = {"rtid": rtid}
+        dt = InteractionUtil.Send(LocationContext.URL_RTC_Get, d)
+        return True, json.loads(dt["data"], encoding="utf8")
+
+    @authorizeRequireWarp
+    @ExceptionWarp
+    def RuntimeLogGetByRTID(self, session, rtid):
+        """
+        Get all log for a runtime record.
+        :param session: session id
+        :param rtid: runtime record id
+        """
+        d = {"rtid": rtid}
+        dt = InteractionUtil.Send(LocationContext.URL_RTC_GetLogByRTID, d)
+        return True, json.loads(dt["data"], encoding="utf8")
 
     AuthorizationModel.Initialize(forced=True)
     WebUILogModel.Initialize(forced=True)

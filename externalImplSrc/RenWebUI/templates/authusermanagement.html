@@ -69,11 +69,11 @@
                                                     管理员
                                                 {% endif %}
                                                 </td>
-                                                <td>
+                                                <td class="center">
                                                 {% if dictItem["status"] == 0 %}
-                                                    正常
+                                                    <span class="label label-success label-md">正常</span>
                                                 {% else %}
-                                                    已停用
+                                                    <span class="label label-default label-md">已停用</span>
                                                 {% endif %}
                                                 </td>
                                                 <td> {{ strtime("%Y-%m-%d %H:%M:%S", changetime(dictItem["createtimestamp"] / 1000)) }} </td>

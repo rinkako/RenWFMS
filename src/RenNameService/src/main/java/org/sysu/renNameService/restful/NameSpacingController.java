@@ -5,7 +5,10 @@
 package org.sysu.renNameService.restful;
 
 import org.springframework.web.bind.annotation.*;
+import org.sysu.renCommon.utility.AuthDomainHelper;
+import org.sysu.renNameService.GlobalContext;
 import org.sysu.renNameService.NSScheduler;
+import org.sysu.renNameService.authorization.AuthTokenManager;
 import org.sysu.renNameService.authorization.AuthorizationService;
 import org.sysu.renCommon.dto.ReturnModel;
 import org.sysu.renCommon.dto.StatusCode;
@@ -200,7 +203,7 @@ public class NameSpacingController {
     /**
      * Get process list of a specific domain.
      *
-     * @param token auth token
+     * @param token  auth token
      * @param domain domain name (required)
      * @return response package
      */
@@ -239,7 +242,7 @@ public class NameSpacingController {
      * Get process list of a specific domain.
      *
      * @param token auth token
-     * @param pid process global id (required)
+     * @param pid   process global id (required)
      * @return response package
      */
     @RequestMapping(value = "/getProcessByPid", produces = {"application/json"})
@@ -486,6 +489,211 @@ public class NameSpacingController {
             HashMap<String, String> args = new HashMap<>();
             args.put("rtid", rtid);
             NameServiceTransaction t = TransactionCreator.Create(TransactionType.Namespacing, "checkFinish", args);
+            String jsonifyResult = (String) NameSpacingController.scheduler.Schedule(t);
+            // return
+            ReturnModelHelper.StandardResponse(rnModel, StatusCode.OK, jsonifyResult);
+        } catch (Exception e) {
+            ReturnModelHelper.ExceptionResponse(rnModel, e.getClass().getName());
+        }
+        return rnModel;
+    }
+
+    /**
+     * Get runtime record by its global id.
+     *
+     * @param token auth token
+     * @return response package
+     */
+    @RequestMapping(value = "/getRuntimeRecord", produces = {"application/json"})
+    @ResponseBody
+    @Transactional
+    public ReturnModel GetRuntimeRecord(@RequestParam(value = "token", required = false) String token,
+                                        @RequestParam(value = "rtid", required = false) String rtid) {
+        ReturnModel rnModel = new ReturnModel();
+        try {
+            // miss params
+            List<String> missingParams = new ArrayList<>();
+            if (token == null) missingParams.add("token");
+            if (rtid == null) missingParams.add("rtid");
+            if (missingParams.size() > 0) {
+                return ReturnModelHelper.MissingParametersResponse(missingParams);
+            }
+            // token check
+            if ((AuthorizationService.CheckValidLevel(token) < 0 &&
+                    AuthTokenManager.GetDomain(token).equals(AuthDomainHelper.GetDomainByRTID(rtid))) &&
+                    !token.equals(GlobalContext.INTERNAL_TOKEN)) {
+                return ReturnModelHelper.UnauthorizedResponse(token);
+            }
+            // logic
+            HashMap<String, String> args = new HashMap<>();
+            args.put("rtid", rtid);
+            NameServiceTransaction t = TransactionCreator.Create(TransactionType.Namespacing, "getRuntimeRecord", args);
+            String jsonifyResult = (String) NameSpacingController.scheduler.Schedule(t);
+            // return
+            ReturnModelHelper.StandardResponse(rnModel, StatusCode.OK, jsonifyResult);
+        } catch (Exception e) {
+            ReturnModelHelper.ExceptionResponse(rnModel, e.getClass().getName());
+        }
+        return rnModel;
+    }
+
+    /**
+     * Get all runtime records in a list.
+     *
+     * @param token auth token
+     * @return response package
+     */
+    @RequestMapping(value = "/getAllRuntimeRecord", produces = {"application/json"})
+    @ResponseBody
+    @Transactional
+    public ReturnModel GetAllRuntimeRecord(@RequestParam(value = "token", required = false) String token,
+                                           @RequestParam(value = "activeOnly", required = false) String activeOnly) {
+        ReturnModel rnModel = new ReturnModel();
+        try {
+            // miss params
+            List<String> missingParams = new ArrayList<>();
+            if (token == null) missingParams.add("token");
+            if (missingParams.size() > 0) {
+                return ReturnModelHelper.MissingParametersResponse(missingParams);
+            }
+            // token check, only super admin can use this function
+            if (!AuthTokenManager.GetDomain(token).equals("admin") && !token.equals(GlobalContext.INTERNAL_TOKEN)) {
+                return ReturnModelHelper.UnauthorizedResponse(token);
+            }
+            // logic
+            if (activeOnly == null || !activeOnly.equals("true")) {
+                activeOnly = "false";
+            }
+            HashMap<String, String> args = new HashMap<>();
+            args.put("activeOnly", activeOnly);
+            NameServiceTransaction t = TransactionCreator.Create(TransactionType.Namespacing, "getAllRuntimeRecord", args);
+            String jsonifyResult = (String) NameSpacingController.scheduler.Schedule(t);
+            // return
+            ReturnModelHelper.StandardResponse(rnModel, StatusCode.OK, jsonifyResult);
+        } catch (Exception e) {
+            ReturnModelHelper.ExceptionResponse(rnModel, e.getClass().getName());
+        }
+        return rnModel;
+    }
+
+    /**
+     * Get runtime record list of a specific domain.
+     *
+     * @param token auth token
+     * @return response package
+     */
+    @RequestMapping(value = "/getRuntimeRecordByDomain", produces = {"application/json"})
+    @ResponseBody
+    @Transactional
+    public ReturnModel GetRuntimeRecordByDomain(@RequestParam(value = "token", required = false) String token,
+                                                @RequestParam(value = "domain", required = false) String domain,
+                                                @RequestParam(value = "activeOnly", required = false) String activeOnly) {
+        ReturnModel rnModel = new ReturnModel();
+        try {
+            // miss params
+            List<String> missingParams = new ArrayList<>();
+            if (token == null) missingParams.add("token");
+            if (domain == null) missingParams.add("domain");
+            if (missingParams.size() > 0) {
+                return ReturnModelHelper.MissingParametersResponse(missingParams);
+            }
+            // token check
+            if ((AuthorizationService.CheckValidLevel(token) < 0 &&
+                    AuthTokenManager.GetDomain(token).equals(domain)) &&
+                    !token.equals(GlobalContext.INTERNAL_TOKEN)) {
+                return ReturnModelHelper.UnauthorizedResponse(token);
+            }
+            // logic
+            if (activeOnly == null || !activeOnly.equals("true")) {
+                activeOnly = "false";
+            }
+            HashMap<String, String> args = new HashMap<>();
+            args.put("domain", domain);
+            args.put("activeOnly", activeOnly);
+            NameServiceTransaction t = TransactionCreator.Create(TransactionType.Namespacing, "getRuntimeRecordByDomain", args);
+            String jsonifyResult = (String) NameSpacingController.scheduler.Schedule(t);
+            // return
+            ReturnModelHelper.StandardResponse(rnModel, StatusCode.OK, jsonifyResult);
+        } catch (Exception e) {
+            ReturnModelHelper.ExceptionResponse(rnModel, e.getClass().getName());
+        }
+        return rnModel;
+    }
+
+    /**
+     * Get runtime record list of a specific launcher.
+     *
+     * @param token auth token
+     * @return response package
+     */
+    @RequestMapping(value = "/getRuntimeRecordByLauncher", produces = {"application/json"})
+    @ResponseBody
+    @Transactional
+    public ReturnModel GetRuntimeRecordByLauncher(@RequestParam(value = "token", required = false) String token,
+                                                  @RequestParam(value = "launcher", required = false) String launcher,
+                                                  @RequestParam(value = "activeOnly", required = false) String activeOnly) {
+        ReturnModel rnModel = new ReturnModel();
+        try {
+            // miss params
+            List<String> missingParams = new ArrayList<>();
+            if (token == null) missingParams.add("token");
+            if (launcher == null) missingParams.add("launcher");
+            if (missingParams.size() > 0) {
+                return ReturnModelHelper.MissingParametersResponse(missingParams);
+            }
+            // token check
+            if ((AuthorizationService.CheckValidLevel(token) < 0 &&
+                    AuthTokenManager.GetDomain(token).equals(AuthDomainHelper.GetDomainByAuthName(launcher))) &&
+                    !token.equals(GlobalContext.INTERNAL_TOKEN)) {
+                return ReturnModelHelper.UnauthorizedResponse(token);
+            }
+            // logic
+            if (activeOnly == null || !activeOnly.equals("true")) {
+                activeOnly = "false";
+            }
+            HashMap<String, String> args = new HashMap<>();
+            args.put("launcher", launcher);
+            args.put("activeOnly", activeOnly);
+            NameServiceTransaction t = TransactionCreator.Create(TransactionType.Namespacing, "getRuntimeRecordByLauncher", args);
+            String jsonifyResult = (String) NameSpacingController.scheduler.Schedule(t);
+            // return
+            ReturnModelHelper.StandardResponse(rnModel, StatusCode.OK, jsonifyResult);
+        } catch (Exception e) {
+            ReturnModelHelper.ExceptionResponse(rnModel, e.getClass().getName());
+        }
+        return rnModel;
+    }
+
+    /**
+     * Get log list of a specific runtime record.
+     *
+     * @param token auth token
+     * @return response package
+     */
+    @RequestMapping(value = "/getRuntimeLogByRTID", produces = {"application/json"})
+    @ResponseBody
+    @Transactional
+    public ReturnModel GetRuntimeLogByRTID(@RequestParam(value = "token", required = false) String token,
+                                           @RequestParam(value = "rtid", required = false) String rtid) {
+        ReturnModel rnModel = new ReturnModel();
+        try {
+            // miss params
+            List<String> missingParams = new ArrayList<>();
+            if (token == null) missingParams.add("token");
+            if (rtid == null) missingParams.add("rtid");
+            if (missingParams.size() > 0) {
+                return ReturnModelHelper.MissingParametersResponse(missingParams);
+            }
+            // token check
+            if ((AuthorizationService.CheckValidLevel(token) < 0 &&
+                    AuthTokenManager.GetDomain(token).equals(AuthDomainHelper.GetDomainByRTID(rtid))) &&
+                    !token.equals(GlobalContext.INTERNAL_TOKEN)) {
+                return ReturnModelHelper.UnauthorizedResponse(token);
+            }
+            // logic
+            HashMap<String, String> args = new HashMap<>();
+            args.put("rtid", rtid);
+            NameServiceTransaction t = TransactionCreator.Create(TransactionType.Namespacing, "getRuntimeLogByRTID", args);
             String jsonifyResult = (String) NameSpacingController.scheduler.Schedule(t);
             // return
             ReturnModelHelper.StandardResponse(rnModel, StatusCode.OK, jsonifyResult);

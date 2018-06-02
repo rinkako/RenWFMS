@@ -49,34 +49,34 @@
                                 <table id="datatable1" cellpadding="0" cellspacing="0" border="0" class="datatable table table-striped table-bordered table-hover">
                                     <thead>
                                         <tr>
+                                            <th>活动流程ID</th>
                                             <th>流程名</th>
-                                            <th>入口BO</th>
-                                            <th>提交人</th>
+                                            <th>启动人</th>
+                                            <th>启动时刻</th>
+                                            <th>启动自</th>
                                             <th>状态</th>
-                                            <th>启动次数</th>
-                                            <th>成功次数</th>
-                                            <th>最后启动时刻</th>
                                             <th>操作</th>
                                         </tr>
                                     </thead>
                                     <tbody>
                                         {% for dictItem in itemList %}
                                             <tr class="gradeX">
+                                                <td> {{ dictItem["rtid"] }} </td>
                                                 <td> {{ dictItem["processName"] }} </td>
-                                                <td> {{ dictItem["mainBo"] }} </td>
-                                                <td> {{ dictItem["creatorRenid"] }} </td>
+                                                <td> {{ dictItem["launchAuthorityId"] }} </td>
+                                                <td> {{ strtime("%Y-%m-%d %H:%M:%S", changetime(dictItem["launchTimestamp"] / 1000)) }} </td>
+                                                <td> {{ dictItem["launchFrom"] }} </td>
                                                 <td class="center">
-                                                {% if dictItem["state"] == 0 %}
-                                                    <span class="label label-success label-md">正常</span>
+                                                {% if dictItem["isSucceed"] == 1 %}
+                                                    <span class="label label-success label-md">成功</span>
+                                                {% elif dictItem["isSucceed"] == 0 %}
+                                                    <span class="label label-primary label-md">进行中</span>
                                                 {% else %}
-                                                    <span class="label label-default label-md">已停用</span>
+                                                    <span class="label label-danger label-md">失败</span>
                                                 {% endif %}
                                                 </td>
-                                                <td> {{ dictItem["launchCount"] }} </td>
-                                                <td> {{ dictItem["successCount"] }} </td>
-                                                <td> {{ strtime("%Y-%m-%d %H:%M:%S", changetime(dictItem["createTimestamp"] / 1000)) }} </td>
                                                 <td class="center">
-                                                    <a href="{{ url_for('ProcessInfo', pid=dictItem["pid"]) }}">
+                                                    <a href="{{ url_for('ActiveProcessInfo', rtid=dictItem['rtid']) }}">
                                                         <button class="btn btn-xs btn-info">查看详情</button>
                                                     </a>
                                                 </td>
@@ -110,8 +110,9 @@
 		jQuery(document).ready(function() {
 			App.setPage("dynamic_table");  //Set current page
 			App.init(); //Initialise plugins and elements
-            jQuery("#active-process").addClass("active");
-            jQuery("#selected-process").addClass("selected");
+            jQuery("#active-runtime").addClass("active");
+            jQuery("#selected-runtime").addClass("selected");
+            jQuery("#current-runtime-runtimerecord").addClass("current");
 		});
 	</script>
 

@@ -1,0 +1,218 @@
+﻿{% extends "luminouslayout.html" %}
+
+{% block LHeader %}
+<!-- TYPEAHEAD -->
+<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='js/typeahead/typeahead.css') }}" />
+<!-- SELECT2 -->
+<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='js/select2/select2.min.css') }}" />
+{% endblock %}
+
+{% block LBody %}
+<div class="container">
+    <div class="row">
+        <div id="content" class="col-lg-12">
+            <!-- PAGE HEADER-->
+            <div class="row">
+                <div class="col-sm-12">
+                    <div class="page-header">
+                        <!-- BREADCRUMBS -->
+                        <ul class="breadcrumb">
+                            <li>
+                                <i class="fa fa-home"></i>
+                                <a href="{{ url_for('home') }}">Home</a>
+                            </li>
+                            <li>
+                                {{ L_PageTitle }}
+                            </li>
+                        </ul>
+                        <!-- /BREADCRUMBS -->
+                        <div class="clearfix">
+                            <h3 class="content-title pull-left">{{ L_PageTitle }}</h3>
+                        </div>
+                        <div class="description">{{ L_PageDescription }}</div>
+                    </div>
+                </div>
+            </div>
+            <!-- /PAGE HEADER -->
+            <!-- FORMS -->
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <!-- BASIC -->
+                            <div class="box border orange">
+                                <div class="box-title">
+                                    <h4><i class="fa fa-bars"></i>活动流程详细信息</h4>
+                                    <div class="tools">
+                                        <a href="javascript:;" class="collapse">
+                                            <i class="fa fa-chevron-up"></i>
+                                        </a>
+                                    </div>
+                                </div>
+                                <div class="box-body big">
+                                    <div class="center">
+                                        <label>{{ successMsg | safe }}</label>
+                                        <div class="progress progress-striped active">
+                                            <div class="progress-bar {{ workflowProgressStyle }}" role="progressbar" id="workflowbar" aria-valuenow="50" aria-valuemin="0" aria-valuemax="100" style="width: 100%">
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <hr/>
+                                    <div class="form-group">
+                                        <label>活动流程唯一标识符（RTID）</label>
+                                        <label class="form-control">{{ processObj["rtid"] }}</label>
+                                    </div>
+                                    <div class="form-group">
+                                        <label>流程ID</label>
+                                        <label class="form-control" >{{ processObj["processId"] }}</label>
+                                    </div>
+                                    <div class="form-group">
+                                        <label>流程名</label>
+                                        <label class="form-control" >{{ processObj["processName"] }}</label>
+                                    </div>
+                                    <div class="form-group">
+                                        <label>启动流程的授权Session</label>
+                                        <label class="form-control" >{{ processObj["sessionId"] }}</label>
+                                    </div>
+                                    <div class="form-group">
+                                        <label>流程启动人</label>
+                                        <label class="form-control" >{{ processObj["launchAuthorityId"] }}</label>
+                                    </div>
+                                    <div class="form-group">
+                                        <label>启动时间戳</label>
+                                        <label class="form-control" >{{ strtime("%Y-%m-%d %H:%M:%S", changetime(processObj["launchTimestamp"] / 1000)) }}</label>
+                                    </div>
+                                    <div class="form-group">
+                                        <label>启动自</label>
+                                        <label class="form-control" >{{ processObj["launchFrom"] }}</label>
+                                    </div>
+                                    <div class="form-group">
+                                        <label>最后处理此流程的解析引擎全局唯一标识符</label>
+                                        <label class="form-control" >{{ processObj["interpreterId"] }}</label>
+                                    </div>
+                                    <div class="form-group">
+                                        <label>失败处理方式</label>
+                                        <label class="form-control" >
+                                            {% if processObj["failureType"] == 0 %}
+                                            尝试继续执行
+                                            {% else %}
+                                            快速失败
+                                            {% endif %}
+                                        </label>
+                                    </div>
+                                    <div class="form-group">
+                                        <label>完成时间戳</label>
+                                        <label class="form-control">{{ 'N/A' if processObj["finishTimestamp"] == -1 else strtime("%Y-%m-%d %H:%M:%S", changetime(processObj["finishTimestamp"] / 1000)) }}</label>
+                                    </div>
+                                    <div class="form-group">
+                                        <label>状态</label>
+                                        <label class="form-control" >
+                                            {% if processObj["isSucceed"] == 1 %}
+                                            成功
+                                            {% elif processObj["isSucceed"] == 0 %}
+                                            进行中
+                                            {% else %}
+                                            失败
+                                            {% endif %}
+                                        </label>
+                                    </div>
+                                    <br/>
+                                </div>
+                            </div>
+                            <!-- /BASIC -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- /FORMS -->
+
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="box border blue">
+                        <div class="box-title">
+                            <h4><i class="fa fa-book"></i>该流程运行时相关日志</h4>
+                            <div class="tools">
+                                <a href="javascript:;" class="collapse">
+                                    <i class="fa fa-chevron-up"></i>
+                                </a>
+                            </div>
+                        </div>
+                        <div class="box-body">
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <table id="datatable1" cellpadding="0" cellspacing="0" border="0" class="datatable table table-striped table-bordered table-hover">
+                                        <thead>
+                                        <tr>
+                                            <th>日志号</th>
+                                            <th>标签</th>
+                                            <th>等级</th>
+                                            <th>时间戳</th>
+                                            <th>事件</th>
+                                        </tr>
+                                        </thead>
+                                        <tbody>
+                                        {% for dictItem in logList %}
+                                        <tr class="gradeX">
+                                            <td> {{ dictItem["logid"] }} </td>
+                                            <td> {{ dictItem["label"] }} </td>
+                                            <td class="center">
+                                                {% if dictItem["level"] == "INFO" %}
+                                                <span class="label label-primary label-md">INFO</span>
+                                                {% elif dictItem["level"] == "WARNING" %}
+                                                <span class="label label-warning label-md">WARNING</span>
+                                                {% elif dictItem["level"] == "UNAUTHORIZED" %}
+                                                <span class="label label-inverse label-md">UNAUTHORIZED</span>
+                                                {% else %}
+                                                <span class="label label-danger label-md">ERROR</span>
+                                                {% endif %}
+                                            </td>
+                                            <td> {{ strtime("%Y-%m-%d %H:%M:%S", changetime(dictItem["timestamp"] / 1000)) }} </td>
+                                            <td> {{ dictItem["message"] }} </td>
+                                        </tr>
+                                        {% endfor %}
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="separator"></div>
+            <div class="footer-tools">
+			<span class="go-top">
+				<i class="fa fa-chevron-up"></i> Top
+			</span>
+            </div>
+        </div><!-- /CONTENT-->
+    </div>
+</div>
+{% endblock %}
+
+{% block LScript %}
+<!-- TYPEHEAD -->
+<script type="text/javascript" src="{{ url_for('static', filename='js/typeahead/typeahead.min.js') }}"></script>
+<!-- AUTOSIZE -->
+<script type="text/javascript" src="{{ url_for('static', filename='js/autosize/jquery.autosize.min.js') }}"></script>
+<!-- COUNTABLE -->
+<script type="text/javascript" src="{{ url_for('static', filename='js/countable/jquery.simplyCountable.min.js') }}"></script>
+<!-- SELECT2 -->
+<script type="text/javascript" src="{{ url_for('static', filename='js/select2/select2.min.js') }}"></script>
+
+
+<script>
+    window.onload = initControls();
+    function initControls() {
+        jQuery("#active-runtime").addClass("active");
+        jQuery("#selected-runtime").addClass("selected");
+        jQuery("#current-runtime-runtimerecord").addClass("current");
+    }
+
+    jQuery(document).ready(function() {
+        App.setPage("forms");  //Set current page
+        App.init(); //Initialise plugins and elements
+    });
+
+</script>
+{% endblock %}

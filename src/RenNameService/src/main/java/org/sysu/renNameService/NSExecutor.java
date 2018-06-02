@@ -132,6 +132,26 @@ public class NSExecutor extends Observable {
                             ArrayList<Object> processBOList = NameSpacingService.GetProcessBOList((String) args.get("pid"));
                             retStr = SerializationUtil.JsonSerialization(processBOList, "");
                             break;
+                        case "getRuntimeRecord":
+                            RenRuntimerecordEntity RTC = NameSpacingService.GetRuntimeRecord((String) args.get("rtid"));
+                            retStr = SerializationUtil.JsonSerialization(RTC, "");
+                            break;
+                        case "getAllRuntimeRecord":
+                            ArrayList<RenRuntimerecordEntity> allRTCList = NameSpacingService.GetAllRuntimeRecord((String) args.get("activeOnly"));
+                            retStr = SerializationUtil.JsonSerialization(allRTCList, "");
+                            break;
+                        case "getRuntimeRecordByDomain":
+                            ArrayList<RenRuntimerecordEntity> domainRTCList = NameSpacingService.GetRuntimeRecordByDomain((String) args.get("domain"), (String) args.get("activeOnly"));
+                            retStr = SerializationUtil.JsonSerialization(domainRTCList, "");
+                            break;
+                        case "getRuntimeRecordByLauncher":
+                            ArrayList<RenRuntimerecordEntity> launcherRTCList = NameSpacingService.GetRuntimeRecordByLauncher((String) args.get("launcher"), (String) args.get("activeOnly"));
+                            retStr = SerializationUtil.JsonSerialization(launcherRTCList, "");
+                            break;
+                        case "getRuntimeLogByRTID":
+                            ArrayList<RenLogEntity> RTCLogList = NameSpacingService.GetRuntimeLog((String) args.get("rtid"));
+                            retStr = SerializationUtil.JsonSerialization(RTCLogList, "");
+                            break;
                         case "containProcess":
                             boolean containProcessFlag = NameSpacingService.ContainProcess((String) args.get("renid"), (String) args.get("processName"));
                             retStr = SerializationUtil.JsonSerialization(containProcessFlag, "");
