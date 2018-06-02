@@ -42,13 +42,13 @@
                         <!-- BASIC -->
                         <div class="box border orange">
                             <div class="box-title">
-                                <h4><i class="fa fa-bars"></i>修改域信息</h4>
+                                <h4><i class="fa fa-bars"></i>修改授权用户信息</h4>
                             </div>
                             <div class="box-body big">
-                                <form role="form" method="post" action="{{ url_for('PerformAuthUserEdit') }}">
+                                <form role="form" method="post" onsubmit="return check()" action="{{ url_for('PerformAuthUserEdit') }}">
 									<div class="form-group">
-										<label for="tUsername">唯一域名(*)</label>
-										<input name="f_username" type="text" class="form-control" id="tUsername" value="{{ UserObj['username'] }}" disabled>
+										<label for="tUsername">完整名称(*)</label>
+										<input name="f_username" type="text" class="form-control" id="tUsername" value="{{ UserObj['username'] }}@{{ UserObj['domain'] }}" disabled>
 									</div>
 									<div class="form-group">
 										<label for="tPassword">新密码(*)</label>
@@ -56,13 +56,13 @@
 									</div>
 									<div class="form-group">
 										<label for="tGid">用户在组织架构系统中的唯一标识符</label>
-										<input name="f_nGid" type="text" class="form-control" id="tGid" value="{{ UserObj['gid'] }}">
+										<input name="f_nGid" type="text" class="form-control" id="tGid" value="{{ UserObj['gid']|default('') }}">
 									</div>
 									<br/><br/>
 									<button type="submit" class="btn btn-success col-md-3">提交</button>
 									<br/>
-									<input name="h_username" type="hidden" class="form-control" id="hUsername" value="{{ UserObj['username'] }}">
-									<input name="h_password" type="hidden" class="form-control" id="hPassword" value="{{ UserObj['password'] }}">
+									<input name="h_username" type="hidden" id="hUsername" value="{{ UserObj['username'] }}">
+									<input name="h_cfg" type="hidden" id="hCfg" value="{{ fromConfig }}">
                                 </form>
                             </div>
                         </div>
@@ -97,8 +97,13 @@
 	<script>
         window.onload = initControls();
         function initControls() {
+			{% if fromConfig == 0 %}
             jQuery("#active-authuser").addClass("active");
             jQuery("#selected-authuser").addClass("selected");
+			{% else %}
+            jQuery("#active-selfConfig").addClass("active");
+            jQuery("#selected-selfConfig").addClass("selected");
+			{% endif %}
             //var curType = {{ UserObj["level"] }};
             //if (curType === 1) {
             //    document.getElementById('tType').options[1].selected = true;
@@ -107,7 +112,12 @@
             //    document.getElementById('tType').options[0].selected = true;
             //}
         }
-
+        function check() {
+            {% if fromConfig == 1 %}
+            alert("更改成功！");
+            {% endif %}
+            return true;
+        }
 		jQuery(document).ready(function() {
 		    App.setPage("forms");  //Set current page
 			App.init(); //Initialise plugins and elements

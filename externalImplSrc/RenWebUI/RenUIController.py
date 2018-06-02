@@ -268,10 +268,15 @@ class RenUIController:
         :param new_gid: new global id
         """
         pd = {"username": name, "domain": domain}
+        updateFlag = False
         if new_gid is not None:
             pd["gid"] = new_gid
+            updateFlag = True
         if new_password is not None:
             pd["password"] = new_password
+            updateFlag = True
+        if updateFlag is False:
+            return True, True
         dt = InteractionUtil.Send(LocationContext.URL_AuthUser_Update, pd)
         return True, json.loads(dt["data"], encoding="utf8")
 

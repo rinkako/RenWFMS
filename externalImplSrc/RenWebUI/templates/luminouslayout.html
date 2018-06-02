@@ -76,14 +76,6 @@
 
             <!-- SIDEBAR MENU -->
             <ul>
-                <li id="active-home">
-                    <a href="{{ url_for('home') }}">
-                        <i class="fa fa-tachometer fa-fw"></i>
-                        <span class="menu-text">欢迎</span>
-                        <span id="selected-home"></span>
-                    </a>
-                </li>
-
                 <li id="active-process">
                     <a class="" href="{{ url_for('ProcessManagement') }}">
                         <i class="fa fa-rocket fa-fw"></i>
@@ -137,7 +129,7 @@
                 {% endif %}
                 {% if session['AuType'] > 0 %}
                 <li id="active-domainConfig">
-                    <a class="" href="{{ url_for('home') }}">
+                    <a class="" href="{{ url_for('DomainConfigManagement') }}">
                         <i class="fa fa-building fa-fw"></i>
                         <span class="menu-text">域设置</span>
                         <span id="selected-domainConfig"></span>
@@ -145,7 +137,7 @@
                 </li>
                 {% endif %}
                 <li id="active-selfConfig">
-                    <a class="" href="{{ url_for('home') }}">
+                    <a class="" href="{{ url_for('SelfConfigManagement') }}">
                         <i class="fa fa-address-card fa-fw"></i>
                         <span class="menu-text">个人设置</span>
                         <span id="selected-selfConfig"></span>

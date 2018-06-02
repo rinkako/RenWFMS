@@ -47,20 +47,16 @@
                             <div class="box-body big">
                                 <form role="form" method="post" onsubmit="return check()" action="{{ url_for('PerformDomainEdit') }}">
 									<div class="form-group">
-										<label for="tUsername">唯一域名(*)</label>
+										<label for="tUsername">唯一域名{% if fromConfig == 0 %}(*){% endif %}</label>
 										<input name="f_username" type="text" class="form-control" id="tUsername" value="{{ UserObj['name'] }}" disabled>
-									</div>
-									<div class="form-group">
-										<label for="tPassword">域管理员密码(*)</label>
-										<input name="f_nPassword" type="password" class="form-control" id="tPassword" value="" disabled>
 									</div>
 									<div class="form-group">
 										<label for="tBindingLoc">绑定组织架构地址(*)</label>
 										<input name="f_nBindingLoc" type="text" class="form-control" id="tBindingLoc" value="{{ UserObj['corganGateway'] }}">
 									</div>
 									<div class="form-group">
-										<label for="tType">服务计费类型(*)</label>
-										<select name="f_level" id="tType" class="form-control col-md-12">
+										<label for="tType">服务计费类型{% if fromConfig == 0 %}(*){% endif %}</label>
+										<select name="f_level" id="tType" class="form-control col-md-12" {% if fromConfig == 1 %}disabled{% endif %}>
 											<option>按可上传流程容量（10个/年）      ¥10000</option>
 											<option>按可上传流程容量（50个/年）      ¥30000</option>
 											<option>按可上传流程容量（200个/年）     ¥80000</option>
@@ -75,7 +71,8 @@
 									<br/><br/>
 									<button type="submit" class="btn btn-success col-md-3">提交</button>
 									<br/>
-									<input name="h_username" type="hidden" class="form-control" id="hUsername" value="{{ UserObj['name'] }}">
+									<input name="h_username" type="hidden" id="hUsername" value="{{ UserObj['name'] }}">
+									<input name="h_cfg" type="hidden" id="hCfg" value="{{ fromConfig }}">
                                 </form>
                             </div>
                         </div>
@@ -110,8 +107,13 @@
 	<script>
         window.onload = initControls();
         function initControls() {
+            {% if fromConfig == 0 %}
             jQuery("#active-domainManagement").addClass("active");
             jQuery("#selected-domainManagement").addClass("selected");
+            {% else %}
+            jQuery("#active-domainConfig").addClass("active");
+            jQuery("#selected-domainConfig").addClass("selected");
+            {% endif %}
             //var curType = {{ UserObj["level"] }};
             //if (curType === 1) {
             //    document.getElementById('tType').options[1].selected = true;
@@ -127,6 +129,9 @@
                 return false;
             }
             else {
+                {% if fromConfig == 1 %}
+                alert("更改成功！");
+                {% endif %}
                 return true;
             }
         }

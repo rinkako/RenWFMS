@@ -7,7 +7,6 @@ from flask import Flask, render_template, redirect, url_for, request, session
 
 import GlobalConfigContext
 import RenUIController
-from Utility.EncryptUtil import EncryptUtil
 
 app = Flask(__name__, template_folder='templates', static_folder='./../StaticAssets')
 core = RenUIController.RenUIControllerInstance
@@ -52,8 +51,7 @@ Router funcs.
 
 @app.route('/', methods=["GET"])
 def home():
-    t = {'L_PageTitle': 'homepage'}
-    return render_template('index.html', **t)
+    return redirect(url_for("ProcessManagement"))
 
 
 @app.route('/domain/', methods=["GET"])
@@ -92,9 +90,10 @@ def DomainEdit(uname):
     flag, res = core.DomainGet('__test__', uname)
     if flag is False:
         return redirect(url_for('AccessErrorPage', dt='x'))
-    t = {'L_PageTitle': u'编辑: ' + uname,
+    t = {'L_PageTitle': u'域: ' + uname,
          'L_PageDescription': u'编辑域',
-         'UserObj': res}
+         'UserObj': res,
+         'fromConfig': 0}
     return render_template('domainmanagement_edit.html', **t)
 
 
@@ -105,7 +104,10 @@ def PerformDomainEdit():
                                   request.values['f_nBindingLoc'])
     if flag is False:
         return redirect(url_for('AccessErrorPage', dt='x'))
-    return redirect(url_for('DomainManagement'))
+    if request.values["h_cfg"] == 0:
+        return redirect(url_for('DomainManagement'))
+    else:
+        return redirect(url_for('DomainConfigManagement'))
 
 
 @app.route('/domain/performDelete/<uname>/', methods=["GET", "POST"])
@@ -168,24 +170,32 @@ def AuthUserEdit(uname):
         return redirect(url_for('AccessErrorPage', dt='x'))
     t = {'L_PageTitle': u'编辑: ' + uname,
          'L_PageDescription': u'编辑授权用户',
-         'UserObj': res}
+         'UserObj': res,
+         'fromConfig': 0}
     return render_template('authusermanagement_edit.html', **t)
 
 
 @app.route('/authuser/performEdit/', methods=["POST"])
 def PerformAuthUserEdit():
-    if "f_nPassword" in request.values:
+    if "f_nPassword" in request.values and request.values["f_nPassword"].strip() != "":
         pwd = request.values["f_nPassword"]
     else:
-        pwd = request.values["h_password"]
+        pwd = None
+    if request.values["f_nGid"].strip() != "":
+        nGid = request.values["f_nGid"]
+    else:
+        nGid = None
     flag, res = core.AuthUserUpdate('__test__',
                                     request.values['h_username'],
                                     session["Domain"],
                                     pwd,
-                                    request.values['f_nGid'])
+                                    nGid)
     if flag is False:
         return redirect(url_for('AccessErrorPage', dt='x'))
-    return redirect(url_for('AuthUserManagement'))
+    if request.values["h_cfg"] == 0:
+        return redirect(url_for('AuthUserManagement'))
+    else:
+        return redirect(url_for('SelfConfigManagement'))
 
 
 @app.route('/authuser/performDelete/<uname>/', methods=["GET", "POST"])
@@ -247,6 +257,39 @@ def ActiveProcessViewInstanceTree():
     pass
 
 
+@app.route('/selfConfig', methods=["GET"])
+def SelfConfigManagement():
+    flag, res = core.AuthUserGet('__test__', session['PureUserName'], session["Domain"])
+    if flag is False:
+        return redirect(url_for('AccessErrorPage', dt='x'))
+    if res["gid"] is None:
+        res["gid"] = ''
+    t = {'L_PageTitle': u'用户: ' + session['PureUserName'],
+         'L_PageDescription': u'更新个人信息',
+         'UserObj': res,
+         'fromConfig': 1}
+    return render_template('authusermanagement_edit.html', **t)
+
+
+@app.route('/domainConfig', methods=["GET"])
+def DomainConfigManagement():
+    if session["AuType"] == 0:
+        return redirect(url_for('AccessErrorPage', dt='unauthorized'))
+    flag, res = core.DomainGet('__test__', session["Domain"])
+    if flag is False:
+        return redirect(url_for('AccessErrorPage', dt='x'))
+    t = {'L_PageTitle': u'域: ' + session["Domain"],
+         'L_PageDescription': u'编辑域',
+         'UserObj': res,
+         'fromConfig': 1}
+    return render_template('domainmanagement_edit.html', **t)
+
+
+"""
+Common Pages Route Functions
+"""
+
+
 @app.route('/login/')
 def Login():
     _logout()
@@ -284,6 +327,7 @@ def performLogin():
     if flag is False or ret is None:
         return redirect(url_for('Login2'))
     session['AuID'] = usrId
+    session['PureUserName'] = usrId.split('@')[0]
     session['Domain'] = usrId.split('@')[1]
     session['SID'] = ret
     session['AuType'] = RenUIController.RenUIController.GetSessionLevel(ret)[1]
@@ -310,7 +354,7 @@ def _logout():
     if 'SID' in session:
         sid = session['SID']
         if sid != "" and sid is not None:
-            flag, ret = RenUIController.RenUIController.Disconnect(session['SID'])
+            RenUIController.RenUIController.Disconnect(session['SID'])
             session.clear()
 
 
