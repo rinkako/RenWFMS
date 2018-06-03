@@ -135,7 +135,14 @@ public class WorkitemContext implements Serializable, RCacheablesContext {
             workerIdSb.append("[");
             for (RenQueueitemsEntity rqe : relations) {
                 String[] workqueueIdItem = rqe.getWorkqueueId().split("_");
-                String workerId = String.format("\"%s_%s\"", workqueueIdItem[2], workqueueIdItem[3]);
+                String workerId;
+                if (workqueueIdItem.length == 4) {
+                    workerId = String.format("\"%s_%s\"", workqueueIdItem[2], workqueueIdItem[3]);
+                }
+                // for admin queue
+                else {
+                    workerId = String.format("\"%s\"", workqueueIdItem[2]);
+                }
                 workerIdSb.append(workerId).append(",");
             }
             String workerIdList = workerIdSb.toString();

@@ -76,6 +76,14 @@
 
             <!-- SIDEBAR MENU -->
             <ul>
+                <li id="active-myWorklist">
+                    <a class="" href="{{ url_for('MyWorkitemManagement') }}">
+                        <i class="fa fa-th-list fa-fw"></i>
+                        <span class="menu-text">我的工作列表</span>
+                        <span id="selected-myWorklist"></span>
+                    </a>
+                </li>
+
                 <li id="active-process">
                     <a class="" href="{{ url_for('ProcessManagement') }}">
                         <i class="fa fa-rocket fa-fw"></i>

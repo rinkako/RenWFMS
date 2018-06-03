@@ -151,6 +151,9 @@ public class RTracker extends Observable implements Observer, Runnable {
             case GetAllWorkitemsByDomain:
                 execResult = InterfaceW.GetAllWorkitemsInUserFriendlyForDomain(this.context);
                 break;
+            case GetAllWorkitemsByParticipant:
+                execResult = InterfaceW.GetAllWorkitemsInUserFriendlyForParticipant(this.context);
+                break;
             case GetByWid:
                 execResult = InterfaceW.GetWorkitemInFriendly(this.context);
                 break;

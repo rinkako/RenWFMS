@@ -31,3 +31,5 @@ URL_RTC_GetSpanTreeByRTID = "http://127.0.0.1:10234/ns/getSpanTree"
 
 URL_Workitem_Get = "http://127.0.0.1:10234/ns/workitem/get"
 URL_Workitem_GetAllForDomain = "http://127.0.0.1:10234/ns/workitem/getAllForDomain"
+URL_Workitem_GetAllForParticipant = "http://127.0.0.1:10234/ns/workitem/getAllActiveForParticipant"
+URL_Workitem_ActionPrefix = "http://127.0.0.1:10234/ns/workitem/"

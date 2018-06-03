@@ -453,13 +453,17 @@ public class WorkQueueContext implements Serializable, RCacheablesContext {
                 transaction.commit();
                 cmtFlag = true;
                 // worklisted queue owner worker id is directly equals to admin auth name
-                String myDomain = AuthDomainHelper.GetDomainByAuthName(this.ownerWorkerId);
+//                String myDomain = AuthDomainHelper.GetDomainByAuthName(this.ownerWorkerId);
+//                for (RenWorkitemEntity workitemEntity : allActiveItems) {
+//                    String authDomain = AuthDomainHelper.GetDomainByRTID(workitemEntity.getRtid());
+//                    if (myDomain.equals(authDomain)) {
+//                        WorkitemContext workitem = WorkitemContext.GetContext(workitemEntity.getWid(), workitemEntity.getRtid());
+//                        newMaps.put(workitemEntity.getWid(), workitem);
+//                    }
+//                }
                 for (RenWorkitemEntity workitemEntity : allActiveItems) {
-                    String authDomain = AuthDomainHelper.GetDomainByRTID(workitemEntity.getRtid());
-                    if (myDomain.equals(authDomain)) {
-                        WorkitemContext workitem = WorkitemContext.GetContext(workitemEntity.getWid(), workitemEntity.getRtid());
-                        newMaps.put(workitemEntity.getWid(), workitem);
-                    }
+                    WorkitemContext workitem = WorkitemContext.GetContext(workitemEntity.getWid(), workitemEntity.getRtid());
+                    newMaps.put(workitemEntity.getWid(), workitem);
                 }
             }
             else {

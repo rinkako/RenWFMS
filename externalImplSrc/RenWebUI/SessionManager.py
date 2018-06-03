@@ -29,7 +29,7 @@ class SessionManager:
         Log in a session.
         :param username: user name string with domain
         :param password_encrypted: password string with specific encryption
-        :return session id
+        :return session id, gid
         """
         session_id = str(uuid.uuid1())
         while SessionManager.ActiveSessionDict.get(session_id, None) is not None:
@@ -43,7 +43,7 @@ class SessionManager:
         assert uObj is not None
         cur_session.Level = uObj["level"]
         SessionManager.ActiveSessionDict[session_id] = cur_session
-        return session_id
+        return session_id, uObj["gid"]
 
     @staticmethod
     def Logout(session):

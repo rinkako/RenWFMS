@@ -38,7 +38,7 @@
                     <!-- BOX -->
                     <div class="box border blue">
                         <div class="box-title">
-                            <h4><i class="fa fa-key"></i>{{ L_PageDescription }}</h4>
+                            <h4><i class="fa fa-list"></i>{{ L_PageDescription }}</h4>
                             <div class="tools hidden-xs">
                                 <a onclick="refreshMyself()" class="reload">
                                     <i class="fa fa-refresh"></i>
@@ -46,6 +46,7 @@
                             </div>
                         </div>
                         <div class="box-body">
+                            {% if gidSet == '1' %}
                             <table id="datatable1" cellpadding="0" cellspacing="0" border="0" class="datatable table table-striped table-bordered table-hover">
                                 <thead>
                                 <tr>
@@ -81,7 +82,7 @@
                                         {% elif dictItem["Status"] == "Suspended" %}
                                         <span class="label label-default label-md">Suspended</span>
                                         {% else %}
-                                        <span class="label label-default label-md">Discarded</span>
+                                        <span class="label label-light-grey label-md">Discarded</span>
                                         {% endif %}
                                     </td>
                                     <td class="center">
@@ -94,17 +95,17 @@
                                         {% elif dictItem["ResourceStatus"] == "Suspended" %}
                                         <span class="label label-default arrow-out arrow-out-right">Suspended</span>
                                         {% elif dictItem["ResourceStatus"] == "Unoffered" %}
-                                        <span class="label label-default arrow-out arrow-out-right">Unoffered</span>
+                                        <span class="label label-info arrow-out arrow-out-right">Unoffered</span>
                                         {% elif dictItem["ResourceStatus"] == "Unresourced" %}
                                         <span class="label label-info arrow-out arrow-out-right">Unresourced</span>
                                         {% elif dictItem["ResourceStatus"] == "Completed" %}
                                         <span class="label label-success arrow-out arrow-out-right">Completed</span>
                                         {% else %}
-                                        <span class="label label-success arrow-out arrow-out-right">Skipped</span>
+                                        <span class="label label-light-grey arrow-out arrow-out-right">Skipped</span>
                                         {% endif %}
                                     </td>
                                     <td class="center">
-                                        <a href="{{ url_for('DomainWorkitemInfo', wid=dictItem['Wid']) }}">
+                                        <a href="{{ url_for('MyWorkitemInfo', wid=dictItem['Wid']) }}">
                                             <button class="btn btn-xs btn-info">查看详情</button>
                                         </a>
                                     </td>
@@ -112,6 +113,13 @@
                                 {% endfor %}
                                 </tbody>
                             </table>
+                            {% else %}
+                            <div class="center">
+                                <h4><b>
+                            您还未设置该用户在组织架构系统中的唯一资源标识符
+                                </b></h4>
+                            </div>
+                            {% endif %}
                         </div>
                     </div>
                 </div>
@@ -138,15 +146,14 @@
     jQuery(document).ready(function() {
         App.setPage("dynamic_table");  //Set current page
         App.init(); //Initialise plugins and elements
-        jQuery("#active-runtime").addClass("active");
-        jQuery("#selected-runtime").addClass("selected");
-        jQuery("#current-runtime-worklist").addClass("current");
+        jQuery("#active-myWorklist").addClass("active");
+        jQuery("#selected-myWorklist").addClass("selected");
     });
 </script>
 
 <script language="JavaScript">
     function refreshMyself() {
-        window.location.href = "{{ url_for('DomainWorkitemManagement') }}"
+        window.location.href = "{{ url_for('MyWorkitemManagement') }}"
     }
 </script>
 {% endblock %}

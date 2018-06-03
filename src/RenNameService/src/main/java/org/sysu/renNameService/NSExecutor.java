@@ -188,6 +188,9 @@ public class NSExecutor extends Observable {
                         case "transshipGetAllWorkitemsForDomain":
                             retStr = (String) NameSpacingService.TransshipGetAllWorkitemsForDomain((String) args.get("domain"));
                             break;
+                        case "transshipGetAllActiveForParticipant":
+                            retStr = (String) NameSpacingService.TransshipGetAllActiveForParticipant((String) args.get("workerId"));
+                            break;
                         case "transshipGetWorkitem":
                             retStr = (String) NameSpacingService.TransshipGetWorkitem((String) args.get("wid"));
                             break;

@@ -61,6 +61,7 @@ public class WorkQueueContainer implements RCacheablesContext {
 
     /**
      * Get the queue container of a specific worker.
+     *
      * @param workerId worker global id, {@code GlobalContext.WORKQUEUE_ADMIN_PREFIX} if admin user
      * @return Work queue container of this worker
      */
@@ -70,7 +71,8 @@ public class WorkQueueContainer implements RCacheablesContext {
 
     /**
      * Get the queue container of a specific worker.
-     * @param workerId worker global id, {@code GlobalContext.WORKQUEUE_ADMIN_PREFIX} if admin user
+     *
+     * @param workerId    worker global id, {@code GlobalContext.WORKQUEUE_ADMIN_PREFIX} if admin user
      * @param forceReload force reload from steady and refresh cache
      * @return Work queue container of this worker
      */
@@ -94,6 +96,7 @@ public class WorkQueueContainer implements RCacheablesContext {
 
     /**
      * Move workitem queue: OFFERED -> ALLOCATED
+     *
      * @param workitem workitem context
      */
     public void MoveOfferedToAllocated(WorkitemContext workitem) {
@@ -102,6 +105,7 @@ public class WorkQueueContainer implements RCacheablesContext {
 
     /**
      * Move workitem queue: ALLOCATED -> OFFERED
+     *
      * @param workitem workitem context
      */
     public void MoveAllocatedToOffered(WorkitemContext workitem) {
@@ -110,6 +114,7 @@ public class WorkQueueContainer implements RCacheablesContext {
 
     /**
      * Move workitem queue: OFFERED -> STARTED
+     *
      * @param workitem workitem context
      */
     public void MoveOfferedToStarted(WorkitemContext workitem) {
@@ -118,6 +123,7 @@ public class WorkQueueContainer implements RCacheablesContext {
 
     /**
      * Move workitem queue: OFFERED -> STARTED
+     *
      * @param workitem workitem context
      */
     public void MoveStartedToOffered(WorkitemContext workitem) {
@@ -126,6 +132,7 @@ public class WorkQueueContainer implements RCacheablesContext {
 
     /**
      * Move workitem queue: ALLOCATED -> STARTED
+     *
      * @param workitem workitem context
      */
     public void MoveAllocatedToStarted(WorkitemContext workitem) {
@@ -134,6 +141,7 @@ public class WorkQueueContainer implements RCacheablesContext {
 
     /**
      * Move workitem queue: STARTED -> ALLOCATED
+     *
      * @param workitem workitem context
      */
     public void MoveStartedToAllocated(WorkitemContext workitem) {
@@ -142,6 +150,7 @@ public class WorkQueueContainer implements RCacheablesContext {
 
     /**
      * Move workitem queue: STARTED -> SUSPENDED
+     *
      * @param workitem workitem context
      */
     public void MoveStartedToSuspend(WorkitemContext workitem) {
@@ -150,6 +159,7 @@ public class WorkQueueContainer implements RCacheablesContext {
 
     /**
      * Move workitem queue: SUSPENDED -> STARTED
+     *
      * @param workitem workitem context
      */
     public void MoveSuspendToStarted(WorkitemContext workitem) {
@@ -159,9 +169,10 @@ public class WorkQueueContainer implements RCacheablesContext {
     /**
      * Move a workitem from a queue to another queue.
      * NOTICE that this method usually should NOT be called outside, since not all move is valid.
+     *
      * @param workitem workitem context to be moved
-     * @param from from queue type
-     * @param to to queue type
+     * @param from     from queue type
+     * @param to       to queue type
      */
     public void Move(WorkitemContext workitem, WorkQueueType from, WorkQueueType to) {
         this.RemoveFromQueue(workitem, from);
@@ -170,8 +181,9 @@ public class WorkQueueContainer implements RCacheablesContext {
 
     /**
      * Add or update a workitem to a queue.
+     *
      * @param workitem workitem context
-     * @param type queue type
+     * @param type     queue type
      */
     public void AddToQueue(WorkitemContext workitem, WorkQueueType type) {
         WorkQueueContext wq = this.GetQueue(type);
@@ -180,8 +192,9 @@ public class WorkQueueContainer implements RCacheablesContext {
 
     /**
      * Add or update workitems to a queue.
+     *
      * @param addQueue workitem context queue to add
-     * @param type queue type
+     * @param type     queue type
      */
     public void AddToQueue(WorkQueueContext addQueue, WorkQueueType type) {
         WorkQueueContext wq = this.GetQueue(type);
@@ -190,8 +203,9 @@ public class WorkQueueContainer implements RCacheablesContext {
 
     /**
      * Remove a workitem from a queue.
+     *
      * @param workitem workitem context
-     * @param type queue type
+     * @param type     queue type
      */
     public void RemoveFromQueue(WorkitemContext workitem, WorkQueueType type) {
         this.GetQueue(type).Remove(workitem);
@@ -199,8 +213,9 @@ public class WorkQueueContainer implements RCacheablesContext {
 
     /**
      * Remove workitems from a queue.
+     *
      * @param removeQueue workitem context queue to remove
-     * @param type queue type
+     * @param type        queue type
      */
     public void RemoveFromQueue(WorkQueueContext removeQueue, WorkQueueType type) {
         this.GetQueue(type).RemoveQueue(removeQueue);
@@ -208,6 +223,7 @@ public class WorkQueueContainer implements RCacheablesContext {
 
     /**
      * Remove workitems from a queue belong to a specific rtid.
+     *
      * @param rtid process rtid.
      * @param type queue type
      */
@@ -217,14 +233,14 @@ public class WorkQueueContainer implements RCacheablesContext {
 
     /**
      * Remove workitems from all queues belong to a specific rtid.
+     *
      * @param rtid process rtid.
      */
     public void RemoveFromAllQueueByRTID(String rtid) {
         if (this.type == WorkQueueContainerType.AdminSet) {
             this.RemoveFromQueueByRTID(rtid, WorkQueueType.UNOFFERED);
             this.RemoveFromQueueByRTID(rtid, WorkQueueType.WORKLISTED);
-        }
-        else {
+        } else {
             this.RemoveFromQueueByRTID(rtid, WorkQueueType.OFFERED);
             this.RemoveFromQueueByRTID(rtid, WorkQueueType.ALLOCATED);
             this.RemoveFromQueueByRTID(rtid, WorkQueueType.STARTED);
@@ -234,6 +250,7 @@ public class WorkQueueContainer implements RCacheablesContext {
 
     /**
      * Get all workitem in a queue.
+     *
      * @param type queue type
      * @return workitem hash set.
      */
@@ -243,6 +260,7 @@ public class WorkQueueContainer implements RCacheablesContext {
 
     /**
      * Get worklisted workitem queue.
+     *
      * @return worklisted queue
      */
     public WorkQueueContext GetWorklistedQueue() {
@@ -250,17 +268,16 @@ public class WorkQueueContainer implements RCacheablesContext {
         WorkQueueContext worklisted = new WorkQueueContext(wlid, this.ownerWorkerId, WorkQueueType.WORKLISTED);
         for (int qType = WorkQueueType.OFFERED.ordinal(); qType <= WorkQueueType.SUSPENDED.ordinal(); qType++) {
             WorkQueueType qt = WorkQueueType.values()[qType];
-            if (this.IsNullQueue(qt)) {
-                worklisted.AddQueue(this.DirectlyGetQueue(qt));
-            }
+            worklisted.AddQueue(this.GetQueue(qt));
         }
         return worklisted;
     }
 
     /**
      * Check if a queue contains a workitem.
+     *
      * @param workitemId workitem global id
-     * @param type queue type
+     * @param type       queue type
      * @return true if contains
      */
     public boolean Contains(String workitemId, WorkQueueType type) {
@@ -269,6 +286,7 @@ public class WorkQueueContainer implements RCacheablesContext {
 
     /**
      * Check if any queue contains a workitem.
+     *
      * @param workitemId workitem global id
      * @return true if contains
      */
@@ -283,8 +301,9 @@ public class WorkQueueContainer implements RCacheablesContext {
 
     /**
      * Get a workitem from a queue by its global id.
+     *
      * @param workitemId workitem global id
-     * @param type queue type
+     * @param type       queue type
      * @return workitem context
      */
     public WorkitemContext Retrieve(String workitemId, WorkQueueType type) {
@@ -293,6 +312,7 @@ public class WorkQueueContainer implements RCacheablesContext {
 
     /**
      * Check if a queue is null.
+     *
      * @param type queue type
      * @return true if queue is null
      */
@@ -302,6 +322,7 @@ public class WorkQueueContainer implements RCacheablesContext {
 
     /**
      * Check if a queue is null or empty.
+     *
      * @param type queue type
      * @return true if queue is null or empty
      */
@@ -312,18 +333,26 @@ public class WorkQueueContainer implements RCacheablesContext {
 
     /**
      * Directly get the queue reference in the container.
+     *
      * @param type queue type
      * @return queue reference.
      */
     public WorkQueueContext DirectlyGetQueue(WorkQueueType type) {
         switch (type) {
-            case UNDEFINED : return this.unofferedQueue;
-            case OFFERED   : return this.offeredQueue;
-            case ALLOCATED : return this.allocatedQueue;
-            case STARTED   : return this.startedQueue;
-            case SUSPENDED : return this.suspendedQueue;
-            case UNOFFERED : return this.unofferedQueue;
-            case WORKLISTED: return this.worklistedQueue;
+            case UNDEFINED:
+                return this.unofferedQueue;
+            case OFFERED:
+                return this.offeredQueue;
+            case ALLOCATED:
+                return this.allocatedQueue;
+            case STARTED:
+                return this.startedQueue;
+            case SUSPENDED:
+                return this.suspendedQueue;
+            case UNOFFERED:
+                return this.unofferedQueue;
+            case WORKLISTED:
+                return this.worklistedQueue;
         }
         return null;
     }
@@ -331,6 +360,7 @@ public class WorkQueueContainer implements RCacheablesContext {
     /**
      * Get the queue reference in the container, if a queue is null then
      * it will be generated by using {@code WorkQueueContext.GetContext}.
+     *
      * @param type queue type
      * @return queue reference
      */
@@ -378,8 +408,9 @@ public class WorkQueueContainer implements RCacheablesContext {
     /**
      * Create a new work queue container.
      * Private constructor for prevent creating new instance outside.
+     *
      * @param workerGid owner worker global id
-     * @param type container type
+     * @param type      container type
      */
     private WorkQueueContainer(String workerGid, WorkQueueContainerType type) {
         this.ownerWorkerId = workerGid;
@@ -388,6 +419,7 @@ public class WorkQueueContainer implements RCacheablesContext {
 
     /**
      * Get container owner worker global id.
+     *
      * @return worker gid string
      */
     public String getWorkerGid() {
@@ -396,6 +428,7 @@ public class WorkQueueContainer implements RCacheablesContext {
 
     /**
      * Get container type.
+     *
      * @return container type enum
      */
     public WorkQueueContainerType getType() {

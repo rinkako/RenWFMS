@@ -460,6 +460,19 @@ public class InterfaceW {
     }
 
     /**
+     * Get all workitems belong to a participant in user-friendly package.
+     * @param ctx rs context
+     * @return List of Map of workitem data to return
+     */
+    public static ArrayList<HashMap<String, String>> GetAllWorkitemsInUserFriendlyForParticipant(ResourcingContext ctx) {
+        String workerId = (String) ctx.getArgs().get("workerId");
+        WorkQueueContainer container = WorkQueueContainer.GetContext(workerId);
+        Set<WorkitemContext> worklistedCtxList = container.GetWorklistedQueue().GetQueueAsSet();
+        ArrayList<WorkitemContext> wList = new ArrayList<>(worklistedCtxList);
+        return WorkitemContext.GenerateResponseWorkitems(wList, false);
+    }
+
+    /**
      * Get a workitem in user-friendly package.
      * @param ctx rs context
      * @return List of Map of workitem data to return

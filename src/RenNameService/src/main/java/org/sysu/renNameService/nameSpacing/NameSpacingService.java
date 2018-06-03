@@ -603,6 +603,18 @@ public class NameSpacingService {
         return ((Map) retObj.get("returnElement")).get("data");
     }
 
+    /**
+     * Handle transshipment of get all workitems for a participant.
+     *
+     * @param workerId participant worker global id
+     */
+    public static Object TransshipGetAllActiveForParticipant(String workerId) throws Exception {
+        HashMap<String, String> argMap = new HashMap<>();
+        argMap.put("workerId", workerId);
+        String ret = GlobalContext.Interaction.Send(LocationContext.GATEWAY_RS_WORKITEM + "getAllForParticipant", argMap, "");
+        Map retObj = SerializationUtil.JsonDeserialization(ret, Map.class);
+        return ((Map) retObj.get("returnElement")).get("data");
+    }
 
     /**
      * Handle transshipment of workitem.

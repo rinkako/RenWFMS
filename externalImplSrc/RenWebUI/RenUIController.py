@@ -79,10 +79,10 @@ class RenUIController:
         :return:
         """
         try:
-            retVal = SessionManager.Login(username, EncryptUtil.EncryptSHA256(rawPassword))
-            return retVal is not None, retVal
+            retSession, retGid = SessionManager.Login(username, EncryptUtil.EncryptSHA256(rawPassword))
+            return retSession is not None, retSession, retGid
         except:
-            return False, None
+            return False, None, None
 
     @staticmethod
     def Disconnect(token):
@@ -416,6 +416,9 @@ class RenUIController:
         dt = InteractionUtil.Send(LocationContext.URL_RTC_GetSpanTreeByRTID, d)
         return True, json.loads(dt["data"], encoding="utf8")
 
+    """
+    Workitem Management Methods
+    """
     @adminRequireWarp
     @ExceptionWarp
     def WorkitemGetAllByDomain(self, session, domain):
@@ -438,6 +441,32 @@ class RenUIController:
         """
         d = {"wid": wid}
         dt = InteractionUtil.Send(LocationContext.URL_Workitem_Get, d)
+        return True, json.loads(dt["data"], encoding="utf8")
+
+    @authorizeRequireWarp
+    @ExceptionWarp
+    def WorkitemGetByParticipant(self, session, workerId):
+        """
+        Get all workitem for a participant worker.
+        :param session: session id
+        :param workerId: worker resource global id
+        """
+        d = {"workerId": workerId}
+        dt = InteractionUtil.Send(LocationContext.URL_Workitem_GetAllForParticipant, d)
+        return True, json.loads(dt["data"], encoding="utf8")
+
+    @adminRequireWarp
+    @ExceptionWarp
+    def WorkitemAction(self, session, action, wid, workerId):
+        """
+        Do workitem action.
+        :param session: session id
+        :param action: action name
+        :param wid: workitem id
+        :param workerId: participant worker id
+        """
+        d = {"workitemId": wid, "workerId": workerId, "signature": GCC.INTERNAL_TOKEN}
+        dt = InteractionUtil.Send(LocationContext.URL_Workitem_ActionPrefix + action, d)
         return True, json.loads(dt["data"], encoding="utf8")
 
     AuthorizationModel.Initialize(forced=True)

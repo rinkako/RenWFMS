@@ -827,7 +827,7 @@ public class NameSpacingController {
                 return ReturnModelHelper.MissingParametersResponse(missingParams);
             }
             // check authorization
-            if (!AuthorizationService.CheckWorkitemSignature(signature, workitemId)) {
+            if (!signature.equals(GlobalContext.INTERNAL_TOKEN) && !AuthorizationService.CheckWorkitemSignature(signature, workitemId)) {
                 return ReturnModelHelper.UnauthorizedResponse(signature);
             }
             // logic
@@ -873,7 +873,7 @@ public class NameSpacingController {
                 return ReturnModelHelper.MissingParametersResponse(missingParams);
             }
             // check authorization
-            if (!AuthorizationService.CheckWorkitemSignature(signature, workitemId)) {
+            if (!signature.equals(GlobalContext.INTERNAL_TOKEN) && !AuthorizationService.CheckWorkitemSignature(signature, workitemId)) {
                 return ReturnModelHelper.UnauthorizedResponse(signature);
             }
             // logic
@@ -919,7 +919,7 @@ public class NameSpacingController {
                 return ReturnModelHelper.MissingParametersResponse(missingParams);
             }
             // check authorization
-            if (!AuthorizationService.CheckWorkitemSignature(signature, workitemId)) {
+            if (!signature.equals(GlobalContext.INTERNAL_TOKEN) && !AuthorizationService.CheckWorkitemSignature(signature, workitemId)) {
                 return ReturnModelHelper.UnauthorizedResponse(signature);
             }
             // logic
@@ -965,7 +965,7 @@ public class NameSpacingController {
                 return ReturnModelHelper.MissingParametersResponse(missingParams);
             }
             // check authorization
-            if (!AuthorizationService.CheckWorkitemSignature(signature, workitemId)) {
+            if (!signature.equals(GlobalContext.INTERNAL_TOKEN) && !AuthorizationService.CheckWorkitemSignature(signature, workitemId)) {
                 return ReturnModelHelper.UnauthorizedResponse(signature);
             }
             // logic
@@ -1011,7 +1011,7 @@ public class NameSpacingController {
                 return ReturnModelHelper.MissingParametersResponse(missingParams);
             }
             // check authorization
-            if (!AuthorizationService.CheckWorkitemSignature(signature, workitemId)) {
+            if (!signature.equals(GlobalContext.INTERNAL_TOKEN) && !AuthorizationService.CheckWorkitemSignature(signature, workitemId)) {
                 return ReturnModelHelper.UnauthorizedResponse(signature);
             }
             // logic
@@ -1057,7 +1057,7 @@ public class NameSpacingController {
                 return ReturnModelHelper.MissingParametersResponse(missingParams);
             }
             // check authorization
-            if (!AuthorizationService.CheckWorkitemSignature(signature, workitemId)) {
+            if (!signature.equals(GlobalContext.INTERNAL_TOKEN) && !AuthorizationService.CheckWorkitemSignature(signature, workitemId)) {
                 return ReturnModelHelper.UnauthorizedResponse(signature);
             }
             // logic
@@ -1103,7 +1103,7 @@ public class NameSpacingController {
                 return ReturnModelHelper.MissingParametersResponse(missingParams);
             }
             // check authorization
-            if (!AuthorizationService.CheckWorkitemSignature(signature, workitemId)) {
+            if (!signature.equals(GlobalContext.INTERNAL_TOKEN) && !AuthorizationService.CheckWorkitemSignature(signature, workitemId)) {
                 return ReturnModelHelper.UnauthorizedResponse(signature);
             }
             // logic
@@ -1149,7 +1149,7 @@ public class NameSpacingController {
                 return ReturnModelHelper.MissingParametersResponse(missingParams);
             }
             // check authorization
-            if (!AuthorizationService.CheckWorkitemSignature(signature, workitemId)) {
+            if (!signature.equals(GlobalContext.INTERNAL_TOKEN) && !AuthorizationService.CheckWorkitemSignature(signature, workitemId)) {
                 return ReturnModelHelper.UnauthorizedResponse(signature);
             }
             // logic
@@ -1195,7 +1195,7 @@ public class NameSpacingController {
                 return ReturnModelHelper.MissingParametersResponse(missingParams);
             }
             // check authorization
-            if (!AuthorizationService.CheckWorkitemSignature(signature, workitemId)) {
+            if (!signature.equals(GlobalContext.INTERNAL_TOKEN) && !AuthorizationService.CheckWorkitemSignature(signature, workitemId)) {
                 return ReturnModelHelper.UnauthorizedResponse(signature);
             }
             // logic
@@ -1388,6 +1388,44 @@ public class NameSpacingController {
 
     /**
      * Get workitems in a user-friendly package by RTID.
+     *
+     * @param token    auth token
+     * @param workerId participant worker global id
+     * @return response package
+     */
+    @RequestMapping(value = "/workitem/getAllActiveForParticipant", produces = {"application/json"})
+    @ResponseBody
+    @Transactional
+    public ReturnModel TransshipGetAllActiveForParticipant(@RequestParam(value = "token", required = false) String token,
+                                                           @RequestParam(value = "workerId", required = false) String workerId) {
+        ReturnModel rnModel = new ReturnModel();
+        try {
+            // miss params
+            List<String> missingParams = new ArrayList<>();
+            if (token == null) missingParams.add("token");
+            if (workerId == null) missingParams.add("workerId");
+            if (missingParams.size() > 0) {
+                return ReturnModelHelper.MissingParametersResponse(missingParams);
+            }
+            // check authorization
+            if (AuthorizationService.CheckValidLevel(token) < 0 && !token.equals(GlobalContext.INTERNAL_TOKEN)) {
+                return ReturnModelHelper.UnauthorizedResponse(token);
+            }
+            // logic
+            HashMap<String, String> args = new HashMap<>();
+            args.put("workerId", workerId);
+            NameServiceTransaction t = TransactionCreator.Create(TransactionType.Namespacing, "transshipGetAllActiveForParticipant", args);
+            String jsonifyResult = (String) NameSpacingController.scheduler.ScheduleSync(t);
+            // return
+            ReturnModelHelper.StandardResponse(rnModel, StatusCode.OK, jsonifyResult);
+        } catch (Exception e) {
+            ReturnModelHelper.ExceptionResponse(rnModel, e.getClass().getName());
+        }
+        return rnModel;
+    }
+
+    /**
+     * Get workitems in a user-friendly package by Participant worker id.
      *
      * @param token auth token
      * @param wid   workitem id

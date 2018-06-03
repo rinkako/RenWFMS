@@ -51,7 +51,7 @@ Router funcs.
 
 @app.route('/', methods=["GET"])
 def home():
-    return redirect(url_for("ProcessManagement"))
+    return redirect(url_for("MyWorkitemManagement"))
 
 
 @app.route('/domain/', methods=["GET"])
@@ -227,7 +227,7 @@ def ProcessManagement():
     return render_template('processmanagement.html', **t)
 
 
-@app.route('/process/info/<pid>', methods=["GET", "POST"])
+@app.route('/process/info/<pid>/', methods=["GET", "POST"])
 def ProcessInfo(pid):
     flag, res = core.ProcessGetByPid("__test__", pid)
     if flag is False:
@@ -268,7 +268,7 @@ def ActiveProcessManagement():
     return render_template('runtimemanagement.html', **t)
 
 
-@app.route('/activeProcess/info/<rtid>', methods=["GET", "POST"])
+@app.route('/activeProcess/info/<rtid>/', methods=["GET", "POST"])
 def ActiveProcessInfo(rtid):
     flag, res = core.RuntimeRecordGetAllByRTID("__test__", rtid)
     if flag is False or res is None:
@@ -315,7 +315,7 @@ def DomainWorkitemManagement():
     return render_template('domainworkitemmanagement.html', **t)
 
 
-@app.route('/domainWorkitem/info/<wid>', methods=["GET", "POST"])
+@app.route('/domainWorkitem/info/<wid>/', methods=["GET", "POST"])
 def DomainWorkitemInfo(wid):
     flag, res = core.WorkitemGet("__test__", wid)
     if flag is False or res is None:
@@ -323,11 +323,54 @@ def DomainWorkitemInfo(wid):
     t = {'L_PageTitle': u'查看工作项详细信息',
          'L_PageDescription': u'WID：' + wid,
          'processObj': res,
+         'fromMy': '0',
          'toLong': _toLong}
     return render_template('workitem_view.html', **t)
 
 
-@app.route('/selfConfig', methods=["GET"])
+@app.route('/myWorkitem/', methods=["GET"])
+def MyWorkitemManagement():
+    if session["GID"] is not None:
+        flag, res = core.WorkitemGetByParticipant("__test__", session["GID"])
+        if flag is False or res is None:
+            return redirect(url_for('AccessErrorPage', dt='x'))
+        gidSet = '1'
+    else:
+        res = []
+        gidSet = '0'
+    t = {'L_PageTitle': u'我的工作列表',
+         'L_PageDescription': u'查看我的活跃工作项',
+         'itemList': res,
+         'gidSet': gidSet,
+         'changetime': time.localtime,
+         'strtime': time.strftime}
+    return render_template('myworkitem.html', **t)
+
+
+@app.route('/myWorkitem/info/<wid>/', methods=["GET", "POST"])
+def MyWorkitemInfo(wid):
+    flag, res = core.WorkitemGet("__test__", wid)
+    if flag is False or res is None:
+        return redirect(url_for('AccessErrorPage', dt='x'))
+    t = {'L_PageTitle': u'查看工作项详细信息',
+         'L_PageDescription': u'WID：' + wid,
+         'processObj': res,
+         'fromMy': '1',
+         'toLong': _toLong}
+    return render_template('workitem_view.html', **t)
+
+
+@app.route('/performWorkitem/<action>/<wid>/', methods=["GET", "POST"])
+def PerformWorkitemAction(action, wid):
+    if "GID" not in session:
+        return redirect(url_for('AccessErrorPage', dt='unauthorized'))
+    flag, res = core.WorkitemAction('__test__', action, wid, session["GID"])
+    if flag is False or res is None:
+        return redirect(url_for('AccessErrorPage', dt='x'))
+    return redirect(url_for('MyWorkitemManagement'))
+
+
+@app.route('/selfConfig/', methods=["GET"])
 def SelfConfigManagement():
     flag, res = core.AuthUserGet('__test__', session['PureUserName'], session["Domain"])
     if flag is False:
@@ -341,7 +384,7 @@ def SelfConfigManagement():
     return render_template('authusermanagement_edit.html', **t)
 
 
-@app.route('/domainConfig', methods=["GET"])
+@app.route('/domainConfig/', methods=["GET"])
 def DomainConfigManagement():
     if session["AuType"] == 0:
         return redirect(url_for('AccessErrorPage', dt='unauthorized'))
@@ -393,14 +436,15 @@ def performLogin():
         return redirect(url_for('Login'))
     usrId = request.form["passedUserId"]
     usrPwd = request.form["passedUserPwd"]
-    flag, ret = RenUIController.RenUIController.Auth(usrId, usrPwd)
-    if flag is False or ret is None:
+    flag, retSession, retGid = RenUIController.RenUIController.Auth(usrId, usrPwd)
+    if flag is False or retSession is None:
         return redirect(url_for('Login2'))
     session['AuID'] = usrId
     session['PureUserName'] = usrId.split('@')[0]
     session['Domain'] = usrId.split('@')[1]
-    session['SID'] = ret
-    session['AuType'] = RenUIController.RenUIController.GetSessionLevel(ret)[1]
+    session['SID'] = retSession
+    session['GID'] = retGid
+    session['AuType'] = RenUIController.RenUIController.GetSessionLevel(retSession)[1]
     return redirect(url_for('home'))
 
 

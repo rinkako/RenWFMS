@@ -23,5 +23,6 @@ public enum RServiceType implements Serializable {
     GetQueueList,
     GetAllWorkitemsByRTID,
     GetAllWorkitemsByDomain,
+    GetAllWorkitemsByParticipant,
     GetByWid
 }

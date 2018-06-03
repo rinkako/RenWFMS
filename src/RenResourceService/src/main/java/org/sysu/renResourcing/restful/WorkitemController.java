@@ -477,6 +477,38 @@ public class WorkitemController {
     }
 
     /**
+     * Get all workitems by rtid.
+     *
+     * @param workerId participant worker global id
+     * @return response package in JSON
+     */
+    @RequestMapping(value = "/getAllForParticipant", produces = {"application/json"})
+    @ResponseBody
+    @Transactional
+    public ReturnModel GetAllForParticipant(@RequestParam(value = "workerId", required = false) String workerId) {
+        ReturnModel rnModel = new ReturnModel();
+        try {
+            // miss params
+            List<String> missingParams = new ArrayList<>();
+            if (workerId == null) missingParams.add("workerId");
+            if (missingParams.size() > 0) {
+                return ReturnModelHelper.MissingParametersResponse(missingParams);
+            }
+            // logic
+            Hashtable<String, Object> args = new Hashtable<>();
+            args.put("workerId", workerId);
+            ResourcingContext rCtx = ResourcingContext.GetContext(null, "",
+                    RServiceType.GetAllWorkitemsByParticipant, args);
+            String jsonifyResult = RScheduler.GetInstance().ScheduleSync(rCtx);
+            // return
+            ReturnModelHelper.StandardResponse(rnModel, StatusCode.OK, jsonifyResult);
+        } catch (Exception e) {
+            ReturnModelHelper.ExceptionResponse(rnModel, e.getClass().getName());
+        }
+        return rnModel;
+    }
+
+    /**
      * Get a workitem.
      *
      * @param wid workitem id
