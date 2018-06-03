@@ -27,3 +27,7 @@ URL_RTC_GetAll = "http://127.0.0.1:10234/ns/getAllRuntimeRecord"
 URL_RTC_GetForDomain = "http://127.0.0.1:10234/ns/getRuntimeRecordByDomain"
 URL_RTC_GetForLauncher = "http://127.0.0.1:10234/ns/getRuntimeRecordByLauncher"
 URL_RTC_GetLogByRTID = "http://127.0.0.1:10234/ns/getRuntimeLogByRTID"
+URL_RTC_GetSpanTreeByRTID = "http://127.0.0.1:10234/ns/getSpanTree"
+
+URL_Workitem_Get = "http://127.0.0.1:10234/ns/workitem/get"
+URL_Workitem_GetAllForDomain = "http://127.0.0.1:10234/ns/workitem/getAllForDomain"

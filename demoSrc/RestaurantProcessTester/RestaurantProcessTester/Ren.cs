@@ -70,13 +70,13 @@ namespace RestaurantProcessTester
             try
             {
                 Ren.LoadProcessFromDirectory(IOUtils.ParseURItoURL("processDir"));
-                var processName = "Process_" + DateTime.Now;
+                var processName = "RestaurantTest_" + DateTime.Now.ToString().Replace(' ', '_');
                 LogUtils.LogLine("Process Name is: " + processName + "\nMainBO: GuestOrder", LogLevel.Normal);
                 NetClient.PostData(GlobalContext.LocationDict["CreateProcess"],
                     new Dictionary<string, string>
                     {
-                        {"token", Ren.transaction.AuthToken},
-                        {"renid", Ren.transaction.RenUsername},
+                        {"token", Ren.transaction.AuthToken },
+                        {"renid", "admin@admin" },
                         {"name", processName },
                         {"mainbo", "GuestOrder"}
                     },
@@ -148,7 +148,7 @@ namespace RestaurantProcessTester
                     {
                         { "token", Ren.transaction.AuthToken },
                         { "pid", Ren.transaction.ProcessPID },
-                        { "from", "MasterPanel.NET" },
+                        { "from", "ProcessTester.NET" },
                         { "renid", Ren.transaction.RenUsername },
                         { "bindingType", Ren.transaction.IsolationType.ToString() },
                         { "launchType", Ren.transaction.LaunchType.ToString() },

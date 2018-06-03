@@ -192,10 +192,10 @@ public class SCXMLSemanticsImpl implements BOXMLSemantics {
             try {
                 // only remove the tree when root BO finish
                 if (exctx.NodeId.equals(exctx.RootNodeId)) {
+                    // remove steady snapshot
+                    SteadyStepService.ClearSteadyWriteArchivedTree(exctx.Rtid);
                     // remove instance tree
                     InstanceManager.UnregisterInstanceTree(exctx.Rtid);
-                    // remove steady snapshot
-                    SteadyStepService.ClearSteady(exctx.Rtid);
                     // notify resource service GC
                     if (!GlobalContext.IsLocalDebug) {
                         HashMap<String, String> args = new HashMap<>();

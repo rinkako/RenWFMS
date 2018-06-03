@@ -170,6 +170,9 @@ public class NSExecutor extends Observable {
                         case "checkFinish":
                             retStr = NameSpacingService.CheckFinish((String) args.get("rtid"));
                             break;
+                        case "transshipGetSpanTree":
+                            retStr = (String) NameSpacingService.TransshipGetSpanTree((String) args.get("rtid"));
+                            break;
                         case "transshipCallback":
                             retStr = NameSpacingService.TransshipCallback(args);
                             break;
@@ -181,6 +184,12 @@ public class NSExecutor extends Observable {
                             break;
                         case "transshipGetAll":
                             retStr = (String) NameSpacingService.TransshipGetAll((String) args.get("rtid"));
+                            break;
+                        case "transshipGetAllWorkitemsForDomain":
+                            retStr = (String) NameSpacingService.TransshipGetAllWorkitemsForDomain((String) args.get("domain"));
+                            break;
+                        case "transshipGetWorkitem":
+                            retStr = (String) NameSpacingService.TransshipGetWorkitem((String) args.get("wid"));
                             break;
                     }
                     // prepare execution result

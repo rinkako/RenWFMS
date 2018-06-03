@@ -50,71 +50,58 @@
                                     </div>
                                 </div>
                                 <div class="box-body big">
-                                    <div class="center">
-                                        <label>{{ successMsg | safe }}</label>
-                                        <div class="progress progress-striped active">
-                                            <div class="progress-bar {{ workflowProgressStyle }}" role="progressbar" id="workflowbar" aria-valuenow="50" aria-valuemin="0" aria-valuemax="100" style="width: 100%">
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <hr/>
+
                                     <div class="form-group">
-                                        <label>活动流程唯一标识符（RTID）</label>
-                                        <label class="form-control">{{ processObj["rtid"] }}</label>
+                                        <label>工作项唯一标识符（RTID）</label>
+                                        <label class="form-control">{{ processObj["Wid"] }}</label>
                                     </div>
                                     <div class="form-group">
-                                        <label>流程ID</label>
-                                        <label class="form-control" >{{ processObj["processId"] }}</label>
+                                        <label>活动流程RTID</label>
+                                        <label class="form-control" >{{ processObj["Rtid"] }}</label>
                                     </div>
                                     <div class="form-group">
-                                        <label>流程名</label>
-                                        <label class="form-control" >{{ processObj["processName"] }}</label>
+                                        <label>回调BO节点的全局标识符</label>
+                                        <label class="form-control" >{{ processObj["CallbackNodeId"] }}</label>
                                     </div>
                                     <div class="form-group">
-                                        <label>启动流程的授权Session</label>
-                                        <label class="form-control" >{{ processObj["sessionId"] }}</label>
+                                        <label>任务名</label>
+                                        <label class="form-control" >{{ processObj["TaskName"] }}</label>
                                     </div>
                                     <div class="form-group">
-                                        <label>流程启动人</label>
-                                        <label class="form-control" >{{ processObj["launchAuthorityId"] }}</label>
+                                        <label>任务ID</label>
+                                        <label class="form-control" >{{ processObj["TaskId"] }}</label>
                                     </div>
                                     <div class="form-group">
-                                        <label>启动时间戳</label>
-                                        <label class="form-control" >{{ strtime("%Y-%m-%d %H:%M:%S", changetime(processObj["launchTimestamp"] / 1000)) }}</label>
-                                    </div>
-                                    <div class="form-group">
-                                        <label>启动自</label>
-                                        <label class="form-control" >{{ processObj["launchFrom"] }}</label>
-                                    </div>
-                                    <div class="form-group">
-                                        <label>最后处理此流程的解析引擎全局唯一标识符</label>
-                                        <label class="form-control" >{{ processObj["interpreterId"] }}</label>
-                                    </div>
-                                    <div class="form-group">
-                                        <label>失败处理方式</label>
-                                        <label class="form-control" >
-                                            {% if processObj["failureType"] == 0 %}
-                                            尝试继续执行
-                                            {% else %}
-                                            快速失败
-                                            {% endif %}
-                                        </label>
-                                    </div>
-                                    <div class="form-group">
-                                        <label>完成时间戳</label>
-                                        <label class="form-control">{{ 'N/A' if processObj["finishTimestamp"] == -1 else strtime("%Y-%m-%d %H:%M:%S", changetime(processObj["finishTimestamp"] / 1000)) }}</label>
+                                        <label>业务角色</label>
+                                        <label class="form-control" >{{ processObj["Role"] }}</label>
                                     </div>
                                     <div class="form-group">
                                         <label>状态</label>
-                                        <label class="form-control" >
-                                            {% if processObj["isSucceed"] == 1 %}
-                                            成功
-                                            {% elif processObj["isSucceed"] == 0 %}
-                                            进行中
-                                            {% else %}
-                                            失败
-                                            {% endif %}
-                                        </label>
+                                        <label class="form-control" >{{ processObj["Status"] }}</label>
+                                    </div>
+                                    <div class="form-group">
+                                        <label>资源服务状态</label>
+                                        <label class="form-control" >{{ processObj["ResourceStatus"] }}</label>
+                                    </div>
+                                    <div class="form-group">
+                                        <label>创建时间戳</label>
+                                        <label class="form-control" >{{ 'N/A' if processObj["EnablementTime"] == '' else processObj["EnablementTime"] }}</label>
+                                    </div>
+                                    <div class="form-group">
+                                        <label>创建时间戳</label>
+                                        <label class="form-control" >{{ 'N/A' if processObj["FiringTime"] == '' else processObj["FiringTime"] }}</label>
+                                    </div>
+                                    <div class="form-group">
+                                        <label>开始时间戳</label>
+                                        <label class="form-control" >{{ 'N/A' if processObj["StartTime"] == '' else processObj["StartTime"] }}</label>
+                                    </div>
+                                    <div class="form-group">
+                                        <label>完成时间戳</label>
+                                        <label class="form-control" >{{ 'N/A' if processObj["CompletionTime"] == '' else processObj["CompletionTime"] }}</label>
+                                    </div>
+                                    <div class="form-group">
+                                        <label>完成时执行时间</label>
+                                        <label class="form-control" >{{ toLong(processObj["ExecuteTime"]) / 1000 }} ms</label>
                                     </div>
                                     <br/>
                                 </div>
@@ -130,7 +117,7 @@
                 <div class="col-md-12">
                     <div class="box border blue">
                         <div class="box-title">
-                            <h4><i class="fa fa-tree"></i>生成树JSON描述子</h4>
+                            <h4><i class="fa fa-book"></i>参数字典JSON描述子</h4>
                             <div class="tools">
                                 <a href="javascript:;" class="collapse">
                                     <i class="fa fa-chevron-up"></i>
@@ -141,7 +128,7 @@
                             <div class="row">
                                 <div class="col-md-12">
                                     <label>
-                                        <span >{{ spanTree }}</span>
+                                        <span >{{ processObj["Argument"] }}</span>
                                     </label>
                                 </div>
                             </div>
@@ -154,7 +141,7 @@
                 <div class="col-md-12">
                     <div class="box border blue">
                         <div class="box-title">
-                            <h4><i class="fa fa-book"></i>该流程运行时相关日志</h4>
+                            <h4><i class="fa fa-file-text"></i>工作项文档</h4>
                             <div class="tools">
                                 <a href="javascript:;" class="collapse">
                                     <i class="fa fa-chevron-up"></i>
@@ -164,38 +151,9 @@
                         <div class="box-body">
                             <div class="row">
                                 <div class="col-md-12">
-                                    <table id="datatable1" cellpadding="0" cellspacing="0" border="0" class="datatable table table-striped table-bordered table-hover">
-                                        <thead>
-                                        <tr>
-                                            <th>时间戳</th>
-                                            <th>等级</th>
-                                            <th>标签</th>
-                                            <th>日志号</th>
-                                            <th>事件</th>
-                                        </tr>
-                                        </thead>
-                                        <tbody>
-                                        {% for dictItem in logList %}
-                                        <tr class="gradeX">
-                                            <td> {{ strtime("%Y-%m-%d %H:%M:%S", changetime(dictItem["timestamp"] / 1000)) }} </td>
-                                            <td class="center">
-                                                {% if dictItem["level"] == "INFO" %}
-                                                <span class="label label-primary label-md">INFO</span>
-                                                {% elif dictItem["level"] == "WARNING" %}
-                                                <span class="label label-warning label-md">WARNING</span>
-                                                {% elif dictItem["level"] == "UNAUTHORIZED" %}
-                                                <span class="label label-inverse label-md">UNAUTHORIZED</span>
-                                                {% else %}
-                                                <span class="label label-danger label-md">ERROR</span>
-                                                {% endif %}
-                                            </td>
-                                            <td> {{ dictItem["label"] }} </td>
-                                            <td> {{ dictItem["logid"] }} </td>
-                                            <td> {{ dictItem["message"] }} </td>
-                                        </tr>
-                                        {% endfor %}
-                                        </tbody>
-                                    </table>
+                                    <label>
+                                        <span >{{ processObj["Documentation"] }}</span>
+                                    </label>
                                 </div>
                             </div>
                         </div>
@@ -235,7 +193,7 @@
 
         jQuery("#active-runtime").addClass("active");
         jQuery("#selected-runtime").addClass("selected");
-        jQuery("#current-runtime-runtimerecord").addClass("current");
+        jQuery("#current-runtime-worklist").addClass("current");
 
     }
 

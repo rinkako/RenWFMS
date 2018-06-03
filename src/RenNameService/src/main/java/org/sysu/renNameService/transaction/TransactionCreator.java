@@ -44,8 +44,8 @@ public class TransactionCreator {
             rnte.setType(type.ordinal());
             session.save(rnte);
             dbTrans.commit();
-            LogUtil.Log(String.format("Name service transaction created: %s (%s, %s)", nsid, type.name(), action),
-                    TransactionCreator.class.getName(), rtid == null ? "" : rtid);
+//            LogUtil.Log(String.format("Name service transaction created: %s (%s, %s)", nsid, type.name(), action),
+//                    TransactionCreator.class.getName(), rtid == null ? "" : rtid);
             return nst;
         }
         finally {

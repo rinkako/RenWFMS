@@ -444,6 +444,38 @@ public class InterfaceW {
     }
 
     /**
+     * Get all workitems belong to a domain in user-friendly package.
+     * @param ctx rs context
+     * @return List of Map of workitem data to return
+     */
+    public static ArrayList<HashMap<String, String>> GetAllWorkitemsInUserFriendlyForDomain(ResourcingContext ctx) {
+        String domain = (String) ctx.getArgs().get("domain");
+        ArrayList<WorkitemContext> workitemList = WorkitemContext.GetContextInDomain(domain);
+        if (workitemList == null) {
+            LogUtil.Log("Cannot get workitem for Domain: " + domain, InterfaceW.class.getName(),
+                    LogLevelType.ERROR, "");
+            return null;
+        }
+        return WorkitemContext.GenerateResponseWorkitems(workitemList, false);
+    }
+
+    /**
+     * Get a workitem in user-friendly package.
+     * @param ctx rs context
+     * @return List of Map of workitem data to return
+     */
+    public static HashMap<String, String> GetWorkitemInFriendly(ResourcingContext ctx) {
+        String wid = (String) ctx.getArgs().get("wid");
+        WorkitemContext workitem = WorkitemContext.GetContext(wid, "");
+        if (workitem == null) {
+            LogUtil.Log("Cannot get workitem for Wid: " + wid, InterfaceW.class.getName(),
+                    LogLevelType.ERROR, "");
+            return null;
+        }
+        return WorkitemContext.GenerateResponseWorkitem(workitem);
+    }
+
+    /**
      * Get all workers with any non-empty work queue in a domain.
      * @param ctx rs context
      * @return worker gid in a list

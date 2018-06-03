@@ -8,6 +8,7 @@ import org.hibernate.Session;
 import org.hibernate.Transaction;
 import org.sysu.renCommon.enums.LogLevelType;
 import org.sysu.workflow.*;
+import org.sysu.workflow.entity.*;
 import org.sysu.workflow.env.MultiStateMachineDispatcher;
 import org.sysu.workflow.env.SimpleErrorReporter;
 import org.sysu.workflow.instanceTree.InstanceManager;
@@ -18,10 +19,6 @@ import org.sysu.workflow.model.EnterableState;
 import org.sysu.workflow.model.SCXML;
 import org.sysu.workflow.model.extend.Task;
 import org.sysu.workflow.model.extend.Tasks;
-import org.sysu.workflow.entity.RenBoEntity;
-import org.sysu.workflow.entity.RenProcessEntity;
-import org.sysu.workflow.entity.RenRstaskEntity;
-import org.sysu.workflow.entity.RenRuntimerecordEntity;
 import org.sysu.workflow.utility.HibernateUtil;
 import org.sysu.workflow.utility.LogUtil;
 import org.sysu.workflow.utility.SerializationUtil;
@@ -143,16 +140,32 @@ public final class RuntimeManagementService {
      * Get a user-friendly descriptor of an instance tree.
      *
      * @param rtid process runtime record id
-     * @return a descriptor of span instance tree
+     * @return a descriptor of span instance tree JSON descriptor
      */
-    public static FriendlyTreeNode GetSpanTreeDescriptor(String rtid) {
-        RInstanceTree tree = InstanceManager.GetInstanceTree(rtid);
+    public static String GetSpanTreeDescriptor(String rtid) {
+        RInstanceTree tree = InstanceManager.GetInstanceTree(rtid, false);
         if (tree == null || tree.Root == null) {
-            return null;
+            Session session = HibernateUtil.GetLocalSession();
+            Transaction transaction = session.beginTransaction();
+            RenArchivedTreeEntity rate = null;
+            try {
+                rate = session.get(RenArchivedTreeEntity.class, rtid);
+                transaction.commit();
+            }
+            catch (Exception ex) {
+                transaction.rollback();
+            }
+            finally {
+                HibernateUtil.CloseLocalSession();
+            }
+            if (rate == null) {
+                return null;
+            }
+            return rate.getTree();
         }
         FriendlyTreeNode rootFNode = new FriendlyTreeNode();
         RuntimeManagementService.Nephren(tree.Root, rootFNode);
-        return rootFNode;
+        return SerializationUtil.JsonSerialization(rootFNode, rtid);
     }
 
     /**

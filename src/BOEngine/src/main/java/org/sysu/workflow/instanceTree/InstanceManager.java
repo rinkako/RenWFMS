@@ -50,11 +50,24 @@ public class InstanceManager {
      * @return tree reference
      */
     public static RInstanceTree GetInstanceTree(String rtid) {
+        return InstanceManager.GetInstanceTree(rtid, true);
+    }
+
+    /**
+     * Get tree by its global id, means rtid.
+     *
+     * @param rtid    process rtid
+     * @param warning produce warning message when missing tree
+     * @return tree reference
+     */
+    public static RInstanceTree GetInstanceTree(String rtid, boolean warning) {
         if (InstanceManager.InstanceTreeTable.containsKey(rtid)) {
             return InstanceManager.InstanceTreeTable.get(rtid);
         } else {
-            LogUtil.Log("Instance tree not found: " + rtid, InstanceManager.class.getName(),
-                    LogLevelType.WARNING, rtid);
+            if (warning) {
+                LogUtil.Log("Instance tree not found: " + rtid, InstanceManager.class.getName(),
+                        LogLevelType.WARNING, rtid);
+            }
             return null;
         }
     }

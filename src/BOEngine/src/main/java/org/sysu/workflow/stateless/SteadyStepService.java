@@ -5,6 +5,7 @@ import org.hibernate.Transaction;
 import org.sysu.renCommon.enums.LogLevelType;
 import org.sysu.renCommon.utility.CommonUtil;
 import org.sysu.workflow.*;
+import org.sysu.workflow.entity.RenArchivedTreeEntity;
 import org.sysu.workflow.entity.RenBinstepEntity;
 import org.sysu.workflow.env.MultiStateMachineDispatcher;
 import org.sysu.workflow.env.SimpleErrorReporter;
@@ -62,15 +63,19 @@ public class SteadyStepService {
     }
 
     /**
-     * Clear steady step snapshot after final state.
+     * Clear steady step snapshot after final state, and write a span tree descriptor to archived tree table.
      *
      * @param rtid process runtime record id
      */
-    public static void ClearSteady(String rtid) {
+    public static void ClearSteadyWriteArchivedTree(String rtid) {
         Session session = HibernateUtil.GetLocalSession();
         Transaction transaction = session.beginTransaction();
         try {
             session.createQuery(String.format("DELETE RenBinstepEntity AS p WHERE p.rtid = '%s'", rtid)).executeUpdate();
+            RenArchivedTreeEntity archivedTree = new RenArchivedTreeEntity();
+            archivedTree.setRtid(rtid);
+            archivedTree.setTree(SerializationUtil.JsonSerialization(RuntimeManagementService.GetSpanTreeDescriptor(rtid), rtid));
+            session.saveOrUpdate(archivedTree);
             transaction.commit();
         } catch (Exception ex) {
             transaction.rollback();

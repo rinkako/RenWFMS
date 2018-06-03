@@ -404,6 +404,42 @@ class RenUIController:
         dt = InteractionUtil.Send(LocationContext.URL_RTC_GetLogByRTID, d)
         return True, json.loads(dt["data"], encoding="utf8")
 
+    @authorizeRequireWarp
+    @ExceptionWarp
+    def RuntimeSpanTreeGetByRTID(self, session, rtid):
+        """
+        Get all log for a runtime record.
+        :param session: session id
+        :param rtid: runtime record id
+        """
+        d = {"rtid": rtid, "signature": GCC.INTERNAL_TOKEN}
+        dt = InteractionUtil.Send(LocationContext.URL_RTC_GetSpanTreeByRTID, d)
+        return True, json.loads(dt["data"], encoding="utf8")
+
+    @adminRequireWarp
+    @ExceptionWarp
+    def WorkitemGetAllByDomain(self, session, domain):
+        """
+        Get all workitem for a domain.
+        :param session: session id
+        :param domain: domain name
+        """
+        d = {"domain": domain}
+        dt = InteractionUtil.Send(LocationContext.URL_Workitem_GetAllForDomain, d)
+        return True, json.loads(dt["data"], encoding="utf8")
+
+    @authorizeRequireWarp
+    @ExceptionWarp
+    def WorkitemGet(self, session, wid):
+        """
+        Get all workitem for a domain.
+        :param session: session id
+        :param wid: workitem id
+        """
+        d = {"wid": wid}
+        dt = InteractionUtil.Send(LocationContext.URL_Workitem_Get, d)
+        return True, json.loads(dt["data"], encoding="utf8")
+
     AuthorizationModel.Initialize(forced=True)
     WebUILogModel.Initialize(forced=True)
 

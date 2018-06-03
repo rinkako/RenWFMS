@@ -708,6 +708,44 @@ public class NameSpacingController {
      *
      * @param signature domain signature key (required)
      * @param rtid      process rtid (required)
+     * @return response package
+     */
+    @RequestMapping(value = "/getSpanTree", produces = {"application/json"})
+    @ResponseBody
+    @Transactional
+    public ReturnModel TransshipGetSpanTree(@RequestParam(value = "signature", required = false) String signature,
+                                            @RequestParam(value = "rtid", required = false) String rtid) {
+        ReturnModel rnModel = new ReturnModel();
+        try {
+            // miss params
+            List<String> missingParams = new ArrayList<>();
+            if (signature == null) missingParams.add("signature");
+            if (rtid == null) missingParams.add("rtid");
+            if (missingParams.size() > 0) {
+                return ReturnModelHelper.MissingParametersResponse(missingParams);
+            }
+            // check authorization
+            if (!signature.equals(GlobalContext.INTERNAL_TOKEN) && !AuthorizationService.CheckRTIDSignature(signature, rtid)) {
+                return ReturnModelHelper.UnauthorizedResponse(signature);
+            }
+            // logic
+            HashMap<String, String> args = new HashMap<>();
+            args.put("rtid", rtid);
+            NameServiceTransaction t = TransactionCreator.Create(TransactionType.Namespacing, "transshipGetSpanTree", args);
+            String jsonifyResult = (String) NameSpacingController.scheduler.ScheduleSync(t);
+            // return
+            ReturnModelHelper.StandardResponse(rnModel, StatusCode.OK, jsonifyResult);
+        } catch (Exception e) {
+            ReturnModelHelper.ExceptionResponse(rnModel, e.getClass().getName());
+        }
+        return rnModel;
+    }
+
+    /**
+     * Transship request of sending a callback event to BO engine.
+     *
+     * @param signature domain signature key (required)
+     * @param rtid      process rtid (required)
      * @param bo        from which BO (required)
      * @param on        which callback scene (required)
      * @param event     event send to engine (required)
@@ -1299,6 +1337,84 @@ public class NameSpacingController {
             HashMap<String, String> args = new HashMap<>();
             args.put("rtid", rtid);
             NameServiceTransaction t = TransactionCreator.Create(TransactionType.Namespacing, "transshipGetAll", args);
+            String jsonifyResult = (String) NameSpacingController.scheduler.ScheduleSync(t);
+            // return
+            ReturnModelHelper.StandardResponse(rnModel, StatusCode.OK, jsonifyResult);
+        } catch (Exception e) {
+            ReturnModelHelper.ExceptionResponse(rnModel, e.getClass().getName());
+        }
+        return rnModel;
+    }
+
+    /**
+     * Get workitems in a user-friendly package by RTID.
+     *
+     * @param token  auth token
+     * @param domain domain name
+     * @return response package
+     */
+    @RequestMapping(value = "/workitem/getAllForDomain", produces = {"application/json"})
+    @ResponseBody
+    @Transactional
+    public ReturnModel TransshipGetAllWorkitemsForDomain(@RequestParam(value = "token", required = false) String token,
+                                                         @RequestParam(value = "domain", required = false) String domain) {
+        ReturnModel rnModel = new ReturnModel();
+        try {
+            // miss params
+            List<String> missingParams = new ArrayList<>();
+            if (token == null) missingParams.add("token");
+            if (domain == null) missingParams.add("domain");
+            if (missingParams.size() > 0) {
+                return ReturnModelHelper.MissingParametersResponse(missingParams);
+            }
+            // check authorization, admin only
+            if ((AuthorizationService.CheckValidLevel(token) < 1 &&
+                    AuthTokenManager.GetDomain(token).equals(domain)) &&
+                    !token.equals(GlobalContext.INTERNAL_TOKEN)) {
+                return ReturnModelHelper.UnauthorizedResponse(token);
+            }
+            // logic
+            HashMap<String, String> args = new HashMap<>();
+            args.put("domain", domain);
+            NameServiceTransaction t = TransactionCreator.Create(TransactionType.Namespacing, "transshipGetAllWorkitemsForDomain", args);
+            String jsonifyResult = (String) NameSpacingController.scheduler.ScheduleSync(t);
+            // return
+            ReturnModelHelper.StandardResponse(rnModel, StatusCode.OK, jsonifyResult);
+        } catch (Exception e) {
+            ReturnModelHelper.ExceptionResponse(rnModel, e.getClass().getName());
+        }
+        return rnModel;
+    }
+
+    /**
+     * Get workitems in a user-friendly package by RTID.
+     *
+     * @param token auth token
+     * @param wid   workitem id
+     * @return response package
+     */
+    @RequestMapping(value = "/workitem/get", produces = {"application/json"})
+    @ResponseBody
+    @Transactional
+    public ReturnModel TransshipGetWorkitem(@RequestParam(value = "token", required = false) String token,
+                                            @RequestParam(value = "wid", required = false) String wid) {
+        ReturnModel rnModel = new ReturnModel();
+        try {
+            // miss params
+            List<String> missingParams = new ArrayList<>();
+            if (token == null) missingParams.add("token");
+            if (wid == null) missingParams.add("wid");
+            if (missingParams.size() > 0) {
+                return ReturnModelHelper.MissingParametersResponse(missingParams);
+            }
+            // check authorization
+            if (AuthorizationService.CheckValidLevel(token) < 0 && !token.equals(GlobalContext.INTERNAL_TOKEN)) {
+                return ReturnModelHelper.UnauthorizedResponse(token);
+            }
+            // logic
+            HashMap<String, String> args = new HashMap<>();
+            args.put("wid", wid);
+            NameServiceTransaction t = TransactionCreator.Create(TransactionType.Namespacing, "transshipGetWorkitem", args);
             String jsonifyResult = (String) NameSpacingController.scheduler.ScheduleSync(t);
             // return
             ReturnModelHelper.StandardResponse(rnModel, StatusCode.OK, jsonifyResult);

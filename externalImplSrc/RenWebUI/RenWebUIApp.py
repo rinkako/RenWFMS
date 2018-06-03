@@ -271,26 +271,30 @@ def ActiveProcessManagement():
 @app.route('/activeProcess/info/<rtid>', methods=["GET", "POST"])
 def ActiveProcessInfo(rtid):
     flag, res = core.RuntimeRecordGetAllByRTID("__test__", rtid)
-    if flag is False:
+    if flag is False or res is None:
         return redirect(url_for('AccessErrorPage', dt='x'))
     flag2, res2 = core.RuntimeLogGetByRTID("__test__", rtid)
-    if flag2 is False:
+    if flag2 is False or res2 is None:
+        return redirect(url_for('AccessErrorPage', dt='x'))
+    flag3, res3 = core.RuntimeSpanTreeGetByRTID("__test__", rtid)
+    if flag3 is False or res3 is None:
         return redirect(url_for('AccessErrorPage', dt='x'))
     if res["finishTimestamp"] is None:
         res["finishTimestamp"] = -1
     if res["isSucceed"] == 1:
         pStyle = "progress-bar-success"
-        successMsg = '<span class="label label-success label-md">Succeed</span>'
+        successMsg = '<span class="label label-success arrow-out arrow-out-right">Succeed</span>'
     elif res["isSucceed"] == 0:
         pStyle = "progress-bar-info"
-        successMsg = '<span class="label label-primary label-md">Running</span>'
+        successMsg = '<span class="label label-primary arrow-out arrow-out-right">Running</span>'
     else:
         pStyle = "progress-bar-danger"
-        successMsg = '<span class="label label-danger label-md">Failed</span>'
+        successMsg = '<span class="label label-danger arrow-out arrow-out-right">Failed</span>'
     t = {'L_PageTitle': u'查看活动流程详细信息',
          'L_PageDescription': u'RTID：' + rtid,
          'processObj': res,
          'logList': res2,
+         'spanTree': res3,
          'successMsg': successMsg,
          'workflowProgressStyle': pStyle,
          'changetime': time.localtime,
@@ -298,9 +302,29 @@ def ActiveProcessInfo(rtid):
     return render_template('runtimemanagement_view.html', **t)
 
 
-@app.route('/activeProcess/instanceTree', methods=["GET"])
-def ActiveProcessViewInstanceTree():
-    pass
+@app.route('/domainWorkitem/', methods=["GET"])
+def DomainWorkitemManagement():
+    flag, res = core.WorkitemGetAllByDomain("__test__", session["Domain"])
+    if flag is False or res is None:
+        return redirect(url_for('AccessErrorPage', dt='x'))
+    t = {'L_PageTitle': u'域工作项',
+         'L_PageDescription': u'查看域中的工作项历史记录',
+         'itemList': res,
+         'changetime': time.localtime,
+         'strtime': time.strftime}
+    return render_template('domainworkitemmanagement.html', **t)
+
+
+@app.route('/domainWorkitem/info/<wid>', methods=["GET", "POST"])
+def DomainWorkitemInfo(wid):
+    flag, res = core.WorkitemGet("__test__", wid)
+    if flag is False or res is None:
+        return redirect(url_for('AccessErrorPage', dt='x'))
+    t = {'L_PageTitle': u'查看工作项详细信息',
+         'L_PageDescription': u'WID：' + wid,
+         'processObj': res,
+         'toLong': _toLong}
+    return render_template('workitem_view.html', **t)
 
 
 @app.route('/selfConfig', methods=["GET"])
@@ -402,6 +426,10 @@ def _logout():
         if sid != "" and sid is not None:
             RenUIController.RenUIController.Disconnect(session['SID'])
             session.clear()
+
+
+def _toLong(t):
+    return long(t)
 
 
 @app.route('/failure/<dt>/')

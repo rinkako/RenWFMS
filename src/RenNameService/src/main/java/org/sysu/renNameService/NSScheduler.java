@@ -78,8 +78,8 @@ public class NSScheduler implements Observer {
      * @return execution result
      */
     public Object ScheduleSync(NameServiceTransaction nst) {
-        LogUtil.Log(String.format("NSTransaction is scheduled to execute: %s", nst.getTransactionContext().getNsid()),
-                NSScheduler.class.getName(), nst.getTransactionContext().getRtid());
+//        LogUtil.Log(String.format("NSTransaction is scheduled to execute: %s", nst.getTransactionContext().getNsid()),
+//                NSScheduler.class.getName(), nst.getTransactionContext().getRtid());
         nst.getTransactionContext().setScheduledTimestamp(TimestampUtil.GetCurrentTimestamp());
         NSExecutor executor = new NSExecutor(this);
         this.executingSetLock.lock();

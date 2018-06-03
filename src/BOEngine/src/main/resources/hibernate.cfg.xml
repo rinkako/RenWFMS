@@ -12,5 +12,6 @@
         <property name="hbm2ddl.auto">update</property>
         <property name="hibernate.dialect">org.hibernate.dialect.MySQLDialect</property>
         <mapping class="org.sysu.workflow.entity.RenBinstepEntity"/>
+        <mapping class="org.sysu.workflow.entity.RenArchivedTreeEntity"/>
     </session-factory>
 </hibernate-configuration>

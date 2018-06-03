@@ -100,7 +100,7 @@ public class EngineController {
                 return ReturnModelHelper.MissingParametersResponse(missingParams);
             }
             // logic
-            String jsonify = SerializationUtil.JsonSerialization(RuntimeManagementService.GetSpanTreeDescriptor(rtid), rtid);
+            String jsonify = RuntimeManagementService.GetSpanTreeDescriptor(rtid);
             // return
             ReturnModelHelper.StandardResponse(rnModel, StatusCode.OK, jsonify);
         } catch (Exception e) {

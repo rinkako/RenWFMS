@@ -1,0 +1,154 @@
+﻿{% extends "luminouslayout.html" %}
+
+{% block LHeader %}
+<!-- DATA TABLES -->
+<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='js/datatables/media/css/jquery.dataTables.min.css') }}" />
+<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='js/datatables/media/assets/css/datatables.min.css') }}" />
+<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='js/datatables/extras/TableTools/media/css/TableTools.min.css') }}" />
+{% endblock %}
+
+{% block LBody %}
+<div class="container">
+    <div class="row">
+        <div id="content" class="col-lg-12">
+            <!-- PAGE HEADER-->
+            <div class="row">
+                <div class="col-sm-12">
+                    <div class="page-header">
+                        <!-- BREADCRUMBS -->
+                        <ul class="breadcrumb">
+                            <li>
+                                <i class="fa fa-home"></i>
+                                <a href="index.html">Home</a>
+                            </li>
+                            <li>{{ L_PageTitle }}</li>
+                        </ul>
+                        <!-- /BREADCRUMBS -->
+                        <div class="clearfix">
+                            <h3 class="content-title pull-left">{{ L_PageTitle }}</h3>
+                        </div>
+                        <div class="description">{{ L_PageDescription }}</div>
+                    </div>
+                </div>
+            </div>
+            <!-- /PAGE HEADER -->
+            <!-- DATA TABLES -->
+            <div class="row">
+                <div class="col-md-12">
+                    <!-- BOX -->
+                    <div class="box border blue">
+                        <div class="box-title">
+                            <h4><i class="fa fa-key"></i>{{ L_PageDescription }}</h4>
+                            <div class="tools hidden-xs">
+                                <a onclick="refreshMyself()" class="reload">
+                                    <i class="fa fa-refresh"></i>
+                                </a>
+                            </div>
+                        </div>
+                        <div class="box-body">
+                            <table id="datatable1" cellpadding="0" cellspacing="0" border="0" class="datatable table table-striped table-bordered table-hover">
+                                <thead>
+                                <tr>
+                                    <th>活动流程RTID</th>
+                                    <th>工作项ID</th>
+                                    <th>任务名称</th>
+                                    <th>业务角色</th>
+                                    <th>状态</th>
+                                    <th>资源服务状态</th>
+                                    <th>操作</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                {% for dictItem in itemList %}
+                                <tr class="gradeX">
+                                    <td> {{ dictItem["Rtid"] }} </td>
+                                    <td> {{ dictItem["Wid"] }} </td>
+                                    <td> {{ dictItem["TaskName"] }} </td>
+                                    <td> {{ dictItem["Role"] }} </td>
+                                    <td class="center">
+                                        {% if dictItem["Status"] == "Enabled" %}
+                                        <span class="label label-purple label-md">Enabled</span>
+                                        {% elif dictItem["Status"] == "Fired" %}
+                                        <span class="label label-yellow label-md">Fired</span>
+                                        {% elif dictItem["Status"] == "Executing" %}
+                                        <span class="label label-primary label-md">Executing</span>
+                                        {% elif dictItem["Status"] == "Complete" %}
+                                        <span class="label label-success label-md">Complete</span>
+                                        {% elif dictItem["Status"] == "ForcedComplete" %}
+                                        <span class="label label-pink label-md">ForcedComplete</span>
+                                        {% elif dictItem["Status"] == "Failed" %}
+                                        <span class="label label-danger label-md">Failed</span>
+                                        {% elif dictItem["Status"] == "Suspended" %}
+                                        <span class="label label-default label-md">Suspended</span>
+                                        {% else %}
+                                        <span class="label label-light-grey label-md">Discarded</span>
+                                        {% endif %}
+                                    </td>
+                                    <td class="center">
+                                        {% if dictItem["ResourceStatus"] == "Offered" %}
+                                        <span class="label label-yellow arrow-out arrow-out-right">Offered</span>
+                                        {% elif dictItem["ResourceStatus"] == "Allocated" %}
+                                        <span class="label label-yellow arrow-out arrow-out-right">Allocated</span>
+                                        {% elif dictItem["ResourceStatus"] == "Started" %}
+                                        <span class="label label-primary arrow-out arrow-out-right">Started</span>
+                                        {% elif dictItem["ResourceStatus"] == "Suspended" %}
+                                        <span class="label label-default arrow-out arrow-out-right">Suspended</span>
+                                        {% elif dictItem["ResourceStatus"] == "Unoffered" %}
+                                        <span class="label label-purple arrow-out arrow-out-right">Unoffered</span>
+                                        {% elif dictItem["ResourceStatus"] == "Unresourced" %}
+                                        <span class="label label-info arrow-out arrow-out-right">Unresourced</span>
+                                        {% elif dictItem["ResourceStatus"] == "Completed" %}
+                                        <span class="label label-success arrow-out arrow-out-right">Completed</span>
+                                        {% else %}
+                                        <span class="label label-light-grey arrow-out arrow-out-right">Skipped</span>
+                                        {% endif %}
+                                    </td>
+                                    <td class="center">
+                                        <a href="{{ url_for('DomainWorkitemInfo', wid=dictItem['Wid']) }}">
+                                            <button class="btn btn-xs btn-info">查看详情</button>
+                                        </a>
+                                    </td>
+                                </tr>
+                                {% endfor %}
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- /DATA TABLES -->
+
+            <div class="footer-tools">
+                    <span class="go-top">
+                        <i class="fa fa-chevron-up"></i> Top
+                    </span>
+            </div>
+        </div><!-- /CONTENT-->
+    </div>
+</div>
+{% endblock %}
+
+{% block LScript %}
+<!-- DATA TABLES -->
+<script type="text/javascript" src="{{ url_for('static', filename='js/datatables/media/js/jquery.dataTables.min.js') }}"></script>
+<script type="text/javascript" src="{{ url_for('static', filename='js/datatables/media/assets/js/datatables.min.js') }}"></script>
+<script type="text/javascript" src="{{ url_for('static', filename='js/datatables/extras/TableTools/media/js/TableTools.min.js') }}"></script>
+<script type="text/javascript" src="{{ url_for('static', filename='js/datatables/extras/TableTools/media/js/ZeroClipboard.min.js') }}"></script>
+<script>
+    jQuery(document).ready(function() {
+        App.setPage("dynamic_table");  //Set current page
+        App.init(); //Initialise plugins and elements
+        jQuery("#active-runtime").addClass("active");
+        jQuery("#selected-runtime").addClass("selected");
+        jQuery("#current-runtime-worklist").addClass("current");
+    });
+</script>
+
+<script language="JavaScript">
+    function refreshMyself() {
+        window.location.href = "{{ url_for('DomainWorkitemManagement') }}"
+    }
+</script>
+{% endblock %}
+
+

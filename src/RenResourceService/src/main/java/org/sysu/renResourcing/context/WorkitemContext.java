@@ -199,6 +199,35 @@ public class WorkitemContext implements Serializable, RCacheablesContext {
     }
 
     /**
+     * Get Workitem Context by Domain.
+     *
+     * @param domain domain name
+     * @return ArrayList of workitem context
+     */
+    public static ArrayList<WorkitemContext> GetContextInDomain(String domain) {
+        Session session = HibernateUtil.GetLocalSession();
+        Transaction transaction = session.beginTransaction();
+        boolean cmtFlag = false;
+        ArrayList<WorkitemContext> retList = new ArrayList<>();
+        try {
+            ArrayList<RenWorkitemEntity> workitems = (ArrayList<RenWorkitemEntity>) session.createQuery(String.format("FROM RenWorkitemEntity WHERE LOCATE('%s', rtid) > 0", "@" + domain + "_")).list();
+            transaction.commit();
+            cmtFlag = true;
+            for (RenWorkitemEntity rwe : workitems) {
+                retList.add(WorkitemContext.GetContext(rwe.getWid(), rwe.getRtid()));
+            }
+            return retList;
+        } catch (Exception ex) {
+            if (!cmtFlag) {
+                transaction.rollback();
+            }
+            return null;
+        } finally {
+            HibernateUtil.CloseLocalSession();
+        }
+    }
+
+    /**
      * Get an exist workitem context from cache or steady.
      *
      * @param wid workitem global id

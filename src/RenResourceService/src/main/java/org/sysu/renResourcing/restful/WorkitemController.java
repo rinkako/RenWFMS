@@ -443,4 +443,68 @@ public class WorkitemController {
         }
         return rnModel;
     }
+
+    /**
+     * Get all workitems by rtid.
+     *
+     * @param domain domain name
+     * @return response package in JSON
+     */
+    @RequestMapping(value = "/getAllForDomain", produces = {"application/json"})
+    @ResponseBody
+    @Transactional
+    public ReturnModel GetAllForDomain(@RequestParam(value = "domain", required = false) String domain) {
+        ReturnModel rnModel = new ReturnModel();
+        try {
+            // miss params
+            List<String> missingParams = new ArrayList<>();
+            if (domain == null) missingParams.add("domain");
+            if (missingParams.size() > 0) {
+                return ReturnModelHelper.MissingParametersResponse(missingParams);
+            }
+            // logic
+            Hashtable<String, Object> args = new Hashtable<>();
+            args.put("domain", domain);
+            ResourcingContext rCtx = ResourcingContext.GetContext(null, "",
+                    RServiceType.GetAllWorkitemsByDomain, args);
+            String jsonifyResult = RScheduler.GetInstance().ScheduleSync(rCtx);
+            // return
+            ReturnModelHelper.StandardResponse(rnModel, StatusCode.OK, jsonifyResult);
+        } catch (Exception e) {
+            ReturnModelHelper.ExceptionResponse(rnModel, e.getClass().getName());
+        }
+        return rnModel;
+    }
+
+    /**
+     * Get a workitem.
+     *
+     * @param wid workitem id
+     * @return response package in JSON
+     */
+    @RequestMapping(value = "/get", produces = {"application/json"})
+    @ResponseBody
+    @Transactional
+    public ReturnModel GetByWid(@RequestParam(value = "wid", required = false) String wid) {
+        ReturnModel rnModel = new ReturnModel();
+        try {
+            // miss params
+            List<String> missingParams = new ArrayList<>();
+            if (wid == null) missingParams.add("wid");
+            if (missingParams.size() > 0) {
+                return ReturnModelHelper.MissingParametersResponse(missingParams);
+            }
+            // logic
+            Hashtable<String, Object> args = new Hashtable<>();
+            args.put("wid", wid);
+            ResourcingContext rCtx = ResourcingContext.GetContext(null, "",
+                    RServiceType.GetByWid, args);
+            String jsonifyResult = RScheduler.GetInstance().ScheduleSync(rCtx);
+            // return
+            ReturnModelHelper.StandardResponse(rnModel, StatusCode.OK, jsonifyResult);
+        } catch (Exception e) {
+            ReturnModelHelper.ExceptionResponse(rnModel, e.getClass().getName());
+        }
+        return rnModel;
+    }
 }

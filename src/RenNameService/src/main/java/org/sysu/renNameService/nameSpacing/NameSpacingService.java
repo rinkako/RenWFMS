@@ -334,8 +334,7 @@ public class NameSpacingService {
         args.put("rtid", rtid);
         try {
             GlobalContext.Interaction.Send(LocationContext.URL_BOENGINE_START, args, rtid);
-        }
-        catch (Exception ex) {
+        } catch (Exception ex) {
             LogUtil.Log("Cannot interaction with BO Engine for RTID: " + rtid, NameSpacingService.class.getName(), LogUtil.LogLevelType.ERROR, rtid);
             throw ex;
         }
@@ -409,8 +408,7 @@ public class NameSpacingService {
             ArrayList<RenRuntimerecordEntity> qRet;
             if (activeOnly.equalsIgnoreCase("true")) {
                 qRet = (ArrayList<RenRuntimerecordEntity>) session.createQuery("FROM RenRuntimerecordEntity WHERE isSucceed = 0").list();
-            }
-            else {
+            } else {
                 qRet = (ArrayList<RenRuntimerecordEntity>) session.createQuery("FROM RenRuntimerecordEntity").list();
             }
             transaction.commit();
@@ -440,8 +438,7 @@ public class NameSpacingService {
             ArrayList<RenRuntimerecordEntity> qRet;
             if (activeOnly.equalsIgnoreCase("true")) {
                 qRet = (ArrayList<RenRuntimerecordEntity>) session.createQuery(String.format("FROM RenRuntimerecordEntity WHERE isSucceed = 0 AND LOCATE('%s', launchAuthorityId) > 0", "@" + domain)).list();
-            }
-            else {
+            } else {
                 qRet = (ArrayList<RenRuntimerecordEntity>) session.createQuery(String.format("FROM RenRuntimerecordEntity WHERE LOCATE('%s', launchAuthorityId) > 0", "@" + domain)).list();
             }
             transaction.commit();
@@ -479,8 +476,7 @@ public class NameSpacingService {
             ArrayList<RenRuntimerecordEntity> qRet;
             if (activeOnly.equalsIgnoreCase("true")) {
                 qRet = (ArrayList<RenRuntimerecordEntity>) session.createQuery(String.format("FROM RenRuntimerecordEntity WHERE isSucceed = 0 AND launchAuthorityId = '%s'", launcher)).list();
-            }
-            else {
+            } else {
                 qRet = (ArrayList<RenRuntimerecordEntity>) session.createQuery(String.format("FROM RenRuntimerecordEntity WHERE launchAuthorityId = '%s'", launcher)).list();
             }
             transaction.commit();
@@ -497,7 +493,7 @@ public class NameSpacingService {
     /**
      * Get all runtime record log for rtid.
      *
-     * @param rtid   process runtime record id
+     * @param rtid process runtime record id
      * @return a list of RTC
      */
     @SuppressWarnings("unchecked")
@@ -515,6 +511,19 @@ public class NameSpacingService {
             HibernateUtil.CloseLocalSession();
         }
         return null;
+    }
+
+    /**
+     * Handle transshipment of get span tree descriptor.
+     *
+     * @param rtid process runtime record id
+     */
+    public static Object TransshipGetSpanTree(String rtid) throws Exception {
+        HashMap<String, String> argMap = new HashMap<>();
+        argMap.put("rtid", rtid);
+        String ret = GlobalContext.Interaction.Send(LocationContext.URL_BOENGINE_SPANTREE, argMap, rtid);
+        Map retObj = SerializationUtil.JsonDeserialization(ret, Map.class);
+        return ((Map) retObj.get("returnElement")).get("data");
     }
 
     /**
@@ -553,10 +562,10 @@ public class NameSpacingService {
     /**
      * Handle transshipment of workqueue actions.
      *
-     * @param action     action name
-     * @param rtid       process rtid
-     * @param workerId   worker global id
-     * @param type       workqueue type
+     * @param action   action name
+     * @param rtid     process rtid
+     * @param workerId worker global id
+     * @param type     workqueue type
      */
     public static Object TransshipWorkqueue(String action, String rtid, String workerId, String type) throws Exception {
         HashMap<String, String> argMap = new HashMap<>();
@@ -571,12 +580,39 @@ public class NameSpacingService {
     /**
      * Handle transshipment of get all workitems.
      *
-     * @param rtid       process rtid
+     * @param rtid process rtid
      */
     public static Object TransshipGetAll(String rtid) throws Exception {
         HashMap<String, String> argMap = new HashMap<>();
         argMap.put("rtid", rtid);
         String ret = GlobalContext.Interaction.Send(LocationContext.GATEWAY_RS_WORKITEM + "getAll", argMap, rtid);
+        Map retObj = SerializationUtil.JsonDeserialization(ret, Map.class);
+        return ((Map) retObj.get("returnElement")).get("data");
+    }
+
+    /**
+     * Handle transshipment of get all workitems for a domain.
+     *
+     * @param domain domain name
+     */
+    public static Object TransshipGetAllWorkitemsForDomain(String domain) throws Exception {
+        HashMap<String, String> argMap = new HashMap<>();
+        argMap.put("domain", domain);
+        String ret = GlobalContext.Interaction.Send(LocationContext.GATEWAY_RS_WORKITEM + "getAllForDomain", argMap, "");
+        Map retObj = SerializationUtil.JsonDeserialization(ret, Map.class);
+        return ((Map) retObj.get("returnElement")).get("data");
+    }
+
+
+    /**
+     * Handle transshipment of workitem.
+     *
+     * @param wid workitem id
+     */
+    public static Object TransshipGetWorkitem(String wid) throws Exception {
+        HashMap<String, String> argMap = new HashMap<>();
+        argMap.put("wid", wid);
+        String ret = GlobalContext.Interaction.Send(LocationContext.GATEWAY_RS_WORKITEM + "get", argMap, "");
         Map retObj = SerializationUtil.JsonDeserialization(ret, Map.class);
         return ((Map) retObj.get("returnElement")).get("data");
     }

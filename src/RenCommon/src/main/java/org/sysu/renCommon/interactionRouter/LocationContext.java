@@ -34,6 +34,11 @@ public class LocationContext {
     /**
      * Service URL for BO Engine event callback.
      */
+    public static final String URL_BOENGINE_SPANTREE = "http://localhost:10232/gateway/getSpanTree";
+
+    /**
+     * Service URL for BO Engine event callback.
+     */
     public static final String URL_BOENGINE_CALLBACK = "http://localhost:10232/gateway/callback";
 
     /**
