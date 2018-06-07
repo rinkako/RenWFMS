@@ -1,0 +1,35 @@
+<businessclass initial="Initial" name="GuestOrder" version="1.0" xmlns="http://www.w3.org/2005/07/scxml">
+    <datamodel>
+        <data expr="0" id="reqCount"/>
+        <data expr="1000" id="reqWant"/>
+    </datamodel>
+    <operations>
+        <task id="addItem" brole="waiter" name="addItemTask">
+            <principle method="Allocate" distributor="QueueLength">
+                <param name="length" expr="lt 10000"/>
+            </principle>
+            <callback on="complete" event="submit"/>
+        </task>
+    </operations>
+    <state id="Initial">
+        <transition target="Dining"/>
+    </state>
+    <state id="Dining" initial="Ordering">
+        <state id="Ordering">
+			<call name="addItemTask"/>
+			<transition cond="reqCount lt reqWant" target="Waiting"/>
+        </state>
+		<state id="Waiting">
+			<transition event="submit">
+                <assign location="reqCount" expr="reqCount + 1"/>
+				<transition cond="reqCount eq reqWant" target="GOFinal"/>
+				<transition cond="reqCount lt reqWant" target="Ordering"/>
+            </transition>
+		</state>
+    </state>
+    <final id="GOFinal">
+		<onentry>
+			<log label="GOFinal" expr="'Test finished'"/>
+		</onentry>
+	</final>
+</businessclass>

@@ -270,3 +270,7 @@ RenResourceService/target/generated-test-sources/
 /externalImplSrc/InstanceTreeVisualizer/.vs/
 /externalImplSrc/InstanceTreeVisualizer/InstanceTreeVisualizer/obj/
 /externalImplSrc/InstanceTreeVisualizer/InstanceTreeVisualizer/bin/
+/demoSrc/ResourcingSpeedTester/.vs/
+/demoSrc/ResourcingSpeedTester/packages/
+/demoSrc/ResourcingSpeedTester/ResourcingSpeedTester/obj/
+/demoSrc/ResourcingSpeedTester/ResourcingSpeedTester/bin/
