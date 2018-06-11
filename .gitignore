@@ -273,4 +273,8 @@ RenResourceService/target/generated-test-sources/
 /demoSrc/ResourcingSpeedTester/.vs/
 /demoSrc/ResourcingSpeedTester/packages/
 /demoSrc/ResourcingSpeedTester/ResourcingSpeedTester/obj/
-/demoSrc/ResourcingSpeedTester/ResourcingSpeedTester/bin/
+/demoSrc/ResourcingSpeedTester/ResourcingSpeedTester/bin/Debug/Newtonsoft.Json.xml
+/demoSrc/ResourcingSpeedTester/ResourcingSpeedTester/bin/Debug/ResourcingSpeedTester.exe
+/demoSrc/ResourcingSpeedTester/ResourcingSpeedTester/bin/Debug/Newtonsoft.Json.dll
+/demoSrc/ResourcingSpeedTester/ResourcingSpeedTester/bin/Debug/ResourcingSpeedTester.pdb
+/externalImplSrc/RenMasterPanel/RenMasterPanel/obj/

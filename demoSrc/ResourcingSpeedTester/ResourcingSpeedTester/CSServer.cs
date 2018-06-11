@@ -4,6 +4,7 @@ using System.IO;
 using System.Linq;
 using System.Net;
 using System.Text;
+using System.Windows.Forms;
 using Newtonsoft.Json;
 
 namespace ResourcingSpeedTester
@@ -16,7 +17,7 @@ namespace ResourcingSpeedTester
         /// <summary>
         /// 获取或设置该Http服务的网关地址
         /// </summary>
-        public string HttpServerGateway { get; set; } = "http://localhost:10300/";
+        public string HttpServerGateway { get; set; } = "http://localhost:10301/";
 
         /// <summary>
         /// 开始异步接受Http请求
@@ -53,26 +54,6 @@ namespace ResourcingSpeedTester
             {
                 this.OnPost(context);
             }
-            else
-            {
-                this.OnGet(context.Request, context.Response);
-            }
-        }
-
-        /// <summary>
-        /// Get方法
-        /// </summary>
-        /// <param name="request">HTTP请求</param>
-        /// <param name="response">HTTP响应</param>
-        public void OnGet(HttpListenerRequest request, HttpListenerResponse response)
-        {
-            response.ContentType = "html";
-            response.ContentEncoding = Encoding.UTF8;
-            using (Stream output = response.OutputStream)
-            {
-                byte[] buffer = Encoding.UTF8.GetBytes("<html><head><title>Yuri Gateway</title></head><body>Welcome to Yuri Engine Gateway, Please use post method to send data to the engine</body></html>");
-                output.Write(buffer, 0, buffer.Length);
-            }
         }
 
         /// <summary>
@@ -91,11 +72,18 @@ namespace ResourcingSpeedTester
             switch (pDict["TaskName"])
             {
                 case "addItemTask":
-                    StartAndComplete(pDict["WorkerId"], pDict["Wid"], null, null);
-                    TesterClient.Counter++;
-                    if (TesterClient.Counter == 10000)
+                    Console.WriteLine("Recieved Workitem " + (NetClient.Counter + 1) + ": " + pDict["Wid"] + " " + DateTime.Now);
+                    StartAndComplete(GlobalContext.WorkerId, pDict["Wid"], null, null);
+                    NetClient.Counter++;
+                    if (NetClient.Counter == 100)
                     {
-                        TesterClient.EndTimestamp = DateTime.Now;
+                        NetClient.EndTimestamp = DateTime.Now;
+                        double timeSpan = (NetClient.EndTimestamp - NetClient.BeginTimestamp).TotalSeconds;
+                        String report = String.Format("请求数量：100{0}耗时：{1}秒{0}速度：{2:F4}任务/秒{0}",
+                            Environment.NewLine, timeSpan, (100.0 / timeSpan));
+                        Console.WriteLine(report);
+                        MessageBox.Show(report);
+                        NetClient.Counter = 0;
                     }
                     break;
             }
@@ -113,16 +101,46 @@ namespace ResourcingSpeedTester
             {
                 argDict["payload"] = JsonConvert.SerializeObject(payload);
             }
-            TesterClient.PostData(urlKey, argDict, out var retStr);
+            NetClient.PostData(urlKey, argDict, out var retStr);
         }
 
         public static void StartAndComplete(string workerId, string workitemId, Dictionary<String, Object> completePayload = null, Dictionary<String, Object> startPayload = null)
         {
-            PostWorkitemRequest("Start", LocationContext.URL_WorkitemStart, workerId, workitemId, startPayload);
-            PostWorkitemRequest("Complete", LocationContext.URL_WorkitemComplete, workerId, workitemId, completePayload);
+            PostWorkitemRequest("Start", GlobalContext.LocationDict["WorkitemStart"], workerId, workitemId, startPayload);
+            PostWorkitemRequest("Complete", GlobalContext.LocationDict["WorkitemComplete"], workerId, workitemId, completePayload);
         }
 
+        public static void ReadLocationFromSteady()
+        {
+            GlobalContext.LocationDict.Clear();
+            var fs = new FileStream(ParseURItoURL(GlobalContext.LocationConfigFilePath), FileMode.Open);
+            var sr = new StreamReader(fs);
+            string line;
+            while ((line = sr.ReadLine()) != null)
+            {
+                var lineItem = line.Split('\t');
+                if (lineItem.Length == 2)
+                {
+                    lineItem[1] = lineItem[1].Replace("\r", "").Replace("\n", "").Trim();
+                    GlobalContext.LocationDict.Add(lineItem[0].Trim(), lineItem[1]);
+                }
+            }
+            sr.Close();
+            fs.Close();
+            var outputStr = GlobalContext.LocationDict.Aggregate("", (current, kvp) => current + $"{kvp.Key} => {kvp.Value}\n");
+        }
+
+        /// <summary>
+        /// 把一个相对URI转化为绝对路径
+        /// </summary>
+        /// <param name="uri">相对程序运行目录的相对路径</param>
+        /// <returns>绝对路径</returns>
+        public static string ParseURItoURL(string uri)
+        {
+            return AppDomain.CurrentDomain.BaseDirectory + uri;
+        }
     }
+
 
     /// <summary>  
     /// 获取Post请求参数键值对的辅助类  

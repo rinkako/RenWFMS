@@ -208,20 +208,20 @@ public class NSExecutor extends Observable {
                     break;
             }
             // write success info to db
-            Session session = HibernateUtil.GetLocalSession();
-            Transaction dbTrans = session.beginTransaction();
-            try {
-                context.setFinishTimestamp(TimestampUtil.GetCurrentTimestamp());
-                session.update(context);
-                dbTrans.commit();
-            }
-            catch (Exception dbEx) {
-                dbTrans.rollback();
-                throw dbEx;
-            }
-            finally {
-                HibernateUtil.CloseLocalSession();
-            }
+//            Session session = HibernateUtil.GetLocalSession();
+//            Transaction dbTrans = session.beginTransaction();
+//            try {
+//                context.setFinishTimestamp(TimestampUtil.GetCurrentTimestamp());
+//                session.update(context);
+//                dbTrans.commit();
+//            }
+//            catch (Exception dbEx) {
+//                dbTrans.rollback();
+//                throw dbEx;
+//            }
+//            finally {
+//                HibernateUtil.CloseLocalSession();
+//            }
             return retStr;
         }
         catch (Exception ex) {

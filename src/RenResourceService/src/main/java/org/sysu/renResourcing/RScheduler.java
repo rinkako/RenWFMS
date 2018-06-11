@@ -120,7 +120,7 @@ public class RScheduler implements Observer {
     private void HandlePendingQueue() {
         this.handlePendingLock.lock();
         try {
-            while (this.pendingQueue.size() < GlobalContext.CONCURRENT_MAX_TRACKER) {
+            while (this.trackerVector.size() < GlobalContext.CONCURRENT_MAX_TRACKER) {
                 ResourcingContext pCtx = this.pendingQueue.poll();
                 if (pCtx != null) {
                     LogUtil.Log(String.format("Resourcing context(%s) is scheduled to launch.", pCtx.getRstid()),

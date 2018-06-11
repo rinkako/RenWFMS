@@ -85,3 +85,4 @@ G:\RenWFMS\externalImplSrc\RenMasterPanel\RenMasterPanel\obj\Debug\RenMasterPane
 G:\RenWFMS\externalImplSrc\RenMasterPanel\RenMasterPanel\obj\Debug\RenMasterPanel.csproj.CoreCompileInputs.cache
 G:\RenWFMS\externalImplSrc\RenMasterPanel\RenMasterPanel\obj\Debug\RenMasterPanel.exe
 G:\RenWFMS\externalImplSrc\RenMasterPanel\RenMasterPanel\obj\Debug\RenMasterPanel.pdb
+G:\RenWFMS\externalImplSrc\RenMasterPanel\RenMasterPanel\obj\Debug\RenMasterPanel.csproj.CopyComplete

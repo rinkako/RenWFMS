@@ -29,12 +29,17 @@ import java.util.stream.Collectors;
  */
 public class SteadyStepService {
 
+    public static boolean EnableSteadyStep = true;
+
     /**
      * Write a steady step to steady memory.
      *
      * @param exctx BOXML execution context
      */
     public static void WriteSteady(BOXMLExecutionContext exctx) {
+        if (!SteadyStepService.EnableSteadyStep) {
+            return;
+        }
         Session session = HibernateUtil.GetLocalSession();
         Transaction transaction = session.beginTransaction();
         try {

@@ -36,7 +36,7 @@ class AuthorizationModel:
         :param encryptedPassword: password in encrypted string
         :return: true if user exists and password right
         """
-        sql = "SELECT * FROM ren_authuser AS au WHERE au.username = '%s' AND au.domain = '%s' AND au.password = '%s'" \
+        sql = "SELECT * FROM ren_authuser AS au WHERE au.username = '%s' AND au.domain = '%s' AND au.password = '%s' AND au.status = 0" \
               % (username, domain, encryptedPassword)
         ret = AuthorizationModel._persistDAO.ExecuteSQL(sql, True, 0)
         if len(ret) > 0:

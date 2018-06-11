@@ -231,13 +231,13 @@ public class SCXMLSemanticsImpl implements BOXMLSemantics {
         exitStates(exctx, step, statesToInvoke);
         executeTransitionContent(exctx, step);
         enterStates(exctx, step, statesToInvoke);
-        if (step.getEntrySet().size() != 0) {
-            System.out.print("Now Enter:");
-            for (EnterableState s : step.getEntrySet()) {
-                System.out.print(" " + s.getId());
-            }
-            System.out.println();
-        }
+//        if (step.getEntrySet().size() != 0) {
+//            System.out.print("Now Enter:");
+//            for (EnterableState s : step.getEntrySet()) {
+//                System.out.print(" " + s.getId());
+//            }
+//            System.out.println();
+//        }
         step.clearIntermediateState();
     }
 

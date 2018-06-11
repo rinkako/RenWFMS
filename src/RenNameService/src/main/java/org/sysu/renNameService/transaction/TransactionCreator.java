@@ -28,8 +28,8 @@ public class TransactionCreator {
      * @return {@code NameServiceTransaction} instance
      */
     public static NameServiceTransaction Create(TransactionType type, String action, HashMap<String, String> args) {
-        Session session = HibernateUtil.GetLocalSession();
-        Transaction dbTrans = session.beginTransaction();
+//        Session session = HibernateUtil.GetLocalSession();
+//        Transaction dbTrans = session.beginTransaction();
         try {
             String nsid = "NS_" + UUID.randomUUID().toString();
             String rtid = args.get("rtid");
@@ -42,14 +42,14 @@ public class TransactionCreator {
             rnte.setRtid(rtid == null ? "" : rtid);
             rnte.setPriority(0);
             rnte.setType(type.ordinal());
-            session.save(rnte);
-            dbTrans.commit();
+//            session.save(rnte);
+//            dbTrans.commit();
 //            LogUtil.Log(String.format("Name service transaction created: %s (%s, %s)", nsid, type.name(), action),
 //                    TransactionCreator.class.getName(), rtid == null ? "" : rtid);
             return nst;
         }
         finally {
-            HibernateUtil.CloseLocalSession();
+//            HibernateUtil.CloseLocalSession();
         }
     }
 }
