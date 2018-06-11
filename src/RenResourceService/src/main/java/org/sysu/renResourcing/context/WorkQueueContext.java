@@ -443,12 +443,16 @@ public class WorkQueueContext implements Serializable, RCacheablesContext {
      */
     @SuppressWarnings("unchecked")
     private synchronized void RefreshFromSteady() {
+        // TODO: whether WORKLISTED is auto-generated or not is not clear. Here we generate by add up 4 queue.
+        if (this.type == WorkQueueType.WORKLISTED) {
+            return;
+        }
         Session session = HibernateUtil.GetLocalSession();
         Transaction transaction = session.beginTransaction();
         boolean cmtFlag = false;
         try {
             ConcurrentHashMap<String, WorkitemContext> newMaps = new ConcurrentHashMap<>();
-            if (this.type == WorkQueueType.WORKLISTED) {
+            if (this.type == WorkQueueType.WORKLISTED) {  // TODO: never reach here
                 ArrayList<RenWorkitemEntity> allActiveItems = (ArrayList<RenWorkitemEntity>) session.createQuery(String.format("FROM RenWorkitemEntity WHERE resourceStatus IN ('%s', '%s', '%s', '%s')", WorkitemResourcingStatusType.Allocated.name(), WorkitemResourcingStatusType.Offered.name(), WorkitemResourcingStatusType.Started.name(), WorkitemResourcingStatusType.Suspended.name())).list();
                 transaction.commit();
                 cmtFlag = true;

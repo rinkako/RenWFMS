@@ -91,7 +91,7 @@
                         <span id="selected-process"></span>
                     </a>
                 </li>
-
+                {% if session["AuType"] > 0 %}
                 <li id="active-authuser">
                     <a class="" href="{{ url_for('AuthUserManagement') }}">
                         <i class="fa fa-user fa-fw"></i>
@@ -99,7 +99,7 @@
                         <span id="selected-authuser"></span>
                     </a>
                 </li>
-
+                {% endif %}
                 <li id="active-runtime" class="has-sub">
                     <a class="" href="javascript:;">
                         <i class="fa fa-cubes fa-fw"></i>

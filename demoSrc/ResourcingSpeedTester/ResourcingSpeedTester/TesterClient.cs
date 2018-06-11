@@ -199,11 +199,10 @@ namespace ResourcingSpeedTester
                     },
                     out retStr);
             response = JsonConvert.DeserializeObject<StdResponseEntity>(retStr);
-            Console.WriteLine("StartProcess send OK, RTID: " + NetClient.rtid);
             NetClient.BeginTimestamp = DateTime.Now;
         }
 
-        private static string rtid;
+        public static string rtid;
 
         public static string GeneratePostMapStringOfMappings()
         {

@@ -455,7 +455,7 @@ class RenUIController:
         dt = InteractionUtil.Send(LocationContext.URL_Workitem_GetAllForParticipant, d)
         return True, json.loads(dt["data"], encoding="utf8")
 
-    @adminRequireWarp
+    @authorizeRequireWarp
     @ExceptionWarp
     def WorkitemAction(self, session, action, wid, workerId):
         """

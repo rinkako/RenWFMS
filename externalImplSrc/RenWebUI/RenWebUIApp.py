@@ -44,19 +44,35 @@ def adminRequire(fn):
     return wrapper
 
 
+def superRequire(fn):
+    """
+    Decorator for admin required router.
+    """
+    @wraps(fn)
+    def wrapper(*args, **kwds):
+        auType = session.get('AuType', None)
+        if auType is not None and auType > 1:
+            return fn(*args, **kwds)
+        else:
+            return redirect(url_for('AccessErrorPage', dt='unauthorized'))
+    return wrapper
+
+
 """
 Router funcs.
 """
 
 
 @app.route('/', methods=["GET"])
+@authorizeRequire
 def home():
     return redirect(url_for("MyWorkitemManagement"))
 
 
 @app.route('/domain/', methods=["GET"])
+@superRequire
 def DomainManagement():
-    flag, res = core.DomainGetAll("__test__")
+    flag, res = core.DomainGetAll(session['SID'])
     if flag is False:
         return redirect(url_for('AccessErrorPage', dt='x'))
     t = {'L_PageTitle': u'域管理',
@@ -68,6 +84,7 @@ def DomainManagement():
 
 
 @app.route('/domain/add/', methods=["GET"])
+@superRequire
 def DomainAdd():
     t = {'L_PageTitle': u'添加域',
          'L_PageDescription': u'为平台添加一个域租户'}
@@ -75,8 +92,9 @@ def DomainAdd():
 
 
 @app.route('/domain/performAdd/', methods=["POST"])
+@superRequire
 def PerformDomainAdd():
-    flag, res = core.DomainAdd('__test__',
+    flag, res = core.DomainAdd(session['SID'],
                                request.form['f_username'],
                                request.form['f_nPassword'],
                                request.form['f_nBindingLoc'])
@@ -86,8 +104,9 @@ def PerformDomainAdd():
 
 
 @app.route('/domain/edit/<uname>/', methods=["GET"])
+@superRequire
 def DomainEdit(uname):
-    flag, res = core.DomainGet('__test__', uname)
+    flag, res = core.DomainGet(session['SID'], uname)
     if flag is False:
         return redirect(url_for('AccessErrorPage', dt='x'))
     t = {'L_PageTitle': u'域: ' + uname,
@@ -98,8 +117,9 @@ def DomainEdit(uname):
 
 
 @app.route('/domain/performEdit/', methods=["POST"])
+@adminRequire
 def PerformDomainEdit():
-    flag, res = core.DomainUpdate('__test__',
+    flag, res = core.DomainUpdate(session['SID'],
                                   request.values['h_username'],
                                   request.values['f_nBindingLoc'])
     if flag is False:
@@ -111,28 +131,31 @@ def PerformDomainEdit():
 
 
 @app.route('/domain/performDelete/<uname>/', methods=["GET", "POST"])
+@superRequire
 def PerformDomainDelete(uname):
-    flag, res = core.DomainStop('__test__', uname)
+    flag, res = core.DomainStop(session['SID'], uname)
     if flag is False or res is None:
         return redirect(url_for('AccessErrorPage', dt='add'))
     return redirect(url_for('DomainManagement'))
 
 
 @app.route('/domain/performResume/<uname>/', methods=["GET", "POST"])
+@superRequire
 def PerformDomainResume(uname):
-    flag, res = core.DomainResume('__test__', uname)
+    flag, res = core.DomainResume(session['SID'], uname)
     if flag is False or res is None:
         return redirect(url_for('AccessErrorPage', dt='add'))
     return redirect(url_for('DomainManagement'))
 
 
 @app.route('/authuser/', methods=["GET"])
+@adminRequire
 def AuthUserManagement():
     if session['Domain'] == "admin":
-        flag, res = core.AuthUserGetAll("__test__")
+        flag, res = core.AuthUserGetAll(session['SID'])
         title = u"管理平台中的授权用户"
     else:
-        flag, res = core.AuthUserGetAllForDomain("__test__", session['Domain'])
+        flag, res = core.AuthUserGetAllForDomain(session['SID'], session['Domain'])
         title = u"管理域中的授权用户"
     if flag is False:
         return redirect(url_for('AccessErrorPage', dt='x'))
@@ -145,6 +168,7 @@ def AuthUserManagement():
 
 
 @app.route('/authuser/add/', methods=["GET"])
+@adminRequire
 def AuthUserAdd():
     t = {'L_PageTitle': u'添加授权用户',
          'L_PageDescription': u'为当前域添加一个授权用户'}
@@ -152,8 +176,9 @@ def AuthUserAdd():
 
 
 @app.route('/authuser/performAdd/', methods=["POST"])
+@adminRequire
 def PerformAuthUserAdd():
-    flag, res = core.AuthUserAdd('__test__',
+    flag, res = core.AuthUserAdd(session['SID'],
                                  request.form['f_username'],
                                  session["Domain"],
                                  request.form['f_nPassword'],
@@ -164,8 +189,9 @@ def PerformAuthUserAdd():
 
 
 @app.route('/authuser/edit/<uname>/', methods=["GET"])
+@adminRequire
 def AuthUserEdit(uname):
-    flag, res = core.AuthUserGet('__test__', uname, session["Domain"])
+    flag, res = core.AuthUserGet(session['SID'], uname, session["Domain"])
     if flag is False:
         return redirect(url_for('AccessErrorPage', dt='x'))
     t = {'L_PageTitle': u'编辑: ' + uname,
@@ -176,6 +202,7 @@ def AuthUserEdit(uname):
 
 
 @app.route('/authuser/performEdit/', methods=["POST"])
+@authorizeRequire
 def PerformAuthUserEdit():
     if "f_nPassword" in request.values and request.values["f_nPassword"].strip() != "":
         pwd = request.values["f_nPassword"]
@@ -185,7 +212,7 @@ def PerformAuthUserEdit():
         nGid = request.values["f_nGid"]
     else:
         nGid = None
-    flag, res = core.AuthUserUpdate('__test__',
+    flag, res = core.AuthUserUpdate(session['SID'],
                                     request.values['h_username'],
                                     session["Domain"],
                                     pwd,
@@ -199,24 +226,27 @@ def PerformAuthUserEdit():
 
 
 @app.route('/authuser/performDelete/<uname>/', methods=["GET", "POST"])
+@adminRequire
 def PerformAuthUserDelete(uname):
-    flag, res = core.AuthUserStop('__test__', uname, session["Domain"])
+    flag, res = core.AuthUserStop(session['SID'], uname, session["Domain"])
     if flag is False or res is None:
         return redirect(url_for('AccessErrorPage', dt='add'))
     return redirect(url_for('AuthUserManagement'))
 
 
 @app.route('/authuser/performResume/<uname>/', methods=["GET", "POST"])
+@adminRequire
 def PerformAuthUserResume(uname):
-    flag, res = core.AuthUserResume('__test__', uname, session["Domain"])
+    flag, res = core.AuthUserResume(session['SID'], uname, session["Domain"])
     if flag is False or res is None:
         return redirect(url_for('AccessErrorPage', dt='add'))
     return redirect(url_for('AuthUserManagement'))
 
 
 @app.route('/process/', methods=["GET"])
+@authorizeRequire
 def ProcessManagement():
-    flag, res = core.ProcessGetAllForDomain("__test__", session["Domain"])
+    flag, res = core.ProcessGetAllForDomain(session['SID'], session["Domain"])
     if flag is False:
         return redirect(url_for('AccessErrorPage', dt='x'))
     t = {'L_PageTitle': u'流程管理',
@@ -228,8 +258,9 @@ def ProcessManagement():
 
 
 @app.route('/process/info/<pid>/', methods=["GET", "POST"])
+@authorizeRequire
 def ProcessInfo(pid):
-    flag, res = core.ProcessGetByPid("__test__", pid)
+    flag, res = core.ProcessGetByPid(session['SID'], pid)
     if flag is False:
         return redirect(url_for('AccessErrorPage', dt='x'))
     if res["lastLaunchTimestamp"] is None:
@@ -242,21 +273,17 @@ def ProcessInfo(pid):
     return render_template('processmanagement_view.html', **t)
 
 
-@app.route('/process/performStart/', methods=["POST"])
-def PerformProcessStart():
-    pass
-
-
 @app.route('/activeProcess/', methods=["GET"])
+@authorizeRequire
 def ActiveProcessManagement():
     if session["AuType"] == 999:
-        flag, res = core.RuntimeRecordGetAll("__test__")
+        flag, res = core.RuntimeRecordGetAll(session['SID'])
         desc = u"当前平台所有活动流程清单"
     elif session["AuType"] > 0:
-        flag, res = core.RuntimeRecordGetAllByDomain("__test__", session["Domain"])
+        flag, res = core.RuntimeRecordGetAllByDomain(session['SID'], session["Domain"])
         desc = u"当前域所有活动流程清单"
     else:
-        flag, res = core.RuntimeRecordGetAllByLauncher("__test__", session["AuID"])
+        flag, res = core.RuntimeRecordGetAllByLauncher(session['SID'], session["AuID"])
         desc = u"当前活动流程清单"
     if flag is False:
         return redirect(url_for('AccessErrorPage', dt='x'))
@@ -269,14 +296,15 @@ def ActiveProcessManagement():
 
 
 @app.route('/activeProcess/info/<rtid>/', methods=["GET", "POST"])
+@authorizeRequire
 def ActiveProcessInfo(rtid):
-    flag, res = core.RuntimeRecordGetAllByRTID("__test__", rtid)
+    flag, res = core.RuntimeRecordGetAllByRTID(session['SID'], rtid)
     if flag is False or res is None:
         return redirect(url_for('AccessErrorPage', dt='x'))
-    flag2, res2 = core.RuntimeLogGetByRTID("__test__", rtid)
+    flag2, res2 = core.RuntimeLogGetByRTID(session['SID'], rtid)
     if flag2 is False or res2 is None:
         return redirect(url_for('AccessErrorPage', dt='x'))
-    flag3, res3 = core.RuntimeSpanTreeGetByRTID("__test__", rtid)
+    flag3, res3 = core.RuntimeSpanTreeGetByRTID(session['SID'], rtid)
     if flag3 is False or res3 is None:
         return redirect(url_for('AccessErrorPage', dt='x'))
     if res["finishTimestamp"] is None:
@@ -303,8 +331,9 @@ def ActiveProcessInfo(rtid):
 
 
 @app.route('/domainWorkitem/', methods=["GET"])
+@authorizeRequire
 def DomainWorkitemManagement():
-    flag, res = core.WorkitemGetAllByDomain("__test__", session["Domain"])
+    flag, res = core.WorkitemGetAllByDomain(session['SID'], session["Domain"])
     if flag is False or res is None:
         return redirect(url_for('AccessErrorPage', dt='x'))
     t = {'L_PageTitle': u'域工作项',
@@ -316,8 +345,9 @@ def DomainWorkitemManagement():
 
 
 @app.route('/domainWorkitem/info/<wid>/', methods=["GET", "POST"])
+@authorizeRequire
 def DomainWorkitemInfo(wid):
-    flag, res = core.WorkitemGet("__test__", wid)
+    flag, res = core.WorkitemGet(session['SID'], wid)
     if flag is False or res is None:
         return redirect(url_for('AccessErrorPage', dt='x'))
     t = {'L_PageTitle': u'查看工作项详细信息',
@@ -329,9 +359,10 @@ def DomainWorkitemInfo(wid):
 
 
 @app.route('/myWorkitem/', methods=["GET"])
+@authorizeRequire
 def MyWorkitemManagement():
     if session["GID"] is not None:
-        flag, res = core.WorkitemGetByParticipant("__test__", session["GID"])
+        flag, res = core.WorkitemGetByParticipant(session['SID'], session["GID"])
         if flag is False or res is None:
             return redirect(url_for('AccessErrorPage', dt='x'))
         gidSet = '1'
@@ -348,8 +379,9 @@ def MyWorkitemManagement():
 
 
 @app.route('/myWorkitem/info/<wid>/', methods=["GET", "POST"])
+@authorizeRequire
 def MyWorkitemInfo(wid):
-    flag, res = core.WorkitemGet("__test__", wid)
+    flag, res = core.WorkitemGet(session['SID'], wid)
     if flag is False or res is None:
         return redirect(url_for('AccessErrorPage', dt='x'))
     t = {'L_PageTitle': u'查看工作项详细信息',
@@ -361,18 +393,20 @@ def MyWorkitemInfo(wid):
 
 
 @app.route('/performWorkitem/<action>/<wid>/', methods=["GET", "POST"])
+@authorizeRequire
 def PerformWorkitemAction(action, wid):
     if "GID" not in session:
         return redirect(url_for('AccessErrorPage', dt='unauthorized'))
-    flag, res = core.WorkitemAction('__test__', action, wid, session["GID"])
+    flag, res = core.WorkitemAction(session['SID'], action, wid, session["GID"])
     if flag is False or res is None:
         return redirect(url_for('AccessErrorPage', dt='x'))
     return redirect(url_for('MyWorkitemManagement'))
 
 
 @app.route('/selfConfig/', methods=["GET"])
+@authorizeRequire
 def SelfConfigManagement():
-    flag, res = core.AuthUserGet('__test__', session['PureUserName'], session["Domain"])
+    flag, res = core.AuthUserGet(session['SID'], session['PureUserName'], session["Domain"])
     if flag is False:
         return redirect(url_for('AccessErrorPage', dt='x'))
     if res["gid"] is None:
@@ -385,10 +419,11 @@ def SelfConfigManagement():
 
 
 @app.route('/domainConfig/', methods=["GET"])
+@adminRequire
 def DomainConfigManagement():
     if session["AuType"] == 0:
         return redirect(url_for('AccessErrorPage', dt='unauthorized'))
-    flag, res = core.DomainGet('__test__', session["Domain"])
+    flag, res = core.DomainGet(session['SID'], session["Domain"])
     if flag is False:
         return redirect(url_for('AccessErrorPage', dt='x'))
     t = {'L_PageTitle': u'域: ' + session["Domain"],

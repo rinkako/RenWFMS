@@ -72,9 +72,12 @@ namespace ResourcingSpeedTester
             switch (pDict["TaskName"])
             {
                 case "addItemTask":
-                    Console.WriteLine("Recieved Workitem " + (NetClient.Counter + 1) + ": " + pDict["Wid"] + " " + DateTime.Now);
                     StartAndComplete(GlobalContext.WorkerId, pDict["Wid"], null, null);
-                    NetClient.Counter++;
+                    lock (this)
+                    {
+                        Console.WriteLine("Recieved Workitem " + (NetClient.Counter + 1) + ": " + pDict["Wid"] + " " + DateTime.Now);
+                        NetClient.Counter++;
+                    }
                     if (NetClient.Counter == 100)
                     {
                         NetClient.EndTimestamp = DateTime.Now;
@@ -82,6 +85,9 @@ namespace ResourcingSpeedTester
                         String report = String.Format("请求数量：100{0}耗时：{1}秒{0}速度：{2:F4}任务/秒{0}",
                             Environment.NewLine, timeSpan, (100.0 / timeSpan));
                         Console.WriteLine(report);
+                        Console.ForegroundColor = ConsoleColor.Green;
+                        Console.WriteLine("Test Finished, RTID: " + NetClient.rtid);
+                        Console.ForegroundColor = ConsoleColor.White;
                         MessageBox.Show(report);
                         NetClient.Counter = 0;
                     }
