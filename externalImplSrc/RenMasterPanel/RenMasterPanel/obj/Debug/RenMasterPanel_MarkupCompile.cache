@@ -4,16 +4,16 @@
 winexe
 C#
 .cs
-G:\RenWFMS\externalImplSrc\RenMasterPanel\RenMasterPanel\obj\Debug\
+C:\Users\Ariana\Documents\GitHub\r\RenWFMS\externalImplSrc\RenMasterPanel\RenMasterPanel\obj\Debug\
 RenMasterPanel
 none
 false
 DEBUG;TRACE
-G:\RenWFMS\externalImplSrc\RenMasterPanel\RenMasterPanel\App.xaml
+C:\Users\Ariana\Documents\GitHub\r\RenWFMS\externalImplSrc\RenMasterPanel\RenMasterPanel\App.xaml
 51646880513
 
 181335391186
-17-1592243467
+17-1217946144
 Forms\LoginForm.xaml;Forms\ManageMappingForm.xaml;Forms\ProcessNameForm.xaml;Forms\TextPreviewForm.xaml;Forms\MainWindow.xaml;
 
 False

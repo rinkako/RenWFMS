@@ -133,7 +133,7 @@ public class BOXMLExecutionContext implements BOXMLIOProcessor {
     /**
      * User-friendly callback notifiable id, default equals to BO name.
      */
-    public String NotifiableId = "";
+   public String NotifiableId = "";
 
     /**
      * 构造器
