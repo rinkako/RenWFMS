@@ -112,8 +112,8 @@ namespace ResourcingSpeedTester
 
         public static void StartAndComplete(string workerId, string workitemId, Dictionary<String, Object> completePayload = null, Dictionary<String, Object> startPayload = null)
         {
-            PostWorkitemRequest("Start", GlobalContext.LocationDict["WorkitemStart"], workerId, workitemId, startPayload);
-            PostWorkitemRequest("Complete", GlobalContext.LocationDict["WorkitemComplete"], workerId, workitemId, completePayload);
+            PostWorkitemRequest("Skip", GlobalContext.LocationDict["WorkitemStart"], workerId, workitemId, startPayload);
+            //PostWorkitemRequest("Complete", GlobalContext.LocationDict["WorkitemComplete"], workerId, workitemId, completePayload);
         }
 
         public static void ReadLocationFromSteady()

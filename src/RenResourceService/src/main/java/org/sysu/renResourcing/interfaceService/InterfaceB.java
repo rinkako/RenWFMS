@@ -94,6 +94,9 @@ public class InterfaceB {
                 // put workitem to the chosen participant allocated queue
                 WorkQueueContainer container = WorkQueueContainer.GetContext(chosenOne.getWorkerId());
                 container.AddToQueue(workitem, WorkQueueType.ALLOCATED);
+                // change workitem status
+                workitem.getEntity().setFiringTime(TimestampUtil.GetCurrentTimestamp());
+                InterfaceB.WorkitemChanged(workitem, WorkitemStatusType.Fired, WorkitemResourcingStatusType.Allocated, null);
                 // notify if agent
                 if (chosenOne.getWorkerType() == WorkerType.Agent) {
                     AgentNotifyPlugin allocateAnp = new AgentNotifyPlugin();
@@ -101,9 +104,6 @@ public class InterfaceB {
                     allocateAnp.AddNotification(chosenOne, allocateNotifyMap, ctx.getRtid());
                     AsyncPluginRunner.AsyncRun(allocateAnp);
                 }
-                // change workitem status
-                workitem.getEntity().setFiringTime(TimestampUtil.GetCurrentTimestamp());
-                InterfaceB.WorkitemChanged(workitem, WorkitemStatusType.Fired, WorkitemResourcingStatusType.Allocated, null);
                 break;
             case Offer:
                 // create a filter interaction
@@ -124,13 +124,14 @@ public class InterfaceB {
                         offerAnp.AddNotification(oneInSet, offerNotifyMap, ctx.getRtid());
                     }
                 }
-                if (offerAnp.Count(ctx.getRtid()) > 0) {
-                    AsyncPluginRunner.AsyncRun(offerAnp);
-                }
                 // change workitem status
                 workitem.getEntity().setFiringTime(TimestampUtil.GetCurrentTimestamp());
                 InterfaceB.WorkitemChanged(workitem, WorkitemStatusType.Fired, WorkitemResourcingStatusType.Offered, null);
-                break;
+                // do notify
+                if (offerAnp.Count(ctx.getRtid()) > 0) {
+                    AsyncPluginRunner.AsyncRun(offerAnp);
+                }
+               break;
             case AutoAllocateIfOfferFailed:
                 // todo not implementation
                 break;
