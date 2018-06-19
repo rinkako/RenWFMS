@@ -1,0 +1,12 @@
+C:\Users\Ariana\Documents\GitHub\r\RenWFMS\demoSrc\CSQueueMonitor\CSQueueMonitor\obj\Debug\CSQueueMonitor.csprojResolveAssemblyReference.cache
+C:\Users\Ariana\Documents\GitHub\r\RenWFMS\demoSrc\CSQueueMonitor\CSQueueMonitor\obj\Debug\CSTester.Form1.resources
+C:\Users\Ariana\Documents\GitHub\r\RenWFMS\demoSrc\CSQueueMonitor\CSQueueMonitor\obj\Debug\CSQueueMonitor.Properties.Resources.resources
+C:\Users\Ariana\Documents\GitHub\r\RenWFMS\demoSrc\CSQueueMonitor\CSQueueMonitor\obj\Debug\CSQueueMonitor.csproj.GenerateResource.cache
+C:\Users\Ariana\Documents\GitHub\r\RenWFMS\demoSrc\CSQueueMonitor\CSQueueMonitor\obj\Debug\CSQueueMonitor.csproj.CoreCompileInputs.cache
+C:\Users\Ariana\Documents\GitHub\r\RenWFMS\demoSrc\CSQueueMonitor\CSQueueMonitor\bin\Debug\CSQueueMonitor.exe
+C:\Users\Ariana\Documents\GitHub\r\RenWFMS\demoSrc\CSQueueMonitor\CSQueueMonitor\bin\Debug\CSQueueMonitor.pdb
+C:\Users\Ariana\Documents\GitHub\r\RenWFMS\demoSrc\CSQueueMonitor\CSQueueMonitor\bin\Debug\Newtonsoft.Json.dll
+C:\Users\Ariana\Documents\GitHub\r\RenWFMS\demoSrc\CSQueueMonitor\CSQueueMonitor\bin\Debug\Newtonsoft.Json.xml
+C:\Users\Ariana\Documents\GitHub\r\RenWFMS\demoSrc\CSQueueMonitor\CSQueueMonitor\obj\Debug\CSQueueMonitor.csproj.CopyComplete
+C:\Users\Ariana\Documents\GitHub\r\RenWFMS\demoSrc\CSQueueMonitor\CSQueueMonitor\obj\Debug\CSQueueMonitor.exe
+C:\Users\Ariana\Documents\GitHub\r\RenWFMS\demoSrc\CSQueueMonitor\CSQueueMonitor\obj\Debug\CSQueueMonitor.pdb
